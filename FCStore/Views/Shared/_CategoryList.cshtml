@@ -1,0 +1,9 @@
+﻿@model IEnumerable<FCStore.Models.Category>
+@foreach (var item in Model) 
+{
+    <li>
+        <a href="/Product/List/@(item.CID)">
+            @Html.DisplayFor(modelItem => item.NameStr)
+        </a>
+    </li>
+}

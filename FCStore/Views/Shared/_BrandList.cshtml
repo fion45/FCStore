@@ -1,0 +1,12 @@
+﻿@model IEnumerable<FCStore.Models.Brand>
+@foreach (var item in Model)
+{
+    <li>
+        <div class="icon">
+            <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
+        </div>
+        <div class="name">
+            @Html.DisplayFor(modelItem => item.NameStr)
+        </div>
+    </li>
+}

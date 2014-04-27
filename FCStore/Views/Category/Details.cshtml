@@ -1,0 +1,36 @@
+﻿@model FCStore.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Category</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ParCID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParCID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.NameStr)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.NameStr)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Tag)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tag)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.CID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
