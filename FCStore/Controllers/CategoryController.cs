@@ -11,7 +11,16 @@ namespace FCStore.Controllers
 {
     public class CategoryController : Controller
     {
-        private CategoryDbContext db = new CategoryDbContext();
+        private FCStoreDbContext db = new FCStoreDbContext();
+
+        public PartialViewResult _CategoryList()
+        {
+            List<Category> result = db.Categorys.ToList();
+            result = (from cArr in result
+                      where cArr.ParCID == 0
+                      select cArr).ToList();
+            return PartialView(result);
+        }
 
         //
         // GET: /Category/
@@ -118,11 +127,6 @@ namespace FCStore.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
-        }
-
-        public PartialViewResult _CategoryList()
-        {
-            return PartialView(db.Categorys.ToList());
         }
     }
 }

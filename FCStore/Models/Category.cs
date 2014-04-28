@@ -7,8 +7,7 @@ namespace FCStore.Models
 {
     public class Category
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int CID
         {
             get;
@@ -32,10 +31,5 @@ namespace FCStore.Models
             get;
             set;
         }
-    }
-
-    public class CategoryDbContext : DbContext
-    {
-        public DbSet<Category> Categorys { get; set; }
     }
 }

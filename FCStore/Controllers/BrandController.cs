@@ -11,7 +11,14 @@ namespace FCStore.Controllers
 {
     public class BrandController : Controller
     {
-        private BrandDbContext db = new BrandDbContext();
+        private FCStoreDbContext db = new FCStoreDbContext();
+
+        public PartialViewResult _BrandList()
+        {
+            return PartialView(db.Brands.ToList());
+        }
+
+
 
         //
         // GET: /Brand/
@@ -118,11 +125,6 @@ namespace FCStore.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
-        }
-
-        public PartialViewResult _BrandList()
-        {
-            return PartialView(db.Brands.ToList());
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿@model FCStore.Models.Column
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Column</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Describe)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Describe)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ColumnID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

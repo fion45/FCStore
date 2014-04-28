@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <div id="Categorys">
+        <div id="Brands">
             <ul>
                 <li class="FCIcon">
                     <div class="icon">
@@ -21,15 +21,25 @@
                 </li>
                 @{Html.RenderAction("_BrandList", "Brand");}
             </ul>
-            <div style="clear:both;"></div>
+            <div class="pullupDiv"></div>
         </div>
     </header>
-    <nav>
+    <div id="Main">
+        <div id="Center">
+            @RenderBody()
+        </div>
+    </div>
+    <nav id="Categorys">
         <ul>
+            <li>
+                商品分类
+            </li>
             @{Html.RenderAction("_CategoryList", "Category");}
         </ul>
     </nav>
-    @RenderBody()
+    <div id="Contat">
+
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)

@@ -1,0 +1,38 @@
+﻿@model FCStore.Models.Column
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Column</legend>
+
+        @Html.HiddenFor(model => model.ColumnID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Describe)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Describe)
+            @Html.ValidationMessageFor(model => model.Describe)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

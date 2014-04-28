@@ -1,0 +1,12 @@
+﻿@model IEnumerable<FCStore.Models.Product>
+
+@foreach (var item in Model) {
+    <div>
+        <div>
+            <img />
+        </div>
+        <div>
+            @item.Title
+        </div>
+    </div>
+}

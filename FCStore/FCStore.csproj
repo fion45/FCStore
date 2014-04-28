@@ -128,14 +128,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +226,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Brand\Index.cshtml" />
     <Content Include="Views\Brand\Details.cshtml" />
     <Content Include="Views\Brand\Create.cshtml" />
@@ -235,9 +238,23 @@
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Column\Index.cshtml" />
+    <Content Include="Views\Column\Details.cshtml" />
+    <Content Include="Views\Column\Create.cshtml" />
+    <Content Include="Views\Column\Edit.cshtml" />
+    <Content Include="Views\Column\Delete.cshtml" />
+    <Content Include="Views\Column\_ColumnList.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Column\_BigItem.cshtml" />
+    <Content Include="Views\Column\_SmallItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

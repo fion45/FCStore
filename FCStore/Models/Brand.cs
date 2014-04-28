@@ -7,8 +7,7 @@ namespace FCStore.Models
 {
     public class Brand
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Key,DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int BID
         {
             get;
@@ -27,15 +26,16 @@ namespace FCStore.Models
             set;
         }
 
+        public int CountryCode
+        {
+            get;
+            set;
+        }
+
         public int Tag
         {
             get;
             set;
         }
-    }
-
-    public class BrandDbContext : DbContext
-    {
-        public DbSet<Brand> Brands { get; set; }
     }
 }

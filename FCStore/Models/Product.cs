@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,15 +8,40 @@ namespace FCStore.Models
 {
     public class Product
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int PID
         {
             get;
             set;
         }
 
+        [ForeignKey("Category")]
         public int CID
+        {
+            get;
+            set;
+        }
+
+        public Category Category
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey("Brand")]
+        public int BID
+        {
+            get;
+            set;
+        }
+
+        public Brand Brand
+        {
+            get;
+            set;
+        }
+
+        public List<ProductTag> ProductTags
         {
             get;
             set;
@@ -26,13 +52,6 @@ namespace FCStore.Models
             get;
             set;
         }
-
-        public int BrandID
-        {
-            get;
-            set;
-        }
-
         public string Chose
         {
             get;
@@ -81,21 +100,22 @@ namespace FCStore.Models
             set;
         }
 
+        public string Date
+        {
+            get;
+            set;
+        }
+
         public int Tag
         {
             get;
             set;
         }
 
-        public string Date
+        public List<Column> Columns
         {
             get;
             set;
         }
-    }
-
-    public class ProductDbContext : DbContext
-    {
-        public DbSet<Product> Products { get; set; }
     }
 }
