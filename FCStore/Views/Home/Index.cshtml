@@ -1,0 +1,104 @@
+﻿@model IEnumerable<FCStore.Models.Column>
+
+@foreach (var item in Model)
+{
+    bool tag = item.Products != null && item.Products.Count > 0;
+    <div class="MainBlock">
+        <div class="name">
+            @item.Describe
+        </div>
+        @if (tag)
+        {
+            <div class="content">            
+                @{FCStore.Models.Product pro = item.Products[0];}
+                <a href="/Product/Detail/@(pro.PID)">
+                    <div class="big">
+                            <div class="pic">
+                                @if (pro.ImgPathArr.Length > 0)
+                                {
+                                    <img src="@(pro.ImgPathArr[0])" />
+                                }
+                                else
+                                {
+                                    <img src="noImg" alt="No Image" />
+                                }
+                            </div>
+                            <div class="title">
+                                @(pro.Title)
+                            </div>
+                    </div>
+                </a>
+                <div class="right">
+                    @if (item.Products.Count > 1)
+                    {
+                        pro = item.Products[1];
+                        <a href="/Product/Detail/@(pro.PID)">
+                            <div class="small small1">
+                                <div class="pic">
+                                    @if (pro.ImgPathArr.Length > 0)
+                                        {
+                                        <img src="@(pro.ImgPathArr[0])" />
+                                        }
+                                        else
+                                        {
+                                        <img src="noImg" alt="No Image" />
+                                        }
+                                </div>
+                                <div class="title">
+                                    @(pro.Title)
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    @if (item.Products.Count > 2)
+                    {
+                        pro = item.Products[2];
+                        <a href="/Product/Detail/@(pro.PID)">
+                            <div class="small small2">
+                                    <div class="pic">
+                                        @if (pro.ImgPathArr.Length > 0)
+                                        {
+                                            <img src="@(pro.ImgPathArr[0])" />
+                                        }
+                                        else
+                                        {
+                                            <img src="noImg" alt="No Image" />
+                                        }
+                                    </div>
+                                    <div class="title">
+                                        @(pro.Title)
+                                    </div>
+                            </div>
+                        </a>
+                    }
+                    <div class="titleList">
+                        @if (item.Products.Count > 3)
+                        {
+                            for (int i = 3; i < item.Products.Count && i < 6; i++)
+                            {
+                                <div class="tItem cut">
+                                    <a href="/Product/Detail/@(item.Products[i].PID)">
+                                        @(item.Products[i].Title)
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="brands">
+                        @{
+                        List<FCStore.Models.Brand> brands = (from pArr in item.Products select pArr.Brand).Distinct().ToList();
+                        foreach (var bItem in brands)
+                        {
+                            <div class="bItem">
+                                <div class="icon">
+                                    <img src="/Brand/@(bItem.Tag).jpg" alt="@(bItem.Name2)" />
+                                </div>
+                            </div>
+                        }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

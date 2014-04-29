@@ -13,26 +13,32 @@ namespace FCStore.Controllers
     {
         private FCStoreDbContext db = new FCStoreDbContext();
 
-        public PartialViewResult _BigItem(Column col)
-        {
-            return PartialView(col.Products[0]);
-        }
+        //public PartialViewResult _BigItem(Column col)
+        //{
+        //    return PartialView(col.Products[0]);
+        //}
 
-        public PartialViewResult _SmallItem(Column col)
-        {
-            List<Product> tmpList = new List<Product>();
-            int tmpL = Math.Min(col.Products.Count,3);
-            for (int i = 1; i < tmpL;i++ )
-            {
-                tmpList.Add(col.Products[i]);
-            }
-            return PartialView(tmpList);
-        }
+        //public PartialViewResult _SmallItem(Column col)
+        //{
+        //    List<Product> tmpList = new List<Product>();
+        //    int tmpL = Math.Min(col.Products.Count,3);
+        //    for (int i = 1; i < tmpL;i++ )
+        //    {
+        //        tmpList.Add(col.Products[i]);
+        //    }
+        //    return PartialView(tmpList);
+        //}
 
-        public ActionResult _ColumnList()
-        {
-            return View(db.Columns.ToList());
-        }
+        //public ActionResult _TitleItem(Column col)
+        //{
+        //    List<Product> tmpList = new List<Product>();
+        //    int tmpL = Math.Min(col.Products.Count, 3);
+        //    for (int i = 1; i < tmpL; i++)
+        //    {
+        //        tmpList.Add(col.Products[i]);
+        //    }
+        //    return PartialView(tmpList);
+        //}
 
         //
         // GET: /Column/

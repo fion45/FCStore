@@ -22,7 +22,7 @@ namespace FCStore.Models
             set;
         }
 
-        public Category Category
+        public virtual Category Category
         {
             get;
             set;
@@ -35,13 +35,13 @@ namespace FCStore.Models
             set;
         }
 
-        public Brand Brand
+        public virtual Brand Brand
         {
             get;
             set;
         }
 
-        public List<ProductTag> ProductTags
+        public virtual List<ProductTag> ProductTags
         {
             get;
             set;
@@ -94,6 +94,15 @@ namespace FCStore.Models
             set;
         }
 
+        [NotMapped]
+        public string[] ImgPathArr
+        {
+            get
+            {
+                return this.ImgPath.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
         public string Descript
         {
             get;
@@ -112,7 +121,7 @@ namespace FCStore.Models
             set;
         }
 
-        public List<Column> Columns
+        public virtual List<Column> Columns
         {
             get;
             set;

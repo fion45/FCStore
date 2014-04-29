@@ -14,14 +14,9 @@ header, footer, nav, section {
     display: block;
 }
 
-/*ul li {
-    float:left;
+li {
     list-style-type:none;
 }
-
-ul li:last-child {
-    clear:both;
-}*/
 
 div {
     border:solid 1px Red;
@@ -29,6 +24,18 @@ div {
 
 .pullupDiv {
     clear:both;
+}
+
+.cut {
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+a, a:visited
+{
+    text-decoration:none;
+    color:#666666;
 }
 
 /* Styles for basic forms
@@ -91,7 +98,7 @@ textarea {
 
 #Center {
     margin:0px auto;
-    width:1024px;
+    width:1280px;
 }
 
 /* Brand List
@@ -99,21 +106,24 @@ textarea {
 #Brands {
     width:100%;
     overflow:hidden;
-
-    max-height:152px;
+    max-height:120px;
 }
     #Brands li{
         position:relative;
         width:100px;
         float:left;
+        margin-right:4px;
+        margin-bottom:2px;
     }
         #Brands li .icon{
             width:100%;
             height:40px;
         }
         #Brands li .name{
+            font-size:10pt;
+            font-weight:bolder;
             width:100%;
-            height:36px;
+            height:18px;
             line-height:18px;
             word-wrap:break-word;
             vertical-align:middle;
@@ -141,8 +151,161 @@ textarea {
     margin:3px 1%;
     float:left;
 }
-
-    .MainBlock .title{
+    
+    .MainBlock img {
         width:100%;
-        height:33px;
+        height:100%;
     }
+
+    .MainBlock div {
+        float:left;
+    }
+
+    .MainBlock .name {
+        width:100%;
+        height:30px;
+    }
+
+    .MainBlock .content {
+        width:100%;
+        height:300px;
+    }
+
+    .MainBlock .big {
+        width:290px;
+        height:285px;
+        margin:5px 3px 10px 10px;
+    }
+
+        .MainBlock .title {
+            overflow:hidden;
+            text-align:left;
+        }
+
+        .MainBlock .big .pic {
+            width:100%;
+            height:225px;
+        }
+
+        .MainBlock .big .title {
+            font-size:15pt;
+            width:100%;
+            height:60px;
+        }
+
+    .MainBlock .right {
+        width:280px;
+        height:285px;
+        margin:5px 10px 10px 3px;
+    }
+
+        .MainBlock .right .small {
+            width:136px;
+            height:150px;
+        }
+
+            .MainBlock .right .small .pic {
+                width:100%;
+                height:113px;
+            }
+
+            .MainBlock .right .small .title {
+                font-size:10pt;
+                width:100%;
+                height:37px;
+            }
+
+        .MainBlock .right .small1 {
+            margin-right:4px;
+        }
+
+        .MainBlock .right .titleList {
+            margin-top:10px;
+            width:100%;
+            height:79px;
+        }
+
+            .MainBlock .right .tItem {
+                font-size:10pt;
+                text-align:left;
+                width:100%;
+                margin-top:4px;
+            }
+
+        .MainBlock .right .brands {
+            margin-top:2px;
+            width:100%;
+            overflow:hidden;
+            height:40px;
+        }
+
+            .MainBlock .right .brands .bItem {
+                margin:0px 13px;
+            }
+
+                .MainBlock .right .brands .bItem .icon {
+                    width:100px;
+                    height:40px;
+                    margin-right:2px;
+                }
+                
+/* Product Detail
+----------------------------------------------------------*/
+#PD_View {
+    width:100%;
+
+}
+
+    #PD_View .top {
+        width:100%;
+        height:auto;
+    }
+
+#picShow .bigShow {
+    width:330px;
+    height:330px;
+}
+
+    #picShow .bigShow img{
+        width:100%;
+        height:100%;
+    }
+
+#picShow .picNav {
+    width:330px;
+    height:85px;
+}
+
+    #picShow .picNav div {
+        float:left;
+        height:100%;
+    }
+
+    #picShow .picNav .leftArr {
+        width:10px;
+    }
+
+    #picShow .picNav .content {
+        width:300px;
+        position:relative;
+    }
+
+        #picShow .picNav .content .ILUl li {
+            float:left;
+        }
+
+        #picShow .picNav .content .ILUl img{
+            margin:7px;
+            width:68px;
+            height:68px;
+            border:solid 1px Red;
+        }
+
+    #picShow .picNav .rightArr {
+        width:10px;
+    }
+
+#descriptContent {
+    width:100%;
+    text-align:left;
+}

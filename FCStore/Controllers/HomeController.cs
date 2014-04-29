@@ -15,8 +15,7 @@ namespace FCStore.Controllers
 
         public ActionResult Index()
         {
-            //return View();
-            return RedirectToAction("_ColumnList", "Column");
+            return View(db.Columns.ToList());
         }
 
     }

@@ -13,6 +13,12 @@ namespace FCStore.Controllers
     {
         private FCStoreDbContext db = new FCStoreDbContext();
 
+        public ActionResult Detail(int ID)
+        {
+            Product tmpProduct = db.Products.First(r => r.PID == ID);
+            return View(tmpProduct);
+        }
+
         //
         // GET: /Product/
 

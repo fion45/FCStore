@@ -17,7 +17,7 @@ namespace FCStore.Controllers
         {
             List<Category> result = db.Categorys.ToList();
             result = (from cArr in result
-                      where cArr.ParCID == 0
+                      where cArr.ParCID == 1
                       select cArr).ToList();
             return PartialView(result);
         }

@@ -243,7 +243,6 @@
     <Content Include="Views\Column\Create.cshtml" />
     <Content Include="Views\Column\Edit.cshtml" />
     <Content Include="Views\Column\Delete.cshtml" />
-    <Content Include="Views\Column\_ColumnList.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
@@ -251,10 +250,11 @@
     <Content Include="Views\Product\Delete.cshtml" />
     <Content Include="Views\Column\_BigItem.cshtml" />
     <Content Include="Views\Column\_SmallItem.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Product\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

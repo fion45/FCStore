@@ -21,7 +21,7 @@ namespace FCStore.Models
             set;
         }
 
-        public List<Product> Products
+        public virtual List<Product> Products
         {
             get;
             set;

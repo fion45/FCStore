@@ -1,0 +1,39 @@
+﻿@model FCStore.Models.Product
+
+<div id="PD_View">
+    <div class="top">
+        <div id="picShow">
+            <div class="bigShow">
+                @if(Model.ImgPathArr.Length > 0)
+                {
+                    <img src="@(Model.ImgPathArr[0])" />
+                }
+            </div>
+            <div class="picNav">
+                <div class="leftArr"></div>
+                <div class="content">
+                    <ul class="ILUl">
+                        @{
+                            foreach (string tmpSrc in Model.ImgPathArr)
+                            {
+                                <li>
+                                    <img src="@(tmpSrc)"/>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="rightArr"></div>
+            </div>
+        </div>
+        <div class="info">
+
+        </div>
+    </div>
+    <div id="descriptContent">
+        @{
+            IHtmlString html = new HtmlString(Model.Descript);
+            @html
+        }
+    </div>
+</div>
