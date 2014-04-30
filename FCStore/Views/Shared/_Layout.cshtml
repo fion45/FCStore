@@ -23,6 +23,9 @@
             </ul>
             <div class="pullupDiv"></div>
         </div>
+        <div id="Toolbar">
+
+        </div>
     </header>
     <div id="Main">
         <div id="Center">
@@ -30,19 +33,16 @@
         </div>
     </div>
     <nav id="Categorys">
-        <ul>
-            <li>
-                商品分类
-            </li>
-            @{Html.RenderAction("_CategoryList", "Category");}
-        </ul>
+        @{Html.RenderAction("_CategoryList", "Category");}
     </nav>
     <div id="Contat">
 
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/main")
     @RenderSection("scripts", required: false)
+
     <footer>
 
     </footer>

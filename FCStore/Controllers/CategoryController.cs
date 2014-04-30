@@ -15,11 +15,12 @@ namespace FCStore.Controllers
 
         public PartialViewResult _CategoryList()
         {
-            List<Category> result = db.Categorys.ToList();
-            result = (from cArr in result
-                      where cArr.ParCID == 1
-                      select cArr).ToList();
-            return PartialView(result);
+            //List<Category> result = db.Categorys.ToList();
+            //result = (from category in result
+            //          where category.ParCID == 1 && category.CID != 1
+            //          select category).ToList();
+            //return PartialView(result);
+            return PartialView(db.Categorys);
         }
 
         //

@@ -1,39 +1,123 @@
 ﻿@model FCStore.Models.Product
 
 <div id="PD_View">
+    <div id="categoryNav">
+        <div>货品类别：</div>
+    @{
+        FCStore.Models.Category tmpCate = Model.Category;
+        int CID = -1;
+        string htmlStr = "";
+        while (CID != tmpCate.CID)
+        {
+            htmlStr = "<div><a href=\"/Category/List/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
+            CID = tmpCate.CID;
+            tmpCate = tmpCate.Parent;
+        }
+        IHtmlString html = new HtmlString(htmlStr);
+        @html
+    }
+        <div>商品详情</div>
+    </div>
     <div class="top">
-        <div id="picShow">
-            <div class="bigShow">
-                @if(Model.ImgPathArr.Length > 0)
+        <div id="preview">
+            <div class="jqzoom" id="spec-n1">
+                @if (Model.ImgPathArr.Length > 0)
                 {
-                    <img src="@(Model.ImgPathArr[0])" />
+                    <img id="productImage" src="@(Model.ImgPathArr[0])" />
                 }
             </div>
-            <div class="picNav">
-                <div class="leftArr"></div>
-                <div class="content">
-                    <ul class="ILUl">
-                        @{
-                            foreach (string tmpSrc in Model.ImgPathArr)
-                            {
-                                <li>
-                                    <img src="@(tmpSrc)"/>
-                                </li>
+            <div id="spec-n5" class="picNav">
+                <div class="control" id="spec-left"></div>
+                <div class="content" id="spec-list">
+                    <div>
+                        <ul class="ILUl">
+                            @{
+                                foreach (string tmpSrc in Model.ImgPathArr)
+                                {
+                                    <li>
+                                        <img src="@(tmpSrc)" jqimg="@(tmpSrc)" />
+                                    </li>
+                                }
                             }
-                        }
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-                <div class="rightArr"></div>
+                <div class="control" id="spec-right"></div>
             </div>
         </div>
-        <div class="info">
-
+        <div id="productInfo">
+            <div id="productTitle">
+                @(Model.Title)
+            </div>
+            <div id="productBrand">
+                <div class="title">
+                    品牌：
+                </div>
+                <div class="content">
+                    <a href="/Brand/ProductList/@(Model.Brand.BID)">
+                        <div class="brandName">@(Model.Brand.NameStr)</div>
+                        <img src="/Brand/@(Model.Brand.Tag).jpg" alt="@(Model.Brand.Name2)" />
+                    </a>
+                </div>
+            </div>
+            <div id="productPrice">
+                <div class="title">代购价：</div>
+                <div class="content price">￥@(Model.Price)</div>
+                <div class="title">市场价：</div>
+                <div class="content marketPrice">￥@(Model.MarketPrice)</div>
+            </div>
+            <div id="productSaleCount">
+                <div class="title">已售出：</div>@(Model.Sale)
+            </div>
+            <div id="productSaleType">
+                <div class="title">
+                    支付方式：
+                </div>
+                <div class="content">
+                    支付宝
+                </div>
+            </div>
+            <div id="productSend">
+                <div class="title">
+                    配送方式：
+                </div>
+                <div class="content">
+                    美国直邮至仓库，再邮寄至客户地址
+                </div>
+            </div>
+            <div id="productChoose">
+                @{
+                    html = new HtmlString(Model.Chose);
+                    @html
+                }
+            </div>
+            <div id="productSaleInput">
+                <div class="title">
+                    购买数量：
+                </div>
+                <div class="content">
+                    <input value="1" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                    编号：@(Model.PID)
+                </div>
+            </div>
+            <div id="productBtn" class="p1">
+                <div class="p2">
+                    <button id="buyBtn" >购买</button>
+                </div>
+                <div class="p2">
+                    <button id="keepBtn" >收藏</button>
+                </div>
+            </div>
         </div>
     </div>
     <div id="descriptContent">
         @{
-            IHtmlString html = new HtmlString(Model.Descript);
+            html = new HtmlString(Model.Descript);
             @html
         }
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/productDetail")
+}

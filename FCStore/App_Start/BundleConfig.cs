@@ -38,6 +38,14 @@ namespace FCStore
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/productDetail").Include(
+                        "~/Scripts/productDetail.js",
+                        "~/Scripts/productDetailRollImg.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/main").Include(
+                "~/Scripts/main.js"));
         }
     }
 }

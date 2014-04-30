@@ -19,7 +19,6 @@ li {
 }
 
 div {
-    border:solid 1px Red;
 }
 
 .pullupDiv {
@@ -32,10 +31,29 @@ div {
     overflow:hidden;
 }
 
-a, a:visited
-{
+a, a:visited {
     text-decoration:none;
     color:#666666;
+}
+
+a:hover {
+    color:#cc0000
+}
+
+.floatLeft {
+    float:left;
+}
+
+.p1 {
+    width:100%;
+}
+
+.p2 {
+    width:49%;
+}
+
+.p4 {
+    width:25%;
 }
 
 /* Styles for basic forms
@@ -115,11 +133,18 @@ textarea {
         margin-right:4px;
         margin-bottom:2px;
     }
-        #Brands li .icon{
+        #Brands li .icon {
             width:100%;
             height:40px;
         }
-        #Brands li .name{
+
+            #Brands li .icon img {
+                width:100%;
+                height:40px;
+
+            }
+
+        #Brands li .name {
             font-size:10pt;
             font-weight:bolder;
             width:100%;
@@ -129,19 +154,83 @@ textarea {
             vertical-align:middle;
             text-align:center;
         }
+/* Toolbar
+----------------------------------------------------------*/
+#Toolbar {
+    width:100%;
+    height:30px;
+}
 
 /* Category List
 ----------------------------------------------------------*/
 #Categorys {
     float:left;
     width:150px;
-    border:solid 1px Red;
-    margin-left:-100%;
+    margin-left:-99%;
+    border:solid 1px #ccc;
 }
-    #Categorys li{
+    #Categorys .TCategory {
+        font-size:13pt;
+        font-weight:bold;
+        height:30px;
+        line-height:30px;
         width:100%;
+        text-align:center;
+        border-top:solid 1px #ccc;
+        position:relative;
     }
 
+    #Categorys li:first-child {
+        border-top:none;
+        background-color:#ccc;
+    }
+
+    #Categorys .item {
+        width:150px;
+        height:30px;
+    }
+
+    #Categorys .subCategory {
+        position:absolute;
+        left:100%;
+        top:0px;
+        width:650px;
+        border:solid 1px #ccc;
+        display:none;
+        background-color:white;
+    }
+
+        #Categorys .subCategory .scDiv {
+            float:left;
+            font-size:80%;
+            text-align:left;
+            width:48%;
+            margin-left:1%;
+            margin-right:1%;
+        }
+
+        #Categorys .subCategory .scDiv .scName {
+            font-weight:bold;
+            color:black;
+        }
+
+        #Categorys .subCategory .scDiv:nth-child(odd) {
+            clear:left;
+        }
+
+        #Categorys .subCategory .scDiv .threeCategory {
+            margin-bottom:7px;
+        }
+
+        #Categorys .subCategory .scDiv .tcDiv {
+            margin:0px 5px;
+            float:left;
+            font-size:60%;
+            text-align:center;
+            height:20px;
+            line-height:20px;
+            font-weight:normal;
+        }
 
 /* Main Block
 ----------------------------------------------------------*/
@@ -252,8 +341,8 @@ textarea {
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {
-    width:100%;
-
+    width:800px;
+    margin:0px auto;
 }
 
     #PD_View .top {
@@ -261,51 +350,169 @@ textarea {
         height:auto;
     }
 
-#picShow .bigShow {
-    width:330px;
-    height:330px;
+#preview {
+    width:348px;
+    height:auto;
+    float:left;
 }
 
-    #picShow .bigShow img{
-        width:100%;
-        height:100%;
+#categoryNav {
+    width:100%;
+    height:30px;
+}
+
+    #categoryNav div {
+        margin:4px 2px;
+        float:left;
+        font-weight:bold;
     }
 
-#picShow .picNav {
+#spec-n1 {
+    width:348px;
+    height:330px;
+    border:solid 1px #ccc;
+}
+
+#productImage {
     width:330px;
+    height:330px;
+    margin:0px 9px;
+}
+
+#spec-n5 {
+    width:348px;
     height:85px;
 }
 
-    #picShow .picNav div {
+    #spec-n5 div {
         float:left;
         height:100%;
     }
 
-    #picShow .picNav .leftArr {
-        width:10px;
+#spec-left {
+    width:10px;
+    border:1px solid rgb(204,204,204);
+}
+
+#spec-list {
+    width:318px;
+    position:relative;
+}
+
+    #spec-list li {
+        float:left;
     }
 
-    #picShow .picNav .content {
-        width:300px;
-        position:relative;
+    #spec-list .ILUl img{
+        margin:7px;
+        width:68px;
+        height:68px;
+        padding:3px 2px;
+        margin:3px;
+        border:1px solid rgb(204,204,204);
     }
 
-        #picShow .picNav .content .ILUl li {
-            float:left;
-        }
-
-        #picShow .picNav .content .ILUl img{
-            margin:7px;
-            width:68px;
-            height:68px;
-            border:solid 1px Red;
-        }
-
-    #picShow .picNav .rightArr {
-        width:10px;
-    }
+#spec-right {
+    width:10px;
+    border:1px solid rgb(204,204,204);
+}
 
 #descriptContent {
     width:100%;
+    text-align:center;
+}
+
+#descriptContent * {
     text-align:left;
+    margin:0px auto;
+}
+
+#productInfo {
+    float:left;
+    width:440px;
+    margin:0px 5px 5px 5px;
+    height:415px;
+    position:relative;
+    border:solid 1px #ccc;
+}
+
+    #productInfo .title {
+        width:70px;
+        margin-right:2px;
+        float:left;
+        text-align:right;
+    }
+
+    #productInfo .content {
+        text-align:left;
+    }
+    
+#productTitle,#productBrand,#productPrice,#productSaleCount,#productSaleType,#productSend,#productChoose,#productSaleInput{
+    margin-left:8px;
+}
+
+#productTitle {
+    font-size:15pt;
+    font-weight:bold;
+    width:100%;
+    margin:3px 5px;
+    text-align:left;
+}
+
+#productBrand {
+    overflow:hidden;
+    width:100%;
+    margin-top:15px;
+}
+
+    #productBrand div {
+        float:left;
+    }
+
+    #productBrand .brandName {
+        
+    }
+
+#productPrice {
+    width:100%;
+    overflow:hidden
+}
+
+    #productPrice div {
+        float:left;
+    }
+
+    #productPrice .price {
+        color:red;
+        margin-right:5px;
+    }
+
+    #productPrice .marketPrice {
+        text-decoration:line-through
+    }
+
+#productSaleCount {
+    text-align:left;
+    margin-bottom:15px;
+}
+
+#productBtn {
+    position:absolute;
+    top:100%;
+    margin-top:-55px;
+}
+
+#productBtn .p2{
+    text-align:center;
+    float:left;
+}
+
+#buyBtn,#keepBtn {
+    margin:2px auto;
+    width:135px;
+    height:45px;
+}
+
+#productSend {
+    margin-bottom:15px;
 }

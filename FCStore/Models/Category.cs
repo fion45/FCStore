@@ -21,7 +21,7 @@ namespace FCStore.Models
             set;
         }
 
-        public Category Parent
+        public virtual Category Parent
         {
             get;
             set;

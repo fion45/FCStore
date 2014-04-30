@@ -2,11 +2,13 @@
 @foreach (var item in Model)
 {
     <li>
-        <div class="icon">
-            <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
-        </div>
-        <div class="name cut">
-            @Html.DisplayFor(modelItem => item.NameStr)
-        </div>
+        <a href="/Brand/ProductList/@(item.BID)">
+            <div class="icon">
+                <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
+            </div>
+            <div class="name cut">
+                @Html.DisplayFor(modelItem => item.NameStr)
+            </div>
+        </a>
     </li>
 }
