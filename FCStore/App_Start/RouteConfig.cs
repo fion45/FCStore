@@ -12,6 +12,11 @@ namespace FCStore
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+                name: "ProductList",
+                url: "{controller}/{action}/{id}/{pIndex}",
+                defaults: new { id = UrlParameter.Optional, pIndex = 1 }
+            );
 
             routes.MapRoute(
                 name: "Default",

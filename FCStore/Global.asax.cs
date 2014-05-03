@@ -41,5 +41,19 @@ namespace FCStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_Error(object s, EventArgs e)
+        {
+            Exception ex = Server.GetLastError();
+            if (ex.GetType().Name == "HttpException")
+            {
+                HttpException exception = (HttpException)ex;
+                if (exception.GetHttpCode() == 404)
+                {
+                    Response.StatusCode = 404;
+                }
+            }
+            Server.ClearError();
+        }
     }
 }

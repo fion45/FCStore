@@ -116,7 +116,7 @@ textarea {
 
 #Center {
     margin:0px auto;
-    width:1280px;
+    width:880px;
 }
 
 /* Brand List
@@ -159,6 +159,14 @@ textarea {
 #Toolbar {
     width:100%;
     height:30px;
+    background-color:#cc0000;
+    margin-bottom:10px;
+    line-height:30px;
+    vertical-align:middle;
+}
+
+#Toolbar .title {
+    margin-left:20px;
 }
 
 /* Category List
@@ -193,7 +201,7 @@ textarea {
     #Categorys .subCategory {
         position:absolute;
         left:100%;
-        top:0px;
+        top:-1px;
         width:650px;
         border:solid 1px #ccc;
         display:none;
@@ -235,108 +243,77 @@ textarea {
 /* Main Block
 ----------------------------------------------------------*/
 .MainBlock {
-    width:47%;
-    height:330px;
-    margin:3px 1%;
-    float:left;
+    width:100%;
+    margin:3px 0px;
 }
-    
-    .MainBlock img {
+
+    .MainBlock .top {
         width:100%;
-        height:100%;
     }
 
-    .MainBlock div {
-        float:left;
-    }
+        .MainBlock .top .name {
+            float:left;
+        }
 
-    .MainBlock .name {
+        .MainBlock .top .brand {
+            float:right;
+            margin-left:15px;
+        }
+
+        .MainBlock .top .more {
+            float:right;
+            margin-left:30px;
+            margin-right:5px;
+        }
+
+    .MainBlock .show {
         width:100%;
-        height:30px;
+        height:406px;
+        margin-bottom:15px;
     }
 
-    .MainBlock .content {
-        width:100%;
-        height:300px;
-    }
-
-    .MainBlock .big {
-        width:290px;
-        height:285px;
-        margin:5px 3px 10px 10px;
-    }
-
-        .MainBlock .title {
-            overflow:hidden;
-            text-align:left;
+        .MainBlock .show .item {
+            float:left;
+            margin-right:2px;
+            position:relative;
         }
 
-        .MainBlock .big .pic {
-            width:100%;
-            height:225px;
-        }
-
-        .MainBlock .big .title {
-            font-size:15pt;
-            width:100%;
-            height:60px;
-        }
-
-    .MainBlock .right {
-        width:280px;
-        height:285px;
-        margin:5px 10px 10px 3px;
-    }
-
-        .MainBlock .right .small {
-            width:136px;
-            height:150px;
-        }
-
-            .MainBlock .right .small .pic {
-                width:100%;
-                height:113px;
+            .MainBlock .show .item .price {
+                position:absolute;
+                left:-10px;
+                top:0px;
+                transform: rotate(-10deg);    
+		        -o-transform: rotate(-10deg);
+		        -webkit-transform: rotate(-10deg);
+                filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.7660444431189777, M12=-0.6427876096865394, M21=0.6427876096865398, M22=0.7660444431189779);
+                background-color:white;
             }
 
-            .MainBlock .right .small .title {
-                font-size:10pt;
-                width:100%;
-                height:37px;
-            }
-
-        .MainBlock .right .small1 {
-            margin-right:4px;
-        }
-
-        .MainBlock .right .titleList {
-            margin-top:10px;
-            width:100%;
-            height:79px;
-        }
-
-            .MainBlock .right .tItem {
-                font-size:10pt;
-                text-align:left;
-                width:100%;
-                margin-top:4px;
-            }
-
-        .MainBlock .right .brands {
-            margin-top:2px;
-            width:100%;
-            overflow:hidden;
-            height:40px;
-        }
-
-            .MainBlock .right .brands .bItem {
-                margin:0px 13px;
-            }
-
-                .MainBlock .right .brands .bItem .icon {
-                    width:100px;
-                    height:40px;
-                    margin-right:2px;
+                .MainBlock .show .item .price .mpLB {
+                    text-decoration:line-through;
+                    font-size:8pt;
                 }
+
+                .MainBlock .show .item .price .pLB {
+                    color:#cc0000;
+                    font-size:10pt;
+                    font-weight:bold;
+                }
+
+            .MainBlock .show .item img {
+                width:145px;
+                height:145px;
+                margin:20px 5px 2px 2px;
+            }
+
+            .MainBlock .show .item .title {
+                width:170px;
+                height:30px;
+                font-size:9pt;
+                text-align:left;
+                margin:0px 0px 2px 0px;
+                overflow:hidden;
+            }
                 
 /* Product Detail
 ----------------------------------------------------------*/
@@ -516,3 +493,127 @@ textarea {
 #productSend {
     margin-bottom:15px;
 }
+
+/* Product List
+----------------------------------------------------------*/
+.productList {
+    width:100%;
+    margin-top:10px;
+}
+
+    .productList .tool,.productList .btool {
+        width:100%;
+        height:20px;
+        border-bottom:solid 2px #cc0000;
+        text-align:left;
+    }
+
+    .productList .btool {
+        border-top:solid 2px #cc0000;
+        border-bottom:none;
+    }
+
+        .productList .tool label,.productList .btool label {
+            margin-right:5px;
+        }
+
+        .productList .tool a,.productList .btool a {
+            margin-left:5px;
+        }
+
+        .productList .tool .page,.productList .btool .page {
+            float:right;
+        }
+
+            .productList .tool .page *,.productList .btool .page * {
+                margin-left:10px;
+            }
+
+.brandFilter {
+    width:100%;
+    border:solid 1px #cccccc;
+}
+
+    .brandFilter .title {
+        float:left;
+        width:5%;
+        text-align:left;
+        margin:10px;
+    }
+
+    .brandFilter .content {
+        float:left;
+        width:80%;
+        margin:10px 0px;
+        max-height:80px;
+        overflow:hidden;
+    }
+
+    .brandFilter .btn {
+        float:left;
+        width:5%;
+        margin:10px;
+        text-align:center;
+    }
+
+        .brandFilter .btn button {
+            width:70px;
+            margin:0px auto;
+        }
+
+        .brandFilter .btn .most {
+            margin-top:38px;
+        }
+
+    .brandFilter .item {
+        width:24%;
+        margin-right:1%;
+        height:20px;
+        float:left;
+        text-align:left;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+        .brandFilter .item label {
+            width:100%;
+            font-size:9pt;
+        }
+
+    .productList .item {
+        float:left;
+        width:170px;
+        margin:3px;
+        font-size:10pt;
+    }
+
+        .productList .item img{
+            height:170px;
+            width:170px;
+        }
+
+        .productList .item .title{
+            width:170px;
+            height:34px;
+            overflow:hidden;
+            text-align:center;
+        }
+
+        .productList .item .marketPrice {
+            width:170px;
+        }
+        
+            .productList .item .marketPrice label {
+                text-decoration:line-through;
+            }
+
+        .productList .item .price{
+            width:170px;
+        }
+
+            .productList .item .price label{
+                color:#cc0000;
+                font-size:12pt;
+                font-weight:bold;
+            }
+

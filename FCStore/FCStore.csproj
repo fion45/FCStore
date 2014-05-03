@@ -139,6 +139,7 @@
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductListVM.cs" />
     <Compile Include="Models\ProductTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -251,10 +252,9 @@
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\Delete.cshtml" />
-    <Content Include="Views\Column\_BigItem.cshtml" />
-    <Content Include="Views\Column\_SmallItem.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
+    <Content Include="Views\Product\ListByCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

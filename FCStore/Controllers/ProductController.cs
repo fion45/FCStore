@@ -19,6 +19,43 @@ namespace FCStore.Controllers
             return View(tmpProduct);
         }
 
+        public ActionResult ListByCategory(int ID, int PIndex)
+        {
+            HashSet<int> CIDSet = new HashSet<int>();
+            List<Category> CatArr = db.Categorys.ToList();
+            Category tmpCat = CatArr.Find(r => r.CID == ID);
+            if(tmpCat == null)
+            {
+
+            }
+            CIDSet.Add(tmpCat.CID);
+            List<int> CIDArr = (from cat in CatArr
+                        where cat.ParCID == tmpCat.CID
+                        select cat.CID).ToList();
+            int tmpCount = CIDArr.Count;
+            for (int i = 0; i < tmpCount; i++)
+            {
+                CIDArr.AddRange((from cat in CatArr
+                                 where cat.ParCID == CIDArr[i]
+                                 select cat.CID).ToList());
+            }
+            foreach (int tmpCID in CIDArr)
+            {
+                CIDSet.Add(tmpCID);
+            }
+            List<Product> productArr = db.Products.Where(r => CIDSet.Contains(r.CID)).ToList();
+            List<Brand> brandArr = (from pro in productArr
+                                    select pro.Brand).Distinct().ToList();
+            if (productArr.Count > 30)
+                productArr.RemoveRange(30, productArr.Count - 30);
+            ProductListVM tmpVM = new ProductListVM();
+            tmpVM.Products = productArr;
+            tmpVM.Brands = brandArr;
+            tmpVM.PageCount = 10;
+            tmpVM.PageIndex = PIndex;
+            return View(tmpVM);
+        }
+
         //
         // GET: /Product/
 
