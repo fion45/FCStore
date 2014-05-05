@@ -19,7 +19,7 @@ namespace FCStore.Controllers
             return View(tmpProduct);
         }
 
-        public ActionResult ListByCategory(int ID, int PIndex)
+        public ActionResult ListByCategory(int ID, int PIndex )
         {
             HashSet<int> CIDSet = new HashSet<int>();
             List<Category> CatArr = db.Categorys.ToList();
@@ -51,10 +51,16 @@ namespace FCStore.Controllers
             ProductListVM tmpVM = new ProductListVM();
             tmpVM.Products = productArr;
             tmpVM.Brands = brandArr;
+            tmpVM.Category = tmpCat;
             tmpVM.PageCount = 10;
             tmpVM.PageIndex = PIndex;
             return View(tmpVM);
         }
+
+        //public ActionResult ListByCategory(int ID, int PIndex)
+        //{
+
+        //}
 
         //
         // GET: /Product/

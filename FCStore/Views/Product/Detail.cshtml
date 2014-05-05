@@ -9,7 +9,7 @@
         string htmlStr = "";
         while (CID != tmpCate.CID)
         {
-            htmlStr = "<div><a href=\"/Category/List/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
+            htmlStr = "<div><a href=\"/Product/ListByCategory/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
             CID = tmpCate.CID;
             tmpCate = tmpCate.Parent;
         }

@@ -9,6 +9,9 @@ namespace FCStore.Models
     {
         public List<Product> Products;
         public List<Brand> Brands;
+        public Category Category;
+        public Brand Brand;
+
         public int PageCount;
         public int PageIndex;
 

@@ -3,6 +3,23 @@
 @{
     ViewBag.Title = "ListByCategory";
 }
+<div id="categoryNav">
+    <div>货品类别：</div>
+    @{
+        FCStore.Models.Category tmpCate = Model.Category;
+        int CID = -1;
+        string htmlStr = "";
+        while (CID != tmpCate.CID)
+        {
+            htmlStr = "<div><a href=\"/Product/ListByCategory/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
+            CID = tmpCate.CID;
+            tmpCate = tmpCate.Parent;
+        }
+        IHtmlString html = new HtmlString(htmlStr);
+        @html
+    }
+    <div>商品列表</div>
+</div>
 <div class="brandFilter">
     <div class="title">
         品牌：
