@@ -21,7 +21,29 @@ namespace FCStore.Controllers
 
         public string GetWhereStr(string hashWhere)
         {
-            return "";
+            string result = "";
+            try
+            {
+                string[] strArr = hashWhere.Split(new string[] { "0x" }, StringSplitOptions.RemoveEmptyEntries);
+                if (strArr.Length > 0)
+                {
+                    result += "WHERE";
+                    foreach (string tmpStr in strArr)
+                    {
+                        int BrandID = int.Parse(tmpStr);
+
+                        string tmpName = tmpArr[];
+                        string descStr = desc != 0 ? "DESC" : "ASC";
+                        result += string.Format(" %s %s,", tmpName, descStr);
+                    }
+                    result = result.Substring(0, result.Length - 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+            }
+            return result;
         }
 
         public string GetOrderStr(string hashOrder)
@@ -38,7 +60,7 @@ namespace FCStore.Controllers
                 string[] strArr = hashOrder.Split(new string[] {"0x"},StringSplitOptions.RemoveEmptyEntries);
                 if(strArr.Length > 0)
                 {
-                    result += "Order by";
+                    result += "ORDER BY";
                     foreach(string tmpStr in strArr)
                     {
                         int desc = (int)tmpStr[0];
