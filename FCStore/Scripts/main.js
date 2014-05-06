@@ -23,3 +23,7 @@
             subDiv.unbind();
         });
 });
+
+var ProductList = {
+
+};

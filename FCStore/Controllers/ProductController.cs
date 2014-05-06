@@ -19,8 +19,47 @@ namespace FCStore.Controllers
             return View(tmpProduct);
         }
 
-        public ActionResult ListByCategory(int ID, int PIndex )
+        public string GetWhereStr(string hashWhere)
         {
+            return "";
+        }
+
+        public string GetOrderStr(string hashOrder)
+        {
+            string result = "";
+            try
+            {
+                string[] tmpArr = {
+                                      "Date",
+                                      "Sale",
+                                      "Price",
+                                      "PVCount"
+                                  };
+                string[] strArr = hashOrder.Split(new string[] {"0x"},StringSplitOptions.RemoveEmptyEntries);
+                if(strArr.Length > 0)
+                {
+                    result += "Order by";
+                    foreach(string tmpStr in strArr)
+                    {
+                        int desc = (int)tmpStr[0];
+                        string tmpName = tmpArr[int.Parse(tmpStr.Substring(1))];
+                        string descStr = desc != 0 ? "DESC" : "ASC";
+                        result += string.Format(" %s %s,",tmpName,descStr);
+                    }
+                    result = result.Substring(0,result.Length - 1);
+                }
+            }
+            catch(Exception ex)
+            {
+                result = "";
+            }
+            return result;
+        }
+
+        public ActionResult ListByCategory(int ID, int PIndex, string hashWhere, string hashOrder)
+        {
+
+
             HashSet<int> CIDSet = new HashSet<int>();
             List<Category> CatArr = db.Categorys.ToList();
             Category tmpCat = CatArr.Find(r => r.CID == ID);

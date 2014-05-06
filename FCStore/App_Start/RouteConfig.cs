@@ -14,8 +14,8 @@ namespace FCStore
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 name: "ProductList",
-                url: "{controller}/{action}/{id}/{pIndex}",
-                defaults: new { id = UrlParameter.Optional, pIndex = 1 }
+                url: "{controller}/{action}/{id}/{pIndex}/{hashWhere}/{hashOrder}",
+                defaults: new { id = UrlParameter.Optional, pIndex = 1, hashWhere = "", hashOrder = "0x00" }
             );
 
             routes.MapRoute(

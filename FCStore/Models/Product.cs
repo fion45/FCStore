@@ -94,6 +94,12 @@ namespace FCStore.Models
             set;
         }
 
+        public int PVCount
+        {
+            get;
+            set;
+        }
+
         [NotMapped]
         public string[] ImgPathArr
         {
