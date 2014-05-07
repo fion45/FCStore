@@ -6,11 +6,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
+using System.Configuration;
 
 namespace FCStore.Controllers
 {
     public class ProductController : Controller
     {
+        public struct OrderObj
+        {
+            public bool AscTag;
+            public int Type;
+        }
+
         private FCStoreDbContext db = new FCStoreDbContext();
 
         public ActionResult Detail(int ID)
@@ -19,103 +26,153 @@ namespace FCStore.Controllers
             return View(tmpProduct);
         }
 
-        public string GetWhereStr(string hashWhere)
+        public List<int> GetBrandWhere(string hashWhere)
         {
-            string result = "";
+            List<int> result = null;
             try
             {
                 string[] strArr = hashWhere.Split(new string[] { "0x" }, StringSplitOptions.RemoveEmptyEntries);
                 if (strArr.Length > 0)
                 {
-                    result += "WHERE";
+                    result = new List<int>();
                     foreach (string tmpStr in strArr)
                     {
-                        int BrandID = int.Parse(tmpStr);
-
-                        string tmpName = tmpArr[];
-                        string descStr = desc != 0 ? "DESC" : "ASC";
-                        result += string.Format(" %s %s,", tmpName, descStr);
+                        result.Add(int.Parse(tmpStr));
                     }
-                    result = result.Substring(0, result.Length - 1);
                 }
             }
             catch (Exception ex)
             {
-                result = "";
+                result = null;
             }
             return result;
         }
 
-        public string GetOrderStr(string hashOrder)
+        public List<OrderObj> GetOrderObj(string hashOrder)
         {
-            string result = "";
+            List<OrderObj> result = null;
             try
             {
-                string[] tmpArr = {
-                                      "Date",
-                                      "Sale",
-                                      "Price",
-                                      "PVCount"
-                                  };
                 string[] strArr = hashOrder.Split(new string[] {"0x"},StringSplitOptions.RemoveEmptyEntries);
                 if(strArr.Length > 0)
                 {
-                    result += "ORDER BY";
+                    result = new List<OrderObj>();
                     foreach(string tmpStr in strArr)
                     {
-                        int desc = (int)tmpStr[0];
-                        string tmpName = tmpArr[int.Parse(tmpStr.Substring(1))];
-                        string descStr = desc != 0 ? "DESC" : "ASC";
-                        result += string.Format(" %s %s,",tmpName,descStr);
+                        OrderObj obj;
+                        obj.AscTag = tmpStr[0] != '0';
+                        obj.Type = int.Parse(tmpStr.Substring(1));
+                        result.Add(obj);
                     }
-                    result = result.Substring(0,result.Length - 1);
                 }
             }
             catch(Exception ex)
             {
-                result = "";
+                return null;
             }
             return result;
         }
 
         public ActionResult ListByCategory(int ID, int PIndex, string hashWhere, string hashOrder)
         {
+            List<int> brandWhere = GetBrandWhere(hashWhere);
+            List<OrderObj> orderObjList = GetOrderObj(hashOrder);
+            int PCount = 40;
+            int.TryParse(ConfigurationManager.AppSettings["PCPerPage"], out PCount);
 
-
-            HashSet<int> CIDSet = new HashSet<int>();
+            List<int> CIDList = new List<int>();
             List<Category> CatArr = db.Categorys.ToList();
             Category tmpCat = CatArr.Find(r => r.CID == ID);
             if(tmpCat == null)
             {
+                //页面不存在
+                return Redirect("aaa");
+            }
+            else
+            {
+                //获得其子类的CID
+                CIDList.Add(tmpCat.CID);
+                List<int> CIDArr = (from cat in CatArr
+                                    where cat.ParCID == tmpCat.CID
+                                    select cat.CID).ToList();
+                int tmpCount = CIDArr.Count;
+                CIDList.AddRange(CIDArr);
+                for (int i = 0; i < tmpCount; i++)
+                {
+                    CIDList.AddRange((from cat in CatArr
+                                     where cat.ParCID == CIDArr[i]
+                                     select cat.CID).ToList());
+                }
+                //获得产品列表
+                var productEnum = from product in db.Products
+                                            where CIDList.Contains(product.CID)
+                                            select product;
+                if(orderObjList != null)
+                {
+                    foreach(OrderObj oo in orderObjList)
+                    {
+                        switch(oo.Type)
+                        {
+                            case 0:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Date);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Date);
+                                break;
+                            case 1:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Sale);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Sale);
+                                break;
+                            case 2:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Price);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Price);
+                                break;
+                            default :
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.PVCount);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.PVCount);
+                                break;
+                        }
+                    }
+                }
+                if (brandWhere != null)
+                    productEnum = productEnum.Where(r => brandWhere.Contains(r.BID));
+                List<Product> productArr = productEnum.Skip(1).Take(PCount).ToList();
+                List<int> BIDList = (from product in db.Products
+                                     where CIDList.Contains(product.CID)
+                                    select product.BID).Distinct().ToList();
+                int PageCount = (from product in db.Products
+                                 where CIDList.Contains(product.CID)
+                                 select product).Count();
+                PageCount = (int)Math.Ceiling((float)PageCount / PCount);
+                //获得品牌列表
+                //List<Brand> brandArr = (from pro in productArr
+                //                        select pro.Brand).Distinct().ToList();        //会导致每个Product都从数据库中读取向对应的brand
 
+                List<Brand> brandArr = (from brand in db.Brands
+                                        where BIDList.Contains(brand.BID)
+                                        select brand).Take(16).ToList();
+
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(productArr);
+                }
+                else
+                {
+                    ProductListVM tmpVM = new ProductListVM();
+                    tmpVM.Products = productArr;
+                    tmpVM.Brands = brandArr;
+                    tmpVM.Category = tmpCat;
+                    tmpVM.PageCount = PageCount;
+                    tmpVM.PageIndex = PIndex;
+                    return View(tmpVM);
+                }
             }
-            CIDSet.Add(tmpCat.CID);
-            List<int> CIDArr = (from cat in CatArr
-                        where cat.ParCID == tmpCat.CID
-                        select cat.CID).ToList();
-            int tmpCount = CIDArr.Count;
-            for (int i = 0; i < tmpCount; i++)
-            {
-                CIDArr.AddRange((from cat in CatArr
-                                 where cat.ParCID == CIDArr[i]
-                                 select cat.CID).ToList());
-            }
-            foreach (int tmpCID in CIDArr)
-            {
-                CIDSet.Add(tmpCID);
-            }
-            List<Product> productArr = db.Products.Where(r => CIDSet.Contains(r.CID)).ToList();
-            List<Brand> brandArr = (from pro in productArr
-                                    select pro.Brand).Distinct().ToList();
-            if (productArr.Count > 30)
-                productArr.RemoveRange(30, productArr.Count - 30);
-            ProductListVM tmpVM = new ProductListVM();
-            tmpVM.Products = productArr;
-            tmpVM.Brands = brandArr;
-            tmpVM.Category = tmpCat;
-            tmpVM.PageCount = 10;
-            tmpVM.PageIndex = PIndex;
-            return View(tmpVM);
         }
 
         //public ActionResult ListByCategory(int ID, int PIndex)

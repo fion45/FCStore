@@ -24,12 +24,12 @@
     <div class="title">
         品牌：
     </div>
-    <div class="content">
+    <div id="plBrands" class="content">
         @foreach (var item in Model.Brands)
         {
             <div class="item">
                 <label>
-                    <input type="checkbox" value="@(item.BID)" />
+                    <input class="brandCB" type="checkbox" value="@(item.BID)" />
                     @(item.NameStr)/@(item.Name2)
                 </label>
             </div>
@@ -45,12 +45,12 @@
     <div class="pullupDiv"></div>
 </div>
 <div class="productList">
-    <div class="tool">
+    <div id="plTool" class="tool">
         <label>排序方式：</label>
-        <a>新品</a>
-        <a>畅销</a>
-        <a>价格</a>
-        <a>浏览量</a>
+        <a class="orderTag">新品</a>
+        <a class="orderTag">畅销</a>
+        <a class="orderTag">价格</a>
+        <a class="orderTag">浏览量</a>
         <div class="page">
             <a>第一页</a>
             <a>上一页</a>
@@ -61,29 +61,26 @@
             <a>最后一页</a>
         </div>
     </div>
-    @if (Model.Products.Count() > 0)
+    @foreach (FCStore.Models.Product item in Model.Products)
     {
-        foreach (var item in Model.Products)
-        {
-            <div class="item">
-                <a href="Product/Detail/@(item.PID)">
-                    <div class="img">
-                        <img src="@(item.ImgPathArr[0])" />
-                    </div>
-                    <div class="title">
-                        @(item.Title)
-                    </div>
-                    <div class="marketPrice">
-                        市场价：<label>￥@(item.MarketPrice)</label>
-                    </div>
-                    <div class="price">
-                        代购价：<label>￥@(item.Price)</label>
-                    </div>
-                </a>
-            </div>
-        }
-        <div class="pullupDiv"></div>
+        <div class="item">
+            <a href="Product/Detail/@(item.PID)">
+                <div class="img">
+                    <img src="@(item.ImgPathArr[0])" />
+                </div>
+                <div class="title">
+                    @(item.Title)
+                </div>
+                <div class="marketPrice">
+                    市场价：<label>￥@(item.MarketPrice)</label>
+                </div>
+                <div class="price">
+                    代购价：<label>￥@(item.Price)</label>
+                </div>
+            </a>
+        </div>
     }
+        <div class="pullupDiv"></div>
     <div class="btool">
         <label>排序方式：</label>
         <a>新品</a>

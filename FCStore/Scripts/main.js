@@ -25,5 +25,28 @@
 });
 
 var ProductList = {
+    PL_OrderEnum : {
+        normal : -1,
+        up : 0,
+        down : 1
+    },
+    getProductList: function (ev) {
+        var target = $(ev.target);
+        var whereStr = "";
+        //获得品牌过滤
+        $.each($("#plBrands .brandCB"), function (i, n) {
+            var item = $(n);
+            if (item.checked)
+                whereStr += "0x" + item.val();
+        });
+        var orderStr = "";
+        //获得排序
+        $.each($("#plTool .orderTag"), function (i, n) {
+            var item = $(n);
+            if (item.data() == PL_OrderEnum.up || item.data() == PL_OrderEnum.down)
+                orderStr = "0x" + item.data() + i;
+        });
+        //ajaz获取数据，更新内容
 
+    }
 };
