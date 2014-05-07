@@ -30,23 +30,41 @@ var ProductList = {
         up : 0,
         down : 1
     },
-    getProductList: function (ev) {
-        var target = $(ev.target);
+    getProductList: function (PIndex) {
         var whereStr = "";
         //获得品牌过滤
         $.each($("#plBrands .brandCB"), function (i, n) {
             var item = $(n);
-            if (item.checked)
+            if (item.prop("checked"))
                 whereStr += "0x" + item.val();
         });
         var orderStr = "";
         //获得排序
         $.each($("#plTool .orderTag"), function (i, n) {
             var item = $(n);
-            if (item.data() == PL_OrderEnum.up || item.data() == PL_OrderEnum.down)
+            if (item.data() == ProductList.PL_OrderEnum.up || item.data() == ProductList.PL_OrderEnum.down)
                 orderStr = "0x" + item.data() + i;
         });
+        var parArr = window.location.pathname.split("/");
+        var CID = parArr[3];
         //ajaz获取数据，更新内容
+        $.ajax({
+            url: "/Product/ListByCategory/" + CID + "/" + PIndex + "/" + whereStr + "/" + orderStr,
+            data: '{}',
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+                $("#plDiv").empty();
+                ProductList.buildProductList(data);
+            }
+        });
+        //$.getJSON("/Product/ListByCategory/" + CID + "/" + PIndex + "/" + whereStr + "/" + orderStr, null, function (data,textStatus,jqXHR) {
+        //    $("#plDiv").empty();
+        //    ProductList.buildProductList(data);
+        //});
+    },
+    buildProductList: function (data) {
 
     }
 };

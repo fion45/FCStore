@@ -156,20 +156,22 @@ namespace FCStore.Controllers
 
                 List<Brand> brandArr = (from brand in db.Brands
                                         where BIDList.Contains(brand.BID)
-                                        select brand).Take(16).ToList();
+                                        select brand).ToList();
+                ProductListVM tmpVM = new ProductListVM();
+                tmpVM.Products = productArr;
+                tmpVM.Brands = brandArr;
+                tmpVM.Category = tmpCat;
+                tmpVM.PageCount = PageCount;
+                tmpVM.PageIndex = PIndex;
 
                 if (Request.IsAjaxRequest())
                 {
-                    return Json(productArr);
+                    JsonResult tmpJR = Json(tmpVM);
+                    tmpJR.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return tmpJR;
                 }
                 else
                 {
-                    ProductListVM tmpVM = new ProductListVM();
-                    tmpVM.Products = productArr;
-                    tmpVM.Brands = brandArr;
-                    tmpVM.Category = tmpCat;
-                    tmpVM.PageCount = PageCount;
-                    tmpVM.PageIndex = PIndex;
                     return View(tmpVM);
                 }
             }

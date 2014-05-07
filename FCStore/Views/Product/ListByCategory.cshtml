@@ -36,7 +36,7 @@
         }
     </div>
     <div class="btn">
-        <button>确定</button>
+        <button onclick="ProductList.getProductList(0);">确定</button>
         @if(Model.Brands.Count > 16)
         {
             <button class="most">更多</button>
@@ -44,23 +44,23 @@
     </div>
     <div class="pullupDiv"></div>
 </div>
-<div class="productList">
-    <div id="plTool" class="tool">
-        <label>排序方式：</label>
-        <a class="orderTag">新品</a>
-        <a class="orderTag">畅销</a>
-        <a class="orderTag">价格</a>
-        <a class="orderTag">浏览量</a>
-        <div class="page">
-            <a>第一页</a>
-            <a>上一页</a>
-            <label>
-                @(Model.PageIndex)/@(Model.PageCount)
-            </label>
-            <a>下一页</a>
-            <a>最后一页</a>
-        </div>
+<div id="plTool" class="tool">
+    <label>排序方式：</label>
+    <a class="orderTag">新品</a>
+    <a class="orderTag">畅销</a>
+    <a class="orderTag">价格</a>
+    <a class="orderTag">浏览量</a>
+    <div class="page">
+        <a>第一页</a>
+        <a>上一页</a>
+        <label>
+            @(Model.PageIndex)/@(Model.PageCount)
+        </label>
+        <a>下一页</a>
+        <a>最后一页</a>
     </div>
+</div>
+<div id="plDiv" class="productList">
     @foreach (FCStore.Models.Product item in Model.Products)
     {
         <div class="item">
@@ -81,20 +81,20 @@
         </div>
     }
         <div class="pullupDiv"></div>
-    <div class="btool">
-        <label>排序方式：</label>
-        <a>新品</a>
-        <a>畅销</a>
-        <a>价格</a>
-        <a>浏览量</a>
-        <div class="page">
-            <a>第一页</a>
-            <a>上一页</a>
-            <label>                
-                @(Model.PageIndex)/@(Model.PageCount)
-            </label>
-            <a>下一页</a>
-            <a>最后一页</a>
-        </div>
+</div>
+<div class="btool">
+    <label>排序方式：</label>
+    <a>新品</a>
+    <a>畅销</a>
+    <a>价格</a>
+    <a>浏览量</a>
+    <div class="page">
+        <a>第一页</a>
+        <a>上一页</a>
+        <label>
+            @(Model.PageIndex)/@(Model.PageCount)
+        </label>
+        <a>下一页</a>
+        <a>最后一页</a>
     </div>
 </div>

@@ -502,33 +502,33 @@ textarea {
     margin-top:10px;
 }
 
-    .productList .tool,.productList .btool {
-        width:100%;
-        height:20px;
-        border-bottom:solid 2px #cc0000;
-        text-align:left;
+.tool,.btool {
+    width:100%;
+    height:20px;
+    border-bottom:solid 2px #cc0000;
+    text-align:left;
+}
+
+.btool {
+    border-top:solid 2px #cc0000;
+    border-bottom:none;
+}
+
+    .tool label,.btool label {
+        margin-right:5px;
     }
 
-    .productList .btool {
-        border-top:solid 2px #cc0000;
-        border-bottom:none;
+    .tool a, .btool a {
+        margin-left:5px;
     }
 
-        .productList .tool label,.productList .btool label {
-            margin-right:5px;
-        }
+    .tool .page,.btool .page {
+        float:right;
+    }
 
-        .productList .tool a,.productList .btool a {
-            margin-left:5px;
+        .tool .page *,.btool .page * {
+            margin-left:10px;
         }
-
-        .productList .tool .page,.productList .btool .page {
-            float:right;
-        }
-
-            .productList .tool .page *,.productList .btool .page * {
-                margin-left:10px;
-            }
 
 .brandFilter {
     width:100%;
