@@ -1,48 +1,30 @@
 ﻿@model FCStore.Models.ProductListVM
 
 @{
-    ViewBag.Title = "ListByCategory";
+    ViewBag.Title = "ListByBrand";
 }
 <div id="categoryNav">
     <div>商品类别：</div>
     @{
-        FCStore.Models.Category tmpCate = Model.Category;
-        int CID = -1;
-        string htmlStr = "";
-        while (CID != tmpCate.CID)
-        {
-            htmlStr = "<div><a href=\"/Product/ListByCategory/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
-            CID = tmpCate.CID;
-            tmpCate = tmpCate.Parent;
-        }
-        IHtmlString html = new HtmlString(htmlStr);
+        FCStore.Models.Brand tmpBrand = Model.Brand;
+        IHtmlString html = new HtmlString("<div>" + tmpBrand.NameStr + "</div><div>></div>");
         @html
     }
     <div>商品列表</div>
 </div>
-<div class="brandFilter">
-    <div class="title">
-        品牌：
-    </div>
-    <div id="plBrands" class="content">
-        @foreach (var item in Model.Brands)
-        {
-            <div class="item">
-                <label>
-                    <input @((ViewBag.chkBrands != null && ViewBag.chkBrands.Contains(item.BID)) ? "checked=\"checked\"" : "" ) class="brandCB" type="checkbox" value="@(item.BID)" />
-                    @(item.NameStr)/@(item.Name2)
-                </label>
+<div>
+    <div class="brandShow">
+        <div class="title">
+            品牌：
+        </div>
+        <div class="content">
+            <div>
+                <img class="brandImg" src="/Brand/@(tmpBrand.Tag).jpg" />
             </div>
-        }
+            <div class="brandName">@(tmpBrand.NameStr)/@(tmpBrand.Name2)</div>
+        </div>
+        <div class="pullupDiv"></div>
     </div>
-    <div class="btn">
-        <button onclick="ProductList.getProductList(1);">确定</button>
-        @if(Model.Brands.Count > 16)
-        {
-            <button class="most">更多</button>
-        }
-    </div>
-    <div class="pullupDiv"></div>
 </div>
 <div id="plTool" class="tool">
     <label>排序方式：</label>
@@ -54,13 +36,19 @@
     <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 2 ? OTStr : "")">价格</a>
     <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 3 ? OTStr : "")">浏览量</a>
     <div class="page">
-        <a @(Model.PageIndex != 1 ? "" : "disabled = disabled") >第一页</a>
-        <a @(Model.PageIndex != 1 ? "" : "disabled = disabled") >上一页</a>
+        @if (Model.PageIndex != 1)
+{
+    <a onclick="ProductList.getProductList(1)">第一页</a>
+    <a onclick ="ProductList.getProductList(this)">上一页</a>
+}
         <label>
             @(Model.PageIndex)/@(Model.PageCount)
         </label>
-        <a @(Model.PageIndex != Model.PageCount ? "" : "disabled = disabled") >下一页</a>
-        <a @(Model.PageIndex != Model.PageCount ? "" : "disabled = disabled") >最后一页</a>
+        @if (Model.PageIndex != Model.PageCount)
+        {
+            <a>下一页</a>
+            <a>最后一页</a>
+        }
     </div>
 </div>
 <div id="plDiv" class="productList">
@@ -69,7 +57,7 @@
         <div class="item">
             <a href="Product/Detail/@(item.PID)">
                 <div class="img">
-                    <img src="@((item.ImgPathArr != null && item.ImgPathArr.Length > 1) ? item.ImgPathArr[0] : "")" />
+                    <img src="@(item.ImgPathArr[0])" />
                 </div>
                 <div class="title">
                     @(item.Title)
@@ -83,7 +71,7 @@
             </a>
         </div>
     }
-        <div class="pullupDiv"></div>
+    <div class="pullupDiv"></div>
 </div>
 <div class="btool">
     <div class="page">

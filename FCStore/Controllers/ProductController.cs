@@ -84,10 +84,10 @@ namespace FCStore.Controllers
             List<int> CIDList = new List<int>();
             List<Category> CatArr = db.Categorys.ToList();
             Category tmpCat = CatArr.Find(r => r.CID == ID);
-            if(tmpCat == null)
+            if(tmpCat == null || tmpCat.ParCID == tmpCat.CID)
             {
                 //页面不存在
-                return Redirect("aaa");
+                return Redirect("/Home/Index");
             }
             else
             {
@@ -149,7 +149,7 @@ namespace FCStore.Controllers
                     ViewBag.chkBrands = brandWhere;
                     productEnum = productEnum.Where(r => brandWhere.Contains(r.BID));
                 }
-                List<Product> productArr = productEnum.Skip(1).Take(PCount).ToList();
+                List<Product> productArr = productEnum.Skip((PIndex - 1) * PCount).Take(PCount).ToList();
                 List<int> BIDList = (from product in db.Products
                                      where CIDList.Contains(product.CID)
                                     select product.BID).Distinct().ToList();
@@ -174,7 +174,6 @@ namespace FCStore.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    //System.IO.FileInfo tmpF = new System.IO.FileInfo("C:\\test.txt");
                     string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
                     return Content(jsonStr);
                 }
@@ -186,10 +185,88 @@ namespace FCStore.Controllers
         }
 
 
-        //public ActionResult ListByCategory(int ID, int PIndex)
-        //{
+        public ActionResult ListByBrand(int ID, int PIndex, string hashOrder)
+        {
+            List<OrderObj> orderObjList = GetOrderObj(hashOrder);
+            int PCount = 40;
+            int.TryParse(ConfigurationManager.AppSettings["PCPerPage"], out PCount);
 
-        //}
+            List<int> CIDList = new List<int>();
+            Brand tmpBrand = (from brand in db.Brands
+                             where brand.BID == ID
+                             select brand).First();
+            if (tmpBrand == null)
+            {
+                //页面不存在
+                return Redirect("aaa");
+            }
+            else
+            {
+                //获得产品列表
+                var productEnum = from product in db.Products
+                                            where product.BID == ID
+                                            select product;
+                if(orderObjList != null)
+                {
+                    foreach(OrderObj oo in orderObjList)
+                    {
+                        //只有一个排序条件
+                        ViewBag.Order = oo.Type;
+                        ViewBag.OrderType = oo.AscTag;
+                        switch(oo.Type)
+                        {
+                            case 0:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Date);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Date);
+                                break;
+                            case 1:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Sale);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Sale);
+                                break;
+                            case 2:
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.Price);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.Price);
+                                break;
+                            default :
+                                if(oo.AscTag)
+                                    productEnum = productEnum.OrderBy(r=>r.PVCount);
+                                else
+                                    productEnum = productEnum.OrderByDescending(r=>r.PVCount);
+                                break;
+                        }
+                    }
+                }
+                List<Product> productArr = productEnum.Skip((PIndex - 1) * PCount).Take(PCount).ToList();
+                int PageCount = (from product in db.Products
+                                 where product.BID == ID
+                                 select product).Count();
+                PageCount = (int)Math.Ceiling((float)PageCount / PCount);
+                ProductListVM tmpVM = new ProductListVM();
+                //tmpVM.Products = new Product[tmpVM.pArrCount];
+                tmpVM.Products = productArr;
+                tmpVM.Brand = tmpBrand;
+                tmpVM.Brands = null;
+                tmpVM.Category = null;
+                tmpVM.PageCount = PageCount;
+                tmpVM.PageIndex = PIndex;
+
+                if (Request.IsAjaxRequest())
+                {
+                    string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
+                    return Content(jsonStr);
+                }
+                else
+                {
+                    return View(tmpVM);
+                }
+            }
+        }
 
         //
         // GET: /Product/

@@ -44,6 +44,26 @@ var ProductList = {
     	}
     	ProductList.getProductList(PIndex);
     },
+    onPageClick: function (PA) {
+        var parArr = window.location.pathname.split("/");
+        var PIndex = parseInt(parArr[4]);
+        switch (PA) {
+            case 0:
+                PIndex = 0;
+                break;
+            case 1:
+                PIndex = PIndex - 1;
+                break;
+            case 2:
+                PIndex = PIndex + 1;
+                break;
+            case 3:
+
+                PIndex = PIndex - 1;
+                break;
+        }
+        ProductList.getProductList(PIndex);
+    },
     getProductList: function (PIndex) {
         var whereStr = "";
         //获得品牌过滤

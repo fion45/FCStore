@@ -249,6 +249,9 @@ textarea {
 
     .MainBlock .top {
         width:100%;
+        border-top:solid 1px #cccccc;
+        border-bottom:solid 1px #cccccc;
+        background-color:#cc0000;
     }
 
         .MainBlock .top .name {
@@ -587,6 +590,41 @@ textarea {
         .brandFilter .item label {
             width:100%;
             font-size:9pt;
+        }
+
+.brandShow {
+    width:100%;
+    border:solid 1px #cccccc;
+}
+
+    .brandShow .title {
+        float:left;
+        width:5%;
+        text-align:left;
+        margin:10px;
+    }
+
+    .brandShow .content {
+        float:left;
+        width:80%;
+        margin:10px 0px;
+        max-height:80px;
+        overflow:hidden;
+    }
+
+        .brandShow .content * {
+            float:left;
+        }
+
+        .brandShow .content .brandImg {
+            width:117px;
+            height:58px;
+        }
+
+        .brandShow .content .brandName {
+            margin-left:10px;
+            font-size:15pt;
+            font-weight:bold;
         }
 
     .productList .item {

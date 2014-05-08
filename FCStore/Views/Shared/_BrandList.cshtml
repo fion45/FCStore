@@ -2,7 +2,7 @@
 @foreach (var item in Model)
 {
     <li>
-        <a href="/Brand/ProductList/@(item.BID)">
+        <a href="/Product/ListByBrand/@(item.BID)">
             <div class="icon">
                 <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
             </div>
