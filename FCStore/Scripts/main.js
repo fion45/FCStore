@@ -25,10 +25,24 @@
 });
 
 var ProductList = {
-    PL_OrderEnum : {
-        normal : -1,
-        up : 0,
-        down : 1
+    onOrderClick : function(obj) {
+    	var PIndex = 1;
+    	var target = $(obj);
+    	var parent = target.parent();
+    	var child = parent.children('.asc,.desc');
+    	if($.inArray(obj,child) != -1) {
+    		if(child.elementHaveClassName('asc')) {
+    			child.removeClass('asc').addClass('desc');
+    		}
+    		else {
+    			child.removeClass('desc').addClass('asc');
+    		}
+    	}
+    	else {
+    		child.prop('class','orderTag');
+    		target.addClass('desc');
+    	}
+    	ProductList.getProductList(PIndex);
     },
     getProductList: function (PIndex) {
         var whereStr = "";
@@ -42,29 +56,50 @@ var ProductList = {
         //获得排序
         $.each($("#plTool .orderTag"), function (i, n) {
             var item = $(n);
-            if (item.data() == ProductList.PL_OrderEnum.up || item.data() == ProductList.PL_OrderEnum.down)
-                orderStr = "0x" + item.data() + i;
+            if (item.elementHaveClassName('asc'))
+                orderStr = "0x1" + i;
+            else if (item.elementHaveClassName('desc'))
+                orderStr = "0x0" + i;
         });
         var parArr = window.location.pathname.split("/");
         var CID = parArr[3];
         //ajaz获取数据，更新内容
-        $.ajax({
-            url: "/Product/ListByCategory/" + CID + "/" + PIndex + "/" + whereStr + "/" + orderStr,
-            data: '{}',
+        $.myAjax({
+        	loadEle : $("#plTool"),
+            url: "/Product/ListByCategory/" + CID + "/" + PIndex + "/" + orderStr + "/" + whereStr,
+            data: null,
             dataType: "json",
             type: "GET",
             contentType: "application/json;charset=utf-8",
             success: function (data,status,options) {
-                $("#plDiv").empty();
-                ProductList.buildProductList(data);
+            	//更新产品列表
+            	var parent = $("#plDiv");
+               	parent.empty();
+                $.each(data.Products,function(i,n) {
+					parent.append(ProductList.buildProductView(n));
+				});
+				BuildPullHeightDiv(parent);
+				//更新Page
+				//
             }
         });
-        //$.getJSON("/Product/ListByCategory/" + CID + "/" + PIndex + "/" + whereStr + "/" + orderStr, null, function (data,textStatus,jqXHR) {
-        //    $("#plDiv").empty();
-        //    ProductList.buildProductList(data);
-        //});
     },
-    buildProductList: function (data) {
-
+    buildProductView : function(product) {
+    	var item = $(
+    	'<div class=\"item\">' +
+            '<a href="Product/Detail/' + product.PID + '">' +
+                '<div class="img">' +
+                    '<img src="' + product.ImgPathArr[0] + '" />' +
+                '</div>' +
+                '<div class="title">' + product.Title + '</div>' +
+                '<div class="marketPrice">' +
+                    '市场价：<label>￥' + product.MarketPrice + '</label>' +
+                '</div>' +
+                '<div class="price">' +
+                    '代购价：<label>￥' + product.Price + '</label>' +
+                '</div>' +
+            '</a>' +
+        '</div>');
+        return item;
     }
 };

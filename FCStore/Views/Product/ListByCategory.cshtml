@@ -29,7 +29,7 @@
         {
             <div class="item">
                 <label>
-                    <input class="brandCB" type="checkbox" value="@(item.BID)" />
+                    <input @(ViewBag.chkBrands.Contains(item.BID) ? "checked=\"checked\"" : "" ) class="brandCB" type="checkbox" value="@(item.BID)" />
                     @(item.NameStr)/@(item.Name2)
                 </label>
             </div>
@@ -46,10 +46,13 @@
 </div>
 <div id="plTool" class="tool">
     <label>排序方式：</label>
-    <a class="orderTag">新品</a>
-    <a class="orderTag">畅销</a>
-    <a class="orderTag">价格</a>
-    <a class="orderTag">浏览量</a>
+    @{
+        string OTStr = ViewBag.OrderType ? "asc" : "desc";
+    }
+    <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 0 ? OTStr : "")">新品</a>
+    <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 1 ? OTStr : "")">畅销</a>
+    <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 2 ? OTStr : "")">价格</a>
+    <a onclick="ProductList.onOrderClick(this)" class="orderTag @(ViewBag.Order == 3 ? OTStr : "")">浏览量</a>
     <div class="page">
         <a>第一页</a>
         <a>上一页</a>
@@ -83,11 +86,6 @@
         <div class="pullupDiv"></div>
 </div>
 <div class="btool">
-    <label>排序方式：</label>
-    <a>新品</a>
-    <a>畅销</a>
-    <a>价格</a>
-    <a>浏览量</a>
     <div class="page">
         <a>第一页</a>
         <a>上一页</a>

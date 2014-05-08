@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace FCStore.Models
 {
+    [Serializable]
     public class ProductListVM
     {
         public List<Product> Products;
+
         public List<Brand> Brands;
+
         public Category Category;
+
         public Brand Brand;
 
         public int PageCount;

@@ -522,6 +522,14 @@ textarea {
         margin-left:5px;
     }
 
+    .tool .asc {
+        color:red;
+    }
+
+    .tool .desc {
+        color:blue;
+    }
+
     .tool .page,.btool .page {
         float:right;
     }

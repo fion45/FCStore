@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
 using System.Configuration;
+using Newtonsoft.Json;
 
 namespace FCStore.Controllers
 {
@@ -73,7 +74,7 @@ namespace FCStore.Controllers
             return result;
         }
 
-        public ActionResult ListByCategory(int ID, int PIndex, string hashWhere, string hashOrder)
+        public ActionResult ListByCategory(int ID, int PIndex, string hashOrder, string hashWhere)
         {
             List<int> brandWhere = GetBrandWhere(hashWhere);
             List<OrderObj> orderObjList = GetOrderObj(hashOrder);
@@ -111,6 +112,9 @@ namespace FCStore.Controllers
                 {
                     foreach(OrderObj oo in orderObjList)
                     {
+                        //只有一个排序条件
+                        ViewBag.Order = oo.Type;
+                        ViewBag.OrderType = oo.AscTag;
                         switch(oo.Type)
                         {
                             case 0:
@@ -141,7 +145,10 @@ namespace FCStore.Controllers
                     }
                 }
                 if (brandWhere != null)
+                {
+                    ViewBag.chkBrands = brandWhere;
                     productEnum = productEnum.Where(r => brandWhere.Contains(r.BID));
+                }
                 List<Product> productArr = productEnum.Skip(1).Take(PCount).ToList();
                 List<int> BIDList = (from product in db.Products
                                      where CIDList.Contains(product.CID)
@@ -158,6 +165,7 @@ namespace FCStore.Controllers
                                         where BIDList.Contains(brand.BID)
                                         select brand).ToList();
                 ProductListVM tmpVM = new ProductListVM();
+                //tmpVM.Products = new Product[tmpVM.pArrCount];
                 tmpVM.Products = productArr;
                 tmpVM.Brands = brandArr;
                 tmpVM.Category = tmpCat;
@@ -166,9 +174,9 @@ namespace FCStore.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    JsonResult tmpJR = Json(tmpVM);
-                    tmpJR.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                    return tmpJR;
+                    //System.IO.FileInfo tmpF = new System.IO.FileInfo("C:\\test.txt");
+                    string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
+                    return Content(jsonStr);
                 }
                 else
                 {
@@ -176,6 +184,7 @@ namespace FCStore.Controllers
                 }
             }
         }
+
 
         //public ActionResult ListByCategory(int ID, int PIndex)
         //{

@@ -45,6 +45,7 @@ namespace FCStore
                         "~/Scripts/productDetailRollImg.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
+                "~/Scripts/common.js",
                 "~/Scripts/main.js"));
         }
     }
