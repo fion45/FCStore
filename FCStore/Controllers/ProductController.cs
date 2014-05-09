@@ -153,9 +153,7 @@ namespace FCStore.Controllers
                 List<int> BIDList = (from product in db.Products
                                      where CIDList.Contains(product.CID)
                                     select product.BID).Distinct().ToList();
-                int PageCount = (from product in db.Products
-                                 where CIDList.Contains(product.CID)
-                                 select product).Count();
+                int PageCount = productEnum.Count();
                 PageCount = (int)Math.Ceiling((float)PageCount / PCount);
                 //获得品牌列表
                 //List<Brand> brandArr = (from pro in productArr

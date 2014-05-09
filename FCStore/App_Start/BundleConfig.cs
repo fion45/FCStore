@@ -46,7 +46,8 @@ namespace FCStore
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                 "~/Scripts/common.js",
-                "~/Scripts/main.js"));
+                "~/Scripts/main.js",
+                "~/Scripts/sidebar-follow-jquery"));
         }
     }
 }
