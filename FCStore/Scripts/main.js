@@ -1,8 +1,20 @@
 ﻿$(function () {
-//    (new SidebarFollow()).init({
-//        element: $('#Categorys'),
-//        distanceToTop: 15
-//    });
+    (new SidebarFollow()).init({
+        element: $('#Categorys'),
+        distanceToTop: 15
+    });
+    (new SidebarFollow()).init({
+        element: $('#TopBtn'),
+        distanceToTop: 1,
+        afterFollowCB : function(ele) {
+        	if(!MainLayout.topBtnTag && $(document).scrollTop() != 0)
+        		ele.show();
+        },
+        afterStopCB : function(ele) {
+        	if(!MainLayout.topBtnTag)
+        		ele.hide();
+        }
+    });
     $("#Categorys .TCItem").bind("mouseenter", function (ev) {
         var item = $(this);
         var subDiv = item.next(".subCategory");
@@ -10,7 +22,7 @@
         var height = subDiv.outerHeight();
         var os = subDiv.offset();
         var pos = subDiv.position();
-        var oY = os.top + height - $(window).height();
+        var oY = os.top + height - $(document).scrollTop() - $(window).height();
         if (oY > 0) {
             subDiv.animate({ "top": pos.top - oY }, 500);
         }
@@ -29,6 +41,20 @@
             });
     });
 });
+
+var MainLayout = {
+	topBtnTag : false,
+	onTopBtnClick : function(ele) {
+		MainLayout.topBtnTag = true;
+		$(ele).hide();
+        //滚动到产品顶部
+        $("html,body").animate({
+        	scrollTop:0
+    	},"fast","linear",function() {
+    		MainLayout.topBtnTag = false;
+    	});
+	}
+};
 
 var ProductList = {
     onByCategoryOrderClick : function(obj) {

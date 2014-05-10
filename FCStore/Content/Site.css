@@ -197,10 +197,15 @@ textarea {
 /* Category List
 ----------------------------------------------------------*/
 #Categorys {
-    float:left;
+    position:absolute;
+    top:170px;
+    left:50px;
+    /*float:left;*/
     width:150px;
-    margin-left:-99%;
+    /*margin-left:-99%;*/
     border:solid 1px #ccc;
+    /*position:relative;*/
+    background-color:wheat;
 }
     #Categorys .TCategory {
         font-size:13pt;
@@ -264,6 +269,17 @@ textarea {
             line-height:20px;
             font-weight:normal;
         }
+
+#TopBtn {
+    position:absolute;
+    width:60px;
+    height:55px;
+    background-color:wheat;
+    left:100%;
+    margin-left:-60px;
+    top:1px;
+    display:none;
+}
 
 /* Main Block
 ----------------------------------------------------------*/

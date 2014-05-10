@@ -1,27 +1,20 @@
-﻿/**
+/**
  * @author: mg12 [http://www.neoease.com/]
  * @update: 2012/12/05
  */
-
-//只能设置成absolute，而fixed有Bug
 
 SidebarFollow = function() {
 
 	this.config = {
 		element: null, // 处理的节点
-		distanceToTop: 0, // 节点上边到页面顶部的距离
-		afterFollowCB : null,
-		afterStopCB : null
+		distanceToTop: 0 // 节点上边到页面顶部的距离
 	};
 
 	this.cache = {
 		originalToTop: 0, // 原本到页面顶部的距离
 		prevElement: null, // 上一个节点
 		parentToTop: 0, // 父节点的上边到顶部距离
-//		placeholder: jQuery('<div>') // 占位节点
-		parTopTag: false,
-		fixedTag : false,
-		fixedTop : null
+		placeholder: jQuery('<div>') // 占位节点
 	}
 };
 
@@ -63,13 +56,6 @@ SidebarFollow.prototype = {
 		jQuery(window).resize(function() {
 			_self._scrollScreen({element:element, _self:_self});
 		});
-		
-		var bodyToTop = parseInt(jQuery('body').css('top'), 10);
-		_self.cache.parTopTag = !isNaN(bodyToTop);
-		
-		if(element.css('position') == "fixed") {
-			_self.cache.fixedTop = parseInt(element.css('top'));
-		}
 	},
 
 	/**
@@ -84,19 +70,13 @@ SidebarFollow.prototype = {
 		var toTop = _self.config.distanceToTop;
 
 		// 如果 body 有 top 属性, 消除这些位移
-		if(_self.cache.parTopTag) {
-			var bodyToTop = parseInt(jQuery('body').css('top'), 10);
+		var bodyToTop = parseInt(jQuery('body').css('top'), 10);
+		if(!isNaN(bodyToTop)) {
 			toTop += bodyToTop;
-			// 获得到顶部的绝对距离
 		}
-		if(_self.cache.fixedTag || _self.cache.fixedTop == null) {
-			_self.cache.elementToTop = element.offset().top - toTop;
-		}
-		else {
-			_self.cache.elementToTop = parseInt(element.css('top')) - toTop;
-			element.css('top',_self.cache.fixedTop - jQuery(document).scrollTop());
-		}
-		
+
+		// 获得到顶部的绝对距离
+		var elementToTop = element.offset().top - toTop;
 
 		// 如果存在上一个节点, 获得到上一个节点的距离; 否则计算到父节点顶部的距离
 		var referenceToTop = 0;
@@ -107,36 +87,26 @@ SidebarFollow.prototype = {
 		}
 
 		// 当节点进入跟随区域, 跟随滚动
-		if(jQuery(document).scrollTop() > _self.cache.elementToTop) {
+		if(jQuery(document).scrollTop() > elementToTop) {
 			// 添加占位节点
 			var elementHeight = element.outerHeight();
-//			_self.cache.placeholder.css('height', elementHeight).insertBefore(element);
+			_self.cache.placeholder.css('height', elementHeight).insertBefore(element);
 			// 记录原位置
-			_self.cache.originalToTop = _self.cache.elementToTop;
+			_self.cache.originalToTop = elementToTop;
 			// 修改样式
 			element.css({
 				top: toTop + 'px',
 				position: 'fixed'
 			});
-			_self.cache.fixedTag = true;
-			if(_self.config.afterFollowCB != null) {
-				_self.config.afterFollowCB(element);
-			}
+
 		// 否则回到原位
-//		} else if(_self.cache.originalToTop > elementToTop || referenceToTop > elementToTop) {
-		} else if(_self.cache.originalToTop > _self.cache.elementToTop) {
+		} else if(_self.cache.originalToTop > elementToTop || referenceToTop > elementToTop) {
 			// 删除占位节点
-//			_self.cache.placeholder.remove();
+			_self.cache.placeholder.remove();
 			// 修改样式
-//			element.css({
-//				position: 'static'
-//			});
-//			element.removeProp("style");
-			element.removeAttr("style");
-			_self.cache.fixedTag = false;
-			if(_self.config.afterStopCB != null) {
-				_self.config.afterStopCB(element);
-			}
+			element.css({
+				position: 'static'
+			});
 		}
 	}
 };
