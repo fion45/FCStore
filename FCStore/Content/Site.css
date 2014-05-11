@@ -5,7 +5,7 @@
 
 body {
     font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-family: Tahoma, Geneva, sans-serif;
     color: #232323;
     background-color: #fff;
 }
@@ -34,11 +34,11 @@ div {
 a, a:visited {
     cursor:pointer;
     text-decoration:none;
-    color:#666666;
+    color:#0078b6;
 }
 
 a:hover {
-    color:#cc0000
+    color:#cc0000;
 }
 
 .floatLeft {
@@ -184,14 +184,17 @@ textarea {
 #Toolbar {
     width:100%;
     height:30px;
-    background-color:#cc0000;
-    margin-bottom:10px;
+    background-color:#50A6BD;
+    margin-bottom:6px;
     line-height:30px;
     vertical-align:middle;
 }
 
 #Toolbar .title {
     margin-left:20px;
+    color:white;
+    font-size:10pt;
+    font-weight:bold;
 }
 
 /* Category List
@@ -199,13 +202,9 @@ textarea {
 #Categorys {
     position:absolute;
     top:170px;
-    left:50px;
-    /*float:left;*/
+    left:10px;
     width:150px;
-    /*margin-left:-99%;*/
-    border:solid 1px #ccc;
-    /*position:relative;*/
-    background-color:wheat;
+    color:white;
 }
     #Categorys .TCategory {
         font-size:13pt;
@@ -214,18 +213,31 @@ textarea {
         line-height:30px;
         width:100%;
         text-align:center;
-        border-top:solid 1px #ccc;
+        border-top:solid 1px #50a6bd;
         position:relative;
+        background-color:#50a6bd;
     }
 
-    #Categorys li:first-child {
+        #Categorys .TCategory .hover .item{
+            background-color:#68BCD3;
+        }
+
+    #Categorys .TCategory:first-child {
         border-top:none;
-        background-color:#ccc;
+        background:url("/Content/themes/image/main.png") no-repeat 0px 0px;
+        background-color:none;
+    }
+
+    #Categorys .TCategory:last-child {
+        border-bottom:none;
+        background:url("/Content/themes/image/main.png") no-repeat 0px -30px;
+        background-color:none;
     }
 
     #Categorys .item {
         width:150px;
         height:30px;
+        color:white;
     }
 
     #Categorys .subCategory {
@@ -233,9 +245,8 @@ textarea {
         left:100%;
         top:-1px;
         width:650px;
-        border:solid 1px #ccc;
         display:none;
-        background-color:white;
+        background-color:#68BCD3;
     }
 
         #Categorys .subCategory .scDiv {
@@ -251,6 +262,10 @@ textarea {
             font-weight:bold;
             color:black;
         }
+
+            #Categorys .subCategory .scDiv .scName a {
+                color:white;
+            }
 
         #Categorys .subCategory .scDiv:nth-child(odd) {
             clear:left;
@@ -270,62 +285,102 @@ textarea {
             font-weight:normal;
         }
 
+            #Categorys .subCategory .scDiv .tcDiv a {
+                color:white;
+            }
+
 #TopBtn {
     position:absolute;
     width:60px;
-    height:55px;
-    background-color:wheat;
+    height:63px;
     left:100%;
     margin-left:-60px;
     top:1px;
     display:none;
+    background:#FFF url("/Content/themes/image/main.png") no-repeat -153px 0px;
+}
+
+#TopBtn:hover {
+    background:#FFF url("/Content/themes/image/main.png") no-repeat -212px 0px;
+}
+
+    #TopBtn .title {
+        margin-top:50px;
+        font-size:10pt;
+        font-weight:bold;
+        color:#B6B6B6
+    }
+
+    #TopBtn:hover .title {
+        color:#50A6BD;
+    }
+
+#Cart {
+    position:absolute;
+    top:100%;
+    left:100%;
+    width:160px;
+    height:145px;
+    margin:-155px 0px 0px -170px;
+    background:url("/Content/themes/image/shoppingCart.png") no-repeat center;
+
 }
 
 /* Main Block
 ----------------------------------------------------------*/
 .MainBlock {
     width:100%;
-    margin:3px 0px;
+    margin-bottom:18px;
+    height:396px;
+    box-shadow:0px 10px 8px 3px rgb(204, 204, 204);
 }
 
     .MainBlock .top {
         width:100%;
-        border-top:solid 1px #cccccc;
-        border-bottom:solid 1px #cccccc;
-        background-color:#cc0000;
+        background:url("/Content/themes/image/mainBlockTop.png") repeat-x 0px 0px;
+        height:22px;
+        line-height:22px;
+        vertical-align:baseline;
+        color:#35879d;
     }
 
         .MainBlock .top .name {
+            margin-left:10px;
             float:left;
+            font-size:11pt;
+            font-weight:bold;
+        }
+
+        .MainBlock .pinpai {
+            float:right;
         }
 
         .MainBlock .top .brand {
             float:right;
-            margin-left:15px;
+            margin-right:15px;
         }
 
         .MainBlock .top .more {
             float:right;
-            margin-left:30px;
-            margin-right:5px;
+            margin-left:15px;
+            margin-right:8px;
         }
 
     .MainBlock .show {
         width:100%;
-        height:406px;
-        margin-bottom:15px;
+        height:374px;
     }
 
         .MainBlock .show .item {
             float:left;
-            margin-right:2px;
+            margin:0px 5px;
             position:relative;
         }
 
             .MainBlock .show .item .price {
                 position:absolute;
-                left:-10px;
-                top:0px;
+                left:0px;
+                top:8px;
                 transform: rotate(-10deg);    
 		        -o-transform: rotate(-10deg);
 		        -webkit-transform: rotate(-10deg);
@@ -347,18 +402,24 @@ textarea {
             .MainBlock .show .item img {
                 width:145px;
                 height:145px;
-                margin:20px 5px 2px 2px;
+                margin:5px 5px 2px 2px;
             }
 
             .MainBlock .show .item .title {
-                width:170px;
+                width:166px;
                 height:30px;
                 font-size:9pt;
                 text-align:left;
                 margin:0px 0px 2px 0px;
                 overflow:hidden;
             }
-                
+
+    .MainBlock .bottom {
+        width:100%;
+        height:9px;
+        background:url("/Content/themes/image/main.png") repeat-x 0px -72px;
+        background-color:none;
+    }                
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {
@@ -393,6 +454,7 @@ textarea {
     width:348px;
     height:330px;
     border:solid 1px #ccc;
+    border-radius:8px;
 }
 
 #productImage {
@@ -402,18 +464,24 @@ textarea {
 }
 
 #spec-n5 {
-    width:348px;
+    width:350px;
     height:85px;
+    background:url("/Content/themes/image/main.png") no-repeat 0px -80px;
 }
 
     #spec-n5 div {
+        margin-top:3px;
         float:left;
         height:100%;
     }
 
 #spec-left {
-    width:10px;
-    border:1px solid rgb(204,204,204);
+    width:16px;
+    cursor:pointer;
+}
+
+#spec-left:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -352px -83px;
 }
 
 #spec-list {
@@ -428,15 +496,19 @@ textarea {
     #spec-list .ILUl img{
         margin:7px;
         width:68px;
-        height:68px;
+        height:66px;
         padding:3px 2px;
         margin:3px;
-        border:1px solid rgb(204,204,204);
+        border:1px solid #cccccc;
     }
 
 #spec-right {
-    width:10px;
-    border:1px solid rgb(204,204,204);
+    width:16px;
+    cursor:pointer;
+}
+
+#spec-right:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -369px -83px;
 }
 
 #descriptContent {
@@ -456,6 +528,7 @@ textarea {
     height:415px;
     position:relative;
     border:solid 1px #ccc;
+    border-radius:8px;
 }
 
     #productInfo .title {
@@ -468,9 +541,65 @@ textarea {
     #productInfo .content {
         text-align:left;
     }
+
+        #productInfo .content input {
+            width:52px;
+            height:24px;
+            float:left;
+        }
+
+        #productInfo .content .spinnerLeft {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+            cursor:pointer;
+        }
+
+        #productInfo .content .spinnerRight {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+            cursor:pointer;
+        }
+
+        #productInfo .content .spinnerLeft:hover {
+            background-position-x:-61px;
+        }
+
+        #productInfo .content .spinnerRight:hover {
+            background-position-x:-90px;
+        }
     
-#productTitle,#productBrand,#productPrice,#productSaleCount,#productSaleType,#productSend,#productChoose,#productSaleInput{
+#productTitle,#productBrand,#productPrice,#productSaleCount,#productSaleType,
+#productSend,#productChoose,#productSaleInput,#productCode {
     margin-left:8px;
+}
+
+    #productChoose .choseItem{
+        margin:5px 0px;
+        width:100%;
+    }
+
+        #productChoose .choseItem .cValue {
+            color:#0078b6;
+            padding:1px 4px 1px 14px;
+            margin-right:8px;
+            float:left;
+            cursor:pointer;
+        }
+
+        #productChoose .choseItem .sel {
+            background:url("/Content/themes/image/main.png") no-repeat -18px -197px;
+            border:solid 1px #35879d;
+        }
+
+#productSaleInput {
+    margin-top:10px;
+    height:28px;
+    line-height:28px;
+    vertical-align:middle;
 }
 
 #productTitle {
@@ -526,6 +655,21 @@ textarea {
 
 #productBtn .p2{
     text-align:center;
+    float:left;
+}
+
+#productCode {
+    margin-top:5px;
+    height:22px;
+    line-height:22px;
+    vertical-align:middle;
+}
+
+#productCode .title {
+    clear:left;
+}
+
+#productCode div {
     float:left;
 }
 

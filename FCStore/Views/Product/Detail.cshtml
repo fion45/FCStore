@@ -87,8 +87,25 @@
             </div>
             <div id="productChoose">
                 @{
-                    html = new HtmlString(Model.Chose);
-                    @html
+                    if (!string.IsNullOrEmpty(Model.Chose)) 
+                    {
+                        Newtonsoft.Json.Linq.JArray jArr = Newtonsoft.Json.Linq.JArray.Parse(Server.HtmlDecode(Model.Chose));
+                        foreach (Newtonsoft.Json.Linq.JObject item in jArr)
+                        {
+                            <div class="choseItem">
+                                <label class="title"> @(item["title"])：</label>
+                                @{
+                                    bool tag = true;
+                                    foreach(Newtonsoft.Json.Linq.JObject vItem in (Newtonsoft.Json.Linq.JArray) item["values"])
+                                    {
+                                        <span class="cValue @(tag ? "sel" : "" )" onclick="ProductDetail.onChoseItemClick(this)">@(vItem["name"])</span>
+                                        tag = false;
+                                    }
+                                }
+                                <div class="pullupDiv"></div>
+                            </div>
+                        }
+                    }
                 }
             </div>
             <div id="productSaleInput">
@@ -96,9 +113,20 @@
                     购买数量：
                 </div>
                 <div class="content">
-                    <input value="1" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
-                    编号：@(Model.PID)
+                    <div class="spinnerLeft"></div>
+                    <input class="spinner" value="1" type="text" />
+                    <div class="spinnerRight"></div>
+                    <div class="pullupDiv"></div>
                 </div>
+            </div>
+            <div id="productCode">
+                <div class="title">
+                    编号：
+                </div>
+                <div class="content">
+                    @(Model.PID)
+                </div>
+                <div class="pullupDiv"></div>
             </div>
             <div id="productBtn" class="p1">
                 <div class="p2">

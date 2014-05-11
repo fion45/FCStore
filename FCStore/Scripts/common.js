@@ -33,6 +33,49 @@ jQuery.fn.hideLoading = function() {
 	}
 };
 
+jQuery.fn.mySpinner = function (config) {
+    this.config = {
+        upEle: null,
+        downEle: null,
+        step: 1,
+        minVal: null,
+        maxVal : null
+    };
+    $.extend(this.config, config);
+    var _self = this;
+    if (this.config.upEle != null) {
+        this.config.upEle.click(function () {
+            var tmpI = parseInt(_self.val());
+            if (_self.config.maxVal != null) {
+                tmpI = Math.min(tmpI + _self.config.step, _self.config.maxVal);
+            }
+            else {
+                tmpI += _self.config.step;
+            }
+            _self.val(tmpI);
+        });
+    }
+    if (this.config.downEle != null) {
+        this.config.downEle.click(function () {
+            var tmpI = parseInt(_self.val());
+            if (_self.config.minVal != null) {
+                tmpI = Math.max(tmpI - _self.config.step, _self.config.minVal);
+            }
+            else {
+                tmpI -= _self.config.step;
+            }
+            _self.val(tmpI);
+        });
+    }
+    _self.keypress(function (ev) {
+        if (ev.charCode < 48 || ev.charCode > 57)
+            return false;
+        else if (_self.val() == "" && ev.charCode == 48) {
+            return false;
+        }
+    });
+};
+
 jQuery.extend({
 	myAjax : function(setting) {
 		var loadEle = setting.loadEle;

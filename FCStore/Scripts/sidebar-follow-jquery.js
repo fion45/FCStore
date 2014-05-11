@@ -26,7 +26,6 @@ SidebarFollow = function() {
 };
 
 SidebarFollow.prototype = {
-
 	init: function(config) {
 		this.config = config || this.config;
 		var _self = this;

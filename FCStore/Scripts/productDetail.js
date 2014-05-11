@@ -27,12 +27,12 @@
         });
         $("#spec-n1 a").attr({ href: jqimg.replace("\/n5\/", "\/n0\/") });
         $(this).css({
-            "border-color": "#BD0000",
-            "border-right": "2px solid #BD0000",
+            "border-color": "#50A6BD",
+            "border-right": "2px solid #50A6BD",
             "border-style": "solid",
             "border-width": "2px 2px 2px 2px",
             "padding": "2px 1px 2px 0px",
-            "border-left": "3px solid #cc000"
+            "border-left": "3px solid #50A6BD"
 
         });
     }).bind("mouseout", function () {

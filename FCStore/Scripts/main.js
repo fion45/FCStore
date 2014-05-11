@@ -15,8 +15,13 @@
         		ele.hide();
         }
     });
+    (new SidebarFollow()).init({
+        element: $('#Cart'),
+        distanceToTop: $('#Cart').position().top
+    });
     $("#Categorys .TCItem").bind("mouseenter", function (ev) {
         var item = $(this);
+        item.addClass("hover");
         var subDiv = item.next(".subCategory");
         subDiv.show();
         var height = subDiv.outerHeight();
@@ -24,7 +29,7 @@
         var pos = subDiv.position();
         var oY = os.top + height - $(document).scrollTop() - $(window).height();
         if (oY > 0) {
-            subDiv.animate({ "top": pos.top - oY }, 500);
+            subDiv.animate({ "top": pos.top - oY }, "fast");
         }
     }).bind("mouseleave", function (ev) {
         var item = $(this);
@@ -32,13 +37,20 @@
         if ($(ev.toElement)[0] != subDiv[0] && $(ev.toElement).parents('.subCategory').length == 0) {
             subDiv.hide();
             subDiv.css({ top: -1 });
+            item.removeClass("hover");
         }
         else
             subDiv.one("mouseleave", function (ev) {
                 $(this).hide();
                 $(this).css({ top: -1 });
                 subDiv.unbind();
+                item.removeClass("hover");
             });
+    });
+    $("#productSaleInput .spinner").mySpinner({
+        upEle: $("#productSaleInput .spinnerRight"),
+        downEle: $("#productSaleInput .spinnerLeft"),
+        minVal : 1
     });
 });
 
@@ -55,6 +67,15 @@ var MainLayout = {
     	});
 	}
 };
+
+var ProductDetail = {
+    onChoseItemClick: function (obj) {
+        var item = $(obj);
+        var par = item.parent();
+        var selItem = par.children(".sel").removeClass("sel");
+        item.addClass("sel");
+    }
+}
 
 var ProductList = {
     onByCategoryOrderClick : function(obj) {
