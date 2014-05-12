@@ -315,13 +315,23 @@ textarea {
         color:#50A6BD;
     }
 
-#Cart {
+#Favorite {
     position:absolute;
     top:100%;
     left:100%;
+    width:150px;
+    height:150px;
+    margin: -160px 0px 0px -160px;
+    background:url("/Content/themes/image/favorite.png") no-repeat center;
+}
+
+#Cart {
+    position:absolute;
+    top:100%;
+    left:10px;
     width:160px;
     height:145px;
-    margin:-155px 0px 0px -170px;
+    margin:-155px 0px 0px 0px;
     background:url("/Content/themes/image/shoppingCart.png") no-repeat center;
 
 }

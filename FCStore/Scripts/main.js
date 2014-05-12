@@ -16,6 +16,10 @@
         }
     });
     (new SidebarFollow()).init({
+        element: $('#Favorite'),
+        distanceToTop: $('#Favorite').position().top
+    });
+    (new SidebarFollow()).init({
         element: $('#Cart'),
         distanceToTop: $('#Cart').position().top
     });
