@@ -65,6 +65,7 @@ a:hover {
     color:white;
     font-size:15pt;
     font-weight:bolder;
+    cursor:pointer;
 }
 
 .btn1:hover {
@@ -79,6 +80,7 @@ a:hover {
     color:white;
     font-size:15pt;
     font-weight:bolder;
+    cursor:pointer;
 }
 
 .btn2:hover {
@@ -94,6 +96,7 @@ a:hover {
     color:white;
     font-size:15pt;
     font-weight:bolder;
+    cursor:pointer;
 }
 
 .btn3:hover {
@@ -514,12 +517,12 @@ textarea {
 }
 
     #PD_View .top {
-        width:100%;
+        width:98%;
         height:auto;
         border:solid 1px #ccc;
         border-radius:8px;
         box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
-        padding:5px;
+        padding:1%;
     }
 
 #preview {
@@ -600,6 +603,30 @@ textarea {
     background:url("/Content/themes/image/main.png") no-repeat -369px -83px;
 }
 
+#tabs {
+    margin-top:10px;
+    border-radius:8px;
+    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+}
+
+#tabs .ui-widget-header{
+    background:none;
+}
+
+#tabs .ui-widget-header li:first-child {
+    margin-left:8px;
+}
+
+#tabs .ui-tabs-panel {
+    padding-left:0px;
+    padding-right:0px;
+}
+
+#tabs .ui-tabs-nav {
+    border:none;
+    border-bottom:solid 1px #cccccc;
+}
+
 #descriptContent {
     margin-top:10px;
     width:100%;
@@ -613,11 +640,11 @@ textarea {
 
 #productInfo {
     float:left;
-    width:440px;
+    width:430px;
     height:auto;
     position:relative;
     min-height:415px;
-    margin-left:10px;
+    margin-left:6px;
 }
 
     #productInfo .title {
@@ -717,6 +744,18 @@ textarea {
             margin-right:8px;
         }
 
+        #productBrand .evaluate .empty{
+            background:url("/Content/themes/image/main.png") repeat -123px -167px;
+        }
+
+        #productBrand .evaluate .half{
+            background:url("/Content/themes/image/main.png") repeat -160px -167px;
+        }
+
+        #productBrand .evaluate .full{
+            background:url("/Content/themes/image/main.png") repeat -195px -167px;
+        }
+
 #productPrice {
     width:100%;
     margin:5px 0px 15px 7px;
@@ -804,7 +843,7 @@ textarea {
 .choseItemPar .sel {
     padding:1px 4px 1px 14px;
     border:solid 1px #35879d;
-    background: url("/Content/themes/image/main.png") no-repeat -123px -167px;
+    background: url("/Content/themes/image/main.png") no-repeat -869px 0px;
 }
 /* Product List
 ----------------------------------------------------------*/
@@ -827,14 +866,17 @@ textarea {
 
     .tool a {
         margin-left:5px;
+        padding-left:10px;
     }
 
     .tool .asc {
-        color:red;
+        background:url("/Content/themes/image/main.png") no-repeat -871px -22px;
+        color:#0000cc;
     }
 
     .tool .desc {
-        color:blue;
+        background:url("/Content/themes/image/main.png") no-repeat -871px -42px;
+        color:#cc0000;
     }
 
 .btool {

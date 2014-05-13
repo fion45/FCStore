@@ -74,6 +74,14 @@
     });
 
     $("#tabs").tabs();
+
+    $("#buyBtn").click(function () {
+
+    });
+
+    $("#keepBtn").click(function () {
+
+    });
 });
 
 var MainLayout = {
