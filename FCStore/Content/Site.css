@@ -6,7 +6,7 @@
 body {
     font-size: .85em;
     font-family: Tahoma, Geneva, sans-serif;
-    color: #232323;
+    color:#434343;
     background-color: #fff;
 }
 
@@ -56,6 +56,50 @@ a:hover {
 .p4 {
     width:25%;
 }
+
+.btn1 {
+    width:152px;
+    height:51px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -218px;
+    border:none;
+    color:white;
+    font-size:15pt;
+    font-weight:bolder;
+}
+
+.btn1:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -153px -218px;
+}
+
+.btn2 {
+    width:152px;
+    height:51px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -269px;
+    border:none;
+    color:white;
+    font-size:15pt;
+    font-weight:bolder;
+}
+
+.btn2:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -153px -269px;
+}
+
+
+.btn3 {
+    width:152px;
+    height:51px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -321px;
+    border:none;
+    color:white;
+    font-size:15pt;
+    font-weight:bolder;
+}
+
+.btn3:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -153px -321px;
+}
+
 
 /* loading
 -----------------------------------------------------------*/
@@ -144,50 +188,70 @@ textarea {
     width:880px;
 }
 
+/* Brand Item 
+----------------------------------------------------------*/
+
+.brandA {
+    display:block;
+    position:relative;
+    width:117px;
+    height:58px;
+}
+
+.brandA .icon {
+    width:100%;
+    height:100%;
+    float:left;
+    display:none;
+}
+
+.brandA .icon img {
+    width:100%;
+    height:100%;
+}
+
+.brandA .name {
+    position:absolute;
+    left:0px;
+    top:50%;
+    font-size:12pt;
+    font-weight:900;
+    width:100%;
+    margin-top: -9px;
+    word-wrap:break-word;
+    text-wrap:normal;
+    vertical-align:middle;
+    text-align:center;
+    color:#a2a2a2;
+}
+
 /* Brand List
 ----------------------------------------------------------*/
 #Brands {
     width:100%;
     overflow:hidden;
+    height:58px;
     max-height:120px;
+    background:url("/Content/themes/image/topBK.png") repeat;
 }
     #Brands li{
         position:relative;
-        width:100px;
+        width:117px;
+        height:58px;
         float:left;
         margin-right:4px;
         margin-bottom:2px;
     }
-        #Brands li .icon {
-            width:100%;
-            height:40px;
-        }
-
-            #Brands li .icon img {
-                width:100%;
-                height:40px;
-
-            }
-
-        #Brands li .name {
-            font-size:10pt;
-            font-weight:bolder;
-            width:100%;
-            height:18px;
-            line-height:18px;
-            word-wrap:break-word;
-            vertical-align:middle;
-            text-align:center;
-        }
 /* Toolbar
 ----------------------------------------------------------*/
 #Toolbar {
     width:100%;
     height:30px;
     background-color:#50A6BD;
-    margin-bottom:6px;
+    margin-bottom:10px;
     line-height:30px;
     vertical-align:middle;
+    box-shadow:0px 3px 8px 1px rgb(88, 88, 88);
 }
 
 #Toolbar .title {
@@ -201,10 +265,12 @@ textarea {
 ----------------------------------------------------------*/
 #Categorys {
     position:absolute;
-    top:170px;
+    top:100px;
     left:10px;
     width:150px;
     color:white;
+    border-radius:7px;
+    box-shadow:0px 3px 8px 3px rgb(204, 204, 204);
 }
     #Categorys .TCategory {
         font-size:13pt;
@@ -213,31 +279,40 @@ textarea {
         line-height:30px;
         width:100%;
         text-align:center;
-        border-top:solid 1px #50a6bd;
+        border-top:solid 1px #cccccc;
         position:relative;
-        background-color:#50a6bd;
+        background-color:white;
     }
 
         #Categorys .TCategory .hover .item{
             background-color:#68BCD3;
+            color:white;
+            border-right:solid 1px #68BCD3;
+            font-weight:700;
         }
 
     #Categorys .TCategory:first-child {
         border-top:none;
-        background:url("/Content/themes/image/main.png") no-repeat 0px 0px;
+        background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
         background-color:none;
     }
 
     #Categorys .TCategory:last-child {
+        height:8px;
+        border-top:none;
         border-bottom:none;
-        background:url("/Content/themes/image/main.png") no-repeat 0px -30px;
+        background:url("/Content/themes/image/main.png") no-repeat -1px -43px;
         background-color:none;
     }
 
     #Categorys .item {
-        width:150px;
+        width:148px;
         height:30px;
-        color:white;
+        color:#434343;
+        font-size:11pt;
+        font-weight:600;
+        border-left:solid 1px #cccccc;
+        border-right:solid 1px #cccccc;
     }
 
     #Categorys .subCategory {
@@ -246,7 +321,12 @@ textarea {
         top:-1px;
         width:650px;
         display:none;
-        background-color:#68BCD3;
+        background-color:#68BCD3;        
+        box-shadow:8px 8px 8px -5px rgb(204, 204, 204);
+    }
+
+    #Categorys .subCategory a:hover {
+        color:#FFAA24;
     }
 
         #Categorys .subCategory .scDiv {
@@ -263,7 +343,7 @@ textarea {
             color:black;
         }
 
-            #Categorys .subCategory .scDiv .scName a {
+            #Categorys .subCategory a {
                 color:white;
             }
 
@@ -284,10 +364,6 @@ textarea {
             line-height:20px;
             font-weight:normal;
         }
-
-            #Categorys .subCategory .scDiv .tcDiv a {
-                color:white;
-            }
 
 #TopBtn {
     position:absolute;
@@ -318,20 +394,20 @@ textarea {
 #Favorite {
     position:absolute;
     top:100%;
-    left:100%;
+    left:10pt;
     width:150px;
     height:150px;
-    margin: -160px 0px 0px -160px;
+    margin:-160px 0px 0px 0px;
     background:url("/Content/themes/image/favorite.png") no-repeat center;
 }
 
 #Cart {
     position:absolute;
     top:100%;
-    left:10px;
+    left:100%;
     width:160px;
     height:145px;
-    margin:-155px 0px 0px 0px;
+    margin: -155px 0px 0px -160px;
     background:url("/Content/themes/image/shoppingCart.png") no-repeat center;
 
 }
@@ -440,12 +516,17 @@ textarea {
     #PD_View .top {
         width:100%;
         height:auto;
+        border:solid 1px #ccc;
+        border-radius:8px;
+        box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+        padding:5px;
     }
 
 #preview {
     width:348px;
     height:auto;
     float:left;
+    margin:10px 0px;
 }
 
 #categoryNav {
@@ -463,8 +544,6 @@ textarea {
 #spec-n1 {
     width:348px;
     height:330px;
-    border:solid 1px #ccc;
-    border-radius:8px;
 }
 
 #productImage {
@@ -522,6 +601,7 @@ textarea {
 }
 
 #descriptContent {
+    margin-top:10px;
     width:100%;
     text-align:center;
 }
@@ -534,11 +614,10 @@ textarea {
 #productInfo {
     float:left;
     width:440px;
-    margin:0px 5px 5px 5px;
-    height:415px;
+    height:auto;
     position:relative;
-    border:solid 1px #ccc;
-    border-radius:8px;
+    min-height:415px;
+    margin-left:10px;
 }
 
     #productInfo .title {
@@ -551,59 +630,16 @@ textarea {
     #productInfo .content {
         text-align:left;
     }
-
-        #productInfo .content input {
-            width:52px;
-            height:24px;
-            float:left;
-        }
-
-        #productInfo .content .spinnerLeft {
-            width:29px;
-            height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
-            cursor:pointer;
-        }
-
-        #productInfo .content .spinnerRight {
-            width:29px;
-            height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
-            cursor:pointer;
-        }
-
-        #productInfo .content .spinnerLeft:hover {
-            background-position-x:-61px;
-        }
-
-        #productInfo .content .spinnerRight:hover {
-            background-position-x:-90px;
-        }
     
 #productTitle,#productBrand,#productPrice,#productSaleCount,#productSaleType,
 #productSend,#productChoose,#productSaleInput,#productCode {
-    margin-left:8px;
+    padding-left:8px;
 }
 
-    #productChoose .choseItem{
+    #productChoose .choseItemPar {
         margin:5px 0px;
         width:100%;
     }
-
-        #productChoose .choseItem .cValue {
-            color:#0078b6;
-            padding:1px 4px 1px 14px;
-            margin-right:8px;
-            float:left;
-            cursor:pointer;
-        }
-
-        #productChoose .choseItem .sel {
-            background:url("/Content/themes/image/main.png") no-repeat -18px -197px;
-            border:solid 1px #35879d;
-        }
 
 #productSaleInput {
     margin-top:10px;
@@ -612,55 +648,120 @@ textarea {
     vertical-align:middle;
 }
 
+        #productSaleInput input {
+            width:52px;
+            height:24px;
+            float:left;
+        }
+
+        #productSaleInput .spinnerLeft {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+            cursor:pointer;
+        }
+
+        #productSaleInput .spinnerRight {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+            cursor:pointer;
+        }
+
+        #productSaleInput .spinnerLeft:hover {
+            background-position-x:-61px;
+        }
+
+        #productSaleInput .spinnerRight:hover {
+            background-position-x:-90px;
+        }
+
 #productTitle {
     font-size:15pt;
     font-weight:bold;
-    width:100%;
-    margin:3px 5px;
+    width:98%;
+    margin: 0px 1%;
+    padding:10px 0px;
     text-align:left;
+    border-bottom:solid 1px #cccccc;
 }
 
 #productBrand {
     overflow:hidden;
     width:100%;
-    margin-top:15px;
+    margin-top:5px;
 }
 
     #productBrand div {
         float:left;
     }
 
-    #productBrand .brandName {
-        
+    #productBrand .brandA {
+        width:70px;
+        height:35px;
     }
+
+    #productBrand .evaluate {
+        float:right;
+        margin-right:15px;
+        width:230px;
+        height:35px;
+    }
+
+        #productBrand .evaluate .star {
+            float:left;
+            width:35px;
+            height:35px;
+            margin-right:8px;
+        }
 
 #productPrice {
     width:100%;
-    overflow:hidden
+    margin:5px 0px 15px 7px;
+    padding:10px 9px 10px 0px;
+    height:80px;
+    color:#FFC5C5;
+    background:url("/Content/themes/image/priceBK.png") repeat;
+    font-size:10pt;
+    position:relative;
 }
 
     #productPrice div {
         float:left;
     }
 
+    #productPrice .title {
+        clear:left;
+    }
+
     #productPrice .price {
-        color:red;
-        margin-right:5px;
+        font-size:23pt;
+        font-weight:bold;
+        margin-left:20px;
+        margin-bottom:5px;
+        color:white;
     }
 
     #productPrice .marketPrice {
         text-decoration:line-through
     }
 
-#productSaleCount {
-    text-align:left;
-    margin-bottom:15px;
-}
+    #productPrice .conner {
+        width:6px;
+        height:6px;
+        position:absolute;
+        top:100%;
+        left:100%;
+        margin-left:-6px;
+        background:url("/Content/themes/image/main.png") no-repeat -1px -198px;
+    }
 
 #productBtn {
-    position:absolute;
-    top:100%;
-    margin-top:-55px;
+    float:left;
+    width:100%;
+    margin:10px 0px;
 }
 
 #productBtn .p2{
@@ -685,14 +786,26 @@ textarea {
 
 #buyBtn,#keepBtn {
     margin:2px auto;
-    width:135px;
-    height:45px;
 }
 
 #productSend {
-    margin-bottom:15px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
+/* Chose Item
+----------------------------------------------------------*/
+.choseItemPar .choseItem {
+    cursor:pointer;
+    color:#0078b6;
+    padding:1px 5px 1px 15px;
+}
+
+.choseItemPar .sel {
+    padding:1px 4px 1px 14px;
+    border:solid 1px #35879d;
+    background: url("/Content/themes/image/main.png") no-repeat -123px -167px;
+}
 /* Product List
 ----------------------------------------------------------*/
 .productList {
@@ -767,6 +880,7 @@ textarea {
 .brandFilter {
     width:100%;
     border:solid 1px #cccccc;
+    margin-bottom:5px;
 }
 
     .brandFilter .title {
@@ -855,6 +969,10 @@ textarea {
         width:170px;
         margin:3px;
         font-size:10pt;
+    }
+
+    .productList .item:hover {
+        box-shadow:0px 3px 8px 1px #c8c8c8;
     }
 
         .productList .item img{

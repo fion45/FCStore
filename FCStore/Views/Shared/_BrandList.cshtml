@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<FCStore.Models.Brand>
 @foreach (var item in Model)
 {
-    <li>
-        <a href="/Product/ListByBrand/@(item.BID)">
+    <li class="bItem">
+        <a class="brandA" href="/Product/ListByBrand/@(item.BID)">
+            <div class="name">
+                @Html.DisplayFor(modelItem => item.NameStr)
+            </div>
             <div class="icon">
                 <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
-            </div>
-            <div class="name cut">
-                @Html.DisplayFor(modelItem => item.NameStr)
             </div>
         </a>
     </li>

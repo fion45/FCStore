@@ -56,6 +56,24 @@
         downEle: $("#productSaleInput .spinnerLeft"),
         minVal : 1
     });
+    $(".brandA").mouseenter(function () {
+        var item = $(this);
+        item.children(".name").hide();
+        item.children(".icon").show();
+    }).mouseleave(function () {
+        var item = $(this);
+        item.children(".name").show();
+        item.children(".icon").hide();
+    });
+
+    $(".choseItemPar .choseItem").click(function () {
+        var item = $(this);
+        var par = item.parent();
+        var selItem = par.children(".sel").removeClass("sel");
+        item.addClass("sel");
+    });
+
+    $("#tabs").tabs();
 });
 
 var MainLayout = {
@@ -71,15 +89,6 @@ var MainLayout = {
     	});
 	}
 };
-
-var ProductDetail = {
-    onChoseItemClick: function (obj) {
-        var item = $(obj);
-        var par = item.parent();
-        var selItem = par.children(".sel").removeClass("sel");
-        item.addClass("sel");
-    }
-}
 
 var ProductList = {
     onByCategoryOrderClick : function(obj) {
