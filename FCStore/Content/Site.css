@@ -512,17 +512,17 @@ textarea {
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {
-    width:800px;
+    width:840px;
     margin:0px auto;
 }
 
     #PD_View .top {
-        width:98%;
+        width:96%;
         height:auto;
         border:solid 1px #ccc;
         border-radius:8px;
         box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
-        padding:1%;
+        padding:10px 2%;
     }
 
 #preview {
@@ -603,48 +603,13 @@ textarea {
     background:url("/Content/themes/image/main.png") no-repeat -369px -83px;
 }
 
-#tabs {
-    margin-top:10px;
-    border-radius:8px;
-    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
-}
-
-#tabs .ui-widget-header{
-    background:none;
-}
-
-#tabs .ui-widget-header li:first-child {
-    margin-left:8px;
-}
-
-#tabs .ui-tabs-panel {
-    padding-left:0px;
-    padding-right:0px;
-}
-
-#tabs .ui-tabs-nav {
-    border:none;
-    border-bottom:solid 1px #cccccc;
-}
-
-#descriptContent {
-    margin-top:10px;
-    width:100%;
-    text-align:center;
-}
-
-#descriptContent * {
-    text-align:left;
-    margin:0px auto;
-}
-
 #productInfo {
     float:left;
-    width:430px;
+    width:445px;
     height:auto;
     position:relative;
     min-height:415px;
-    margin-left:6px;
+    margin-left:10px;
 }
 
     #productInfo .title {
@@ -757,8 +722,8 @@ textarea {
         }
 
 #productPrice {
-    width:100%;
-    margin:5px 0px 15px 7px;
+    width:103%;
+    margin:5px 0px 15px 6px;
     padding:10px 9px 10px 0px;
     height:80px;
     color:#FFC5C5;
@@ -830,6 +795,41 @@ textarea {
 #productSend {
     margin-top:5px;
     margin-bottom:5px;
+}
+
+#tabs {
+    margin-top:10px;
+    border-radius:8px;
+    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+}
+
+#tabs .ui-widget-header{
+    background:none;
+}
+
+#tabs .ui-widget-header li:first-child {
+    margin-left:8px;
+}
+
+#tabs .ui-tabs-panel {
+    width:98%;
+    padding:0px 1%;
+}
+
+#tabs .ui-tabs-nav {
+    border:none;
+    border-bottom:solid 1px #cccccc;
+}
+
+#descriptContent {
+    margin-top:10px;
+    width:100%;
+    text-align:center;
+}
+
+#descriptContent * {
+    text-align:left;
+    margin:0px auto;
 }
 
 /* Chose Item

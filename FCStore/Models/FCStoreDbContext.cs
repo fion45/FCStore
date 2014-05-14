@@ -21,5 +21,13 @@ namespace FCStore.Models
         public DbSet<ProductTag> ProductTags { get; set; }
 
         public DbSet<Column> Columns { get; set; }
+
+        public DbSet<Area> Areas { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
     }
 }

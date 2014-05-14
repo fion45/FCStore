@@ -27,6 +27,20 @@
         <div id="Toolbar">
             <label class="title">搜索：</label>
             <input type="text" />
+            <div id="userArea">
+                @if (Session["User"] != null)
+                {
+                    <div>
+                        登陆成功
+                    </div>
+                }
+                else
+                {
+                    <a>
+                        登陆
+                    </a>
+                }
+            </div>
         </div>
     </header>
     <div id="Main">
