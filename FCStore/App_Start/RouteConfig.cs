@@ -25,6 +25,12 @@ namespace FCStore
             );
 
             routes.MapRoute(
+                name: "login",
+                url: "User/Login",
+                defaults: new { controller = "User", action = "Login" }
+            );
+
+            routes.MapRoute(
                 name: "str1",
                 url: "Home/Login/{returnUrl}",
                 defaults: new { controller = "Home", action = "Login"}

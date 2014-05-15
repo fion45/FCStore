@@ -13,10 +13,10 @@ namespace FCStore.Controllers
     {
         private FCStoreDbContext db = new FCStoreDbContext();
 
-        public ActionResult Login(string ValidateCode, string loginID, string loginPSW)
+        public ActionResult Login(string userID, string PSW, string checkCode)
         {
             User user = null;
-            if (ValidateCode != Session["Validate_code"])
+            if (checkCode != (Session["Validate_code"].ToString()))
             {
                 ViewBag.LoginFail = -2;
             }
@@ -24,7 +24,7 @@ namespace FCStore.Controllers
             {
                 try
                 {
-                    user = db.Users.Where(r => (r.LoginID == loginID && r.LoginPSW == loginPSW)).First();
+                    user = db.Users.Where(r => (r.LoginID == userID && r.LoginPSW == PSW)).First();
                     ViewBag.LoginFail = 0;
                 }
                 catch

@@ -53,6 +53,10 @@ namespace FCStore
                 "~/Scripts/common.js",
                 "~/Scripts/sidebar-follow-jquery.js",
                 "~/Scripts/main.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/login").Include(
+                "~/Scripts/common.js",
+                "~/Scripts/login.js"));
         }
     }
 }

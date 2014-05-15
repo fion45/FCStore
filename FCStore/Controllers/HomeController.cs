@@ -53,20 +53,20 @@ namespace FCStore.Controllers
             }
             Session["Validate_code"] = validater;
 
-            int iWidth = str.Length * 11;
+            int iWidth = validater.Length * 11;
             Bitmap img = new Bitmap(iWidth, 20);
             Graphics g = Graphics.FromImage(img);
             g.Clear(Color.White);
 
             Color[] colors = new Color[] { Color.Black, Color.Red, Color.DarkBlue, Color.Green, Color.Chocolate, Color.Brown, Color.DarkCyan, Color.Purple };
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < validater.Length; i++)
             {
                 Color c = colors[rand.Next(0, colors.Length)];
                 Font f = new Font("Courier New", 11);
                 Brush b = new System.Drawing.SolidBrush(c);
 
                 //画字符
-                g.DrawString(str.Substring(i, 1), f, b, (i * 10) + 1, 1, StringFormat.GenericDefault);
+                g.DrawString(validater.Substring(i, 1), f, b, (i * 10) + 1, 1, StringFormat.GenericDefault);
             }
 
             //描边
