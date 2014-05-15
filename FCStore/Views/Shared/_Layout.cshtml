@@ -36,8 +36,13 @@
                 }
                 else
                 {
+                    <label class="title">你好，欢迎光临FCStore美国代购网！</label>
+                    <a href="/Home/Login/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsolutePath)))">
+                        请登陆
+                    </a>
+                    <label> | </label>
                     <a>
-                        登陆
+                        免费注册
                     </a>
                 }
             </div>

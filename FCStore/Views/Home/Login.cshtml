@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LoginPage</title>
+    @Styles.Render("~/Content/loginPage")
+</head>
+<body>
+    <div id="loginDiv">
+        <div class="ele">
+            <div class="title">
+                <label>用户名：</label>
+            </div>
+            <div class="content">
+                <input type="text" />
+            </div>
+            <div class="title">
+                <label>密码：</label>
+            </div>
+            <div class="content">
+                <input type="password" />
+            </div>
+            <div class="title">
+                <label>验证码：</label>
+            </div>
+            <div class="content">
+                <input type="text" />
+            </div>
+            <div class="content">
+                <input id="loginBtn" type="button" value="登陆" />
+            </div>
+        </div>
+        <div class="rightDiv">
+            <label>还不是FCStore会员吗？立刻成为会员，即享100积分</label>
+            <input id="registerBtn" type="button" value="免费注册" />
+        </div>
+    </div>
+</body>
+</html>

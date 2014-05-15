@@ -56,5 +56,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public string Permission
+        {
+            get;
+            set;
+        }
     }
 }

@@ -12,10 +12,22 @@ namespace FCStore
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
             routes.MapRoute(
                 name: "ProductList",
                 url: "{controller}/{action}/{id}/{pIndex}/{hashOrder}/{hashWhere}",
-                defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" }
+                defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" },
+                constraints: new RouteValueDictionary
+                {
+                    {"id", @"\d"},
+                    {"pIndex", @"\d"}
+                }
+            );
+
+            routes.MapRoute(
+                name: "str1",
+                url: "Home/Login/{returnUrl}",
+                defaults: new { controller = "Home", action = "Login"}
             );
 
             routes.MapRoute(

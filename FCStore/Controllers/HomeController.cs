@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
+using System.Text;
 
 using System.Drawing;
 using System.IO;
@@ -19,6 +20,17 @@ namespace FCStore.Controllers
         public ActionResult Index()
         {
             return View(db.Columns.ToList());
+        }
+
+        //[RequireHttps]
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.returnUrl = "";
+            if(!string.IsNullOrEmpty(returnUrl))
+            {
+                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(returnUrl));
+            }
+            return View();
         }
 
         public ActionResult GetValidateCode()
