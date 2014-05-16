@@ -55,7 +55,7 @@ namespace FCStore.FilterAttribute
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            HttpCookie authCookie = httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+            HttpCookie authCookie = httpContext.Response.Cookies[FormsAuthentication.FormsCookieName];
             if  (authCookie ==  null  || authCookie.Value ==  "" )
             {
                 //游客
@@ -77,26 +77,20 @@ namespace FCStore.FilterAttribute
                 try
                 {
                     //对当前的cookie进行解密   
-                    authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    Regex rgx = new Regex("<RIDARR>(?.+)</RIDARR><RNARR>(?.+)</RNARR><PERMISSION>(?.+)</PERMISSION>");
-                    Match tmpMatch = rgx.Match(authTicket.UserData);
-                    if(!string.IsNullOrEmpty(tmpMatch.Value)) {
-                        string RIDArr = tmpMatch.Groups[0].Value;
-                        string RNameArr = tmpMatch.Groups[1].Value;
-                        string RPerArr = tmpMatch.Groups[2].Value;
-                        httpContext.User = new MyUser(authTicket.Name, RIDArr, RNameArr, RPerArr);
-                        if (RPerArr.IndexOf(",ALL,") < 0 && RPerArr.IndexOf("," + mControllerName + ",") < 0 || RPerArr.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
-                        {
-                            httpContext.Response.StatusCode = 401;//无权限状态码
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else {
+                    //authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    //Regex rgx = new Regex("<RIDARR>(?.+)</RIDARR><RNARR>(?.+)</RNARR><PERMISSION>(?.+)</PERMISSION>");
+                    //Match tmpMatch = rgx.Match(authTicket.UserData);
+
+
+                    MyUser tmpUser = httpContext.User as MyUser;
+                    if (tmpUser.HavePermission(",ALL,") && tmpUser.HavePermissionInAction(mControllerName, mActionName))
+                    {
+                        httpContext.Response.StatusCode = 401;//无权限状态码
                         return false;
+                    }
+                    else
+                    {
+                        return true;
                     }
                 }
                 catch
@@ -121,9 +115,9 @@ namespace FCStore.FilterAttribute
                 }
                 else
                 {
-                    string path = HttpUtility.HtmlEncode(filterContext.HttpContext.Request.Url.AbsolutePath);
+                    string path = HttpUtility.HtmlEncode(filterContext.HttpContext.Request.Url.AbsoluteUri);
                     string strUrl = "/Home/Login/{0}";
-                    filterContext.HttpContext.Response.Redirect(string.Format(strUrl, HttpUtility.UrlEncode(path)), true);
+                    filterContext.HttpContext.Response.Redirect(string.Format(strUrl, Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(path))), true);
                 }
             }
         }

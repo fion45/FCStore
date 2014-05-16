@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace FCStore.Models
 {
@@ -36,6 +37,13 @@ namespace FCStore.Models
         }
 
         public string Permission
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public List<User> Users
         {
             get;
             set;

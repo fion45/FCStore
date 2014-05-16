@@ -73,7 +73,7 @@ namespace FCStore.Common
 
         public bool HavePermissionInAction(string controller, string action)
         {
-            return Permission.IndexOf("," + controller + "." + action + ",") > -1;
+            return Permission.IndexOf("," + controller + ",") > -1 || Permission.IndexOf("," + controller + "." + action + ",") > -1;
         }
 
         public bool HavePermission(string permissionStr)

@@ -9,6 +9,7 @@ using FCStore.Models;
 using System.Web.Security;
 using FCStore.FilterAttribute;
 using System.Text;
+using FCStore.Common;
 
 namespace FCStore.Controllers
 {
@@ -37,9 +38,9 @@ namespace FCStore.Controllers
                     StringBuilder tmpRNStr = new StringBuilder(",");
                     foreach (Role role in user.Roles)
                     {
-                        tmpRPStr.Append(role.Permission + ",");
                         tmpRIDStr.Append(role.RID + ",");
                         tmpRNStr.Append(role.RoleName + ",");
+                        tmpRPStr.Append(role.Permission + ",");
                     }
                     string tmpStr = string.Format("<RIDARR>{0}</RIDARR><RNARR>{1}</RNARR><PERMISSION>{2}</PERMISSION>", tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
 
@@ -79,8 +80,17 @@ namespace FCStore.Controllers
 
         public ActionResult Registe(User user)
         {
+            return View(user);
+        }
 
-
+        [MyAuthorizeAttribute]
+        public ActionResult Details(int id = 0)
+        {
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
             return View(user);
         }
 
