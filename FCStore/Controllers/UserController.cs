@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
+using System.Web.Security;
+using FCStore.FilterAttribute;
+using System.Text;
 
 namespace FCStore.Controllers
 {
@@ -15,6 +18,10 @@ namespace FCStore.Controllers
 
         public ActionResult Login(string userID, string PSW, string checkCode)
         {
+            if (userID == null || PSW == null || checkCode == null || Session["Validate_code"] == null)
+            {
+                return RedirectToAction("Login","Home");
+            }
             User user = null;
             if (checkCode != (Session["Validate_code"].ToString()))
             {
@@ -25,6 +32,32 @@ namespace FCStore.Controllers
                 try
                 {
                     user = db.Users.Where(r => (r.LoginID == userID && r.LoginPSW == PSW)).First();
+                    StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
+                    StringBuilder tmpRIDStr = new StringBuilder(",");
+                    StringBuilder tmpRNStr = new StringBuilder(",");
+                    foreach (Role role in user.Roles)
+                    {
+                        tmpRPStr.Append(role.Permission + ",");
+                        tmpRIDStr.Append(role.RID + ",");
+                        tmpRNStr.Append(role.RoleName + ",");
+                    }
+                    string tmpStr = string.Format("<RIDARR>{0}</RIDARR><RNARR>{1}</RNARR><PERMISSION>{2}</PERMISSION>", tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
+
+                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                       1,
+                       user.UserName,
+                       DateTime.Now,
+                       DateTime.Now.AddMinutes(30),
+                       true,
+                       tmpStr);
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    //设置cookie
+                    HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    authCookie.Values.Add("UID", user.UID.ToString());
+                    authCookie.Values.Add("UserName", user.UserName);
+                    authCookie.Values.Add("RID", tmpRIDStr.ToString());
+                    authCookie.Values.Add("Permission", tmpRPStr.ToString());
+                    Response.Cookies.Add(authCookie);
                     ViewBag.LoginFail = 0;
                 }
                 catch
@@ -49,112 +82,6 @@ namespace FCStore.Controllers
 
 
             return View(user);
-        }
-
-        //
-        // GET: /User/
-
-        public ActionResult Index()
-        {
-            var users = db.Users.Include(u => u.Role);
-            return View(users.ToList());
-        }
-
-        //
-        // GET: /User/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        //
-        // GET: /User/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.RID = new SelectList(db.Roles, "RID", "RoleName");
-            return View();
-        }
-
-        //
-        // POST: /User/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Users.Add(user);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.RID = new SelectList(db.Roles, "RID", "RoleName", user.RID);
-            return View(user);
-        }
-
-        //
-        // GET: /User/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.RID = new SelectList(db.Roles, "RID", "RoleName", user.RID);
-            return View(user);
-        }
-
-        //
-        // POST: /User/Edit/5
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.RID = new SelectList(db.Roles, "RID", "RoleName", user.RID);
-            return View(user);
-        }
-
-        //
-        // GET: /User/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        //
-        // POST: /User/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

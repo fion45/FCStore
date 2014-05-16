@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using FCStore.Models;
 using System.Web.Security;
 using System.Text;
+using FCStore.Common;
+using System.Text.RegularExpressions;
 
 namespace FCStore.FilterAttribute
 {
@@ -16,17 +18,34 @@ namespace FCStore.FilterAttribute
         private static List<Role> mRoles;
         private static object mInitializerLock = new object();
         private static bool mIsInitialized;
+        private static string mAllPermission;
 
         private string mControllerName;
         private string mActionName;
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            LazyInitializer.EnsureInitialized(ref mRoles, ref mIsInitialized, ref mInitializerLock,() =>
+            LazyInitializer.EnsureInitialized(ref mRoles, ref mIsInitialized, ref mInitializerLock, () =>
                 {
                     mRoles = new List<Role>();
                     FCStoreDbContext db = new FCStoreDbContext();
                     mRoles = db.Roles.ToList();
+                    StringBuilder tmpSB = new StringBuilder();
+                    tmpSB.Append(',');
+                    HashSet<string> tmpSet = new HashSet<string>();
+                    foreach(Role role in mRoles)
+                    {
+                        string[] tmpStrArr = role.Description.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries);
+                        foreach(string PStr in tmpStrArr)
+                        {
+                            if(!tmpSet.Contains(PStr))
+                            {
+                                tmpSB.Append(PStr + ",");
+                                tmpSet.Add(PStr);
+                            }
+                        }
+                    }
+                    mAllPermission = tmpSB.ToString();
                     return mRoles;
                 });
             mControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
@@ -40,14 +59,8 @@ namespace FCStore.FilterAttribute
             if  (authCookie ==  null  || authCookie.Value ==  "" )
             {
                 //游客
-                StringBuilder tmpSB = new StringBuilder();
-                tmpSB.Append(',');
-                foreach(Role role in mRoles)
-                {
-                    tmpSB.Append(role.Description + ",");
-                }
-                string tmpStr = tmpSB.ToString();
-                if (tmpStr.IndexOf("," + mControllerName + ",") < 0 || tmpStr.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
+
+                if (mAllPermission.IndexOf("," + mControllerName + ",") < 0 || mAllPermission.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
                 {
                     httpContext.Response.StatusCode = 401;//无权限状态码
                     return false;
@@ -65,17 +78,25 @@ namespace FCStore.FilterAttribute
                 {
                     //对当前的cookie进行解密   
                     authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    int RID = int.Parse(authTicket.UserData);
-                    Role tmpRole = mRoles.Find(r => r.RID == RID);
-                    string tmpStr = "," + tmpRole.Description + ",";
-                    if(tmpStr.IndexOf(",ALL,") < 0 && tmpStr.IndexOf("," + mControllerName + ",") < 0 || tmpStr.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
-                    {
-                        httpContext.Response.StatusCode = 401;//无权限状态码
-                        return false;
+                    Regex rgx = new Regex("<RIDARR>(?.+)</RIDARR><RNARR>(?.+)</RNARR><PERMISSION>(?.+)</PERMISSION>");
+                    Match tmpMatch = rgx.Match(authTicket.UserData);
+                    if(!string.IsNullOrEmpty(tmpMatch.Value)) {
+                        string RIDArr = tmpMatch.Groups[0].Value;
+                        string RNameArr = tmpMatch.Groups[1].Value;
+                        string RPerArr = tmpMatch.Groups[2].Value;
+                        httpContext.User = new MyUser(authTicket.Name, RIDArr, RNameArr, RPerArr);
+                        if (RPerArr.IndexOf(",ALL,") < 0 && RPerArr.IndexOf("," + mControllerName + ",") < 0 || RPerArr.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
+                        {
+                            httpContext.Response.StatusCode = 401;//无权限状态码
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
-                    else
-                    {
-                        return true;
+                    else {
+                        return false;
                     }
                 }
                 catch

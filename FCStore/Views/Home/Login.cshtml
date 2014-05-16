@@ -11,49 +11,58 @@
     @Styles.Render("~/Content/loginPage")
 </head>
 <body>
-    <div id="loginDiv">
-        <div class="ltTitle">用户登陆</div>
-        <div class="ele">
-            <div class="title">
-                <label>用户名：</label>
+    <div id="centerDiv">
+        <div id="loginDiv" style="@(User.Identity.IsAuthenticated ? "display:none" : "")">
+            <div class="ltTitle">用户登陆</div>
+            <div class="ele">
+                <div class="title">
+                    <label>用户名：</label>
+                </div>
+                <div class="content">
+                    <input id="UIDTB" class="enterTB" type="text" />
+                </div>
+                <div class="title">
+                    <label>密码：</label>
+                </div>
+                <div class="content">
+                    <input id="PSWTB" class="enterTB" type="password" />
+                </div>
+                <div class="title">
+                    <label>验证码：</label>
+                </div>
+                <div class="content ccDiv1">
+                    <input id="checkCodeTB" class="enterTB" type="text" />
+                </div>
+                <div class="content ccDiv2">
+                    <img id="ccImg" src="/Home/GetValidateCode" />
+                </div>
+                <div class="content">
+                    <input id="loginBtn" type="button" value="登陆" />
+                </div>
             </div>
-            <div class="content">
-                <input id="UIDTB" class="enterTB" type="text" />
-            </div>
-            <div class="title">
-                <label>密码：</label>
-            </div>
-            <div class="content">
-                <input id="PSWTB" class="enterTB" type="password" />
-            </div>
-            <div class="title">
-                <label>验证码：</label>
-            </div>
-            <div class="content ccDiv1">
-                <input id="checkCodeTB" class="enterTB" type="text" />
-            </div>
-            <div class="content ccDiv2">
-                <img src="/Home/GetValidateCode" />
-            </div>
-            <div class="content">
-                <input id="loginBtn" type="button" value="登陆" />
+            <div class="rightDiv">
+                <div class="register">
+                    <label class="tFont">还不是FCStore会员吗？立刻成为会员，即享100积分</label>
+                    <input id="registerBtn" type="button" value="免费注册" />
+                </div>
+                <div class="otherLogin">
+                    <div class="tFont">使用其他账号登录FCStore购物网：</div>
+                    <div class="p2">QQ登陆</div>
+                    <div class="p2">新浪微博</div>
+                    <div class="p2">人人网</div>
+                    <div class="p2">豆瓣登陆</div>
+                </div>
             </div>
         </div>
-        <div class="rightDiv">
-            <div class="register">
-                <label>还不是FCStore会员吗？立刻成为会员，即享100积分</label>
-                <input id="registerBtn" type="button" value="免费注册" />
-            </div>
-            <div class="otherLogin">
-                <div>使用其他账号登录美国购物网：</div>
-                <div class="p2">QQ登陆</div>
-                <div class="p2">新浪微博</div>
-                <div class="p2">人人网</div>
-                <div class="p2">豆瓣登陆</div>
-            </div>
+        <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
+            <label class="blb">欢迎<a class="userName" href="/User/Detail"></a>光临</label>
+            <label class="blb">Wellcome Wellcome</label>
+            <label>程序在<label>5</label>秒后跳转至：</label>
+            <a href="@(ViewBag.returnUrl)">@(ViewBag.returnUrl)</a>
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/login")
 </body>
 </html>

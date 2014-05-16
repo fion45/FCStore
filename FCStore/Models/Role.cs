@@ -23,6 +23,12 @@ namespace FCStore.Models
             set;
         }
 
+        public int Level
+        {
+            get;
+            set;
+        }
+
         public string Description
         {
             get;

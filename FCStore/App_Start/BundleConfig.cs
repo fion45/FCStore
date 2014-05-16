@@ -18,6 +18,9 @@ namespace FCStore
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquerycookie").Include(
+                        "~/Scripts/jquery.cookie.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-1.8.24.js"));
 

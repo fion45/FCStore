@@ -18,12 +18,19 @@ namespace FCStore.Models
             set;
         }
 
+        public string UserName
+        {
+            get;
+            set;
+        }
+
         public string LoginID
         {
             get;
             set;
         }
 
+        [DataType(DataType.Password)]
         [JsonIgnore]
         public string LoginPSW
         {
@@ -31,15 +38,7 @@ namespace FCStore.Models
             set;
         }
 
-        [ForeignKey("Role")]
-        public int RID
-        {
-            get;
-            set;
-        }
-
-        [JsonIgnore]
-        public Role Role
+        public virtual List<Role> Roles
         {
             get;
             set;
