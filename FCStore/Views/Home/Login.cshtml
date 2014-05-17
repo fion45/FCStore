@@ -55,7 +55,7 @@
             </div>
         </div>
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
-            <label class="blb">欢迎<a class="userName" href="/User/Details"></a>光临</label>
+            <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临</label>
             <label class="blb">Wellcome Wellcome</label>
             <label>程序在<label>5</label>秒后跳转至：</label>
             <a href="@(ViewBag.returnUrl)">@(ViewBag.returnUrl)</a>

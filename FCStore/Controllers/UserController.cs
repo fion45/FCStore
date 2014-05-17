@@ -42,7 +42,7 @@ namespace FCStore.Controllers
                         tmpRNStr.Append(role.RoleName + ",");
                         tmpRPStr.Append(role.Permission + ",");
                     }
-                    string tmpStr = string.Format("<RIDARR>{0}</RIDARR><RNARR>{1}</RNARR><PERMISSION>{2}</PERMISSION>", tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
+                    string tmpStr = string.Format("<USERID>{0}</USERID><USERNAME>{1}</USERNAME><RIDARR>{2}</RIDARR><RNARR>{3}</RNARR><PERMISSION>{4}</PERMISSION>", user.UID,user.UserName,tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
 
                     FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
                        1,
@@ -52,8 +52,12 @@ namespace FCStore.Controllers
                        true,
                        tmpStr);
                     string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                    //设置cookie
+
+                    //设置cookie(不能合在一起，奇怪)
                     HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    Response.Cookies.Add(authCookie);
+
+                    authCookie = new HttpCookie("UserInfo");
                     authCookie.Values.Add("UID", user.UID.ToString());
                     authCookie.Values.Add("UserName", user.UserName);
                     authCookie.Values.Add("RID", tmpRIDStr.ToString());
@@ -84,13 +88,10 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details()
         {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
+            int UID = int.Parse(HttpContext.User.Identity.Name);
+            User user = db.Users.Find(new object[] { UID });
             return View(user);
         }
 

@@ -21,7 +21,7 @@
                     else {
                     	$("#loginDiv").remove();
                     	$("#resultDiv").show();
-                    	$("#resultDiv .userName").text($.cookie('.ASPXFORMSAUTH').UserName);
+                    	$("#resultDiv .userName").text($.cookie('UserInfo').UserName);
                     }
                 }
             });

@@ -9,7 +9,6 @@ using FCStore.Models;
 using System.Web.Security;
 using System.Text;
 using FCStore.Common;
-using System.Text.RegularExpressions;
 
 namespace FCStore.FilterAttribute
 {
@@ -55,11 +54,10 @@ namespace FCStore.FilterAttribute
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            HttpCookie authCookie = httpContext.Response.Cookies[FormsAuthentication.FormsCookieName];
-            if  (authCookie ==  null  || authCookie.Value ==  "" )
+            HttpCookie authCookie = httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie == null || authCookie.Value == "" || authCookie.Value == null)
             {
                 //游客
-
                 if (mAllPermission.IndexOf("," + mControllerName + ",") < 0 || mAllPermission.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
                 {
                     httpContext.Response.StatusCode = 401;//无权限状态码
@@ -73,28 +71,29 @@ namespace FCStore.FilterAttribute
             else
             {
                 //登陆用户
-                FormsAuthenticationTicket authTicket;
                 try
                 {
-                    //对当前的cookie进行解密   
-                    //authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    //Regex rgx = new Regex("<RIDARR>(?.+)</RIDARR><RNARR>(?.+)</RNARR><PERMISSION>(?.+)</PERMISSION>");
-                    //Match tmpMatch = rgx.Match(authTicket.UserData);
-
-
                     MyUser tmpUser = httpContext.User as MyUser;
+                    if (tmpUser == null)
+                    {
+                        //清除状态，cookie有错误
+
+                        httpContext.Response.StatusCode = 401;//无权限状态码
+                        return false;
+                    }
                     if (tmpUser.HavePermission(",ALL,") && tmpUser.HavePermissionInAction(mControllerName, mActionName))
+                    {
+                        return true;
+                    }
+                    else
                     {
                         httpContext.Response.StatusCode = 401;//无权限状态码
                         return false;
                     }
-                    else
-                    {
-                        return true;
-                    }
                 }
                 catch
                 {
+                    httpContext.Response.StatusCode = 401;
                     return false;
                 }  
             }

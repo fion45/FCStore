@@ -8,6 +8,8 @@ namespace FCStore.Common
     {
         private bool IsGuest;
 
+        private int UID;
+
         private string UserName;
 
         private string RIDArrStr;
@@ -16,9 +18,10 @@ namespace FCStore.Common
 
         private string Permission;
 
-        public MyUser(string Name, string RStr,string RNStr,string permission)
+        public MyUser(int uid,string UName, string RStr,string RNStr,string permission)
         {
-            UserName = Name;
+            UID = uid;
+            UserName = UName;
             IsGuest = string.IsNullOrEmpty(UserName);
             RIDArrStr = RStr;
             RNameArrStr = RNStr;

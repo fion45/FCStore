@@ -8,6 +8,9 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using FCStore.Models;
 using System.Data.Entity;
+using System.Web.Security;
+using System.Text.RegularExpressions;
+using FCStore.Common;
 
 namespace FCStore
 {
@@ -54,6 +57,24 @@ namespace FCStore
                 }
             }
             Server.ClearError();
+        }
+
+        void Application_OnPostAuthenticateRequest(object sender, EventArgs e)
+        {
+            HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null && authCookie.Value != "" && authCookie.Value != null)
+            {
+                //对当前的cookie进行解密   
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                Regex rgx = new Regex("<USERID>(.+)</USERID><USERNAME>(.+)</USERNAME><RIDARR>(.+)</RIDARR><RNARR>(.+)</RNARR><PERMISSION>(.+)</PERMISSION>");
+                Match tmpMatch = rgx.Match(authTicket.UserData);
+
+                if (!string.IsNullOrEmpty(tmpMatch.Value) && HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity is FormsIdentity)
+                {
+                    MyUser myUser = new MyUser(int.Parse(tmpMatch.Groups[0].Value), tmpMatch.Groups[1].Value, tmpMatch.Groups[2].Value, tmpMatch.Groups[3].Value, tmpMatch.Groups[4].Value);
+                    HttpContext.Current.User = myUser;
+                }
+            }
         }
     }
 }
