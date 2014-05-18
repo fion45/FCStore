@@ -61,5 +61,29 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public uint Gift
+        {
+            get;
+            set;
+        }
+
+        [NotMapped]
+        public string Phone
+        {
+            get
+            {
+                return Addresses.Count > 0 ? Addresses[0].Phone : "";
+            }
+        }
+
+        [NotMapped]
+        public string[] PermissionTag
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

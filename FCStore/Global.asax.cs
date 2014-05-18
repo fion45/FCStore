@@ -71,7 +71,7 @@ namespace FCStore
 
                 if (!string.IsNullOrEmpty(tmpMatch.Value) && HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity is FormsIdentity)
                 {
-                    MyUser myUser = new MyUser(int.Parse(tmpMatch.Groups[0].Value), tmpMatch.Groups[1].Value, tmpMatch.Groups[2].Value, tmpMatch.Groups[3].Value, tmpMatch.Groups[4].Value);
+                    MyUser myUser = new MyUser(int.Parse(tmpMatch.Groups[1].Value), tmpMatch.Groups[2].Value, tmpMatch.Groups[3].Value, tmpMatch.Groups[4].Value, tmpMatch.Groups[5].Value);
                     HttpContext.Current.User = myUser;
                 }
             }

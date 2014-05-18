@@ -55,12 +55,15 @@
             </div>
         </div>
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
-            <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临</label>
-            <label class="blb">Wellcome Wellcome</label>
-            <label>程序在<label>5</label>秒后跳转至：</label>
-            <a href="@(ViewBag.returnUrl)">@(ViewBag.returnUrl)</a>
+            <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
+            <label class="blb welcome">Welcome Welcome</label>
+            @{
+                string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ?  HttpContext.Current.Request.Url.AbsolutePath + "/Home/Index" : ViewBag.returnUrl;
+            }
+            <label class="bottom">程序在<label class="ticket">5</label>秒后跳转至：<a href="@(urlStr)">@(urlStr)</a></label>
         </div>
     </div>
+    <div id="loginTop"></div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/login")

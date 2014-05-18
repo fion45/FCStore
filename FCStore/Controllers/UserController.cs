@@ -90,9 +90,26 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult Details()
         {
-            int UID = int.Parse(HttpContext.User.Identity.Name);
-            User user = db.Users.Find(new object[] { UID });
+            MyUser tmpUser = HttpContext.User as MyUser;
+            User user = null;
+            if (tmpUser == null)
+            {
+                throw new Exception("User error");
+            }
+            else
+            {
+                user = db.Users.Find(new object[] { tmpUser.UID });
+            }
             return View(user);
+        }
+
+        public ActionResult Exit()
+        {
+            //退出，设置Cookie超时和User
+            HttpCookie authCookie = Response.Cookies[FormsAuthentication.FormsCookieName];
+            authCookie.Expires = DateTime.MinValue;
+
+            return Redirect("/");
         }
 
         protected override void Dispose(bool disposing)

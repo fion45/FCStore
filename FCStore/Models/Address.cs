@@ -25,7 +25,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
-        public Area Area
+        public virtual Area Area
         {
             get;
             set;
@@ -37,11 +37,12 @@ namespace FCStore.Models
             set;
         }
 
+        [NotMapped]
         public string FullAddress
         {
             get
             {
-                return "";
+                return Area.JoinDescription + AddressName;
             }
         }
 

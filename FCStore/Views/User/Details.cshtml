@@ -4,4 +4,84 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="mapDiv">
+    <div>当前位置：</div>
+    <div><a href="/Home/Index">首页</a></div>
+    <div>></div>
+    <div>个人信息中心</div>
+</div>
+<div id="userInfo">
+    <div class="info">
+        <img class="headImg" />
+        <div class="nameDiv">
+            <label class="title">名称：</label>
+            <label class="value">@(Model.UserName)</label>
+        </div>
+        <div class="phoneDiv">
+            <label class="title">电话：</label>
+            <label class="value">@(Model.Phone)</label>
+        </div>
+        <div class="emailDiv">
+            <label class="title">邮箱：</label>
+            <label class="value">@(Model.Email)</label>
+        </div>
+        <div class="roleDiv">
+            <label class="title">身份：</label>
+            <label class="value">
+                @foreach(FCStore.Models.Role role in Model.Roles)
+                {
+                    <img src="/Content/themes/image/@(role.RoleName).png" />
+                }
+            </label>
+        </div>
+        <div class="giftDiv">
+            <label class="title">积分：</label>
+            <label class="value">@(Model.Gift)</label>
+        </div>
+        <div class="perDiv">
+            <label class="title">权利：</label>
+            <label class="value">
+                @if (Model.PermissionTag != null && Model.PermissionTag.Length > 0)
+                {
+                    foreach (string perStr in Model.PermissionTag)
+                    {
+                        <img src="/Content/themes/image/@(perStr).png" />
+                    }
+                }
+            </label>
+        </div>
+        <div class="btnDiv">
+            <div class="editBtn" onclick="">编辑</div>
+        </div>
+    </div>
+    <div class="rightDiv">
+        <div class="title">联系地址：</div>
+        <div class="addresses">
+            @foreach(FCStore.Models.Address add in Model.Addresses)
+            {
+                <div class="item">
+                    <label class="title">联系电话：</label>
+                    <label class="value">@(add.Phone)</label>
+                    <label class="title">收货地址：</label>
+                    <label class="value">@(add.FullAddress)</label>
+                    <div class="pullupDiv"></div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="pullupDiv"></div>
+</div>
+<div id="productList">
+    <div class="recent">
+        <div class="title">最近浏览：</div>
+        <div></div>
+    </div>
+    <div class="recommend">
+        <div class="title">推荐商品：</div>
+        <div></div>
+    </div>
+    <div class="pullupDiv"></div>
+</div>
+<div id="orderList">
+    <div class="title">订单跟踪：</div>
+</div>

@@ -77,11 +77,11 @@ namespace FCStore.FilterAttribute
                     if (tmpUser == null)
                     {
                         //清除状态，cookie有错误
-
+                        httpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
                         httpContext.Response.StatusCode = 401;//无权限状态码
                         return false;
                     }
-                    if (tmpUser.HavePermission(",ALL,") && tmpUser.HavePermissionInAction(mControllerName, mActionName))
+                    if (tmpUser.HavePermission("ALL") || tmpUser.HavePermissionInAction(mControllerName, mActionName))
                     {
                         return true;
                     }
@@ -110,13 +110,13 @@ namespace FCStore.FilterAttribute
                             Data = new {IsSuccess = false, Message = "不好意思,登录超时,请重新登录再操作!"},
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
-                    return;
                 }
                 else
                 {
                     string path = HttpUtility.HtmlEncode(filterContext.HttpContext.Request.Url.AbsoluteUri);
                     string strUrl = "/Home/Login/{0}";
                     filterContext.HttpContext.Response.Redirect(string.Format(strUrl, Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(path))), true);
+                    filterContext.HttpContext.Response.End();
                 }
             }
         }

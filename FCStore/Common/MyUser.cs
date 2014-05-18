@@ -6,17 +6,17 @@ namespace FCStore.Common
 {
     public class MyUser : IPrincipal, IIdentity
     {
-        private bool IsGuest;
+        public bool IsGuest;
 
-        private int UID;
+        public int UID;
 
-        private string UserName;
+        public string UserName;
 
-        private string RIDArrStr;
+        public string RIDArrStr;
 
-        private string RNameArrStr;
+        public string RNameArrStr;
 
-        private string Permission;
+        public string Permission;
 
         public MyUser(int uid,string UName, string RStr,string RNStr,string permission)
         {

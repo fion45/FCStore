@@ -53,5 +53,14 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        [NotMapped]
+        public string JoinDescription
+        {
+            get
+            {
+                return CountryName + " " + ProvinceName + " " + CityName + " " + CountyName;
+            }
+        }
     }
 }
