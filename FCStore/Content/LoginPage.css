@@ -146,14 +146,21 @@ body {
     color:white;
 }
 
-    #resultDiv label{
+    #resultDiv .blb{
         float:left;
+        font-size:20pt;
+        width:100%;
         clear:left;
     }
 
-    #resultDiv .blb{
-        font-size:20pt;
+    #resultDiv .bottom {
+        float:left;
+        width:100%;
     }
+
+        #resultDiv .bottom *{
+            float:left;
+        }
 
     #resultDiv a {
         color:#cccccc;
@@ -169,6 +176,10 @@ body {
 
     #resultDiv .welcome {
         height:185px;
+    }
+
+    #resultDiv .ticket {
+        color:#cc0000;
     }
 
 #ccImg{

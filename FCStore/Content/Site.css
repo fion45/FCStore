@@ -487,6 +487,11 @@ textarea {
             position:relative;
         }
 
+        .MainBlock .show .item:hover {
+            margin:-2px 3px;
+            border:2px solid #cc0000;
+        }
+
             .MainBlock .show .item .price {
                 position:absolute;
                 left:0px;
@@ -1035,7 +1040,8 @@ textarea {
     }
 
     .productList .item:hover {
-        box-shadow:0px 3px 8px 1px #c8c8c8;
+        border:2px solid #cc0000;
+        margin:1px;
     }
 
         .productList .item img{

@@ -16,12 +16,7 @@ namespace FCStore
             routes.MapRoute(
                 name: "ProductList",
                 url: "{controller}/{action}/{id}/{pIndex}/{hashOrder}/{hashWhere}",
-                defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" },
-                constraints: new RouteValueDictionary
-                {
-                    {"id", @"\d"},
-                    {"pIndex", @"\d"}
-                }
+                defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" }
             );
 
             routes.MapRoute(

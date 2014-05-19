@@ -32,6 +32,7 @@
 	                    	$("#loginDiv").remove();
 	                    	$("#resultDiv").show();
 	                    	$("#resultDiv .userName").text($.cookie('UserInfo').UserName);
+	                    	LoginPageView.login.OnFiveSecondsTicket();
 	                    }
 	                }
 	            });
@@ -44,6 +45,16 @@
 		},
 		OnCheckCodeImgClick : function() {
     		$("#ccImg").prop("src","/Home/GetValidateCode");
+		},
+		OnFiveSecondsTicket: function () {
+		    var tmpI = parseInt($("#resultDiv .ticket").text());
+		    if (tmpI == 0) {
+		        window.location = $("#resultDiv .returnUrl").text();
+		    }
+		    else {
+		        setTimeout(LoginPageView.login.OnFiveSecondsTicket, 1000);
+		        $("#resultDiv .ticket").text(tmpI - 1);
+		    }
 		}
 	},
 	register : {
@@ -58,6 +69,9 @@
 	        obj.email = $("#EmailTB").val();
 	        obj.psw = $("#PSWTB").val();
 	        obj.checkCode = $("#CheckCodeTB").val();
+	        var hArr = window.location.href.split("/");
+	        var tmpUrlStr = hArr[hArr.length - 1];
+	        tmpUrlStr = tmpUrlStr == "Register" ? "" : tmpUrlStr;
 			$.myAjax({
                 loadEle: $("#regCDiv"),
                 url: "/User/Register",
@@ -82,7 +96,8 @@
                 		LoginPageView.register.OnRefreshCCode();
                     }
                     else {
-                    	//注册成功
+                        //注册成功
+                        window.location = "/Home/Login/" + tmpUrlStr;
                     }
                 }
             });

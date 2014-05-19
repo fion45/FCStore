@@ -60,12 +60,18 @@
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
             <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
             <label class="blb welcome">Welcome Welcome</label>
-            <label class="bottom">程序在<label class="ticket">5</label>秒后跳转至：<a href="@(urlStr)">@(urlStr)</a></label>
+            <div class="bottom"><label>程序在</label><label class="ticket">3</label><label>秒后跳转至：</label><a class="returnUrl" href="@(urlStr)">@(urlStr)</a></div>
         </div>
     </div>
     <div id="loginTop"></div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/login")
+    @if(User.Identity.IsAuthenticated)
+    {
+        <script type="text/javascript">
+            LoginPageView.login.OnFiveSecondsTicket();
+        </script>
+    }
 </body>
 </html>

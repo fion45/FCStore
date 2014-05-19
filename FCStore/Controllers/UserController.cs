@@ -30,7 +30,7 @@ namespace FCStore.Controllers
             if (checkCode != (Session["Validate_code"].ToString()))
             {
                 ViewBag.LoginFail = -2;
-                string jsonStr = PubFunction.BuildResult(user, false, -2, "验证码错误");
+                string jsonStr = PubFunction.BuildResult(user,null ,false, -2, "验证码错误");
                 return Content(jsonStr);
             }
             else
@@ -73,7 +73,7 @@ namespace FCStore.Controllers
                 catch
                 {
                     ViewBag.LoginFail = -1;
-                    string jsonStr = PubFunction.BuildResult(user, false, -1, "用户名或密码错误");
+                    string jsonStr = PubFunction.BuildResult(user,null, false, -1, "用户名或密码错误");
                     return Content(jsonStr);
                 }
             }
@@ -98,7 +98,7 @@ namespace FCStore.Controllers
             if (checkCode != (Session["Validate_code"].ToString()))
             {
                 ViewBag.LoginFail = -1;
-                return Content(PubFunction.BuildResult(null, false, -1, "验证码错误"));
+                return Content(PubFunction.BuildResult(null,null, false, -1, "验证码错误"));
             }
             else
             {
@@ -114,7 +114,7 @@ namespace FCStore.Controllers
                 {
                     //用户已存在
                     bool UNExists = user.UserName == userName;
-                    return Content(PubFunction.BuildResult(null, false, UNExists ? -2 : -3, UNExists ? "用户名已被注册" : "邮箱已被注册"));
+                    return Content(PubFunction.BuildResult(null,null, false, UNExists ? -2 : -3, UNExists ? "用户名已被注册" : "邮箱已被注册"));
                 }
                 else
                 {
@@ -137,6 +137,35 @@ namespace FCStore.Controllers
                     }
                     role.Users.Add(user);
                     db.SaveChanges();
+                    //设置cookie
+                    StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
+                    StringBuilder tmpRIDStr = new StringBuilder(",");
+                    StringBuilder tmpRNStr = new StringBuilder(",");
+                    foreach (Role tmpRole in user.Roles)
+                    {
+                        tmpRIDStr.Append(tmpRole.RID + ",");
+                        tmpRNStr.Append(tmpRole.RoleName + ",");
+                        tmpRPStr.Append(tmpRole.Permission + ",");
+                    }
+                    string tmpStr = string.Format("<USERID>{0}</USERID><USERNAME>{1}</USERNAME><RIDARR>{2}</RIDARR><RNARR>{3}</RNARR><PERMISSION>{4}</PERMISSION>", user.UID, user.UserName, tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
+
+                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                       1,
+                       user.UserName,
+                       DateTime.Now,
+                       DateTime.Now.AddMinutes(30),
+                       true,
+                       tmpStr);
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    Response.Cookies.Add(authCookie);
+
+                    authCookie = new HttpCookie("UserInfo");
+                    authCookie.Values.Add("UID", user.UID.ToString());
+                    authCookie.Values.Add("UserName", user.UserName);
+                    authCookie.Values.Add("RID", tmpRIDStr.ToString());
+                    authCookie.Values.Add("Permission", tmpRPStr.ToString());
+                    Response.Cookies.Add(authCookie);
                 }
             }
             if (Request.IsAjaxRequest())
