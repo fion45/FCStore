@@ -34,16 +34,19 @@
                     <input id="checkCodeTB" class="enterTB" type="text" />
                 </div>
                 <div class="content ccDiv2">
-                    <img id="ccImg" src="/Home/GetValidateCode" />
+                    <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
                 </div>
                 <div class="content">
-                    <input id="loginBtn" type="button" value="登陆" />
+                    <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="button" value="登陆" />
                 </div>
             </div>
             <div class="rightDiv">
                 <div class="register">
-                    <label class="tFont">还不是FCStore会员吗？立刻成为会员，即享100积分</label>
-                    <input id="registerBtn" type="button" value="免费注册" />
+                    <label class="tFont">还不是FCStore会员吗？立刻成为会员，即享100积分</label>                    
+                    @{
+                        string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ? "http://" + HttpContext.Current.Request.Url.Authority + "/Home/Index" : ViewBag.returnUrl;
+                    }
+                    <a id="registerBtn" href="/Home/Register/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(urlStr)))">免费注册</a>
                 </div>
                 <div class="otherLogin">
                     <div class="tFont">使用其他账号登录FCStore购物网：</div>
@@ -57,9 +60,6 @@
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
             <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
             <label class="blb welcome">Welcome Welcome</label>
-            @{
-                string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ?  HttpContext.Current.Request.Url.AbsolutePath + "/Home/Index" : ViewBag.returnUrl;
-            }
             <label class="bottom">程序在<label class="ticket">5</label>秒后跳转至：<a href="@(urlStr)">@(urlStr)</a></label>
         </div>
     </div>

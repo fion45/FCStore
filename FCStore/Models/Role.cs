@@ -11,6 +11,13 @@ namespace FCStore.Models
     [Serializable]
     public class Role
     {
+        public enum RoleTypeID
+        {
+            RT_ADMIN = 1,
+            RT_SALE = 2,
+            RT_CLIENT = 3,
+        }
+
         [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int RID
         {

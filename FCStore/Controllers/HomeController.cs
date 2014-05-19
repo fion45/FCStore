@@ -33,6 +33,17 @@ namespace FCStore.Controllers
             return View();
         }
 
+        //[RequireHttps]
+        public ActionResult Register(string returnUrl)
+        {
+            ViewBag.returnUrl = "";
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(returnUrl));
+            }
+            return View();
+        }
+
         public ActionResult GetValidateCode()
         {
             byte[] bytes = CreateValidateGraphic();

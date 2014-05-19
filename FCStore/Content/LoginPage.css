@@ -215,3 +215,199 @@ body {
         margin-left:-16px;
         margin-top:-16px;
     }
+
+/* register
+-----------------------------------------------------------*/
+#regCDiv {
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-375px;
+    margin-top:-255px;
+    width:750px;
+    height:460px;
+    border:solid 1px #cccccc;
+    border-radius:8px;
+    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+    color:rgb(88, 88, 88);
+    padding:10px;
+}
+
+#register {
+    float:left;
+    width:55%;
+    position:relative;
+    height:310px;
+    border-right:1px solid #cccccc;
+}
+
+    #register .ltTitle {
+        position:absolute;
+        left:15px;
+        top:8px;
+        font-size:21px;
+        font-family:"Microsoft yahei";
+        color:#333333;
+        font-weight:bold;
+    }
+
+    #register .gif {
+        position:absolute;
+        left:135px;
+        top:20px;
+        font-size:12pt;
+        font-family:"Microsoft yahei";
+        color:#333333;
+    }
+
+    #register .inputDiv {
+        position:absolute;
+        left:25px;
+        top:48px;
+        width:400px;
+        font-size:11pt;
+        font-size:12pt;
+        color:#666666;
+    }
+
+        #register .inputDiv .title {
+            float:left;
+            width:100px;
+            height:23px;
+            line-height:23px;
+            vertical-align:middle;
+            text-align:right;
+        }
+
+        #register .inputDiv .value {
+            float:left;
+            width:270px;
+            height:23px;
+            line-height:23px;
+            vertical-align:middle;
+        }
+
+            #register .inputDiv .value input {
+                font-size:10pt;
+                width:250px;
+                height:18px;
+                margin:auto 1%
+            }
+
+        #register .inputDiv .tip {
+            float:left;
+            font-size:9pt;
+            color:#cccccc;
+            width:290px;
+            height:18px;
+            line-height:18px;
+            vertical-align:middle;
+            margin-bottom:5px;
+            padding-left:110px;
+        }
+
+        #register .inputDiv .ccDiv1{
+            float:left;
+            width:80px;
+        }
+
+            #register .inputDiv .ccDiv1 input {
+                font-size:10pt;
+                width:74px;
+                height:18px;
+                margin:auto 3px;
+            }
+
+        #register .inputDiv .ccDiv2{
+            float:left;
+            width:220px;
+        }
+
+            #register .inputDiv .ccDiv2 * {
+                float:left;
+            }
+
+            #register .inputDiv .ccDiv2 a {
+                font-size:10pt;
+                color:#cccccc;
+                height:23px;
+                line-height:23px;
+                vertical-align:middle;
+                padding-left:5px;
+                border:none;
+                width:120px;
+                cursor:pointer;
+            }
+
+                #register .inputDiv .ccDiv2 a:hover {
+                    color:#cc0000;
+                }
+
+            #register .inputDiv .btnDiv {
+                float:left;
+                margin:10px 0px;
+                width:100%;
+                height:25px;
+                text-align:center;
+            }
+
+            #register .inputDiv .btnDiv .cDiv {
+                margin:0px auto;
+                width:70%;
+            }
+
+                #register .inputDiv .btnDiv .registerBtn {
+                    height:22px;
+                }
+
+                #register .inputDiv .btnDiv .resetBtn {
+                    height:22px;
+                }
+
+    #regCDiv .rightDiv {
+        float:left;
+        width:44%;
+    }
+
+        #regCDiv .rightDiv .ltTitle {
+            margin:8px 3% 10px 3%;
+            width:94%;
+            font-size:21px;
+            font-family:"Microsoft yahei";
+            font-weight:bold;
+            color:#333333;
+        }
+
+        #regCDiv .rightDiv .item {
+            margin:0px 6%;
+            width:74%;
+            padding-left:7%;
+        }
+
+        #regCDiv .rightDiv .otherLogin {
+            margin:20px 3% 0px 3%;
+            width:94%;
+        }
+
+    #regCDiv .agreement {
+        float:left;
+        clear:both;
+        width:100%;
+        margin-top:10px;
+    }
+
+        #regCDiv .agreement .ltTitle {
+            font-size:15px;
+            font-family:"Microsoft yahei";
+            color:#333333;
+            font-weight:bold;
+            padding:0px 15px 0px 15px;
+        }
+
+        #regCDiv .agreement .content {
+            border:1px solid #cccccc;
+            width:96%;
+            max-height:100px;
+            height:100px;
+            margin:5px 2%;
+        }

@@ -73,7 +73,7 @@ namespace FCStore.Models
         {
             get
             {
-                return Addresses.Count > 0 ? Addresses[0].Phone : "";
+                return (Addresses != null && Addresses.Count > 0) ? Addresses[0].Phone : "";
             }
         }
 

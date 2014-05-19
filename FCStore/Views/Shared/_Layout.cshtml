@@ -47,7 +47,7 @@
                             请登陆
                         </a>
                         <label> | </label>
-                        <a>
+                        <a href="/Home/Register/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri)))">
                             免费注册
                         </a>
                     }

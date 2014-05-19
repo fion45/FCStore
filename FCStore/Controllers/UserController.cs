@@ -19,6 +19,9 @@ namespace FCStore.Controllers
 
         public ActionResult Login(string userID, string PSW, string checkCode)
         {
+            //设置COOKIE过期
+            Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
+
             if (userID == null || PSW == null || checkCode == null || Session["Validate_code"] == null)
             {
                 return RedirectToAction("Login","Home");
@@ -27,12 +30,14 @@ namespace FCStore.Controllers
             if (checkCode != (Session["Validate_code"].ToString()))
             {
                 ViewBag.LoginFail = -2;
+                string jsonStr = PubFunction.BuildResult(user, false, -2, "验证码错误");
+                return Content(jsonStr);
             }
             else
             {
                 try
                 {
-                    user = db.Users.Where(r => (r.LoginID == userID && r.LoginPSW == PSW)).First();
+                    user = db.Users.First(r => (r.LoginID == userID && r.LoginPSW == PSW));
                     StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
                     StringBuilder tmpRIDStr = new StringBuilder(",");
                     StringBuilder tmpRNStr = new StringBuilder(",");
@@ -68,12 +73,13 @@ namespace FCStore.Controllers
                 catch
                 {
                     ViewBag.LoginFail = -1;
-                    user = null;
+                    string jsonStr = PubFunction.BuildResult(user, false, -1, "用户名或密码错误");
+                    return Content(jsonStr);
                 }
             }
             if (Request.IsAjaxRequest())
             {
-                string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                string jsonStr = PubFunction.BuildResult(user);
                 return Content(jsonStr);
             }
             else
@@ -82,9 +88,66 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult Registe(User user)
+        public ActionResult Register(string userName, string email, string psw, string checkCode)
         {
-            return View(user);
+            if (userName == null || email == null || psw == null || checkCode == null || Session["Validate_code"] == null)
+            {
+                return RedirectToAction("Register", "Home");
+            }
+            User user = null;
+            if (checkCode != (Session["Validate_code"].ToString()))
+            {
+                ViewBag.LoginFail = -1;
+                return Content(PubFunction.BuildResult(null, false, -1, "验证码错误"));
+            }
+            else
+            {
+                try
+                {
+                    user = db.Users.First(r => (r.UserName == userName || r.Email == email));
+                }
+                catch
+                {
+                    user = null;
+                }
+                if (user != null)
+                {
+                    //用户已存在
+                    bool UNExists = user.UserName == userName;
+                    return Content(PubFunction.BuildResult(null, false, UNExists ? -2 : -3, UNExists ? "用户名已被注册" : "邮箱已被注册"));
+                }
+                else
+                {
+                    //创建用户
+                    user = new User()
+                    {
+                        UserName = userName,
+                        LoginID = userName,
+                        LoginPSW = psw,
+                        Email = email,
+                        Permission = "",
+                        Gift = 100      //100积分
+                    };
+                    user = db.Users.Add(user);
+                    //关联角色
+                    Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                    if (role.Users == null)
+                    {
+                        role.Users = new List<User>();
+                    }
+                    role.Users.Add(user);
+                    db.SaveChanges();
+                }
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(user);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View(user);
+            }
         }
 
         [MyAuthorizeAttribute]

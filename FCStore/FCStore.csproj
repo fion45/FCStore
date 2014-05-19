@@ -128,6 +128,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\MyUser.cs" />
+    <Compile Include="Common\PubFunction.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\MyAuthorizeAttribute.cs" />
     <Compile Include="Filters\MyHandleErrorAttribute.cs" />
@@ -291,6 +293,12 @@
     <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Details.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
