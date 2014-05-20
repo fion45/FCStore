@@ -76,19 +76,24 @@
             <div id="plInCar">
                 @{
                     //获得cookie
-                    if(Request.Cookies.AllKeys.Contains("Order"))
+                    if(HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-
-                        FCStore.Models.Order order = Newtonsoft.Json.JsonConvert.DeserializeObject<FCStore.Models.Order>(Request.Cookies["Order"].Value);
-                        foreach(FCStore.Models.OrderPacket packet in order.Packets)
+                        //获得当前用户未处理的订单
+                        
+                    }
+                    else if (Request.Cookies.AllKeys.Contains("Order"))
+                    {
+                        System.Text.RegularExpressions.Regex cookieRgx = new System.Text.RegularExpressions.Regex("(?<ORDERID>\\d+?),((?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*");
+                        System.Text.RegularExpressions.Match tmpMatch = cookieRgx.Match(Request.Cookies["Order"].Value);
+                        if(!string.IsNullOrEmpty(tmpMatch.Value))
                         {
-                            if (packet.Product != null) 
-                            { 
+                            for (int i = 0; i < tmpMatch.Groups["TITLE"].Captures.Count;i++ )
+                            {
                                 <div class="MoveItem">
                                     <label>
-                                        @(packet.Product.Title)
+                                        @(tmpMatch.Groups["TITLE"].Captures[i].Value)
                                     </label>
-                                    <img src="@(packet.Product.ImgPath)" />
+                                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
                                 </div>
                             }
                         }

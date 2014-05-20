@@ -138,6 +138,8 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\OrderPacketController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -303,6 +305,16 @@
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
     <Content Include="Views\Product\Buy.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Order\Delete.cshtml" />
+    <Content Include="Views\OrderPacket\Index.cshtml" />
+    <Content Include="Views\OrderPacket\Details.cshtml" />
+    <Content Include="Views\OrderPacket\Create.cshtml" />
+    <Content Include="Views\OrderPacket\Edit.cshtml" />
+    <Content Include="Views\OrderPacket\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

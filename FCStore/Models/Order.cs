@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace FCStore.Models
 {
@@ -32,6 +34,7 @@ namespace FCStore.Models
             PT_Alipay
         }
 
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int OID
         {
             get;
@@ -44,12 +47,14 @@ namespace FCStore.Models
             set;
         }
 
+        [ForeignKey("User")]
         public int UID
         {
             get;
             set;
         }
 
+        [JsonIgnore]
         public User User
         {
             get;

@@ -281,13 +281,14 @@ namespace FCStore.Controllers
             packet.Discount = product.Discount;
             packet.Count = count;
             Order order = null;
+            string tmpStr = "";
             //添加到cookie里
             bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
             HttpCookie cookie = null;
             if (hasCookie)
             {
                 cookie = Request.Cookies["Order"];
-                string tmpStr = cookie.Value;
+                tmpStr = cookie.Value;
                 Regex cookieRgx = new Regex("(?<ORDERID>\\d+?),((?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*");
                 Match tmpMatch = cookieRgx.Match(tmpStr);
                 if(!string.IsNullOrEmpty(tmpMatch.Value))
@@ -295,11 +296,14 @@ namespace FCStore.Controllers
                     Group gi = tmpMatch.Groups["ORDERID"];
                     int OrderID = int.Parse(gi.Value);
                     order = db.Orders.First(r => r.OID == OrderID);
-                    if(order.Packets == null)
+                    if (order.Packets == null)
                     {
                         order.Packets = new List<OrderPacket>();
                     }
+                    //添加到数据库
                     order.Packets.Add(packet);
+                    db.OrderPackets.Add(packet);
+                    db.SaveChanges();
                     tmpStr += product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                 }
                 else
@@ -312,28 +316,33 @@ namespace FCStore.Controllers
                 cookie = new HttpCookie("Order");
                 order = new Order();
                 order.Packets = new List<OrderPacket>();
-                order.UID = -1;
+                order.UID = 1;
+                order.Postage = 0;
                 order.Subscription = 0;
                 order.Status = Order.EOrderStatus.OS_Init;
+                order.SendType = Order.ESendType.ST_Direct;
+                order.PayType = Order.EPayType.PT_Alipay;
                 order.OrderDate = null;
                 order.CompleteDate = null;
-
-            }
-            //追加到订单包里
-            order.Packets.Add(packet);
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                //已登录
-                MyUser tmpUser = HttpContext.User as MyUser;
-                if (tmpUser != null)
+                order.Packets.Add(packet);
+                //添加到数据库
+                db.Orders.Add(order);
+                db.OrderPackets.Add(packet);
+                if (HttpContext.User.Identity.IsAuthenticated)
                 {
-                    //登陆用户
-                    order.UID = tmpUser.UID;
-                    order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    //已登录
+                    MyUser tmpUser = HttpContext.User as MyUser;
+                    if (tmpUser != null)
+                    {
+                        //登陆用户
+                        order.UID = tmpUser.UID;
+                        order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    }
                 }
+                db.SaveChanges();
+                tmpStr = order.OID.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
             }
-
-            cookie.Value = JsonConvert.SerializeObject(order);
+            cookie.Value = tmpStr;
             Response.Cookies.Add(cookie);
             if (Request.IsAjaxRequest())
             {

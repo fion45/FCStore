@@ -1,0 +1,78 @@
+﻿@model FCStore.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Order</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.UserName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.UserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Amount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PayAmount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PayAmount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Postage)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Postage)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PayAmountAndPostage)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PayAmountAndPostage)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Subscription)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Subscription)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Payment)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Payment)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OrderDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompleteDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompleteDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.OID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
