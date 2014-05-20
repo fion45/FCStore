@@ -23,23 +23,23 @@ namespace FCStore.Controllers
         }
 
         //[RequireHttps]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string id)
         {
             ViewBag.returnUrl = "";
-            if(!string.IsNullOrEmpty(returnUrl))
+            if (!string.IsNullOrEmpty(id))
             {
-                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(returnUrl));
+                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(id));
             }
             return View();
         }
 
         //[RequireHttps]
-        public ActionResult Register(string returnUrl)
+        public ActionResult Register(string id)
         {
             ViewBag.returnUrl = "";
-            if (!string.IsNullOrEmpty(returnUrl))
+            if (!string.IsNullOrEmpty(id))
             {
-                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(returnUrl));
+                ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(id));
             }
             return View();
         }

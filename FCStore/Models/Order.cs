@@ -9,6 +9,7 @@ namespace FCStore.Models
     {
         public enum EOrderStatus
         {
+            OS_Init,
             OS_Order,
             OS_Subscription,
             OS_InStore,
@@ -20,13 +21,24 @@ namespace FCStore.Models
             OS_Complete
         }
 
+        public enum ESendType
+        {
+            ST_Direct,          //直邮
+            ST_Indirect         //转邮
+        }
+
+        public enum EPayType
+        {
+            PT_Alipay
+        }
+
         public int OID
         {
             get;
             set;
         }
 
-        public List<OrderPacket> Products
+        public List<OrderPacket> Packets
         {
             get;
             set;
@@ -44,12 +56,51 @@ namespace FCStore.Models
             set;
         }
 
+        //订单的总价
         public decimal Amount
+        {
+            get
+            {
+                decimal result = 0;
+                foreach(OrderPacket packet in Packets) 
+                {
+                    result += packet.Amount;
+                }
+                return result;
+            }
+        }
+
+        //实际应付
+        public decimal PayAmount
+        {
+            get
+            {
+                decimal result = 0;
+                foreach (OrderPacket packet in Packets)
+                {
+                    result += packet.PayAmount;
+                }
+                return result;
+            }
+        }
+
+        //邮费
+        public decimal Postage
         {
             get;
             set;
         }
 
+        //实际应付的总价加上邮费
+        public decimal PayAmountAndPostage
+        {
+            get
+            {
+                return Postage + PayAmount;
+            }
+        }
+
+        //订金
         public decimal Subscription
         {
             get;
@@ -65,6 +116,18 @@ namespace FCStore.Models
         }
 
         public EOrderStatus Status
+        {
+            get;
+            set;
+        }
+
+        public ESendType SendType
+        {
+            get;
+            set;
+        }
+
+        public EPayType PayType
         {
             get;
             set;

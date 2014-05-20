@@ -43,11 +43,12 @@
                     }
                     else
                     {
-                        <a href="/Home/Login/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri)))">
+                        string tmpStr = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri));
+                        <a href="/Home/Login/@(tmpStr)">
                             请登陆
                         </a>
                         <label> | </label>
-                        <a href="/Home/Register/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri)))">
+                        <a href="/Home/Register/@(tmpStr)">
                             免费注册
                         </a>
                     }
@@ -71,6 +72,31 @@
     <div id="Favorite">
     </div>
     <div id="Cart">
+        <div class="relativeDiv">
+            <div id="plInCar">
+                @{
+                    //获得cookie
+                    if(Request.Cookies.AllKeys.Contains("Order"))
+                    {
+
+                        FCStore.Models.Order order = Newtonsoft.Json.JsonConvert.DeserializeObject<FCStore.Models.Order>(Request.Cookies["Order"].Value);
+                        foreach(FCStore.Models.OrderPacket packet in order.Packets)
+                        {
+                            if (packet.Product != null) 
+                            { 
+                                <div class="MoveItem">
+                                    <label>
+                                        @(packet.Product.Title)
+                                    </label>
+                                    <img src="@(packet.Product.ImgPath)" />
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </div>
+            <a class="balance">结算</a>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

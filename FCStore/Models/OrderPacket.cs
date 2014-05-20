@@ -31,6 +31,13 @@ namespace FCStore.Models
             set;
         }
 
+        public decimal Discount
+        {
+            get;
+            set;
+        }
+
+        //订单单价
         public decimal Univalence
         {
             get;
@@ -42,6 +49,22 @@ namespace FCStore.Models
             get
             {
                 return Count * Univalence;
+            }
+        }
+
+        public decimal PayUnivalence
+        {
+            get
+            {
+                return Univalence * Discount;
+            }
+        }
+
+        public decimal PayAmount
+        {
+            get
+            {
+                return Amount * Discount;
             }
         }
     }

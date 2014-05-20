@@ -8,6 +8,9 @@ using System.Web.Mvc;
 using FCStore.Models;
 using System.Configuration;
 using Newtonsoft.Json;
+using System.Web.Security;
+using FCStore.Common;
+using System.Text.RegularExpressions;
 
 namespace FCStore.Controllers
 {
@@ -74,7 +77,7 @@ namespace FCStore.Controllers
             return result;
         }
 
-        public ActionResult ListByCategory(int ID, int PIndex, string hashOrder, string hashWhere)
+        public ActionResult ListByCategory(int ID, int PIndex = 1, string hashOrder = "0x00", string hashWhere = "")
         {
             List<int> brandWhere = GetBrandWhere(hashWhere);
             List<OrderObj> orderObjList = GetOrderObj(hashOrder);
@@ -172,7 +175,8 @@ namespace FCStore.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
+                    //string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
+                    string jsonStr = PubFunction.BuildResult(tmpVM);
                     return Content(jsonStr);
                 }
                 else
@@ -256,13 +260,89 @@ namespace FCStore.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(tmpVM);
+                    //string jsonStr = JsonConvert.SerializeObject(tmpVM);
+                    string jsonStr = PubFunction.BuildResult(tmpVM);
                     return Content(jsonStr);
                 }
                 else
                 {
                     return View(tmpVM);
                 }
+            }
+        }
+
+        public ActionResult Buy(int id,int count)
+        {
+            Product product = db.Products.First(r => r.PID == id);
+            OrderPacket packet = new OrderPacket();
+            packet.PID = id;
+            packet.Product = product;
+            packet.Univalence = product.Price;
+            packet.Discount = product.Discount;
+            packet.Count = count;
+            Order order = null;
+            //添加到cookie里
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+            HttpCookie cookie = null;
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Order"];
+                string tmpStr = cookie.Value;
+                Regex cookieRgx = new Regex("(?<ORDERID>\\d+?),((?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*");
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if(!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    Group gi = tmpMatch.Groups["ORDERID"];
+                    int OrderID = int.Parse(gi.Value);
+                    order = db.Orders.First(r => r.OID == OrderID);
+                    if(order.Packets == null)
+                    {
+                        order.Packets = new List<OrderPacket>();
+                    }
+                    order.Packets.Add(packet);
+                    tmpStr += product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                }
+                else
+                {
+                    hasCookie = false;
+                }
+            }
+            if (!hasCookie)
+            {
+                cookie = new HttpCookie("Order");
+                order = new Order();
+                order.Packets = new List<OrderPacket>();
+                order.UID = -1;
+                order.Subscription = 0;
+                order.Status = Order.EOrderStatus.OS_Init;
+                order.OrderDate = null;
+                order.CompleteDate = null;
+
+            }
+            //追加到订单包里
+            order.Packets.Add(packet);
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                //已登录
+                MyUser tmpUser = HttpContext.User as MyUser;
+                if (tmpUser != null)
+                {
+                    //登陆用户
+                    order.UID = tmpUser.UID;
+                    order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                }
+            }
+
+            cookie.Value = JsonConvert.SerializeObject(order);
+            Response.Cookies.Add(cookie);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
             }
         }
 

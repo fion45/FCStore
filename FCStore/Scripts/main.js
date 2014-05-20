@@ -99,6 +99,58 @@ var MainLayout = {
 };
 
 var ProductList = {
+	onBuyBtnClick : function() {
+		var buyCount = $("#buyCount").val();
+		var PID = $("#PIDLB").text();
+		//购买按钮
+		$.myAjax({
+        	loadEle : $("#Center"),
+            url: "/Product/Buy/" + PID + "/" + buyCount,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.successTag) {
+            		//购买成功,添加到收藏夹里
+            		var viewItem = $("#PD_View .top");
+            		var tmpOS = viewItem.offset();
+            		var tmpW = viewItem.width();
+            		var tmpH = viewItem.height();
+            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+            		tmpItem.appendTo($("body:first"));
+            		tmpItem.css({
+            			top:tmpOS.top,
+            			left:tmpOS.left,
+            			width:tmpW,
+            			height:tmpH,
+            			padding:viewItem.css("padding")
+            		});
+            		var cart = $("#Cart");
+            		tmpOS = cart.offset();
+            		tmpW = cart.width();
+            		tmpH = cart.height();
+            		tmpItem.animate({
+            			top:tmpOS.top - tmpH,
+            			left:tmpOS.left + 10,
+            			width:tmpW - 20,
+            			height:tmpH
+            		},"slow","linear",function(){
+            			tmpItem.empty();
+            			var moveContent = $("<label>" + $("#productTitle").html() + "</label><img src=" + $("#productImage").prop("src") + " />");
+            			tmpItem.removeAttr("style");
+            			tmpItem.append(moveContent);
+            			//购物车增加内容
+            			tmpItem.appendTo($("#plInCar"));
+            		});
+            	}
+            }
+		});
+	},
+	onKeepBtnClick : function() {
+		//收藏按钮
+		
+	},
     onByCategoryOrderClick : function(obj) {
     	var PIndex = 1;
     	var target = $(obj);
@@ -169,15 +221,15 @@ var ProductList = {
             	//更新产品列表
             	var parent = $("#plDiv");
                	parent.empty();
-                $.each(data.Products,function(i,n) {
+                $.each(data.content.Products,function(i,n) {
 					parent.append(ProductList.buildProductView(n));
 				});
 				BuildPullHeightDiv(parent);
-		        var PCount = data.PageCount;
-		        PIndex = data.PageIndex;
+		        var PCount = data.content.PageCount;
+		        PIndex = data.content.PageIndex;
 				$(".page .PCLabel").text(PCount);
 				//更新Page
-		        var CID = parseInt(data.Category.CID);
+		        var CID = parseInt(data.content.Category.CID);
 		        var par = $(".page .pIndexItem");
 				$("#GoPIInput").val(PIndex);
 		        par.empty();
@@ -294,17 +346,17 @@ var ProductList = {
             	//更新产品列表
             	var parent = $("#plDiv");
                	parent.empty();
-                $.each(data.Products,function(i,n) {
+                $.each(data.content.Products,function(i,n) {
 					parent.append(ProductList.buildProductView(n));
 				});
 				BuildPullHeightDiv(parent);
 				//更新Page
 		        var parArr = window.location.pathname.split("/");
 		        var par = $(".page .pIndexItem");
-		        var PCount = data.PageCount;
-		        PIndex = data.PageIndex;
+		        var PCount = data.content.PageCount;
+		        PIndex = data.content.PageIndex;
 		        $(".page .PCLabel").text(PCount);
-		        var BID = data.Brand.BID;
+		        var BID = data.content.Brand.BID;
 				$("#GoPIInput").val(PIndex);
 		        par.empty();
 		        //重新构造页

@@ -60,6 +60,8 @@ a:hover {
 .btn1 {
     width:152px;
     height:51px;
+    line-height:51px;
+    vertical-align:middle;
     background:url("/Content/themes/image/main.png") no-repeat -1px -218px;
     border:none;
     color:white;
@@ -75,6 +77,8 @@ a:hover {
 .btn2 {
     width:152px;
     height:51px;
+    line-height:51px;
+    vertical-align:middle;
     background:url("/Content/themes/image/main.png") no-repeat -1px -269px;
     border:none;
     color:white;
@@ -91,6 +95,8 @@ a:hover {
 .btn3 {
     width:152px;
     height:51px;
+    line-height:51px;
+    vertical-align:middle;
     background:url("/Content/themes/image/main.png") no-repeat -1px -321px;
     border:none;
     color:white;
@@ -103,6 +109,18 @@ a:hover {
     background:url("/Content/themes/image/main.png") no-repeat -153px -321px;
 }
 
+.relativeDiv {
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+.MoveItem {
+    border:solid 1px #cccccc;
+    background-color:#cccccc;
+    position:absolute;
+    z-index:1000;
+}
 
 /* loading
 -----------------------------------------------------------*/
@@ -436,6 +454,42 @@ textarea {
 
 }
 
+#plInCar {
+    position:absolute;
+    top:10px;
+    left:20px;
+    width:90px;
+    height:25px;
+    overflow:hidden;
+}
+
+    #plInCar .MoveItem {
+        float:left;
+        width:100%;
+        height:70px;
+    }
+
+    #plInCar .MoveItem label{
+        float:left;
+        width:100%;
+        height:15px;
+        font-size:9pt;
+        overflow:hidden;
+    }
+
+    #plInCar .MoveItem img{
+        float:left;
+        width:100%;
+        height:55px;
+    }
+
+
+
+    #Cart .balance {
+        position:absolute;
+        top:40px;
+        left:35px;
+    }
 /* Main Block
 ----------------------------------------------------------*/
 .MainBlock {
@@ -793,10 +847,10 @@ textarea {
     margin:10px 0px;
 }
 
-#productBtn .p2{
-    text-align:center;
-    float:left;
-}
+    #productBtn .p2{
+        text-align:center;
+        float:left;
+    }
 
 #productCode {
     margin-top:5px;
