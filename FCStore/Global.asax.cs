@@ -51,7 +51,7 @@ namespace FCStore
         protected void Application_Error(object s, EventArgs e)
         {
             Exception ex = Server.GetLastError();
-            if (ex.GetType().Name == "HttpException")
+            if (ex != null && ex.GetType().Name == "HttpException")
             {
                 HttpException exception = (HttpException)ex;
                 if (exception.GetHttpCode() == 404)

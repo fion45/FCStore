@@ -74,14 +74,7 @@
     });
 
     $("#tabs").tabs();
-
-    $("#buyBtn").click(function () {
-
-    });
-
-    $("#keepBtn").click(function () {
-
-    });
+    $("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
 });
 
 var MainLayout = {
@@ -95,6 +88,62 @@ var MainLayout = {
     	},"fast","linear",function() {
     		MainLayout.topBtnTag = false;
     	});
+	},
+	enterPLInCar : function() {
+		var target = $("#plInCar");
+    	var ICount = target.children(".MoveItem").length;
+    	var tmpH = ICount * 77;
+    	var tmpT = 10;
+    	target.animate({
+    		top : tmpT - (tmpH - 25),
+    		height : tmpH
+    	},"normal","linear",function(){
+		    $("#plInCar").one("mouseleave",MainLayout.leavePLInCar);
+    	});
+	},
+	leavePLInCar : function() {
+		var target = $("#plInCar");
+		target.animate({
+    		top : 10,
+    		height : 25
+    	},"normal","linear",function(){
+    		$("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
+    	});
+	},
+	FoldPLInCar : function() {
+		$("#plInCar").animate({
+    		top : 10,
+    		height : 25
+    	},"normal","linear");
+		$("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
+	},
+	onDeleteCarItem : function(obj) {
+		//删除购物车栏目，并且刷新cookie状态
+		var delBtn = $(obj);
+		var delItem = delBtn.parent(".MoveItem");
+		var delIndex = delItem.prevAll().length;
+		delItem.animate({
+			"margin-left" : "-100%"
+		},"normal","linear",function(){
+			delItem.remove();
+			var target = $("#plInCar");
+			target.animate({
+	    		top : parseInt(target.css("top")) + 77,
+	    		height : parseInt(target.css("height")) - 77
+	    	},"fast","linear");
+		});
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : null,
+            url: "/OrderPacket/Delete/" + delIndex,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	
+            }
+		});
 	}
 };
 
@@ -104,6 +153,7 @@ var ProductList = {
 		var PID = $("#PIDLB").text();
 		//购买按钮
 		$.myAjax({
+        	historyTag : false,
         	loadEle : $("#Center"),
             url: "/Product/Buy/" + PID + "/" + buyCount,
             data: null,
@@ -137,7 +187,7 @@ var ProductList = {
             			height:tmpH
             		},"slow","linear",function(){
             			tmpItem.empty();
-            			var moveContent = $("<label>" + $("#productTitle").html() + "</label><img src=" + $("#productImage").prop("src") + " />");
+            			var moveContent = $("<div class=\"countShow\" style=\"display:" + (buyCount > 1 ? "normal" : "none") + "\">" + buyCount + "</div><div class=\"deleteBtn\" onclick=\"MainLayout.onDeleteCarItem(this)\">X</div><img src=" + $("#productImage").prop("src") + " /><label>" + $("#productTitle").html() + "</label>");
             			tmpItem.removeAttr("style");
             			tmpItem.append(moveContent);
             			//购物车增加内容
@@ -211,6 +261,7 @@ var ProductList = {
         var CID = parArr[3];
         //ajaz获取数据，更新内容
         $.myAjax({
+        	historyTag : true,
         	loadEle : $("#Center"),
             url: "/Product/ListByCategory/" + CID + "/" + PIndex + "/" + orderStr + "/" + whereStr,
             data: null,
@@ -336,6 +387,7 @@ var ProductList = {
         var BID = parArr[3];
         //ajaz获取数据，更新内容
         $.myAjax({
+        	historyTag : true,
         	loadEle : $("#Center"),
             url: "/Product/ListByBrand/" + BID + "/" + PIndex + "/" + orderStr,
             data: null,

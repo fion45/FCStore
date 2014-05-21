@@ -41,7 +41,7 @@ namespace FCStore.Models
             set;
         }
 
-        public List<OrderPacket> Packets
+        public virtual List<OrderPacket> Packets
         {
             get;
             set;
@@ -148,6 +148,16 @@ namespace FCStore.Models
         {
             get;
             set;
+        }
+
+        public string GetCoookieStr()
+        {
+            string result = "";
+            foreach(OrderPacket op in Packets)
+            {
+                result += OID.ToString() + "," + op.Count + "," + op.Product.Title.Substring(0, Math.Min(20, op.Product.Title.Length)) + "," + op.Product.ImgPathArr[0] + ",";
+            }
+            return result;
         }
     }
 }

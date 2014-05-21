@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Text;
+@using System.Text.RegularExpressions;
+@using FCStore.Common;
+@using FCStore.Models;
+@using FCStore.Controllers;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -43,7 +49,7 @@
                     }
                     else
                     {
-                        string tmpStr = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri));
+                        string tmpStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri));
                         <a href="/Home/Login/@(tmpStr)">
                             请登陆
                         </a>
@@ -76,31 +82,49 @@
             <div id="plInCar">
                 @{
                     //获得cookie
-                    if(HttpContext.Current.User.Identity.IsAuthenticated)
+                    if (Request.Cookies.AllKeys.Contains("Order"))
                     {
-                        //获得当前用户未处理的订单
-                        
-                    }
-                    else if (Request.Cookies.AllKeys.Contains("Order"))
-                    {
-                        System.Text.RegularExpressions.Regex cookieRgx = new System.Text.RegularExpressions.Regex("(?<ORDERID>\\d+?),((?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*");
-                        System.Text.RegularExpressions.Match tmpMatch = cookieRgx.Match(Request.Cookies["Order"].Value);
+                        Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
+                        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
                         if(!string.IsNullOrEmpty(tmpMatch.Value))
                         {
                             for (int i = 0; i < tmpMatch.Groups["TITLE"].Captures.Count;i++ )
                             {
+                                int BuyCount = 1;
+                                int.TryParse(tmpMatch.Groups["COUNT"].Captures[i].Value, out BuyCount);
                                 <div class="MoveItem">
+                                    <div class="countShow" style="display:@(BuyCount > 1 ? "normal" : "none")">@(BuyCount)</div>
+                                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
+                                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
                                     <label>
                                         @(tmpMatch.Groups["TITLE"].Captures[i].Value)
                                     </label>
-                                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
                                 </div>
                             }
                         }
                     }
+                    else if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        //获得当前用户未处理的订单
+                        MyUser user = HttpContext.Current.User as MyUser;
+                        FCStoreDbContext db = new FCStoreDbContext();
+                        Order order = db.Orders.Last(r => r.UID == user.UID && r.Status == Order.EOrderStatus.OS_Init);
+                        foreach (OrderPacket tmpOP in order.Packets)
+                        {
+                            <div class="MoveItem">
+                                <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
+                                <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
+                                <img src="@(tmpOP.Product.ImgPathArr[0])" />
+                                <label>
+                                    @(tmpOP.Product.Title)
+                                </label>
+                            </div>
+                        }
+                        db.Dispose();
+                    }
                 }
             </div>
-            <a class="balance">结算</a>
+            <a class="balance" href="/Order/Payment"></a>
         </div>
     </div>
 

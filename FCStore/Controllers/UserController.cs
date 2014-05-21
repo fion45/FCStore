@@ -9,6 +9,7 @@ using FCStore.Models;
 using System.Web.Security;
 using FCStore.FilterAttribute;
 using System.Text;
+using System.Text.RegularExpressions;
 using FCStore.Common;
 
 namespace FCStore.Controllers
@@ -67,8 +68,43 @@ namespace FCStore.Controllers
                     authCookie.Values.Add("UserName", user.UserName);
                     authCookie.Values.Add("RID", tmpRIDStr.ToString());
                     authCookie.Values.Add("Permission", tmpRPStr.ToString());
+                    authCookie.Expires = DateTime.Now.AddMinutes(30);
                     Response.Cookies.Add(authCookie);
                     ViewBag.LoginFail = 0;
+
+                    //把购物车的东西给予该用户
+                    bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+                    HttpCookie cookie = null;
+                    if (hasCookie)
+                    {
+                        hasCookie = false;
+                        cookie = Request.Cookies["Order"];
+                        tmpStr = Server.UrlDecode(cookie.Value);
+                        Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                        Match tmpMatch = cookieRgx.Match(tmpStr);
+                        if (!string.IsNullOrEmpty(tmpMatch.Value))
+                        {
+                            Group gi = tmpMatch.Groups["ORDERID"];
+                            int OrderID = int.Parse(gi.Value);
+                            Order order = db.Orders.First(r => r.OID == OrderID);
+                            //if (order.UID == 1)
+                            //{
+                            //    order.UID = user.UID;
+                            //    db.SaveChanges();
+                            //    hasCookie = true;
+                            //}
+                            hasCookie = order.Packets.Count > 0;
+                        }
+                    }
+                    if(!hasCookie)
+                    {
+                        //从数据库里取出最后的未完成的购物任务
+                        Order order = db.Orders.Last(r => r.UID == user.UID && r.Status == Order.EOrderStatus.OS_Init);
+                        cookie = new HttpCookie("Order");
+                        cookie.Expires = DateTime.Now.AddMonths(1);
+                        cookie.Value = Server.UrlEncode(order.GetCoookieStr());
+                        Response.Cookies.Add(cookie);
+                    }
                 }
                 catch
                 {

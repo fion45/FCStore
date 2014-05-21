@@ -16,6 +16,8 @@ namespace FCStore.Controllers
 {
     public class ProductController : Controller
     {
+        static public string ORDERCOOKIERGX = "^(?<ORDERID>\\d+?),((?<COUNT>[^,]+?),(?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*$";
+
         public struct OrderObj
         {
             public bool AscTag;
@@ -288,8 +290,8 @@ namespace FCStore.Controllers
             if (hasCookie)
             {
                 cookie = Request.Cookies["Order"];
-                tmpStr = cookie.Value;
-                Regex cookieRgx = new Regex("(?<ORDERID>\\d+?),((?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*");
+                tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(ORDERCOOKIERGX);
                 Match tmpMatch = cookieRgx.Match(tmpStr);
                 if(!string.IsNullOrEmpty(tmpMatch.Value))
                 {
@@ -304,7 +306,7 @@ namespace FCStore.Controllers
                     order.Packets.Add(packet);
                     db.OrderPackets.Add(packet);
                     db.SaveChanges();
-                    tmpStr += product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                    tmpStr += count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                 }
                 else
                 {
@@ -314,6 +316,7 @@ namespace FCStore.Controllers
             if (!hasCookie)
             {
                 cookie = new HttpCookie("Order");
+                cookie.Expires = DateTime.Now.AddMonths(1);
                 order = new Order();
                 order.Packets = new List<OrderPacket>();
                 order.UID = 1;
@@ -325,9 +328,6 @@ namespace FCStore.Controllers
                 order.OrderDate = null;
                 order.CompleteDate = null;
                 order.Packets.Add(packet);
-                //添加到数据库
-                db.Orders.Add(order);
-                db.OrderPackets.Add(packet);
                 if (HttpContext.User.Identity.IsAuthenticated)
                 {
                     //已登录
@@ -339,10 +339,13 @@ namespace FCStore.Controllers
                         order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                     }
                 }
+                //添加到数据库
+                db.Orders.Add(order);
+                db.OrderPackets.Add(packet);
                 db.SaveChanges();
-                tmpStr = order.OID.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                tmpStr = order.OID.ToString() + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
             }
-            cookie.Value = tmpStr;
+            cookie.Value = Server.UrlEncode(tmpStr);
             Response.Cookies.Add(cookie);
             if (Request.IsAjaxRequest())
             {

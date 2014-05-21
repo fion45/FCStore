@@ -6,12 +6,85 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
+using System.Text.RegularExpressions;
+using FCStore.Common;
 
 namespace FCStore.Controllers
 {
     public class OrderPacketController : Controller
     {
         private FCStoreDbContext db = new FCStoreDbContext();
+
+        public ActionResult Delete(int id)
+        {
+            int removeIndex = id;
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+            HttpCookie cookie = null;
+            string tmpStr = "";
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Order"];
+                tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    Group gi = tmpMatch.Groups["ORDERID"];
+                    int OrderID = int.Parse(gi.Value);
+                    Order order = db.Orders.First(r => r.OID == OrderID);
+                    if (order.Packets == null)
+                    {
+                        hasCookie = false;
+                        throw new Exception("Order's packets has error");
+                    }
+                    else
+                    {
+                        //删除
+                        OrderPacket delOP = order.Packets[removeIndex];
+                        db.OrderPackets.Remove(delOP);
+                        db.SaveChanges();
+                        tmpStr = tmpStr.Substring(0, tmpMatch.Groups["COUNT"].Captures[removeIndex].Index)
+                            + tmpStr.Substring(tmpMatch.Groups["IMG"].Captures[removeIndex].Index + tmpMatch.Groups["IMG"].Captures[removeIndex].Length + 1);
+                    }
+                }
+                else
+                {
+                    //Cookie格式错误
+                    hasCookie = false;
+                }
+            }
+            if(!hasCookie && HttpContext.User.Identity.IsAuthenticated)
+            {
+                //禁用了cookie或者cookie格式错误
+                //从用户获得其订单
+                MyUser myUser = HttpContext.User as MyUser;
+                if(myUser != null)
+                {
+                    Order order = db.Orders.Last(r => r.UID == myUser.UID && r.Status == Order.EOrderStatus.OS_Init);
+                    if(order.Packets != null && order.Packets.Count > removeIndex)
+                    {
+                        OrderPacket delOP = order.Packets[removeIndex];
+                        db.OrderPackets.Remove(delOP);
+                        db.SaveChanges();
+                    }
+                    //重新设置cookie
+                    cookie = new HttpCookie("Order");
+                    cookie.Expires = DateTime.Now.AddMonths(1);
+                    tmpStr = order.GetCoookieStr();
+                }
+            }
+            cookie.Value = Server.UrlEncode(tmpStr);
+            Response.Cookies.Add(cookie);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
 
         //
         // GET: /OrderPacket/
@@ -90,19 +163,6 @@ namespace FCStore.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.PID = new SelectList(db.Products, "PID", "Title", orderpacket.PID);
-            return View(orderpacket);
-        }
-
-        //
-        // GET: /OrderPacket/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            OrderPacket orderpacket = db.OrderPackets.Find(id);
-            if (orderpacket == null)
-            {
-                return HttpNotFound();
-            }
             return View(orderpacket);
         }
 

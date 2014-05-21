@@ -6,12 +6,40 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
+using System.Text.RegularExpressions;
+using FCStore.FilterAttribute;
+using FCStore.Common;
 
 namespace FCStore.Controllers
 {
     public class OrderController : Controller
     {
         private FCStoreDbContext db = new FCStoreDbContext();
+
+        [MyAuthorizeAttribute]
+        public ActionResult Payment()
+        {
+            //设置订单为其用户的订单
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+            HttpCookie cookie = null;
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Order"];
+                string tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    Group gi = tmpMatch.Groups["ORDERID"];
+                    int OrderID = int.Parse(gi.Value);
+                    Order order = db.Orders.First(r => r.OID == OrderID);
+                    MyUser user = HttpContext.User as MyUser;
+                    order.UID = user.UID;
+                    db.SaveChanges();
+                }
+            }
+            return View();
+        }
 
         //
         // GET: /Order/

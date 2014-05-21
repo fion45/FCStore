@@ -465,30 +465,62 @@ textarea {
 
     #plInCar .MoveItem {
         float:left;
-        width:100%;
+        width:88px;
         height:70px;
+        position:relative;
+        margin-bottom:5px;
+        background-color:white;
     }
 
     #plInCar .MoveItem label{
         float:left;
         width:100%;
         height:15px;
-        font-size:9pt;
+        font-size:7pt;
         overflow:hidden;
     }
 
-    #plInCar .MoveItem img{
+    #plInCar .MoveItem img {
         float:left;
         width:100%;
         height:55px;
     }
 
+    #plInCar .MoveItem .deleteBtn {
+        top:0px;
+        left:76px;
+        height:12px;
+        width:12px;
+        color:red;
+        position:absolute;
+        cursor:pointer;
+        background-color:white;
+        line-height:12px;
+        text-align:center;
+        vertical-align:middle;
+    }
 
+    #plInCar .MoveItem .countShow {
+        top:0px;
+        left:0px;
+        height:12px;
+        width:12px;
+        color:red;
+        position:absolute;
+        background-color:white;
+        line-height:12px;
+        text-align:center;
+        vertical-align:middle;
+    }
 
     #Cart .balance {
         position:absolute;
-        top:40px;
-        left:35px;
+        top:42px;
+        left:45px;
+        width:45px;
+        height:45px;
+        cursor:pointer;
+        background:url("/Content/themes/image/main.png") no-repeat -276px -3px;
     }
 /* Main Block
 ----------------------------------------------------------*/

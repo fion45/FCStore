@@ -78,21 +78,27 @@ jQuery.fn.mySpinner = function (config) {
 
 jQuery.extend({
 	myAjax : function(setting) {
+		jQuery.extend({
+			loadEle : null,
+			historyTag : true,
+			success : null,
+			url : "/"
+		},setting);
 		var loadEle = setting.loadEle;
-		loadEle.showLoading();
-		if (history && history.pushState) {
+		if(loadEle != null)
+			loadEle.showLoading();
+			var funPtr = setting.success;
+			jQuery.extend(setting,{
+				success : [
+					funPtr,
+					function(){
+						loadEle.hideLoading();
+					}
+				]
+			});
+		if (setting.historyTag && history && history.pushState) {
 	    	history.pushState(null, document.title, setting.url);
 	    }
-		
-		var funPtr = setting.success;
-		jQuery.extend(setting,{
-			success : [
-				funPtr,
-				function(){
-					loadEle.hideLoading();
-				}
-			]
-		});
 		$.ajax(setting);
 	}
 });
