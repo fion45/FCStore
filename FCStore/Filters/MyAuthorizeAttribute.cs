@@ -60,7 +60,7 @@ namespace FCStore.FilterAttribute
                 //游客
                 if (mAllPermission.IndexOf("," + mControllerName + ",") < 0 || mAllPermission.IndexOf("," + mControllerName + "." + mActionName + ",") < 0)
                 {
-                    httpContext.Response.StatusCode = 401;//无权限状态码
+                    httpContext.Response.StatusCode = 401;//未登录
                     return false;
                 }
                 else
@@ -78,7 +78,7 @@ namespace FCStore.FilterAttribute
                     {
                         //清除状态，cookie有错误
                         httpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
-                        httpContext.Response.StatusCode = 401;//无权限状态码
+                        httpContext.Response.StatusCode = 401;//登录异常
                         return false;
                     }
                     if (tmpUser.HavePermission("ALL") || tmpUser.HavePermissionInAction(mControllerName, mActionName))
@@ -87,15 +87,16 @@ namespace FCStore.FilterAttribute
                     }
                     else
                     {
-                        httpContext.Response.StatusCode = 401;//无权限状态码
+                        httpContext.Response.StatusCode = 403;//无权限状态码
                         return false;
                     }
                 }
                 catch
                 {
-                    httpContext.Response.StatusCode = 401;
+                    httpContext.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
+                    httpContext.Response.StatusCode = 401;//登录异常
                     return false;
-                }  
+                }
             }
         }
 
@@ -116,6 +117,24 @@ namespace FCStore.FilterAttribute
                     string path = HttpUtility.HtmlEncode(filterContext.HttpContext.Request.Url.AbsoluteUri);
                     string strUrl = "/Home/Login/{0}";
                     filterContext.HttpContext.Response.Redirect(string.Format(strUrl, Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(path))), true);
+                    filterContext.HttpContext.Response.End();
+                }
+            }
+            else if(filterContext.HttpContext.Response.StatusCode == 403)
+            {
+                //权限不够
+                if (filterContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    filterContext.Result = new JsonResult
+                    {
+                        Data = new { IsSuccess = false, Message = "不好意思,没法访问页面!" },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else
+                {
+                    string strUrl = "/Home/Error/{0}";
+                    filterContext.HttpContext.Response.Redirect(string.Format(strUrl, 403), true);
                     filterContext.HttpContext.Response.End();
                 }
             }

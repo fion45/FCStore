@@ -120,19 +120,19 @@ namespace FCStore.Models
             }
         }
 
-        public EOrderStatus Status
+        public int Status
         {
             get;
             set;
         }
 
-        public ESendType SendType
+        public int SendType
         {
             get;
             set;
         }
 
-        public EPayType PayType
+        public int PayType
         {
             get;
             set;

@@ -77,7 +77,11 @@
     </div>
     <div id="Favorite">
     </div>
-    <div id="Cart">
+    @{
+        bool showCart = true;
+        showCart = Request.Url.AbsolutePath.IndexOf("/Order/Cart") > -1;
+    }
+    <div id="Cart" style="@(showCart ? "visibility:hidden" : "")" >
         <div class="relativeDiv">
             <div id="plInCar">
                 @{
@@ -108,23 +112,26 @@
                         //获得当前用户未处理的订单
                         MyUser user = HttpContext.Current.User as MyUser;
                         FCStoreDbContext db = new FCStoreDbContext();
-                        Order order = db.Orders.Last(r => r.UID == user.UID && r.Status == Order.EOrderStatus.OS_Init);
-                        foreach (OrderPacket tmpOP in order.Packets)
+                        Order order = db.Orders.LastOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                        if (order != null && order.Packets != null)
                         {
-                            <div class="MoveItem">
-                                <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
-                                <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
-                                <img src="@(tmpOP.Product.ImgPathArr[0])" />
-                                <label>
-                                    @(tmpOP.Product.Title)
-                                </label>
-                            </div>
+                            foreach (OrderPacket tmpOP in order.Packets)
+                            {
+                                <div class="MoveItem">
+                                    <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
+                                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
+                                    <img src="@(tmpOP.Product.ImgPathArr[0])" />
+                                    <label>
+                                        @(tmpOP.Product.Title)
+                                    </label>
+                                </div>
+                            }
                         }
                         db.Dispose();
                     }
                 }
             </div>
-            <a class="balance" href="/Order/Payment"></a>
+            <a class="balance" href="/Order/Cart"></a>
         </div>
     </div>
 

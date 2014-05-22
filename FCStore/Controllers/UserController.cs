@@ -36,9 +36,9 @@ namespace FCStore.Controllers
             }
             else
             {
-                try
+                user = db.Users.FirstOrDefault(r => (r.LoginID == userID && r.LoginPSW == PSW));
+                if(user != null)
                 {
-                    user = db.Users.First(r => (r.LoginID == userID && r.LoginPSW == PSW));
                     StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
                     StringBuilder tmpRIDStr = new StringBuilder(",");
                     StringBuilder tmpRNStr = new StringBuilder(",");
@@ -86,27 +86,24 @@ namespace FCStore.Controllers
                         {
                             Group gi = tmpMatch.Groups["ORDERID"];
                             int OrderID = int.Parse(gi.Value);
-                            Order order = db.Orders.First(r => r.OID == OrderID);
-                            //if (order.UID == 1)
-                            //{
-                            //    order.UID = user.UID;
-                            //    db.SaveChanges();
-                            //    hasCookie = true;
-                            //}
-                            hasCookie = order.Packets.Count > 0;
+                            Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                            hasCookie = order != null && order.Packets.Count > 0;
                         }
                     }
                     if(!hasCookie)
                     {
                         //从数据库里取出最后的未完成的购物任务
-                        Order order = db.Orders.Last(r => r.UID == user.UID && r.Status == Order.EOrderStatus.OS_Init);
-                        cookie = new HttpCookie("Order");
-                        cookie.Expires = DateTime.Now.AddMonths(1);
-                        cookie.Value = Server.UrlEncode(order.GetCoookieStr());
-                        Response.Cookies.Add(cookie);
+                        Order order = db.Orders.LastOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                        if(order != null)
+                        {
+                            cookie = new HttpCookie("Order");
+                            cookie.Expires = DateTime.Now.AddMonths(1);
+                            cookie.Value = Server.UrlEncode(order.GetCoookieStr());
+                            Response.Cookies.Add(cookie);
+                        }
                     }
                 }
-                catch
+                else
                 {
                     ViewBag.LoginFail = -1;
                     string jsonStr = PubFunction.BuildResult(user,null, false, -1, "用户名或密码错误");
@@ -138,14 +135,7 @@ namespace FCStore.Controllers
             }
             else
             {
-                try
-                {
-                    user = db.Users.First(r => (r.UserName == userName || r.Email == email));
-                }
-                catch
-                {
-                    user = null;
-                }
+                user = db.Users.FirstOrDefault(r => (r.UserName == userName || r.Email == email));
                 if (user != null)
                 {
                     //用户已存在
@@ -161,6 +151,7 @@ namespace FCStore.Controllers
                         LoginID = userName,
                         LoginPSW = psw,
                         Email = email,
+                        DefaultAddrIndex = -1,
                         Permission = "",
                         Gift = 100      //100积分
                     };

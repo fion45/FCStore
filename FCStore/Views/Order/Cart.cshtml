@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FCStore.Models.Order>
+@using FCStore.Common;
+@using FCStore.Models;
+@{
+    ViewBag.Title = "Cart";
+}
+
+<div id="CartDiv">
+    <div class="flow">
+        <div class="sel">
+            1.我的购物车
+        </div>
+        <div>
+            2.填写核对订单信息
+        </div>
+        <div>
+            3.成功提交订单
+        </div>
+    </div>
+    <div class="order">
+        <ul>
+            <li class="li0 title"></li>
+            <li class="li1 title">商品图片</li>
+            <li class="li2 title">商品名称</li>
+            <li class="li3 title">商品价格</li>
+            <li class="li4 title">数量</li>
+            <li class="li5 title">优惠</li>
+            <li class="li6 title">小计</li>
+            @if (Model.Count() > 0)
+            {
+                int Count = 0;
+                decimal Amount = 0;
+                foreach (var item in Model.First().Packets)
+                {
+                    Count += item.Count;
+                    Amount += item.PayAmount;
+                    Product product = item.Product;
+                    <li class="li0"><input type="checkbox" /></li>
+                    <li class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></li>
+                    <li class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></li>
+                    <li class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</li>
+                    <li class="li4">
+                        @(item.Count)
+                    </li>
+                    <li class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</li>
+                    <li class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</li>
+                }
+                <li class="li0"><label><input type="checkbox" />全选</label></li>
+                <li class="li11"> 
+                    <a>删除所选</a>
+                    <a>收藏所选</a>
+                </li>
+                <li class="li21"><label>共计<label class="count">@(Count)</label>件商品，合计金额：<label class="amount">@(PubFunction.CHPriceFormat(Amount))</label></label></li>
+            }
+            else
+            {
+                <li class="p1">订单不存在</li>
+            }
+            <div class="pullupDiv"></div>
+        </ul>
+    </div>
+</div>

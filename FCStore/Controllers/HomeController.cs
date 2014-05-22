@@ -34,6 +34,13 @@ namespace FCStore.Controllers
         }
 
         //[RequireHttps]
+        public ActionResult Error(string id)
+        {
+            ViewBag.ErrCode = id;
+            return View();
+        }
+
+        //[RequireHttps]
         public ActionResult Register(string id)
         {
             ViewBag.returnUrl = "";

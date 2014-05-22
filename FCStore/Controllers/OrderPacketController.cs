@@ -31,13 +31,8 @@ namespace FCStore.Controllers
                 {
                     Group gi = tmpMatch.Groups["ORDERID"];
                     int OrderID = int.Parse(gi.Value);
-                    Order order = db.Orders.First(r => r.OID == OrderID);
-                    if (order.Packets == null)
-                    {
-                        hasCookie = false;
-                        throw new Exception("Order's packets has error");
-                    }
-                    else
+                    Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                    if (order != null && order.Packets != null && order.Packets.Count > removeIndex)
                     {
                         //删除
                         OrderPacket delOP = order.Packets[removeIndex];
@@ -45,6 +40,10 @@ namespace FCStore.Controllers
                         db.SaveChanges();
                         tmpStr = tmpStr.Substring(0, tmpMatch.Groups["COUNT"].Captures[removeIndex].Index)
                             + tmpStr.Substring(tmpMatch.Groups["IMG"].Captures[removeIndex].Index + tmpMatch.Groups["IMG"].Captures[removeIndex].Length + 1);
+                    }
+                    else
+                    {
+                        hasCookie = false;
                     }
                 }
                 else
@@ -57,20 +56,21 @@ namespace FCStore.Controllers
             {
                 //禁用了cookie或者cookie格式错误
                 //从用户获得其订单
+                tmpStr = "";
                 MyUser myUser = HttpContext.User as MyUser;
                 if(myUser != null)
                 {
-                    Order order = db.Orders.Last(r => r.UID == myUser.UID && r.Status == Order.EOrderStatus.OS_Init);
-                    if(order.Packets != null && order.Packets.Count > removeIndex)
+                    Order order = db.Orders.OrderByDescending(r=>r.OID).FirstOrDefault(r => r.UID == myUser.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                    if (order != null && order.Packets != null && order.Packets.Count > removeIndex)
                     {
                         OrderPacket delOP = order.Packets[removeIndex];
                         db.OrderPackets.Remove(delOP);
                         db.SaveChanges();
+                        tmpStr = order.GetCoookieStr();
                     }
                     //重新设置cookie
                     cookie = new HttpCookie("Order");
                     cookie.Expires = DateTime.Now.AddMonths(1);
-                    tmpStr = order.GetCoookieStr();
                 }
             }
             cookie.Value = Server.UrlEncode(tmpStr);

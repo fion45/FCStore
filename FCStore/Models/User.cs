@@ -50,6 +50,12 @@ namespace FCStore.Models
             set;
         }
 
+        public int DefaultAddrIndex
+        {
+            get;
+            set;
+        }
+
         public virtual List<Address> Addresses
         {
             get;

@@ -8,5 +8,20 @@ namespace FCStore.Common
         {
             return string.Format("{{\"content\":{0},{1}\"successTag\":{2},\"errCode\":{3},\"errStr\":\"{4}\"}}", content != null ? Newtonsoft.Json.JsonConvert.SerializeObject(content) : "null", customJsonStr == null ? "" : customJsonStr + ",", successTag ? "true" : "false", errCode, errStr); 
         }
+
+        public static string CHPriceFormat(decimal price)
+        {
+            string result = price.ToString();
+            int index = result.IndexOf('.');
+            if (index > 0)
+            {
+                result = "￥" + result.Substring(0, index) + result.Substring(index, 3);
+            }
+            else
+            {
+                result = "￥" + result + ".00";
+            }
+            return result;
+        }
     }
 }

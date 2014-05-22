@@ -322,9 +322,9 @@ namespace FCStore.Controllers
                 order.UID = 1;
                 order.Postage = 0;
                 order.Subscription = 0;
-                order.Status = Order.EOrderStatus.OS_Init;
-                order.SendType = Order.ESendType.ST_Direct;
-                order.PayType = Order.EPayType.PT_Alipay;
+                order.Status = (int)Order.EOrderStatus.OS_Init;
+                order.SendType = (int)Order.ESendType.ST_Direct;
+                order.PayType = (int)Order.EPayType.PT_Alipay;
                 order.OrderDate = null;
                 order.CompleteDate = null;
                 order.Packets.Add(packet);

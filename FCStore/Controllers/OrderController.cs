@@ -17,27 +17,52 @@ namespace FCStore.Controllers
         private FCStoreDbContext db = new FCStoreDbContext();
 
         [MyAuthorizeAttribute]
+        public ActionResult Cart()
+        {
+            List<Order> orders = new List<Order>();
+            //设置订单为其用户的订单
+            MyUser user = HttpContext.User as MyUser;
+            if (HttpContext.User.Identity.IsAuthenticated && user != null)
+            {
+                bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+                HttpCookie cookie = null;
+                if(hasCookie)
+                {
+                    cookie = Request.Cookies["Order"];
+                    string tmpStr = Server.UrlDecode(cookie.Value);
+                    Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                    Match tmpMatch = cookieRgx.Match(tmpStr);
+                    if (!string.IsNullOrEmpty(tmpMatch.Value))
+                    {
+                        Group gi = tmpMatch.Groups["ORDERID"];
+                        int OrderID = int.Parse(gi.Value);
+                        Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                        if (order != null)
+                        {
+                            order.UID = user.UID;
+                            db.SaveChanges();
+                            orders.Add(order);
+                        }
+                    }
+                }
+                List<Order> tmpOArr = db.Orders.Where(r => (r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).ToList();
+                orders.AddRange(tmpOArr);
+            }
+            return View(orders);
+        }
+
+        [MyAuthorizeAttribute]
         public ActionResult Payment()
         {
-            //设置订单为其用户的订单
-            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
-            HttpCookie cookie = null;
-            if (hasCookie)
-            {
-                cookie = Request.Cookies["Order"];
-                string tmpStr = Server.UrlDecode(cookie.Value);
-                Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
-                Match tmpMatch = cookieRgx.Match(tmpStr);
-                if (!string.IsNullOrEmpty(tmpMatch.Value))
-                {
-                    Group gi = tmpMatch.Groups["ORDERID"];
-                    int OrderID = int.Parse(gi.Value);
-                    Order order = db.Orders.First(r => r.OID == OrderID);
-                    MyUser user = HttpContext.User as MyUser;
-                    order.UID = user.UID;
-                    db.SaveChanges();
-                }
-            }
+            //加载用户的地址
+
+            return View();
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult Submit()
+        {
+
             return View();
         }
 
