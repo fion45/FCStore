@@ -158,6 +158,7 @@
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPacket.cs" />
+    <Compile Include="Models\OrderVM.cs" />
     <Compile Include="Models\ProcurementPacket.cs" />
     <Compile Include="Models\Procurement.cs" />
     <Compile Include="Models\Product.cs" />

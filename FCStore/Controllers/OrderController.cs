@@ -19,11 +19,13 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult Cart()
         {
-            List<Order> orders = new List<Order>();
+            OrderVM tmpVM = new OrderVM();
             //设置订单为其用户的订单
             MyUser user = HttpContext.User as MyUser;
             if (HttpContext.User.Identity.IsAuthenticated && user != null)
             {
+                tmpVM.Client = db.Users.FirstOrDefault(r => r.UID == user.UID);
+                tmpVM.OrderArr = new List<Order>();
                 bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
                 HttpCookie cookie = null;
                 if(hasCookie)
@@ -41,14 +43,14 @@ namespace FCStore.Controllers
                         {
                             order.UID = user.UID;
                             db.SaveChanges();
-                            orders.Add(order);
+                            tmpVM.OrderArr.Add(order);
                         }
                     }
                 }
                 List<Order> tmpOArr = db.Orders.Where(r => (r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).ToList();
-                orders.AddRange(tmpOArr);
+                tmpVM.OrderArr.AddRange(tmpOArr);
             }
-            return View(orders);
+            return View(tmpVM);
         }
 
         [MyAuthorizeAttribute]

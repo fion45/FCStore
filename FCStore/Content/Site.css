@@ -1392,9 +1392,14 @@ textarea {
     height:auto;
 }
 
+    #CartDiv h2
+    {
+        text-align:left;
+    }
+
     #CartDiv .flow div
     {
-        width:33%;
+        width:25%;
         float:left;
     }
 
@@ -1511,4 +1516,34 @@ textarea {
             font-size:120%;
             font-weight:bold;
             margin:0px 5px;
+        }
+
+    #CartDiv .addresses
+    {
+        margin-top:10px;
+    }
+
+    #CartDiv .addresses .item
+    {
+        width:255px;
+        height:100px;
+        padding:10px;
+        border:solid 1px #cccccc;
+        float:left;
+        text-align:left;
+        cursor:pointer;
+        margin:8px;
+    }
+
+    #CartDiv .addresses .sel {
+        border:solid 1px #cc0000;
+    }
+
+    #CartDiv .addresses .add {
+
+    }
+
+        #CartDiv .addresses .item .name {
+            font-weight:bold;
+            margin-bottom:10px;
         }
