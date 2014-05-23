@@ -50,7 +50,15 @@ namespace FCStore.Models
             set;
         }
 
-        public int DefaultAddrIndex
+
+        [ForeignKey("DefaultAddress")]
+        public int? DefaultAddrID
+        {
+            get;
+            set;
+        }
+
+        public virtual Address DefaultAddress
         {
             get;
             set;

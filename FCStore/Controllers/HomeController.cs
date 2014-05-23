@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using System.Drawing;
 using System.IO;
@@ -19,6 +20,23 @@ namespace FCStore.Controllers
 
         public ActionResult Index()
         {
+            //清楚不存在的order
+            if (Request.Cookies.AllKeys.Contains("Order"))
+            {
+                Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    int OrderID = int.Parse(tmpMatch.Groups["ORDERID"].Value);
+                    Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                    if(order == null)
+                    {
+                        //设置cookie过时
+                        Response.Cookies["Order"].Expires = DateTime.MinValue;
+                    }
+                }
+            }
+
             return View(db.Columns.ToList());
         }
 

@@ -54,6 +54,28 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
+        public ActionResult SelectDefaultAddress(int id)
+        {
+            //修改用户默认地址
+            MyUser user = HttpContext.User as MyUser;
+            if (HttpContext.User.Identity.IsAuthenticated && user != null)
+            {
+                User client = db.Users.FirstOrDefault(r => r.UID == user.UID);
+                client.DefaultAddrID = id;
+                db.SaveChanges();
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [MyAuthorizeAttribute]
         public ActionResult Payment()
         {
             //加载用户的地址

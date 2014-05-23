@@ -76,6 +76,14 @@ jQuery.fn.mySpinner = function (config) {
     });
 };
 
+jQuery.fn.checkAll = function(ele) {
+    var allEle = $(this);
+    allEle.bind("click",function(ev){
+    	var checked = allEle.prop("checked");
+    	$(ele).prop("checked",checked);
+    });
+};
+
 jQuery.extend({
 	myAjax : function(setting) {
 		jQuery.extend({
@@ -100,6 +108,15 @@ jQuery.extend({
 	    	history.pushState(null, document.title, setting.url);
 	    }
 		$.ajax(setting);
+	},
+	selectOne : function(ele,className) {
+		if(!className)
+			className = "sel";
+		ele = $(ele); 
+		ele.bind("click",function(ev){
+			ele.removeClass(className);
+			$(ev.currentTarget).addClass(className);
+		});
 	}
 });
 

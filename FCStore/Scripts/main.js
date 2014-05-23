@@ -75,6 +75,16 @@
 
     $("#tabs").tabs();
     $("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
+    
+    $("#CartDiv .checkAll:first").checkAll("#CartDiv .checkItem");
+    
+    $.selectOne("#CartDiv .addresses .content .item","sel");
+    
+    $.selectOne("#CartDiv .postType .content .item","sel");
+    
+    $("#CartDiv .addresses .content .item").bind("click",CartPage.onAddressItemClick);
+    
+    $("#CartDiv .postType .content .item").bind("click",CartPage.onPostTypeItemClick);
 });
 
 var MainLayout = {
@@ -479,4 +489,32 @@ var ProductList = {
         '</div>');
         return item;
     }
+};
+
+var CartPage = {
+	onAddressItemClick : function(ev) {
+		var target = $(ev.currentTarget);
+		if(target.prev().length > 0) {
+			//不是第一个,ajax修改默认地址
+			var AID = target.prop("data");
+			$.myAjax({
+	        	historyTag : false,
+	        	loadEle : null,
+	            url: "/Order/SelectDefaultAddress/" + AID,
+	            data: null,
+	            dataType: "json",
+	            type: "GET",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data,status,options) {
+	            	
+	            }
+			});
+		}
+	},
+	onPostTypeItemClick : function(ev) {
+		
+	},
+	onAddAddressBtnClick : function() {
+		$("#addAddressDlg").dialog();
+	}
 };

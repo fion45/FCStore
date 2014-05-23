@@ -297,15 +297,18 @@ namespace FCStore.Controllers
                 {
                     Group gi = tmpMatch.Groups["ORDERID"];
                     int OrderID = int.Parse(gi.Value);
-                    order = db.Orders.First(r => r.OID == OrderID);
-                    if (order.Packets == null)
+                    order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                    if(order != null)
                     {
-                        order.Packets = new List<OrderPacket>();
+                        if (order.Packets == null)
+                        {
+                            order.Packets = new List<OrderPacket>();
+                        }
+                        //添加到数据库
+                        order.Packets.Add(packet);
+                        db.OrderPackets.Add(packet);
+                        db.SaveChanges();
                     }
-                    //添加到数据库
-                    order.Packets.Add(packet);
-                    db.OrderPackets.Add(packet);
-                    db.SaveChanges();
                     tmpStr += count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                 }
                 else

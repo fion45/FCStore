@@ -93,7 +93,7 @@ namespace FCStore.Controllers
                     if(!hasCookie)
                     {
                         //从数据库里取出最后的未完成的购物任务
-                        Order order = db.Orders.LastOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                        Order order = db.Orders.OrderByDescending(r=>r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
                         if(order != null)
                         {
                             cookie = new HttpCookie("Order");
@@ -151,7 +151,7 @@ namespace FCStore.Controllers
                         LoginID = userName,
                         LoginPSW = psw,
                         Email = email,
-                        DefaultAddrIndex = -1,
+                        DefaultAddrID = null,
                         Permission = "",
                         Gift = 100      //100积分
                     };
