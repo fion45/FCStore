@@ -119,7 +119,7 @@
                     for (int i = 0; i < Model.Client.Addresses.Count; i++)
                     {
                         addr = Model.Client.Addresses[i];
-                        if (Model.Client.DefaultAddress != null && addr.AID != Model.Client.DefaultAddrID)
+                        if (Model.Client.DefaultAddress != null && addr.AddID != Model.Client.DefaultAddrID)
                         { 
                             <div data="@(addr.AddID)" class="item @(Model.Client.DefaultAddress != null && i == 0 ? "sel" : "")">
                                 <div class="name">
@@ -186,10 +186,22 @@
     </div>
     <div id="addAddressDlg" title="增加联系地址">
         <div class="content">
-            <div class="title">
-
+            <div id="AreaSelector">
             </div>
-            <div class="value"></div>
+            <div class="title">
+                详细地址：
+            </div>
+            <div class="value">
+                <textarea></textarea>
+            </div>
+            <div class="btnDiv">
+                <div class="p2">
+                    <input type="button" value="取消" />
+                </div>
+                <div class="p2">
+                    <input type="button" value="添加" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

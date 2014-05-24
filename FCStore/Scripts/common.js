@@ -78,7 +78,7 @@ jQuery.fn.mySpinner = function (config) {
 
 jQuery.fn.checkAll = function(ele) {
     var allEle = $(this);
-    allEle.bind("click",function(ev){
+    allEle.bind("change",function(ev){
     	var checked = allEle.prop("checked");
     	$(ele).prop("checked",checked);
     });

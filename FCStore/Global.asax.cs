@@ -10,6 +10,9 @@ using FCStore.Models;
 using System.Data.Entity;
 using System.Web.Security;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.IO;
+using System.Configuration;
 using FCStore.Common;
 
 namespace FCStore
@@ -44,8 +47,28 @@ namespace FCStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //从文件加载省份，城市，区域到数据库
+            FCStoreDbContext db = new FCStoreDbContext();
+            if(db.Province.Count() == 0) {
+                //省份不存在
+                string tmpFP = ConfigurationManager.AppSettings["PCTFilePath"];
+                tmpFP = Server.MapPath(tmpFP);
+                FileInfo tmpFI = new FileInfo(tmpFP);
+                FileStream tmpFS = tmpFI.OpenRead();
+                int FLen = (int)tmpFI.Length;
+                byte[] buffer = new byte[FLen];
+                //格式:[北京,2,[北京市,3,[东城区,4,西城区,5]]],[...]
+                if (tmpFS.Read(buffer, 0, FLen) > 0)
+                {
+                    string tmpRgxStr = "(\\[(?<PNAME>\\w+?),(?<PCODE>\\d+?),(\\[(?<CNAME>\\W+?),(?<CCODE>\\d+?),(\\[((?<TNAME>\\w+?),(?<TCODE>\\d+?),)+\\],)+\\],)+\\],)+";
+                }
+            }
+
+            db.Dispose();
+
             //注册RouteDebug
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+
         }
 
         protected void Application_Error(object s, EventArgs e)

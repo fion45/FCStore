@@ -133,7 +133,6 @@
     <Compile Include="Common\MyUser.cs" />
     <Compile Include="Common\PubFunction.cs" />
     <Compile Include="Controllers\AddressController.cs" />
-    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
@@ -150,9 +149,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\Area.cs" />
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\City.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Evaluate.cs" />
     <Compile Include="Models\FCStoreDbContext.cs" />
@@ -164,7 +163,9 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductListVM.cs" />
     <Compile Include="Models\ProductTag.cs" />
+    <Compile Include="Models\Province.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Town.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -228,6 +229,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\area_choose.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -287,16 +289,6 @@
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Product\ListByCategory.cshtml" />
     <Content Include="Views\Product\ListByBrand.cshtml" />
-    <Content Include="Views\Area\Index.cshtml" />
-    <Content Include="Views\Area\Details.cshtml" />
-    <Content Include="Views\Area\Create.cshtml" />
-    <Content Include="Views\Area\Edit.cshtml" />
-    <Content Include="Views\Area\Delete.cshtml" />
-    <Content Include="Views\Address\Index.cshtml" />
-    <Content Include="Views\Address\Details.cshtml" />
-    <Content Include="Views\Address\Create.cshtml" />
-    <Content Include="Views\Address\Edit.cshtml" />
-    <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />

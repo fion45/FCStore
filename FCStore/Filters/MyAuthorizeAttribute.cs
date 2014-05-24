@@ -24,29 +24,28 @@ namespace FCStore.FilterAttribute
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            LazyInitializer.EnsureInitialized(ref mRoles, ref mIsInitialized, ref mInitializerLock, () =>
+            LazyInitializer.EnsureInitialized(ref mRoles, ref mIsInitialized, ref mInitializerLock, () => {
+                mRoles = new List<Role>();
+                FCStoreDbContext db = new FCStoreDbContext();
+                mRoles = db.Roles.ToList();
+                StringBuilder tmpSB = new StringBuilder();
+                tmpSB.Append(',');
+                HashSet<string> tmpSet = new HashSet<string>();
+                foreach(Role role in mRoles)
                 {
-                    mRoles = new List<Role>();
-                    FCStoreDbContext db = new FCStoreDbContext();
-                    mRoles = db.Roles.ToList();
-                    StringBuilder tmpSB = new StringBuilder();
-                    tmpSB.Append(',');
-                    HashSet<string> tmpSet = new HashSet<string>();
-                    foreach(Role role in mRoles)
+                    string[] tmpStrArr = role.Description.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach(string PStr in tmpStrArr)
                     {
-                        string[] tmpStrArr = role.Description.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries);
-                        foreach(string PStr in tmpStrArr)
+                        if(!tmpSet.Contains(PStr))
                         {
-                            if(!tmpSet.Contains(PStr))
-                            {
-                                tmpSB.Append(PStr + ",");
-                                tmpSet.Add(PStr);
-                            }
+                            tmpSB.Append(PStr + ",");
+                            tmpSet.Add(PStr);
                         }
                     }
-                    mAllPermission = tmpSB.ToString();
-                    return mRoles;
-                });
+                }
+                mAllPermission = tmpSB.ToString();
+                return mRoles;
+            });
             mControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             mActionName = filterContext.ActionDescriptor.ActionName;
             base.OnAuthorization(filterContext);

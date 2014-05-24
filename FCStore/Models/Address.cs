@@ -17,15 +17,15 @@ namespace FCStore.Models
             set;
         }
 
-        [ForeignKey("Area")]
-        public int AID
+        [ForeignKey("BelongTown")]
+        public int? TownID
         {
             get;
             set;
         }
 
         [JsonIgnore]
-        public virtual Area Area
+        public virtual Town BelongTown
         {
             get;
             set;
@@ -34,7 +34,15 @@ namespace FCStore.Models
         public string AddressName
         {
             get;
-            set;
+            set
+            {
+                if(AddressName.IndexOf(BelongTown.Name) == -1 || AddressName.IndexOf(BelongTown.BelongCity.Name) == -1 ||
+                    AddressName.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1)
+                {
+                    //不存在该地域
+                    TownID = null;
+                }
+            }
         }
 
         [NotMapped]
@@ -42,11 +50,17 @@ namespace FCStore.Models
         {
             get
             {
-                return Area.JoinDescription + AddressName;
+                return (TownID != null ? BelongTown.FullName + " " : "") + AddressName;
             }
         }
 
         public string Phone
+        {
+            get;
+            set;
+        }
+
+        public string PostCode
         {
             get;
             set;

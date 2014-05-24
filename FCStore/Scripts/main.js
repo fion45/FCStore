@@ -85,6 +85,8 @@
     $("#CartDiv .addresses .content .item").bind("click",CartPage.onAddressItemClick);
     
     $("#CartDiv .postType .content .item").bind("click",CartPage.onPostTypeItemClick);
+    
+    $("#AreaSelector").AreaSelector();
 });
 
 var MainLayout = {
@@ -516,5 +518,26 @@ var CartPage = {
 	},
 	onAddAddressBtnClick : function() {
 		$("#addAddressDlg").dialog();
+		$("#addAddressDlg").show();
+	},
+	onAAEnsure : function() {
+		//添加联系地址
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#addAddressDlg"),
+            url: "/User/AddAddress/",
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	
+            }
+		});
+		$("#addAddressDlg").dialog("close");
+	},
+	onAA : function() {
+		//关闭
+		$("#addAddressDlg").dialog("close");
 	}
 };

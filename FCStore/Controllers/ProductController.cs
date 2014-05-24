@@ -189,7 +189,7 @@ namespace FCStore.Controllers
         }
 
 
-        public ActionResult ListByBrand(int ID, int PIndex, string hashOrder)
+        public ActionResult ListByBrand(int ID, int PIndex = 1, string hashOrder = "0x00")
         {
             List<OrderObj> orderObjList = GetOrderObj(hashOrder);
             int PCount = 40;

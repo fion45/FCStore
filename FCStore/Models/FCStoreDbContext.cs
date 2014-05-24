@@ -22,7 +22,11 @@ namespace FCStore.Models
 
         public DbSet<Column> Columns { get; set; }
 
-        public DbSet<Area> Areas { get; set; }
+        public DbSet<Province> Province { get; set; }
+
+        public DbSet<City> City { get; set; }
+
+        public DbSet<Town> Town { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
 

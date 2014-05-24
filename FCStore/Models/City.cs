@@ -3,64 +3,48 @@ using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace FCStore.Models
 {
-    [Serializable]
-    public class Area
+    public class City
     {
         [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int AID
+        public int CityID
         {
             get;
             set;
         }
 
-        public int Countrycode
+        public string Name
         {
             get;
             set;
         }
 
-        public string CountryName
+        public string PostCode2
         {
             get;
             set;
         }
 
-        public string ProvinceName
+        [ForeignKey("BelongProvince")]
+        public int BPID
         {
             get;
             set;
         }
 
-        public string CityName
+        public virtual Province BelongProvince
         {
             get;
             set;
         }
 
-        public string CountyName
+        public virtual List<Town> twons
         {
             get;
             set;
-        }
-
-        public int Postcode
-        {
-            get;
-            set;
-        }
-
-        [NotMapped]
-        public string JoinDescription
-        {
-            get
-            {
-                return CountryName + " " + ProvinceName + " " + CityName + " " + CountyName;
-            }
         }
     }
 }

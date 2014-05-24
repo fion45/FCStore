@@ -1740,3 +1740,60 @@ textarea {
         #CartDiv .btnDiv .p3 div {
             margin:0px auto;
         }
+
+#addAddressDlg {
+    display:none;
+}
+
+    #addAddressDlg .content {
+        width:100%;
+        height:250px;
+    }
+
+    #addAddressDlg #AreaSelector {
+        width:100%;
+        height:60px;
+        height:90px;
+    }
+
+    #addAddressDlg #AreaSelector select {
+        margin:3px;
+        padding:5px 1%;
+        width:46%;
+    }
+        
+        #addAddressDlg .content div {
+            height:20px;
+            line-height:20px;
+            float:left;
+        }
+
+        #addAddressDlg .content .title {
+            padding:5px 1%;
+            width:98%;
+        }
+
+        #addAddressDlg .content .value {
+            padding:5px 1%;
+            width:98%;
+            height:85px;
+            line-height:20px;
+        }
+
+        #addAddressDlg .content select {
+            width:100%;
+        }
+
+        #addAddressDlg .content .value textarea {
+            width:99%;
+            height:100%;
+        }
+
+        #addAddressDlg .content .btnDiv {
+            margin-top:8px;
+            width:100%;
+        }
+
+            #addAddressDlg .content .btnDiv .p2 {
+                text-align:center;
+            }
