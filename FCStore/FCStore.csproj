@@ -136,6 +136,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderPacketController.cs" />
@@ -228,8 +229,8 @@
     <Content Include="Content\themes\image\loading.gif" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="zone.xml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Scripts\area_choose.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

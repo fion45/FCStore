@@ -26,6 +26,12 @@ namespace FCStore
             );
 
             routes.MapRoute(
+                name: "zone",
+                url: "{controller}/{action}/{PID}/{CID}",
+                defaults: new { PID = UrlParameter.Optional, CID = -1 }
+            );
+
+            routes.MapRoute(
                 name: "ProductList",
                 url: "{controller}/{action}/{id}/{pIndex}/{hashOrder}/{hashWhere}",
                 defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" }

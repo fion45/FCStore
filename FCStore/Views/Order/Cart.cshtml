@@ -187,6 +187,24 @@
     <div id="addAddressDlg" title="增加联系地址">
         <div class="content">
             <div id="AreaSelector">
+                @{
+                    string TName = "区县选择";
+                    string CName = "城市选择";
+                    string PName = "省份选择";
+                    if(Model.Client.DefaultAddrID != null)
+                    {
+                        Town tmpT = Model.Client.DefaultAddress.BelongTown;
+                        TName = tmpT.Name;
+                        City tmpC = tmpT.BelongCity;
+                        CName = tmpC.Name;
+                        Province tmpP = tmpC.BelongProvince;
+                        PName = tmpP.Name;
+                    }
+                }
+                <select class="country"><option>中国</option></select>
+                <select class="province"><option>@(PName)</option></select>
+                <select class="city"><option>@(CName)</option></select>
+                <select class="county"><option>@(TName)</option></select>
             </div>
             <div class="title">
                 详细地址：

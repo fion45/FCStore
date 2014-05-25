@@ -41,7 +41,7 @@ namespace FCStore.Models
             set;
         }
 
-        public virtual List<Town> twons
+        public virtual List<Town> TownArr
         {
             get;
             set;

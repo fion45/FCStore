@@ -31,17 +31,24 @@ namespace FCStore.Models
             set;
         }
 
+        public string _AddressName;
+
         public string AddressName
         {
-            get;
+            get
+            {
+                return _AddressName;
+            }
             set
             {
-                if(AddressName.IndexOf(BelongTown.Name) == -1 || AddressName.IndexOf(BelongTown.BelongCity.Name) == -1 ||
-                    AddressName.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1)
+                if ( BelongTown != null && value.IndexOf(BelongTown.Name) == -1 || value.IndexOf(BelongTown.BelongCity.Name) == -1 ||
+                    value.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1)
                 {
                     //不存在该地域
                     TownID = null;
+                    BelongTown = null;
                 }
+                _AddressName = value;
             }
         }
 

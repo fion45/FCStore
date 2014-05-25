@@ -6,14 +6,15 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using FCStore.Models;
 using System.Data.Entity;
 using System.Web.Security;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
 using System.Configuration;
+using System.Text;
 using FCStore.Common;
+using FCStore.Models;
 
 namespace FCStore
 {
@@ -49,18 +50,63 @@ namespace FCStore
 
             //从文件加载省份，城市，区域到数据库
             FCStoreDbContext db = new FCStoreDbContext();
-            if(db.Province.Count() == 0) {
+            if(db.Province.Count() == 0) 
+            {
                 //省份不存在
                 string tmpFP = ConfigurationManager.AppSettings["PCTFilePath"];
                 tmpFP = Server.MapPath(tmpFP);
                 FileInfo tmpFI = new FileInfo(tmpFP);
-                FileStream tmpFS = tmpFI.OpenRead();
-                int FLen = (int)tmpFI.Length;
-                byte[] buffer = new byte[FLen];
-                //格式:[北京,2,[北京市,3,[东城区,4,西城区,5]]],[...]
-                if (tmpFS.Read(buffer, 0, FLen) > 0)
+                if(tmpFI.Exists)
                 {
-                    string tmpRgxStr = "(\\[(?<PNAME>\\w+?),(?<PCODE>\\d+?),(\\[(?<CNAME>\\W+?),(?<CCODE>\\d+?),(\\[((?<TNAME>\\w+?),(?<TCODE>\\d+?),)+\\],)+\\],)+\\],)+";
+                    FileStream tmpFS = tmpFI.OpenRead();
+                    int FLen = (int)tmpFI.Length;
+                    byte[] buffer = new byte[FLen];
+                    //格式:<Province><PName>北京</PName><PPC>22</PPC><CityArr><City><CName>北京市</CName><CPC>44</CPC><TownArr><TName>南山区</TName><TPC>66</TCP></TownArr></City></CityArr></Province>
+                    if (tmpFS.Read(buffer, 0, FLen) > 0)
+                    {
+                        string tmpStr = Encoding.Unicode.GetString(buffer);
+                        string ProRgxStr = "<Province><PName>(?<PName>\\w+?)</PName><PPC>(?<PPC>\\d+?)</PPC><CityArr>(?<PContent>.+?)</CityArr></Province>";
+                        Regex ProRgx = new Regex(ProRgxStr,RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                        MatchCollection tmpMC = ProRgx.Matches(tmpStr);
+                        foreach (Match tmpMatch in tmpMC)
+                        {
+                            Province tmpPro = new Province();
+                            tmpPro.Name = tmpMatch.Groups["PName"].Value;
+                            tmpPro.PostCode1 = tmpMatch.Groups["PPC"].Value;
+                            if (tmpPro.CityArr == null)
+                                tmpPro.CityArr = new List<City>();
+                            string cityStr = tmpMatch.Groups["PContent"].Value;
+                            string CityRgxStr = "<City><CName>(?<CName>\\w+?)</CName><CPC>(?<CPC>\\d+?)</CPC><TownArr>(?<CContent>.+?)</TownArr></City>";
+                            Regex cityRgx = new Regex(CityRgxStr, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                            MatchCollection tmpMC1 = cityRgx.Matches(tmpStr);
+                            foreach (Match tmpMatch1 in tmpMC1)
+                            {
+                                City tmpCity = new City();
+                                tmpCity.Name = tmpMatch1.Groups["CName"].Value;
+                                tmpCity.PostCode2 = tmpMatch1.Groups["CPC"].Value;
+                                if (tmpCity.TownArr == null)
+                                    tmpCity.TownArr = new List<Town>();
+                                string townStr = tmpMatch1.Groups["CContent"].Value;
+                                string TownRgxStr = "<Town><TName>(?<TName>\\w+?)</TName><TPC>(?<TPC>\\d+?)</TPC></Town>";
+                                Regex townRgx = new Regex(TownRgxStr, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                                MatchCollection tmpMC2 = townRgx.Matches(tmpStr);
+                                foreach (Match tmpMatch2 in tmpMC2)
+                                {
+                                    Town tmpTown = new Town();
+                                    tmpTown.Name = tmpMatch2.Groups["TName"].Value;
+                                    tmpTown.PostCode3 = tmpMatch2.Groups["TPC"].Value;
+                                    tmpCity.TownArr.Add(tmpTown);
+                                    db.Town.Add(tmpTown);
+                                }
+                                tmpPro.CityArr.Add(tmpCity);
+                                db.City.Add(tmpCity);
+                            }
+                            db.Province.Add(tmpPro);
+                        }
+                        if(tmpMC.Count > 0)
+                            db.SaveChanges();
+                    }
+                    tmpFS.Close();
                 }
             }
 

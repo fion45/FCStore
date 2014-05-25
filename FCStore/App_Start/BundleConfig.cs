@@ -55,7 +55,6 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                 "~/Scripts/common.js",
                 "~/Scripts/sidebar-follow-jquery.js",
-                "~/Scripts/area_choose.js",
                 "~/Scripts/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(

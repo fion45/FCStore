@@ -84,6 +84,65 @@ jQuery.fn.checkAll = function(ele) {
     });
 };
 
+jQuery.fn.areaSelector = function () {
+    var _self = this;
+    _self.append($("<select class=\"country\"><option>中国</option></select>"));
+    var provinceSelector = _self.children(".province");
+    if (provinceSelector.length == 0) {
+        provinceSelector = $("<select class=\"province\"></select>");
+        _self.append(provinceSelector);
+    }
+    var citySelector = _self.children(".city");
+    if (citySelector.length == 0) {
+        citySelector = $("<select class=\"city\"></select>");
+        _self.append(citySelector);
+    }
+    var countySelector = _self.children(".county");
+    if (countySelector.length == 0) {
+        countySelector = $("<select class=\"county\"></select>");
+        _self.append(countySelector);
+    }
+    $.myAjax({
+        historyTag: false,
+        loadEle: null,
+        url: "/Common/GetProvinceArr",
+        data: null,
+        dataType: "json",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        success: function (data, status, options) {
+            $.each(data.ProvinceArr, function (i, n) {
+                provinceSelector.append("<option value=\"" + n.PID + "\"" + (i == 0) ? " selected" : "" + ">" + n.PName + "</option>");
+            });
+        }
+    });
+    var changeFun = function (PID, CID) {
+        $.myAjax({
+        	historyTag : false,
+        	loadEle : null,
+        	url: "/Common/GetZoneList/" + PID + "/" + CID,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                $.each(data.CityArr, function (i, n) {
+                    citySelector.append("<option value=\"" + n.CID + "\"" + (n.CID == CID) ? " selected" : "" + ">" + n.CName + "</option>");
+                });
+                $.each(data.TownArr, function (i, n) {
+                    countySelector.append("<option value=\"" + n.TID + "\"" + (i == 0) ? " selected" : "" + ">" + n.TName + "</option>");
+                });
+            }
+		}); 
+    };
+    provinceSelector.on("change", function () {
+        changeFun(provinceSelector.val(), -1);
+    });
+    citySelector.on("change", function () {
+        changeFun(provinceSelector.val(), citySelector.val());
+    });
+}
+
 jQuery.extend({
 	myAjax : function(setting) {
 		jQuery.extend({
