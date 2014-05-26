@@ -506,7 +506,7 @@ var CartPage = {
 			$.myAjax({
 	        	historyTag : false,
 	        	loadEle : null,
-	            url: "/Order/SelectDefaultAddress/" + AID,
+	        	url: "/User/SelectDefaultAddress/" + AID,
 	            data: null,
 	            dataType: "json",
 	            type: "GET",
