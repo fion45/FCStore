@@ -211,11 +211,7 @@ namespace FCStore.Controllers
         {
             MyUser tmpUser = HttpContext.User as MyUser;
             User user = null;
-            if (tmpUser == null)
-            {
-                throw new Exception("User error");
-            }
-            else
+            if (tmpUser != null)
             {
                 user = db.Users.Find(new object[] { tmpUser.UID });
             }
@@ -231,9 +227,19 @@ namespace FCStore.Controllers
             return Redirect("/");
         }
 
-        public ActionResult AddAddress(int AddID, string Contacts, int TownID, string AddressName, string Phone, string PostCode)
+        [MyAuthorizeAttribute]
+        public ActionResult AddAddress(Address address)
         {
-
+            db.Addresses.Add(address);
+            MyUser tmpUser = HttpContext.User as MyUser;
+            User user = null;
+            if (tmpUser != null)
+            {
+                user = db.Users.Find(new object[] { tmpUser.UID });
+            }
+            user.DefaultAddress = address;
+            user.Addresses.Add(address);
+            db.SaveChanges();
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult("OK");

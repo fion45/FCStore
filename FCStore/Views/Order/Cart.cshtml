@@ -119,9 +119,9 @@
                     for (int i = 0; i < Model.Client.Addresses.Count; i++)
                     {
                         addr = Model.Client.Addresses[i];
-                        if (Model.Client.DefaultAddress != null && addr.AddID != Model.Client.DefaultAddrID)
+                        if ((Model.Client.DefaultAddress != null && Model.Client.DefaultAddress.AddID != addr.AddID) || (Model.Client.DefaultAddress == null && i != 0))
                         { 
-                            <div data="@(addr.AddID)" class="item @(Model.Client.DefaultAddress != null && i == 0 ? "sel" : "")">
+                            <div data="@(addr.AddID)" class="item @((Model.Client.DefaultAddress == null && i == 0) ? "sel" : "")">
                                 <div class="name">
                                     @(Model.Client.UserName)收
                                 </div>
