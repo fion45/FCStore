@@ -1747,13 +1747,13 @@ textarea {
 
     #addAddressDlg .content {
         width:100%;
-        height:250px;
+        height:300px;
     }
 
     #addAddressDlg #AreaSelector {
         width:100%;
-        height:60px;
-        height:90px;
+        height:80px;
+        position:relative;
     }
 
     #addAddressDlg #AreaSelector select {
@@ -1763,13 +1763,16 @@ textarea {
     }
         
         #addAddressDlg .content div {
-            height:20px;
-            line-height:20px;
             float:left;
         }
 
+        #addAddressDlg .content .p1 {
+            width:100%;
+            height:35px;
+        }
+
         #addAddressDlg .content .title {
-            padding:5px 1%;
+            padding:2px 1%;
             width:98%;
         }
 
@@ -1796,4 +1799,29 @@ textarea {
 
             #addAddressDlg .content .btnDiv .p2 {
                 text-align:center;
+            }
+
+        #addAddressDlg .content .p1 {
+            padding: 2px 1%;
+            width:98%;
+        }
+
+        #addAddressDlg .content .title1 {
+            padding:2px 0px;
+            width:36%;
+        }
+
+            #addAddressDlg .content .title1 input {
+                width:98%;
+            }
+
+        #addAddressDlg .content .value1 {
+            padding:5px 0px;
+            width:64%;
+            height:20px;
+            line-height:20px;
+        }    
+
+            #addAddressDlg .content .value1 input {
+                width:98%;
             }

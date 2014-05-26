@@ -65,7 +65,7 @@ namespace FCStore
                     if (tmpFS.Read(buffer, 0, FLen) > 0)
                     {
                         string tmpStr = Encoding.Unicode.GetString(buffer);
-                        string ProRgxStr = "<Province><PName>(?<PName>\\w+?)</PName><PPC>(?<PPC>\\d+?)</PPC><CityArr>(?<PContent>.+?)</CityArr></Province>";
+                        string ProRgxStr = "<Province>\\s*?<PName>\\s*?(?<PName>\\w+?)\\s*?</PName>\\s*?<PPC>\\s*?(?<PPC>\\d+?)\\s*?</PPC>\\s*?<CityArr>\\s*?(?<PContent>.+?)\\s*?</CityArr>\\s*?</Province>";
                         Regex ProRgx = new Regex(ProRgxStr,RegexOptions.Singleline | RegexOptions.IgnoreCase);
                         MatchCollection tmpMC = ProRgx.Matches(tmpStr);
                         foreach (Match tmpMatch in tmpMC)
@@ -76,9 +76,9 @@ namespace FCStore
                             if (tmpPro.CityArr == null)
                                 tmpPro.CityArr = new List<City>();
                             string cityStr = tmpMatch.Groups["PContent"].Value;
-                            string CityRgxStr = "<City><CName>(?<CName>\\w+?)</CName><CPC>(?<CPC>\\d+?)</CPC><TownArr>(?<CContent>.+?)</TownArr></City>";
+                            string CityRgxStr = "<City>\\s*?<CName>\\s*?(?<CName>\\w+?)\\s*?</CName>\\s*?<CPC>\\s*?(?<CPC>\\d+?)\\s*?</CPC>\\s*?<TownArr>\\s*?(?<CContent>.+?)\\s*?</TownArr>\\s*?</City>";
                             Regex cityRgx = new Regex(CityRgxStr, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                            MatchCollection tmpMC1 = cityRgx.Matches(tmpStr);
+                            MatchCollection tmpMC1 = cityRgx.Matches(cityStr);
                             foreach (Match tmpMatch1 in tmpMC1)
                             {
                                 City tmpCity = new City();
@@ -87,9 +87,9 @@ namespace FCStore
                                 if (tmpCity.TownArr == null)
                                     tmpCity.TownArr = new List<Town>();
                                 string townStr = tmpMatch1.Groups["CContent"].Value;
-                                string TownRgxStr = "<Town><TName>(?<TName>\\w+?)</TName><TPC>(?<TPC>\\d+?)</TPC></Town>";
+                                string TownRgxStr = "<Town>\\s*?<TName>\\s*?(?<TName>\\w+?)\\s*?</TName>\\s*?<TPC>\\s*?(?<TPC>\\d+?)\\s*?</TPC>\\s*?</Town>";
                                 Regex townRgx = new Regex(TownRgxStr, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                                MatchCollection tmpMC2 = townRgx.Matches(tmpStr);
+                                MatchCollection tmpMC2 = townRgx.Matches(townStr);
                                 foreach (Match tmpMatch2 in tmpMC2)
                                 {
                                     Town tmpTown = new Town();

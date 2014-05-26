@@ -84,9 +84,16 @@ jQuery.fn.checkAll = function(ele) {
     });
 };
 
-jQuery.fn.areaSelector = function () {
+jQuery.fn.areaSelector = function (config) {
+    this.config = {
+        changeCB : null
+    };
+    $.extend(this.config, config);
     var _self = this;
-    _self.append($("<select class=\"country\"><option>中国</option></select>"));
+    var countrySelector = _self.children(".province");
+    if (countrySelector.length == 0) {
+    	_self.append($("<select class=\"country\"><option>中国</option></select>"));
+    }
     var provinceSelector = _self.children(".province");
     if (provinceSelector.length == 0) {
         provinceSelector = $("<select class=\"province\"></select>");
@@ -104,34 +111,41 @@ jQuery.fn.areaSelector = function () {
     }
     $.myAjax({
         historyTag: false,
-        loadEle: null,
+        loadEle: _self,
         url: "/Common/GetProvinceArr",
         data: null,
         dataType: "json",
         type: "GET",
         contentType: "application/json;charset=utf-8",
         success: function (data, status, options) {
+        	provinceSelector.empty();
             $.each(data.ProvinceArr, function (i, n) {
-                provinceSelector.append("<option value=\"" + n.PID + "\"" + (i == 0) ? " selected" : "" + ">" + n.PName + "</option>");
+                provinceSelector.append("<option value=\"" + n.PID + "\"" + ((i == 0) ? " selected=\"selected\"" : "") + ">" + n.PName + "</option>");
             });
+            changeFun(provinceSelector.val(), -1);
         }
     });
     var changeFun = function (PID, CID) {
         $.myAjax({
         	historyTag : false,
-        	loadEle : null,
+        	loadEle : _self,
         	url: "/Common/GetZoneList/" + PID + "/" + CID,
             data: null,
             dataType: "json",
             type: "GET",
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
+        		citySelector.empty();
                 $.each(data.CityArr, function (i, n) {
-                    citySelector.append("<option value=\"" + n.CID + "\"" + (n.CID == CID) ? " selected" : "" + ">" + n.CName + "</option>");
+                    citySelector.append("<option value=\"" + n.CID + "\"" + ((n.CID == CID) ? " selected=\"selected\"" : "") + ">" + n.CName + "</option>");
                 });
+        		countySelector.empty();
                 $.each(data.TownArr, function (i, n) {
-                    countySelector.append("<option value=\"" + n.TID + "\"" + (i == 0) ? " selected" : "" + ">" + n.TName + "</option>");
+                    countySelector.append("<option value=\"" + n.TID + "\"" + ((i == 0) ? " selected=\"selected\"" : "") + ">" + n.TName + "</option>");
                 });
+                if(_self.config.changeCB != null) {
+                	_self.config.changeCB();
+                }
             }
 		}); 
     };
@@ -141,7 +155,14 @@ jQuery.fn.areaSelector = function () {
     citySelector.on("change", function () {
         changeFun(provinceSelector.val(), citySelector.val());
     });
-}
+    countySelector.on("change", function () {
+        if(_self.config.changeCB != null) {
+        	_self.config.changeCB();
+        }
+    });
+};
+
+
 
 jQuery.extend({
 	myAjax : function(setting) {

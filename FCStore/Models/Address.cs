@@ -17,6 +17,12 @@ namespace FCStore.Models
             set;
         }
 
+        public string Contacts
+        {
+            get;
+            set;
+        }
+
         [ForeignKey("BelongTown")]
         public int? TownID
         {
@@ -41,8 +47,8 @@ namespace FCStore.Models
             }
             set
             {
-                if ( BelongTown != null && value.IndexOf(BelongTown.Name) == -1 || value.IndexOf(BelongTown.BelongCity.Name) == -1 ||
-                    value.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1)
+                if ( BelongTown != null && (value.IndexOf(BelongTown.Name) == -1 || value.IndexOf(BelongTown.BelongCity.Name) == -1 ||
+                    value.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1))
                 {
                     //不存在该地域
                     TownID = null;

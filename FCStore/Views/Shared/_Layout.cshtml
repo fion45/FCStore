@@ -112,7 +112,7 @@
                         //获得当前用户未处理的订单
                         MyUser user = HttpContext.Current.User as MyUser;
                         FCStoreDbContext db = new FCStoreDbContext();
-                        Order order = db.Orders.LastOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                        Order order = db.Orders.OrderByDescending(r=>r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
                         if (order != null && order.Packets != null)
                         {
                             foreach (OrderPacket tmpOP in order.Packets)

@@ -86,7 +86,7 @@
     
     $("#CartDiv .postType .content .item").bind("click",CartPage.onPostTypeItemClick);
     
-    $("#AreaSelector").AreaSelector();
+    $("#AreaSelector").areaSelector({changeCB : CartPage.onAreaChangeCB});
 });
 
 var MainLayout = {
@@ -494,6 +494,10 @@ var ProductList = {
 };
 
 var CartPage = {
+	onAreaChangeCB : function() {
+		var tmpStr = $("#AreaSelector .province  option:selected").text() + " " + $("#AreaSelector .city  option:selected").text() + " " + $("#AreaSelector .county  option:selected").text() + " ";
+		$("#addressTA").val(tmpStr);
+	},
 	onAddressItemClick : function(ev) {
 		var target = $(ev.currentTarget);
 		if(target.prev().length > 0) {
@@ -521,22 +525,38 @@ var CartPage = {
 		$("#addAddressDlg").show();
 	},
 	onAAEnsure : function() {
-		//添加联系地址
-		$.myAjax({
-        	historyTag : false,
-        	loadEle : $("#addAddressDlg"),
-            url: "/User/AddAddress/",
-            data: null,
-            dataType: "json",
-            type: "GET",
-            contentType: "application/json;charset=utf-8",
-            success: function (data,status,options) {
-            	
-            }
-		});
-		$("#addAddressDlg").dialog("close");
+		var tmpStr = $("#AreaSelector .province  option:selected").text() + " " + $("#AreaSelector .city  option:selected").text() + " " + $("#AreaSelector .county  option:selected").text() + " ";
+		var areaStr = $("#addressTA").val()
+		if(tmpStr == areaStr) {
+			alert("请输入详细的地址。");
+			$("#addressTA").focus();
+		}
+		else {
+			//添加联系地址
+			var address = {
+				AddID : 0,
+				Contacts : $("#contactsTB").val(),
+				TownID : $("#AreaSelector .county").val(),
+				AddressName : $("#addressTA").val(),
+				Phone : $("#phoneTB").val(),
+				PostCode : $("#postTB").val()
+			};
+			$.myAjax({
+	        	historyTag : false,
+	        	loadEle : $("#addAddressDlg"),
+	            url: "/User/AddAddress/",
+	            data: JSON.stringify(address),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data,status,options) {
+	            	
+	            }
+			});
+			$("#addAddressDlg").dialog("close");
+		}
 	},
-	onAA : function() {
+	onAACancel : function() {
 		//关闭
 		$("#addAddressDlg").dialog("close");
 	}

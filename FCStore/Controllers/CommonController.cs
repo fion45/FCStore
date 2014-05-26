@@ -19,11 +19,11 @@ namespace FCStore.Controllers
 
         public ActionResult GetProvinceArr()
         {
-            StringBuilder jsonStr = new StringBuilder("ProvinceArr:[");
+            StringBuilder jsonStr = new StringBuilder("\"ProvinceArr\":[");
             List<Province> ProvinceArr = db.Province.ToList();
             foreach (Province province in ProvinceArr)
             {
-                jsonStr.AppendFormat("{{PID:{0},PName:{1}}},", province.ProvinceID, province.Name);
+                jsonStr.AppendFormat("{{\"PID\":\"{0}\",\"PName\":\"{1}\"}},", province.ProvinceID, province.Name);
             }
             jsonStr.Remove(jsonStr.Length - 1, 1);
             jsonStr.Append("]");
@@ -38,9 +38,9 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult GetZoneList(int PID,int CID)
+        public ActionResult GetZoneList(int PID,int CID = -1)
         {
-            StringBuilder jsonStr = new StringBuilder("CityArr:[");
+            StringBuilder jsonStr = new StringBuilder("\"CityArr\":[");
             Province tmpPro = db.Province.FirstOrDefault(r => r.ProvinceID == PID);
             if(tmpPro == null)
             {
@@ -48,10 +48,10 @@ namespace FCStore.Controllers
             }
             foreach(City city in tmpPro.CityArr)
             {
-                jsonStr.AppendFormat("{{CID:{0},CName:{1}}},", city.CityID, city.Name);
+                jsonStr.AppendFormat("{{\"CID\":\"{0}\",\"CName\":\"{1}\"}},", city.CityID, city.Name);
             }
             jsonStr.Remove(jsonStr.Length - 1, 1);
-            jsonStr.Append("],TownArr:[");
+            jsonStr.Append("],\"TownArr\":[");
             City tmpCity = tmpPro.CityArr.FirstOrDefault(r=>r.CityID == CID);
             if(tmpCity == null)
             {
@@ -59,7 +59,7 @@ namespace FCStore.Controllers
             }
             foreach (Town town in tmpCity.TownArr)
             {
-                jsonStr.AppendFormat("{{TID:{0},TName:{1}}},", town.TownID, town.Name);
+                jsonStr.AppendFormat("{{\"TID\":\"{0}\",\"TName\":\"{1}\"}},", town.TownID, town.Name);
             }
             jsonStr.Remove(jsonStr.Length - 1, 1);
             jsonStr.Append("]");

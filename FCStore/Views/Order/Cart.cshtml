@@ -191,7 +191,7 @@
                     string TName = "区县选择";
                     string CName = "城市选择";
                     string PName = "省份选择";
-                    if(Model.Client.DefaultAddrID != null)
+                    if (Model.Client != null && Model.Client.DefaultAddrID != null)
                     {
                         Town tmpT = Model.Client.DefaultAddress.BelongTown;
                         TName = tmpT.Name;
@@ -210,14 +210,32 @@
                 详细地址：
             </div>
             <div class="value">
-                <textarea></textarea>
+                <textarea id="addressTA"></textarea>
+            </div>
+            <div class="p1">
+                <div class="title1">邮政编码：</div>
+                <div class="value1">
+                    <input id="postTB" value="" />
+                </div>
+            </div>
+            <div class="p1">
+                <div class="title1">联系人：</div>
+                <div class="value1">
+                    <input id="contactsTB" value="@(Model.Client != null ? Model.Client.UserName : "")" />
+                </div>
+            </div>
+            <div class="p1">
+                <div class="title1">联系电话：</div>
+                <div class="value1">
+                    <input id="phoneTB" value="@(Model.Client != null ? Model.Client.Phone : "")" />
+                </div>
             </div>
             <div class="btnDiv">
                 <div class="p2">
-                    <input type="button" value="取消" />
+                    <input type="button" value="取消" onclick="CartPage.onAACancel()" />
                 </div>
                 <div class="p2">
-                    <input type="button" value="添加" />
+                    <input type="button" value="添加" onclick="CartPage.onAAEnsure()" />
                 </div>
             </div>
         </div>

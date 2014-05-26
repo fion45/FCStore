@@ -14,21 +14,21 @@ namespace FCStore
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                name: "zone",
+                url: "Common/GetZoneList/{PID}/{CID}",
+                defaults: new { controller = "Common", action = "GetZoneList"}
             );
 
             routes.MapRoute(
                 name: "buy",
-                url: "{controller}/{action}/{id}/{count}",
-                defaults: new { id = UrlParameter.Optional, count = 1 }
+                url: "Product/buy/{id}/{count}",
+                defaults: new { controller = "Product", action = "buy", id = UrlParameter.Optional, count = 1 }
             );
 
             routes.MapRoute(
-                name: "zone",
-                url: "{controller}/{action}/{PID}/{CID}",
-                defaults: new { PID = UrlParameter.Optional, CID = -1 }
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
@@ -36,13 +36,6 @@ namespace FCStore
                 url: "{controller}/{action}/{id}/{pIndex}/{hashOrder}/{hashWhere}",
                 defaults: new { id = UrlParameter.Optional, pIndex = 1, hashOrder = "0x00", hashWhere = "" }
             );
-
-            //routes.MapRoute(
-            //    name: "str1",
-            //    url: "Home/Login/{returnUrl}",
-            //    defaults: new { controller = "Home", action = "Login"}
-            //);
-
         }
     }
 }

@@ -231,6 +231,20 @@ namespace FCStore.Controllers
             return Redirect("/");
         }
 
+        public ActionResult AddAddress(int AddID, string Contacts, int TownID, string AddressName, string Phone, string PostCode)
+        {
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
