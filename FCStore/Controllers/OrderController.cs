@@ -68,6 +68,52 @@ namespace FCStore.Controllers
             return View();
         }
 
+        public ActionResult DeletePacket(string id)
+        {
+            string[] tmpIDArr = id.Split(new char[] { ',' });
+            int OID = int.Parse(tmpIDArr[0]);
+            Order tmpOrder = db.Orders.FirstOrDefault(r => r.OID == OID);
+            if(tmpOrder != null)
+            {
+                string tmpStr = "";
+                for (int i = 1; i < tmpIDArr.Length;i++ )
+                {
+                    tmpStr = tmpIDArr[i];
+                    int PID = int.Parse(tmpStr);
+                    tmpOrder.Packets.RemoveAll(r => r.PacketID == PID);
+                }
+                db.SaveChanges();
+                //添加到cookie里
+                bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+                HttpCookie cookie = null;
+                if (!hasCookie)
+                {
+                    cookie = new HttpCookie("Order");
+                    cookie.Expires = DateTime.Now.AddMonths(1);
+                }
+                else
+                {
+                    cookie = Request.Cookies["Order"];
+                }
+                tmpStr = tmpOrder.OID.ToString() + ",";
+                foreach(OrderPacket op in tmpOrder.Packets)
+                {
+                    tmpStr = op.Count.ToString() + "," + op.Product.Title.Substring(0, Math.Min(20, op.Product.Title.Length)) + "," + op.Product.ImgPathArr[0] + ",";
+                }
+                cookie.Value = Server.UrlEncode(tmpStr);
+                Response.Cookies.Add(cookie);
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         //
         // GET: /Order/
 

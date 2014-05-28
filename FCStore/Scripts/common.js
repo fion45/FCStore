@@ -86,6 +86,9 @@ jQuery.fn.checkAll = function(ele) {
 
 jQuery.fn.areaSelector = function (config) {
     this.config = {
+    	PID : null,
+    	CID : null,
+    	TID : null,
         changeCB : null
     };
     $.extend(this.config, config);
@@ -120,9 +123,9 @@ jQuery.fn.areaSelector = function (config) {
         success: function (data, status, options) {
         	provinceSelector.empty();
             $.each(data.ProvinceArr, function (i, n) {
-                provinceSelector.append("<option value=\"" + n.PID + "\"" + ((i == 0) ? " selected=\"selected\"" : "") + ">" + n.PName + "</option>");
+                provinceSelector.append("<option value=\"" + n.PID + "\"" + (((_self.config.PID == n.PID) || (_self.config.PID == null && i == 0)) ? " selected=\"selected\"" : "") + ">" + n.PName + "</option>");
             });
-            changeFun(provinceSelector.val(), -1);
+            changeFun(provinceSelector.val(), _self.config.CID);
         }
     });
     var changeFun = function (PID, CID) {
@@ -141,7 +144,7 @@ jQuery.fn.areaSelector = function (config) {
                 });
         		countySelector.empty();
                 $.each(data.TownArr, function (i, n) {
-                    countySelector.append("<option value=\"" + n.TID + "\"" + ((i == 0) ? " selected=\"selected\"" : "") + ">" + n.TName + "</option>");
+                    countySelector.append("<option value=\"" + n.TID + "\"" + (((_self.config.TID == n.TID) || (_self.config.TID == null && i == 0)) ? " selected=\"selected\"" : "") + ">" + n.TName + "</option>");
                 });
                 if(_self.config.changeCB != null) {
                 	_self.config.changeCB();
@@ -161,7 +164,6 @@ jQuery.fn.areaSelector = function (config) {
         }
     });
 };
-
 
 
 jQuery.extend({
@@ -189,14 +191,24 @@ jQuery.extend({
 	    }
 		$.ajax(setting);
 	},
-	selectOne : function(ele,className) {
+	selectOne : function(eleStr,className,childCN) {
 		if(!className)
 			className = "sel";
-		ele = $(ele); 
-		ele.bind("click",function(ev){
-			ele.removeClass(className);
-			$(ev.currentTarget).addClass(className);
-		});
+		ele = $(eleStr);
+		if(childCN != null) {
+			ele.parent().on("click",childCN,function(ev){
+				ele = $(eleStr);
+				ele.removeClass(className);
+				$(ev.currentTarget).addClass(className);
+			});
+		}
+		else {
+			ele.on("click",function(ev){
+				ele = $(eleStr);
+				ele.removeClass(className);
+				$(ev.currentTarget).addClass(className);
+			});
+		}
 	}
 });
 

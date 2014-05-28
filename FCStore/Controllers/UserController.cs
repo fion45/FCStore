@@ -264,7 +264,7 @@ namespace FCStore.Controllers
             db.SaveChanges();
             if (Request.IsAjaxRequest())
             {
-                string jsonStr = PubFunction.BuildResult("OK");
+                string jsonStr = PubFunction.BuildResult(address);
                 return Content(jsonStr);
             }
             else

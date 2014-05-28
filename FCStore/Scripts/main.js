@@ -78,15 +78,20 @@
     
     $("#CartDiv .checkAll:first").checkAll("#CartDiv .checkItem");
     
-    $.selectOne("#CartDiv .addresses .content .item","sel");
+    $.selectOne("#CartDiv .addresses .content .addressItem","sel",".addressItem");
     
-    $.selectOne("#CartDiv .postType .content .item","sel");
+    $.selectOne("#CartDiv .postType .content .item","sel",".item");
     
-    $("#CartDiv .addresses .content .item").bind("click",CartPage.onAddressItemClick);
+    $("#CartDiv .addresses .content").on("click",".addressItem",CartPage.onAddressItemClick);
     
-    $("#CartDiv .postType .content .item").bind("click",CartPage.onPostTypeItemClick);
+    $("#CartDiv .postType .content").on("click",".item",CartPage.onPostTypeItemClick);
     
-    $("#AreaSelector").areaSelector({changeCB : CartPage.onAreaChangeCB});
+    $("#AreaSelector").areaSelector({
+    	changeCB : CartPage.onAreaChangeCB,
+    	PID : parseInt($("#AreaSelector .province").val()),
+    	CID : parseInt($("#AreaSelector .city").val()),
+    	TID : parseInt($("#AreaSelector .county").val())
+    });
 });
 
 var MainLayout = {
@@ -494,6 +499,50 @@ var ProductList = {
 };
 
 var CartPage = {
+	onDeleteBtnClick : function() {
+		var OID = $("#CartDiv").attr("data");
+		if(OID != -1)
+		{
+			if($("#CartDiv .order .checkItem:checked").length == 0) {
+				alert("请选择至少一项商品");
+				return;
+			}
+			var tmpStr = OID + ",";
+			$.each($("#CartDiv .order .checkItem:checked"),function(i,n){
+				tmpStr += $(n).val() + ",";
+			});
+			tmpStr = tmpStr.slice(0,tmpStr.length - 1);
+			//删除该商品
+			$.myAjax({
+	        	historyTag : false,
+	        	loadEle : $("#CartDiv .addresses .scrollDiv"),
+	        	url: "/Order/DeletePacket/" + tmpStr,
+	            data:  null,
+	            dataType: "json",
+	            type: "GET",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data,status,options) {
+	            	if(data.content == "OK") {
+	            		$.each($("#CartDiv .order .checkItem:checked").parentsUntil("ul"),function(i,n){
+							$(n).animate({
+								height:0
+							}, "normal", "linear",function(){
+								$(n).remove();
+			            	});
+						});
+	            	}
+	            }
+			});
+		}
+	},
+	onKeepBtnClick : function() {
+		if($("#CartDiv .order .checkItem:checked").length == 0) {
+			alert("请选择至少一项商品");
+			return;
+		}
+		//收藏该商品
+		
+	},
 	onAreaChangeCB : function() {
 		var tmpStr = $("#AreaSelector .province  option:selected").text() + " " + $("#AreaSelector .city  option:selected").text() + " " + $("#AreaSelector .county  option:selected").text() + " ";
 		$("#addressTA").val(tmpStr);
@@ -502,23 +551,59 @@ var CartPage = {
 		var target = $(ev.currentTarget);
 		if(target.prev().length > 0) {
 			//不是第一个,ajax修改默认地址
-			var AID = target.prop("data");
+			var AID = target.attr("data");
 			$.myAjax({
 	        	historyTag : false,
-	        	loadEle : null,
+	        	loadEle : $("#CartDiv .addresses .scrollDiv"),
 	        	url: "/User/SelectDefaultAddress/" + AID,
 	            data: null,
 	            dataType: "json",
 	            type: "GET",
 	            contentType: "application/json;charset=utf-8",
 	            success: function (data,status,options) {
-	            	
+	            	var tmpOF = target.offset(); 
+	            	var top = tmpOF.top; 
+	            	var left = tmpOF.left;
+	            	var scrollDiv = target.parentsUntil(".addresses").last();
+	            	var ml = scrollDiv.offset().left;
+	            	var iItem = target.parent().children().first();
+	            	target.appendTo($("body:first"));
+	            	target.css({position:"absolute",top:top + "px",left:left + "px"});
+	            	target.animate({
+	            		left : ml
+	            	}, "normal", "linear",function(){
+	            		scrollDiv.animate({
+	            			scrollLeft:0
+	            		});
+	            		target.insertBefore(iItem);
+	            		target.removeAttr("style");
+	            	});
 	            }
 			});
 		}
 	},
 	onPostTypeItemClick : function(ev) {
-		
+		var target = $(ev.currentTarget);
+		var tmpData = parseInt(target.attr("data"));
+		$("#CartDiv .postType .item").removeClass("sel");
+		switch(tmpData) {
+			case 1 : {
+				//直邮
+				$("#CartDiv .postType .item:eq(0)").addClass("sel");
+				$("#CartDiv .order .li41 input:eq(0)").attr("checked",'checked');
+				$("#CartDiv .order .withPostPay").show();
+				$("#CartDiv .order .withoutPostPay").hide();
+				break;
+			}
+			case 2 : {
+				//转邮
+				$("#CartDiv .postType .item:eq(1)").addClass("sel");
+				$("#CartDiv .order .li41 input:eq(1)").attr("checked",'checked');
+				$("#CartDiv .order .withoutPostPay").show();
+				$("#CartDiv .order .withPostPay").hide();
+				break;
+			}
+		}
 	},
 	onAddAddressBtnClick : function() {
 		$("#addAddressDlg").dialog();
@@ -550,7 +635,20 @@ var CartPage = {
 	            type: "POST",
 	            contentType: "application/json;charset=utf-8",
 	            success: function (data,status,options) {
-	            	
+	            	var item = $("<div data=\"" + data.content.AddID + "\" class=\"addressItem sel\">" +
+	                                "<div class=\"name\">" +
+	                                    data.content.Contacts + "收" +
+	                                "</div>" +
+	                                "<div class=\"addressStr\">" +
+	                                    data.content.AddressName +
+	                                "</div>" +
+	                                "<div class=\"tip\">" +
+	                                    "收货地址" +
+	                                "</div>"+
+	                            "</div>");
+	                var selItem = $("#CartDiv .addresses .content .sel");
+	                item.insertBefore(selItem);
+	                selItem.removeClass("sel");
 	            }
 			});
 			$("#addAddressDlg").dialog("close");

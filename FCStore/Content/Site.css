@@ -1469,6 +1469,15 @@ textarea {
         min-height:25px;
     }
 
+    #CartDiv .order .item {
+        width:100%;
+    }
+    
+    #CartDiv .order .item div {
+        height:70px;
+        float:left;
+    }
+
     #CartDiv .order .li0
     {
         text-align:left;
@@ -1629,37 +1638,38 @@ textarea {
             height:120px;
         }
 
-    #CartDiv .addresses .item
-    {
-        position:relative;
-        width:255px;
-        height:100px;
-        padding:10px;
-        float:left;
-        text-align:left;
-        cursor:pointer;
-        margin:8px;
-        border:solid 1px #FFFFFF;
-    }
+.addressItem
+{
+    position:relative;
+    width:255px;
+    height:100px;
+    padding:10px;
+    float:left;
+    text-align:left;
+    cursor:pointer;
+    margin:8px;
+    border:solid 1px #FFFFFF;
+    background-color:white;
+}
 
     #CartDiv .addresses .sel {
         border:solid 1px #FFAA00;
     }
 
-        #CartDiv .addresses .item .name {
-            font-weight:bold;
-            margin-bottom:10px;
-        }
+    .addressItem .name {
+        font-weight:bold;
+        margin-bottom:10px;
+    }
 
-        #CartDiv .addresses .item .tip {
-            position:absolute;
-            display:none;
-            height:20px;
-            line-height:20px;
-            margin:0px 0px 0px -10px;
-            width:275px;
-            top:100px;
-        }
+    .addressItem .tip {
+        position:absolute;
+        display:none;
+        height:20px;
+        line-height:20px;
+        margin:0px 0px 0px -10px;
+        width:275px;
+        top:100px;
+    }
 
         #CartDiv .addresses .sel .tip {
             display:block;

@@ -37,34 +37,10 @@ namespace FCStore.Models
             set;
         }
 
-        public string _AddressName;
-
         public string AddressName
         {
-            get
-            {
-                return _AddressName;
-            }
-            set
-            {
-                if ( BelongTown != null && (value.IndexOf(BelongTown.Name) == -1 || value.IndexOf(BelongTown.BelongCity.Name) == -1 ||
-                    value.IndexOf(BelongTown.BelongCity.BelongProvince.Name) == -1))
-                {
-                    //不存在该地域
-                    TownID = null;
-                    BelongTown = null;
-                }
-                _AddressName = value;
-            }
-        }
-
-        [NotMapped]
-        public string FullAddress
-        {
-            get
-            {
-                return (TownID != null ? BelongTown.FullName + " " : "") + AddressName;
-            }
+            get;
+            set;
         }
 
         public string Phone

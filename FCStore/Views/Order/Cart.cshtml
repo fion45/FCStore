@@ -6,7 +6,7 @@
     ViewBag.Title = "Cart";
 }
 
-<div id="CartDiv">
+<div id="CartDiv" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
     <div class="p1 flowDiv">
         <div class="item sel">
             <div class="line"></div>
@@ -51,24 +51,26 @@
                         Amount += item.PayAmount;
                         postPayment += (decimal)0.01 * item.PayAmount;
                         Product product = item.Product;
-                        <li class="li0"><input class="checkItem" type="checkbox" /></li>
-                        <li class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></li>
-                        <li class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></li>
-                        <li class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</li>
-                        <li class="li4">
-                            @(item.Count)
+                        <li class="item">
+                            <div class="li0"><input value="@(item.PacketID)" class="checkItem" type="checkbox" /></div>
+                            <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
+                            <div class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></div>
+                            <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
+                            <div class="li4">
+                                @(item.Count)
+                            </div>
+                            <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
+                            <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
                         </li>
-                        <li class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</li>
-                        <li class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</li>
                     }
                     <li class="li0"><label><input class="checkAll" type="checkbox" />全选</label></li>
                     <li class="li11">
-                        <a>删除所选</a>
-                        <a>收藏所选</a>
+                        <a onclick="CartPage.onDeleteBtnClick()">删除所选</a>
+                        <a onclick="CartPage.onKeepBtnClick()">收藏所选</a>
                     </li>
                     <li class="li41">
-                        <div><label><input name="postType" type="radio" checked="checked" />直邮（百分之一邮费）</label></div>
-                        <div><label><input name="postType" type="radio" />转邮（免邮费）</label></div>
+                        <div><label><input name="postType" type="radio" data="1" checked="checked" onchange="CartPage.onPostTypeItemClick({ currentTarget: this })" />直邮（百分之一邮费）</label></div>
+                        <div><label><input name="postType" type="radio" data="2" onchange="CartPage.onPostTypeItemClick({currentTarget:this})" />转邮（免邮费）</label></div>
                     </li>
                     <li class="li21">
                         <label>共计<label class="count">@(Count)</label>件商品，合计金额：
@@ -76,8 +78,9 @@
                     </li>
                     <li class="li31">
                         <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
-                        <div class="add">+</div><div class="postPrice">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div>
-                        <div class="amount">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                        <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
+                        <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                        <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
                     </li>
                 }
                 else
@@ -104,12 +107,12 @@
                     Address addr = Model.Client.DefaultAddress;
                     if (addr != null)
                     {
-                        <div data="@(addr.AddID)" class="item sel">
+                        <div data="@(addr.AddID)" class="addressItem sel">
                             <div class="name">
                                 @(Model.Client.UserName)收
                             </div>
                             <div class="addressStr">
-                                @(addr.FullAddress)
+                                @(addr.AddressName)
                             </div>
                             <div class="tip">
                                 收货地址
@@ -120,13 +123,13 @@
                     {
                         addr = Model.Client.Addresses[i];
                         if ((Model.Client.DefaultAddress != null && Model.Client.DefaultAddress.AddID != addr.AddID) || (Model.Client.DefaultAddress == null && i != 0))
-                        { 
-                            <div data="@(addr.AddID)" class="item @((Model.Client.DefaultAddress == null && i == 0) ? "sel" : "")">
+                        {
+                            <div data="@(addr.AddID)" class="addressItem @((Model.Client.DefaultAddress == null && i == 0) ? "sel" : "")">
                                 <div class="name">
-                                    @(Model.Client.UserName)收
+                                    @(addr.Contacts)收
                                 </div>
                                 <div class="addressStr">
-                                    @(addr.FullAddress)
+                                    @(addr.AddressName)
                                 </div>
                                 <div class="tip">
                                     收货地址
@@ -191,20 +194,23 @@
                     string TName = "区县选择";
                     string CName = "城市选择";
                     string PName = "省份选择";
-                    if (Model.Client != null && Model.Client.DefaultAddrID != null)
+                    Town tmpT = null;
+                    City tmpC = null;
+                    Province tmpP = null;
+                    if (Model.Client != null && Model.Client.DefaultAddrID != null && Model.Client.DefaultAddress.BelongTown != null)
                     {
-                        Town tmpT = Model.Client.DefaultAddress.BelongTown;
+                        tmpT = Model.Client.DefaultAddress.BelongTown;
                         TName = tmpT.Name;
-                        City tmpC = tmpT.BelongCity;
+                        tmpC = tmpT.BelongCity;
                         CName = tmpC.Name;
-                        Province tmpP = tmpC.BelongProvince;
+                        tmpP = tmpC.BelongProvince;
                         PName = tmpP.Name;
                     }
                 }
                 <select class="country"><option>中国</option></select>
-                <select class="province"><option>@(PName)</option></select>
-                <select class="city"><option>@(CName)</option></select>
-                <select class="county"><option>@(TName)</option></select>
+                <select class="province"><option value="@(tmpP == null ? -1 : tmpP.ProvinceID)">@(PName)</option></select>
+                <select class="city"><option value="@(tmpC == null ? -1 : tmpC.CityID)">@(CName)</option></select>
+                <select class="county"><option value="@(tmpT == null ? -1 : tmpT.TownID)">@(TName)</option></select>
             </div>
             <div class="title">
                 详细地址：
