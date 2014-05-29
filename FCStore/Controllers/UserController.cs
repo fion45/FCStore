@@ -102,6 +102,54 @@ namespace FCStore.Controllers
                             Response.Cookies.Add(cookie);
                         }
                     }
+                    //处理收藏夹的东西
+                    hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
+                    string KStr = "";
+                    cookie = null;
+                    List<int> PIDArr = new List<int>();
+                    if (hasCookie)
+                    {
+                        cookie = Request.Cookies["Keeps"];
+                        tmpStr = Server.UrlDecode(cookie.Value);
+                        Regex cookieRgx = new Regex(KeepController.KEEPCOOKIERGX);
+                        MatchCollection tmpMC = cookieRgx.Matches(tmpStr);
+                        foreach(Match tmpMatch in tmpMC)
+                        {
+                            if (!string.IsNullOrEmpty(tmpMatch.Value))
+                            {
+                                Group gi = tmpMatch.Groups["PRODUCTID"];
+                                int PID = -1;
+                                Keep inDBKeep = null;
+                                if (int.TryParse(gi.Value, out PID))
+                                {
+                                    inDBKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == user.UID);
+                                    KStr += tmpMatch.Groups["PRODUCTID"] + "," + tmpMatch.Groups["TITLE"] + "," + tmpMatch.Groups["IMG"] + ",";
+                                    if (inDBKeep != null)
+                                    {
+                                        PIDArr.Add(inDBKeep.PID);
+                                    }
+                                    else
+                                    {
+                                        Keep keep = new Keep();
+                                        keep.PID = PID;
+                                        keep.UID = user.UID;
+                                        keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                        db.Keeps.Add(keep);
+                                    }
+                                }
+                            }
+                        }
+                        db.SaveChanges();
+                    }
+                    List<Keep> keepArr = db.Keeps.Where(r => r.UID == user.UID && !PIDArr.Contains(r.PID)).ToList();
+                    //从数据库里取出该用户的收藏夹
+                    foreach(Keep item in keepArr)
+                    {
+                        if(item.Product != null)
+                            KStr += item.Product.PID + "," + item.Product.Title.Substring(0, Math.Min(20, item.Product.Title.Length)) + "," + item.Product.ImgPathArr[0] + ",";
+                    }
+                    cookie.Value = Server.UrlEncode(KStr);
+                    Response.Cookies.Add(cookie);
                 }
                 else
                 {

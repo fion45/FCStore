@@ -41,7 +41,7 @@
             <li class="li6 title">小计</li>
             @{
                 decimal postPayment = 0;
-                if (Model.OrderArr != null && Model.OrderArr.Count() > 0)
+                if (Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0)
                 {
                     int Count = 0;
                     decimal Amount = 0;
@@ -85,7 +85,7 @@
                 }
                 else
                 {
-                    <li class="p1">订单不存在</li>
+                    <li class="p1">@((Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count == 0) ? "订单为空" : "订单不存在")</li>
                 }
             }
             <div class="pullupDiv"></div>
@@ -95,7 +95,7 @@
         <h2>联系地址<a onclick="CartPage.onAddAddressBtnClick();" class="addAddr">添加联系地址</a></h2>
         <div class="scrollDiv">
             @{
-                int tmpW = 293;
+                int tmpW = 0;
                 if (Model.Client != null)
                 {
                     tmpW += Model.Client.Addresses.Count * 293;
@@ -177,15 +177,18 @@
         </div>
     </div>
     <div class="btnDiv">
-        <div class="p3">
-            <div class="btn3">撤销订单</div>
-        </div>
-        <div class="p3">
-            <div class="btn3">继续购物</div>
-        </div>
-        <div class="p3">
-            <div class="btn2">提交订单</div>
-        </div>
+        @{
+            bool tag = Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0;
+            <div class="p3">
+                <div class="btn3">继续购物</div>
+            </div>
+            <div class="p3">
+                <div class="btn3 @(tag ? "" : "btn13gray")">撤销订单</div>
+            </div>
+            <div class="p3">
+                <div class="btn2 @(tag ? "" : "btn13gray")">提交订单</div>
+            </div>
+        }
     </div>
     <div id="addAddressDlg" title="增加联系地址">
         <div class="content">

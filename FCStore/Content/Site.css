@@ -95,7 +95,6 @@ a:hover {
     background:url("/Content/themes/image/main.png") no-repeat -153px -269px;
 }
 
-
 .btn3 {
     width:152px;
     height:51px;
@@ -111,6 +110,23 @@ a:hover {
 
 .btn3:hover {
     background:url("/Content/themes/image/main.png") no-repeat -153px -321px;
+}
+
+.btn13gray {
+    width:152px;
+    height:51px;
+    line-height:51px;
+    vertical-align:middle;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -373px;
+    border:none;
+    color:#666666;
+    font-size:15pt;
+    font-weight:bolder;
+    cursor:default;
+}
+
+.btn13gray:hover {
+    background:url("/Content/themes/image/main.png") no-repeat -1px -373px;
 }
 
 .relativeDiv {
@@ -447,6 +463,55 @@ textarea {
     background:url("/Content/themes/image/favorite.png") no-repeat center;
 }
 
+#plInFavorit {
+    position:absolute;
+    top:30px;
+    left:130px;
+    width:40px;
+    height:97px;
+    overflow:hidden;
+}
+
+    #plInFavorit .MoveItem {
+        float:right;
+        width:88px;
+        height:95px;
+        position:relative;
+        margin-left:5px;
+        background-color:white;
+        overflow:hidden;
+    }
+
+    #plInFavorit .MoveItem label{
+        float:left;
+        width:80px;
+        height:15px;
+        font-size:7pt;
+        overflow:hidden;
+        margin:0px 4px 5px 4px;
+    }
+
+    #plInFavorit .MoveItem img {
+        float:left;
+        width:70px;
+        margin:5px 9px 0px 9px;
+        height:70px;
+    }
+
+    #plInFavorit .MoveItem .deleteBtn {
+        top:0px;
+        left:76px;
+        height:12px;
+        width:12px;
+        color:red;
+        position:absolute;
+        cursor:pointer;
+        background-color:white;
+        line-height:12px;
+        text-align:center;
+        vertical-align:middle;
+    }
+
 #Cart {
     position:absolute;
     top:100%;
@@ -467,27 +532,35 @@ textarea {
     overflow:hidden;
 }
 
+    #plInCar .relativeDiv {
+        min-height:500px;
+        overflow-y:auto;
+    }
+
+
     #plInCar .MoveItem {
         float:left;
         width:88px;
-        height:70px;
+        height:95px;
         position:relative;
         margin-bottom:5px;
         background-color:white;
     }
 
-    #plInCar .MoveItem label{
+    #plInCar .MoveItem label {
         float:left;
-        width:100%;
+        width:80px;
         height:15px;
         font-size:7pt;
         overflow:hidden;
+        margin:0px 4px 5px 4px;
     }
 
     #plInCar .MoveItem img {
         float:left;
-        width:100%;
-        height:55px;
+        width:70px;
+        margin:5px 9px 0px 9px;
+        height:70px;
     }
 
     #plInCar .MoveItem .deleteBtn {
@@ -742,6 +815,19 @@ textarea {
 #productSend,#productChoose,#productSaleInput,#productCode {
     padding-left:8px;
 }
+
+    #productSaleType,#productSend {
+        margin:5px 0px;
+        width:100%;
+    }
+
+    #productSaleType .content span {
+        padding:3px 8px;
+    }
+
+    #productSend .content span {
+        padding:3px 8px;
+    }
 
     #productChoose .choseItemPar {
         margin:5px 0px;

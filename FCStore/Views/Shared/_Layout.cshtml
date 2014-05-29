@@ -76,60 +76,105 @@
     <div id="Contact">
     </div>
     <div id="Favorite">
-    </div>
-    @{
-        bool showCart = true;
-        showCart = Request.Url.AbsolutePath.IndexOf("/Order/Cart") > -1;
+        <div class="relativeDiv">
+            <div id="plInFavorit">
+@{
+    //获得cookie
+    if (Request.Cookies.AllKeys.Contains("Keeps"))
+    {
+        Regex cookieRgx = new Regex(FCStore.Controllers.KeepController.KEEPCOOKIERGX);
+        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Keeps"].Value));
+        if (!string.IsNullOrEmpty(tmpMatch.Value))
+        {
+            for (int i = 0; i < tmpMatch.Groups["KITEM"].Captures.Count; i++)
+            {
+                <a class="MoveItem" href="/Product/Detail/@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)">
+                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
+                    <label>
+                        @(tmpMatch.Groups["TITLE"].Captures[i].Value)
+                    </label>
+                </a>
+            }
+        }
     }
+    else if (HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        //获得当前用户收藏的东西
+        MyUser user = HttpContext.Current.User as MyUser;
+        FCStoreDbContext db = new FCStoreDbContext();
+        List<Keep> keeplst = db.Keeps.Where(r => r.UID == user.UID).ToList();
+        foreach (Keep keepItem in keeplst)
+        {
+            <a class="MoveItem" href="/Product/Detail/@(keepItem.Product.PID)">
+                <img src="@(keepItem.Product.ImgPathArr[0])" />
+                <label>
+                    @(keepItem.Product.Title)
+                </label>
+            </a>
+        }
+        db.Dispose();
+    }
+}
+            </div>
+        </div>
+    </div>
+@{
+    bool showCart = true;
+    showCart = Request.Url.AbsolutePath.IndexOf("/Order/Cart") > -1;
+}
     <div id="Cart" style="@(showCart ? "visibility:hidden" : "")" >
         <div class="relativeDiv">
             <div id="plInCar">
-                @{
-                    //获得cookie
-                    if (Request.Cookies.AllKeys.Contains("Order"))
-                    {
-                        Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
-                        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
-                        if(!string.IsNullOrEmpty(tmpMatch.Value))
-                        {
-                            for (int i = 0; i < tmpMatch.Groups["TITLE"].Captures.Count;i++ )
-                            {
-                                int BuyCount = 1;
-                                int.TryParse(tmpMatch.Groups["COUNT"].Captures[i].Value, out BuyCount);
-                                <div class="MoveItem">
-                                    <div class="countShow" style="display:@(BuyCount > 1 ? "normal" : "none")">@(BuyCount)</div>
-                                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
-                                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
-                                    <label>
-                                        @(tmpMatch.Groups["TITLE"].Captures[i].Value)
-                                    </label>
-                                </div>
-                            }
-                        }
-                    }
-                    else if (HttpContext.Current.User.Identity.IsAuthenticated)
-                    {
-                        //获得当前用户未处理的订单
-                        MyUser user = HttpContext.Current.User as MyUser;
-                        FCStoreDbContext db = new FCStoreDbContext();
-                        Order order = db.Orders.OrderByDescending(r=>r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
-                        if (order != null && order.Packets != null)
-                        {
-                            foreach (OrderPacket tmpOP in order.Packets)
-                            {
-                                <div class="MoveItem">
-                                    <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
-                                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
-                                    <img src="@(tmpOP.Product.ImgPathArr[0])" />
-                                    <label>
-                                        @(tmpOP.Product.Title)
-                                    </label>
-                                </div>
-                            }
-                        }
-                        db.Dispose();
-                    }
-                }
+@{
+    //获得cookie
+    if (Request.Cookies.AllKeys.Contains("Order"))
+    {
+        Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
+        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
+        if (!string.IsNullOrEmpty(tmpMatch.Value))
+        {
+            for (int i = 0; i < tmpMatch.Groups["TITLE"].Captures.Count; i++)
+            {
+                int BuyCount = 1;
+                int.TryParse(tmpMatch.Groups["COUNT"].Captures[i].Value, out BuyCount);
+                <div class="MoveItem">
+                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
+                    <a href="/Product/Detail/@(tmpMatch.Groups["PID"].Captures[i].Value)">
+                        <div class="countShow" style="display:@(BuyCount > 1 ? "normal" : "none")">@(BuyCount)</div>
+                        <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
+                        <label>
+                            @(tmpMatch.Groups["TITLE"].Captures[i].Value)
+                        </label>
+                    </a>
+                </div>
+            }
+        }
+    }
+    else if (HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        //获得当前用户未处理的订单
+        MyUser user = HttpContext.Current.User as MyUser;
+        FCStoreDbContext db = new FCStoreDbContext();
+        Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+        if (order != null && order.Packets != null)
+        {
+            foreach (OrderPacket tmpOP in order.Packets)
+            {
+                <div class="MoveItem">
+                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
+                    <a href="/Product/Detail/@(tmpOP.Product.PID)">
+                        <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
+                        <img src="@(tmpOP.Product.ImgPathArr[0])" />
+                        <label>
+                            @(tmpOP.Product.Title)
+                        </label>
+                    </a>
+                </div>
+            }
+        }
+        db.Dispose();
+    }
+}
             </div>
             <a class="balance" href="/Order/Cart"></a>
         </div>

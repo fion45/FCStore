@@ -16,7 +16,7 @@ namespace FCStore.Controllers
 {
     public class ProductController : Controller
     {
-        static public string ORDERCOOKIERGX = "^(?<ORDERID>\\d+?),((?<COUNT>[^,]+?),(?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*$";
+        static public string ORDERCOOKIERGX = "^(?<ORDERID>\\d+?),((?<PID>[^,]+?),(?<COUNT>[^,]+?),(?<TITLE>[^,]+?),(?<IMG>[^,]+?),)*$";
 
         public struct OrderObj
         {
@@ -28,7 +28,30 @@ namespace FCStore.Controllers
 
         public ActionResult Detail(int ID)
         {
+            ViewBag.KeepTag = false;
             Product tmpProduct = db.Products.First(r => r.PID == ID);
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
+            HttpCookie cookie = null;
+            string tmpStr = "";
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Keeps"];
+                tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(KeepController.KEEPCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    Group gi = tmpMatch.Groups["PRODUCTID"];
+                    foreach(Capture cap in gi.Captures)
+                    {
+                        if(ID == int.Parse(cap.Value))
+                        {
+                            ViewBag.KeepTag = true;
+                            break;
+                        }
+                    }
+                }
+            }
             return View(tmpProduct);
         }
 
@@ -308,8 +331,15 @@ namespace FCStore.Controllers
                         order.Packets.Add(packet);
                         db.OrderPackets.Add(packet);
                         db.SaveChanges();
+                        tmpStr += product.PID + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                     }
-                    tmpStr += count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                    else
+                    {
+                        order = new Order();
+                        db.Orders.Add(order);
+                        db.SaveChanges();
+                        tmpStr = order.OID + "," + product.PID + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                    }
                 }
                 else
                 {
@@ -322,7 +352,7 @@ namespace FCStore.Controllers
                 cookie.Expires = DateTime.Now.AddMonths(1);
                 order = new Order();
                 order.Packets = new List<OrderPacket>();
-                order.UID = 1;
+                order.UID = null;
                 order.Postage = 0;
                 order.Subscription = 0;
                 order.Status = (int)Order.EOrderStatus.OS_Init;
@@ -346,7 +376,7 @@ namespace FCStore.Controllers
                 db.Orders.Add(order);
                 db.OrderPackets.Add(packet);
                 db.SaveChanges();
-                tmpStr = order.OID.ToString() + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                tmpStr = order.OID.ToString() + "," + product.PID + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
             }
             cookie.Value = Server.UrlEncode(tmpStr);
             Response.Cookies.Add(cookie);
@@ -359,116 +389,6 @@ namespace FCStore.Controllers
             {
                 return View();
             }
-        }
-
-        //
-        // GET: /Product/
-
-        public ActionResult Index()
-        {
-            var products = db.Products.Include(p => p.Category).Include(p => p.Brand);
-            return View(products.ToList());
-        }
-
-        //
-        // GET: /Product/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        //
-        // GET: /Product/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.CID = new SelectList(db.Categorys, "CID", "NameStr");
-            ViewBag.BID = new SelectList(db.Brands, "BID", "NameStr");
-            return View();
-        }
-
-        //
-        // POST: /Product/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CID = new SelectList(db.Categorys, "CID", "NameStr", product.CID);
-            ViewBag.BID = new SelectList(db.Brands, "BID", "NameStr", product.BID);
-            return View(product);
-        }
-
-        //
-        // GET: /Product/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CID = new SelectList(db.Categorys, "CID", "NameStr", product.CID);
-            ViewBag.BID = new SelectList(db.Brands, "BID", "NameStr", product.BID);
-            return View(product);
-        }
-
-        //
-        // POST: /Product/Edit/5
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CID = new SelectList(db.Categorys, "CID", "NameStr", product.CID);
-            ViewBag.BID = new SelectList(db.Brands, "BID", "NameStr", product.BID);
-            return View(product);
-        }
-
-        //
-        // GET: /Product/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        //
-        // POST: /Product/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

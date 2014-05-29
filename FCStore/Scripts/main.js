@@ -74,6 +74,9 @@
     });
 
     $("#tabs").tabs();
+    
+    $("#plInFavorit").one("mouseenter",MainLayout.enterPLInFavorit);
+    
     $("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
     
     $("#CartDiv .checkAll:first").checkAll("#CartDiv .checkItem");
@@ -106,10 +109,29 @@ var MainLayout = {
     		MainLayout.topBtnTag = false;
     	});
 	},
+	enterPLInFavorit : function() {
+		var target = $("#plInFavorit");
+    	var ICount = target.children(".MoveItem").length;
+    	var tmpW = ICount * 95;
+    	target.animate({
+    		width : tmpW
+    	},"normal","linear",function(){
+		    $("#plInFavorit").one("mouseleave",MainLayout.leavePLInFavorit);
+    	});
+	},
+	leavePLInFavorit : function() {
+		var target = $("#plInFavorit");
+		target.animate({
+    		top : 30,
+    		width : 40
+    	},"normal","linear",function(){
+    		$("#plInFavorit").one("mouseenter",MainLayout.enterPLInFavorit);
+    	});
+	},
 	enterPLInCar : function() {
 		var target = $("#plInCar");
     	var ICount = target.children(".MoveItem").length;
-    	var tmpH = ICount * 77;
+    	var tmpH = ICount * 100;
     	var tmpT = 10;
     	target.animate({
     		top : tmpT - (tmpH - 25),
@@ -161,6 +183,7 @@ var MainLayout = {
             	
             }
 		});
+		return false;
 	}
 };
 
@@ -216,7 +239,52 @@ var ProductList = {
 	},
 	onKeepBtnClick : function() {
 		//收藏按钮
-		
+		var PID = $("#PIDLB").text();
+		//购买按钮
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#Center"),
+            url: "/Keep/Add/" + PID,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.successTag) {
+            		//购买成功,添加到收藏夹里
+            		var viewItem = $("#PD_View .top");
+            		var tmpOS = viewItem.offset();
+            		var tmpW = viewItem.width();
+            		var tmpH = viewItem.height();
+            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+            		tmpItem.appendTo($("body:first"));
+            		tmpItem.css({
+            			top:tmpOS.top,
+            			left:tmpOS.left,
+            			width:tmpW,
+            			height:tmpH,
+            			padding:viewItem.css("padding")
+            		});
+            		var favorite = $("#Favorite");
+            		tmpOS = favorite.offset();
+            		tmpW = favorite.width();
+            		tmpH = favorite.height();
+            		tmpItem.animate({
+            			top:tmpOS.top - tmpH + 180,
+            			left:tmpOS.left + 130,
+            			width:88,
+            			height:88
+            		},"slow","linear",function(){
+            			tmpItem.empty();
+            			var moveContent = $("<img src=" + $("#productImage").prop("src") + " /><label>" + $("#productTitle").html() + "</label>");
+            			tmpItem.removeAttr("style");
+            			tmpItem.append(moveContent);
+            			//收藏夹增加内容
+            			tmpItem.appendTo($("#plInFavorit"));
+            		});
+            	}
+            }
+		});
 	},
     onByCategoryOrderClick : function(obj) {
     	var PIndex = 1;
@@ -540,8 +608,28 @@ var CartPage = {
 			alert("请选择至少一项商品");
 			return;
 		}
-		//收藏该商品
 		
+		//收藏该商品
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#CartDiv .addresses .scrollDiv"),
+        	url: "/Keep/Add/" + tmpStr,
+            data:  null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.content == "OK") {
+            		$.each($("#CartDiv .order .checkItem:checked").parentsUntil("ul"),function(i,n){
+						$(n).animate({
+							height:0
+						}, "normal", "linear",function(){
+							$(n).remove();
+		            	});
+					});
+            	}
+            }
+		});
 	},
 	onAreaChangeCB : function() {
 		var tmpStr = $("#AreaSelector .province  option:selected").text() + " " + $("#AreaSelector .city  option:selected").text() + " " + $("#AreaSelector .county  option:selected").text() + " ";

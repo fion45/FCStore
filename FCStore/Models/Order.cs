@@ -48,7 +48,7 @@ namespace FCStore.Models
         }
 
         [ForeignKey("User")]
-        public int UID
+        public int? UID
         {
             get;
             set;
