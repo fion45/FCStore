@@ -38,7 +38,7 @@ namespace FCStore.Controllers
                         OrderPacket delOP = order.Packets[removeIndex];
                         db.OrderPackets.Remove(delOP);
                         db.SaveChanges();
-                        tmpStr = tmpStr.Substring(0, tmpMatch.Groups["COUNT"].Captures[removeIndex].Index)
+                        tmpStr = tmpStr.Substring(0, tmpMatch.Groups["PID"].Captures[removeIndex].Index)
                             + tmpStr.Substring(tmpMatch.Groups["IMG"].Captures[removeIndex].Index + tmpMatch.Groups["IMG"].Captures[removeIndex].Length + 1);
                     }
                     else

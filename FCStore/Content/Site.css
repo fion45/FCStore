@@ -1542,8 +1542,18 @@ textarea {
         float:left;
         height:70px;
         line-height:70px;
-        padding:3px 2px;
+        padding:3px 0px;
         border-bottom:dashed 1px #cccccc;
+    }
+
+    #CartDiv .order .item {
+        width:100%;
+        padding:3px 0px;
+    }
+    
+    #CartDiv .order .item div {
+        height:70px;
+        float:left;
     }
 
     #CartDiv .order .title
@@ -1553,14 +1563,24 @@ textarea {
         line-height:25px;
         font-weight:bold;
         min-height:25px;
-    }
-
-    #CartDiv .order .item {
+        text-align:center;
         width:100%;
     }
-    
-    #CartDiv .order .item div {
-        height:70px;
+
+        #CartDiv .order .title div {
+            float:left;
+        }
+
+        #CartDiv .order .title .li0 {
+            height:25px;
+            line-height:25px;
+        }
+
+    #CartDiv .order .footer {
+        
+    }
+
+    #CartDiv .order .footer div {
         float:left;
     }
 
@@ -1583,6 +1603,17 @@ textarea {
             height:70px;
         }
 
+body .li1
+{
+    width:17%;
+}
+
+    body .li1 img
+    {
+        width:70px;
+        height:70px;
+    }
+
     #CartDiv .order .li2
     {
         width:31%;
@@ -1597,12 +1628,50 @@ textarea {
 
     #CartDiv .order .li4
     {
-        width:10%;
+        width:13%;
+        text-align:center;
     }
+
+        #CartDiv .order .li4 .centerDiv {
+            width:91px;
+            height:30px;
+            margin:20px auto;
+            float:none;
+        }
+
+        #CartDiv .order .li4 input {
+            width:29px;
+            height:24px;
+            float:left;
+        }
+
+        #CartDiv .order .li4 .spinnerLeft {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+            cursor:pointer;
+        }
+
+        #CartDiv .order .li4 .spinnerRight {
+            width:29px;
+            height:30px;
+            float:left;
+            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+            cursor:pointer;
+        }
+
+        #CartDiv .order .li4 .spinnerLeft:hover {
+            background-position-x:-61px;
+        }
+
+        #CartDiv .order .li4 .spinnerRight:hover {
+            background-position-x:-90px;
+        }
 
     #CartDiv .order .li5
     {
-        width:10%;
+        width:7%;
     }
 
     #CartDiv .order .li6

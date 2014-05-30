@@ -44,27 +44,31 @@ jQuery.fn.mySpinner = function (config) {
     $.extend(this.config, config);
     var _self = this;
     if (this.config.upEle != null) {
-        this.config.upEle.click(function () {
-            var tmpI = parseInt(_self.val());
+        this.config.upEle.click(function (ev) {
+        	var target = $(ev.currentTarget);
+        	var tmpTB = target.prev("input");
+            var tmpI = parseInt(tmpTB.val());
             if (_self.config.maxVal != null) {
                 tmpI = Math.min(tmpI + _self.config.step, _self.config.maxVal);
             }
             else {
                 tmpI += _self.config.step;
             }
-            _self.val(tmpI);
+            tmpTB.val(tmpI);
         });
     }
     if (this.config.downEle != null) {
-        this.config.downEle.click(function () {
-            var tmpI = parseInt(_self.val());
+        this.config.downEle.click(function (ev) {
+        	var target = $(ev.currentTarget);
+        	var tmpTB = target.next("input");
+            var tmpI = parseInt(tmpTB.val());
             if (_self.config.minVal != null) {
                 tmpI = Math.max(tmpI - _self.config.step, _self.config.minVal);
             }
             else {
                 tmpI -= _self.config.step;
             }
-            _self.val(tmpI);
+            tmpTB.val(tmpI);
         });
     }
     _self.keypress(function (ev) {

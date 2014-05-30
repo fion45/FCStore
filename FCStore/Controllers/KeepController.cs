@@ -33,13 +33,14 @@ namespace FCStore.Controllers
                 cookie = new HttpCookie("Keeps");
                 cookie.Expires = DateTime.Now.AddMonths(1);
             }
-            string[] strArr = id.Split(new char[] { ',' });
+            string[] strArr = id.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach(string IDStr in strArr)
             {
                 int PID = int.Parse(IDStr);
                 Product product = db.Products.FirstOrDefault(r => r.PID == PID);
                 if (product != null)
                 {
+                    bool eTag = true;
                     if (HttpContext.User.Identity.IsAuthenticated)
                     {
                         //已登录
@@ -48,13 +49,18 @@ namespace FCStore.Controllers
                         {
                             //登陆用户
                             Keep exsisKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == tmpUser.UID);
+
                             if (exsisKeep == null)
                             {
-                                Keep keep = new Keep();
-                                keep.PID = PID;
-                                keep.UID = tmpUser.UID;
-                                keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                                db.Keeps.Add(keep);
+                                if(db.Keeps.Local.FirstOrDefault(r => r.PID == PID && r.UID == tmpUser.UID) == null)
+                                {
+                                    Keep keep = new Keep();
+                                    keep.PID = PID;
+                                    keep.UID = tmpUser.UID;
+                                    keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                    db.Keeps.Add(keep);
+                                    eTag = false;
+                                }
                             }
                             else
                             {
@@ -62,7 +68,8 @@ namespace FCStore.Controllers
                             }
                         }
                     }
-                    tmpStr += product.PID + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
+                    if (!eTag)
+                        tmpStr += product.PID + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                 }
             }
             db.SaveChanges();

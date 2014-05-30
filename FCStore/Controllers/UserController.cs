@@ -141,6 +141,11 @@ namespace FCStore.Controllers
                         }
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        cookie = new HttpCookie("Order");
+                        cookie.Expires = DateTime.Now.AddMonths(1);
+                    }
                     List<Keep> keepArr = db.Keeps.Where(r => r.UID == user.UID && !PIDArr.Contains(r.PID)).ToList();
                     //从数据库里取出该用户的收藏夹
                     foreach(Keep item in keepArr)

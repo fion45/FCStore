@@ -32,13 +32,15 @@
     <div class="order">
         <h2>订单列表</h2>
         <ul>
-            <li class="li0 title"></li>
-            <li class="li1 title">商品图片</li>
-            <li class="li2 title">商品名称</li>
-            <li class="li3 title">商品价格</li>
-            <li class="li4 title">数量</li>
-            <li class="li5 title">优惠</li>
-            <li class="li6 title">小计</li>
+            <li class="title">
+                <div class="li0"></div>
+                <div class="li1">商品图片</div>
+                <div class="li2">商品名称</div>
+                <div class="li3">商品价格</div>
+                <div class="li4">数量</div>
+                <div class="li5">优惠</div>
+                <div class="li6">小计</div>
+            </li>
             @{
                 decimal postPayment = 0;
                 if (Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0)
@@ -52,35 +54,42 @@
                         postPayment += (decimal)0.01 * item.PayAmount;
                         Product product = item.Product;
                         <li class="item">
-                            <div class="li0"><input value="@(item.PacketID)" class="checkItem" type="checkbox" /></div>
+                            <div class="li0"><input value="@(item.PacketID)" data="@(product.PID)" class="checkItem" type="checkbox" /></div>
                             <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
                             <div class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></div>
                             <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
                             <div class="li4">
-                                @(item.Count)
+                                <div class="centerDiv">
+                                    <div class="spinnerLeft"></div>
+                                    <input id="buyCount" class="spinner" value="@(item.Count)" type="text" />
+                                    <div class="spinnerRight"></div>
+                                </div>
                             </div>
                             <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
                             <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
                         </li>
                     }
-                    <li class="li0"><label><input class="checkAll" type="checkbox" />全选</label></li>
-                    <li class="li11">
-                        <a onclick="CartPage.onDeleteBtnClick()">删除所选</a>
-                        <a onclick="CartPage.onKeepBtnClick()">收藏所选</a>
-                    </li>
-                    <li class="li41">
-                        <div><label><input name="postType" type="radio" data="1" checked="checked" onchange="CartPage.onPostTypeItemClick({ currentTarget: this })" />直邮（百分之一邮费）</label></div>
-                        <div><label><input name="postType" type="radio" data="2" onchange="CartPage.onPostTypeItemClick({currentTarget:this})" />转邮（免邮费）</label></div>
-                    </li>
-                    <li class="li21">
-                        <label>共计<label class="count">@(Count)</label>件商品，合计金额：
-                        </label>
-                    </li>
-                    <li class="li31">
-                        <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
-                        <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
-                        <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
-                        <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
+                    <li class="footer">
+                        <div class="li0"><label><input class="checkAll" type="checkbox" />全选</label></div>
+                        <div class="li11">
+                            <a onclick="CartPage.onDeleteBtnClick()">删除所选</a>
+                            <a onclick="CartPage.onKeepBtnClick()">收藏所选</a>
+                        </div>
+                        <div class="li41">
+                            <div><label><input name="postType" type="radio" data="1" checked="checked" onchange="CartPage.onPostTypeItemClick({ currentTarget: this })" />直邮（百分之一邮费）</label></div>
+                            <div><label><input name="postType" type="radio" data="2" onchange="CartPage.onPostTypeItemClick({currentTarget:this})" />转邮（免邮费）</label></div>
+                        </div>
+                        <div class="li21">
+                            <label>
+                                共计<label class="count">@(Count)</label>件商品，合计金额：
+                            </label>
+                        </div>
+                        <div class="li31">
+                            <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
+                            <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
+                            <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                            <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
+                        </div>
                     </li>
                 }
                 else
@@ -180,13 +189,13 @@
         @{
             bool tag = Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0;
             <div class="p3">
-                <div class="btn3">继续购物</div>
+                <div class="btn3" onclick="CartPage.onGOONBtnClick()">继续购物</div>
             </div>
             <div class="p3">
-                <div class="btn3 @(tag ? "" : "btn13gray")">撤销订单</div>
+                <div class="btn3 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onCancelBtnClick()" : "")" >撤销订单</div>
             </div>
             <div class="p3">
-                <div class="btn2 @(tag ? "" : "btn13gray")">提交订单</div>
+                <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")" >提交订单</div>
             </div>
         }
     </div>

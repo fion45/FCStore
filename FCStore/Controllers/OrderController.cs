@@ -98,7 +98,7 @@ namespace FCStore.Controllers
                 tmpStr = tmpOrder.OID.ToString() + ",";
                 foreach(OrderPacket op in tmpOrder.Packets)
                 {
-                    tmpStr = op.Count.ToString() + "," + op.Product.Title.Substring(0, Math.Min(20, op.Product.Title.Length)) + "," + op.Product.ImgPathArr[0] + ",";
+                    tmpStr = op.Product.PID + "," + op.Count.ToString() + "," + op.Product.Title.Substring(0, Math.Min(20, op.Product.Title.Length)) + "," + op.Product.ImgPathArr[0] + ",";
                 }
                 cookie.Value = Server.UrlEncode(tmpStr);
                 Response.Cookies.Add(cookie);
@@ -114,110 +114,47 @@ namespace FCStore.Controllers
             }
         }
 
-        //
-        // GET: /Order/
-
-        public ActionResult Index()
+        [MyAuthorizeAttribute]
+        public ActionResult CancelOrder(int id)
         {
-            var orders = db.Orders.Include(o => o.User);
-            return View(orders.ToList());
-        }
-
-        //
-        // GET: /Order/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Order order = db.Orders.Find(id);
-            if (order == null)
+            //删除Cookie
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+            if (hasCookie)
             {
-                return HttpNotFound();
+                Response.Cookies["Order"].Expires = DateTime.MinValue;
             }
-            return View(order);
-        }
-
-        //
-        // GET: /Order/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.UID = new SelectList(db.Users, "UID", "UserName");
-            return View();
-        }
-
-        //
-        // POST: /Order/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order)
-        {
-            if (ModelState.IsValid)
+            
+            //修改数据库Order的状态
+            Order order = db.Orders.FirstOrDefault(r => r.OID == id);
+            if (order != null)
             {
-                db.Orders.Add(order);
+                db.Entry(order).State = EntityState.Deleted;
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            ViewBag.UID = new SelectList(db.Users, "UID", "UserName", order.UID);
-            return View(order);
-        }
-
-        //
-        // GET: /Order/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Order order = db.Orders.Find(id);
-            if (order == null)
+            if (Request.IsAjaxRequest())
             {
-                return HttpNotFound();
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
             }
-            ViewBag.UID = new SelectList(db.Users, "UID", "UserName", order.UID);
-            return View(order);
-        }
-
-        //
-        // POST: /Order/Edit/5
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Order order)
-        {
-            if (ModelState.IsValid)
+            else
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View();
             }
-            ViewBag.UID = new SelectList(db.Users, "UID", "UserName", order.UID);
-            return View(order);
         }
 
-        //
-        // GET: /Order/Delete/5
-
-        public ActionResult Delete(int id = 0)
+        [MyAuthorizeAttribute]
+        public ActionResult SubmitOrder(int id)
         {
-            Order order = db.Orders.Find(id);
-            if (order == null)
+
+            if (Request.IsAjaxRequest())
             {
-                return HttpNotFound();
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
             }
-            return View(order);
-        }
-
-        //
-        // POST: /Order/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                return View();
+            }
         }
 
         protected override void Dispose(bool disposing)

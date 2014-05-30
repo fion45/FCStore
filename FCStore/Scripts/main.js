@@ -3,6 +3,7 @@
         element: $('#Categorys'),
         distanceToTop: 15
     });
+    
     (new SidebarFollow()).init({
         element: $('#TopBtn'),
         distanceToTop: 1,
@@ -15,14 +16,17 @@
         		ele.hide();
         }
     });
+    
     (new SidebarFollow()).init({
         element: $('#Favorite'),
         distanceToTop: $('#Favorite').position().top
     });
+    
     (new SidebarFollow()).init({
         element: $('#Cart'),
         distanceToTop: $('#Cart').position().top
     });
+    
     $("#Categorys .TCItem").bind("mouseenter", function (ev) {
         var item = $(this);
         item.addClass("hover");
@@ -51,11 +55,13 @@
                 item.removeClass("hover");
             });
     });
+    
     $("#productSaleInput .spinner").mySpinner({
         upEle: $("#productSaleInput .spinnerRight"),
         downEle: $("#productSaleInput .spinnerLeft"),
         minVal : 1
     });
+    
     $(".brandA").mouseenter(function () {
         var item = $(this);
         item.children(".name").hide();
@@ -94,6 +100,12 @@
     	PID : parseInt($("#AreaSelector .province").val()),
     	CID : parseInt($("#AreaSelector .city").val()),
     	TID : parseInt($("#AreaSelector .county").val())
+    });
+    
+    $("#CartDiv .spinner").mySpinner({
+        upEle: $("#CartDiv .spinnerRight"),
+        downEle: $("#CartDiv .spinnerLeft"),
+        minVal : 1
     });
 });
 
@@ -608,7 +620,16 @@ var CartPage = {
 			alert("请选择至少一项商品");
 			return;
 		}
-		
+		var tmpStr = "";
+		var MIArr = [];
+		$.each($("#CartDiv .order .checkItem:checked"),function(i,n){
+			tmpStr += $(n).attr("data") + ",";
+			var obj = {
+				ele : $(n).parent().next(),
+				html : $(n).parent().next().next().children().html()
+			}
+			MIArr.push(obj);
+		});
 		//收藏该商品
 		$.myAjax({
         	historyTag : false,
@@ -620,13 +641,41 @@ var CartPage = {
             contentType: "application/json;charset=utf-8",
             success: function (data,status,options) {
             	if(data.content == "OK") {
-            		$.each($("#CartDiv .order .checkItem:checked").parentsUntil("ul"),function(i,n){
-						$(n).animate({
-							height:0
-						}, "normal", "linear",function(){
-							$(n).remove();
+            		$.each(MIArr,function(i,n){
+            			var viewItem = n.ele;
+            			var tmpOS = viewItem.offset();
+	            		var tmpW = viewItem.width();
+	            		var tmpH = viewItem.height();
+	            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+	            		tmpItem.appendTo($("body:first"));
+	            		tmpItem.css({
+	            			top:tmpOS.top,
+	            			left:tmpOS.left,
+	            			width:tmpW,
+	            			height:tmpH,
+	            			padding:viewItem.css("padding")
+	            		});
+	            		var favorite = $("#Favorite");
+	            		tmpOS = favorite.offset();
+	            		tmpW = favorite.width();
+	            		tmpH = favorite.height();
+	        			tmpItem.animate({
+		            			top:tmpOS.top - tmpH + 180,
+		            			left:tmpOS.left + 130,
+		            			width:88,
+		            			height:88
+		            		},{
+		            		queue:false,
+		            		duration:1000,
+		            		complete : function() {
+		            			var moveContent = $("<label>" + n.html + "</label>");
+		            			tmpItem.removeAttr("style");
+		            			tmpItem.append(moveContent);
+		            			//收藏夹增加内容
+		            			tmpItem.appendTo($("#plInFavorit"));
+		            		}
 		            	});
-					});
+            		});
             	}
             }
 		});
@@ -745,5 +794,25 @@ var CartPage = {
 	onAACancel : function() {
 		//关闭
 		$("#addAddressDlg").dialog("close");
+	},
+	onGOONBtnClick : function() {
+		location.href = "/Home/Index";
+	},
+	onCancelBtnClick : function() {
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#CartDiv"),
+            url: "/Order/CancelOrder/" + $("#CartDiv").attr("data"),
+            data: null,
+            dataType: "json",
+            type: "Get",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	location.href = "/Home/Index";
+            }
+		});
+	},
+	onSubmitBtnClick : function() {
+		
 	}
 };
