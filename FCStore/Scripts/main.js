@@ -813,6 +813,30 @@ var CartPage = {
 		});
 	},
 	onSubmitBtnClick : function() {
-		
+		var obj = {
+			OrderID : $("#CartDiv").attr("data"),
+			Packets : []
+		};
+		$.each($("#CartDiv .order .item"),function(i,n){
+			var tmpItem = $(n);
+			var packet = {
+				PacketID : tmpItem.find(".li0 input:first").val(),
+				Count : tmpItem.find(".li4 .spinner:first").val()
+			}
+			obj.Packets.push(packet);
+		});
+		//提交订单
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#CartDiv"),
+            url: "/Order/SubmitOrder/",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	
+            }
+		});
 	}
 };

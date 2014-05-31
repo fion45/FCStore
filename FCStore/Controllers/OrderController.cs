@@ -143,7 +143,7 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult SubmitOrder(int id)
+        public ActionResult SubmitOrder(SubmitObj order)
         {
 
             if (Request.IsAjaxRequest())

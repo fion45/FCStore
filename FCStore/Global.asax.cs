@@ -23,6 +23,7 @@ namespace FCStore
 
     public class MvcApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
         {
             ////改变连接字符串里的|DataDirectory|
@@ -114,7 +115,6 @@ namespace FCStore
 
             //注册RouteDebug
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
-
         }
 
         protected void Application_Error(object s, EventArgs e)
