@@ -4,3 +4,6 @@
 /FCStore/bin/*.dll
 /*.suo
 /AWS
+/网站发布
+/FCStore/obj/Debug
+/FCStore/obj/Release

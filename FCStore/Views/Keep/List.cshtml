@@ -1,0 +1,34 @@
+﻿@model IEnumerable<FCStore.Models.Keep>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>收藏列表</h2>
+<ul>
+    <li class="header">
+        <div class="d0"></div>
+        <div class="d1">缩略图</div>
+        <div class="d2">名称</div>
+        <div class="d3">价格</div>
+    </li>
+    @foreach(var item in Model)
+    {
+        <li class="item">
+            <div class="d0">
+                <input type="checkbox" />
+            </div>
+            <div class="d1">
+                <a href="/Product/Detail/@(item.Product.PID)" ><img src="@(item.Product.ImgPathArr[0])" /></a>
+            </div>
+            <div class="d2">
+                <a href="/Product/Detail/@(item.Product.PID)" >
+                    @(item.Product.Title);
+                </a>
+            </div>
+            <div class="d3">
+
+            </div>
+        </li>
+    }
+</ul>

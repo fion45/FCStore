@@ -86,6 +86,34 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult List()
+        {
+            List<Keep> keeps = new List<Keep>();
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
+            HttpCookie cookie = null;
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Keeps"];
+                string tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(KEEPCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    int tmpC = tmpMatch.Groups["KITEM"].Captures.Count;
+                    for (int i = 0; i < tmpC; i++)
+                    {
+                        Keep tmpK = new Keep();
+                        tmpK.PID = int.Parse(tmpMatch.Groups["PRODUCTID"].Captures[i].Value);
+                        tmpK.Product = new Product();
+                        tmpK.Product.Title = tmpMatch.Groups["TITLE"].Captures[i].Value;
+                        tmpK.Product.ImgPath = tmpMatch.Groups["IMG"].Captures[i].Value;
+                        keeps.Add(tmpK);
+                    }
+                }
+            }
+            return View(keeps);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

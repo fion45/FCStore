@@ -575,6 +575,9 @@ var ProductList = {
             '</a>' +
         '</div>');
         return item;
+    },
+    onFavoriteClick : function() {
+    	window.location = "/";
     }
 };
 
