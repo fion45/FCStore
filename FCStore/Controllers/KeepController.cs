@@ -68,11 +68,30 @@ namespace FCStore.Controllers
                             }
                         }
                     }
+                    else
+                    {
+                        eTag = false;
+                        Regex cookieRgx = new Regex(KEEPCOOKIERGX);
+                        Match tmpMatch = cookieRgx.Match(tmpStr);
+                        if (!string.IsNullOrEmpty(tmpMatch.Value))
+                        {
+                            int tmpC = tmpMatch.Groups["KITEM"].Captures.Count;
+                            for (int i = 0; i < tmpC; i++)
+                            {
+                                if (int.Parse(tmpMatch.Groups["PRODUCTID"].Captures[i].Value) == PID)
+                                { 
+                                    eTag = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     if (!eTag)
                         tmpStr += product.PID + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                 }
             }
-            db.SaveChanges();
+            if (HttpContext.User.Identity.IsAuthenticated)
+                db.SaveChanges();
             cookie.Value = Server.UrlEncode(tmpStr);
             Response.Cookies.Add(cookie);
             if (Request.IsAjaxRequest())
@@ -103,10 +122,8 @@ namespace FCStore.Controllers
                     for (int i = 0; i < tmpC; i++)
                     {
                         Keep tmpK = new Keep();
-                        tmpK.PID = int.Parse(tmpMatch.Groups["PRODUCTID"].Captures[i].Value);
-                        tmpK.Product = new Product();
-                        tmpK.Product.Title = tmpMatch.Groups["TITLE"].Captures[i].Value;
-                        tmpK.Product.ImgPath = tmpMatch.Groups["IMG"].Captures[i].Value;
+                        int tmpPID = int.Parse(tmpMatch.Groups["PRODUCTID"].Captures[i].Value);
+                        tmpK.Product = db.Products.FirstOrDefault(r => r.PID == tmpPID);
                         keeps.Add(tmpK);
                     }
                 }

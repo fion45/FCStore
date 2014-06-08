@@ -1,34 +1,47 @@
 ﻿@model IEnumerable<FCStore.Models.Keep>
+@using FCStore.Models;
+@using FCStore.Common;
 
 @{
     ViewBag.Title = "List";
 }
-
-<h2>收藏列表</h2>
-<ul>
-    <li class="header">
-        <div class="d0"></div>
-        <div class="d1">缩略图</div>
-        <div class="d2">名称</div>
-        <div class="d3">价格</div>
-    </li>
-    @foreach(var item in Model)
-    {
-        <li class="item">
-            <div class="d0">
-                <input type="checkbox" />
-            </div>
-            <div class="d1">
-                <a href="/Product/Detail/@(item.Product.PID)" ><img src="@(item.Product.ImgPathArr[0])" /></a>
-            </div>
-            <div class="d2">
-                <a href="/Product/Detail/@(item.Product.PID)" >
-                    @(item.Product.Title);
-                </a>
-            </div>
-            <div class="d3">
-
-            </div>
+<div id="favoriteList">
+    <h2>收藏列表</h2>
+    <ul id="favoriteTB">
+        <li class="header">
+            <div class="d0"></div>
+            <div class="d1">商品图片</div>
+            <div class="d2">商品名称</div>
+            <div class="d3">商品价格</div>
+            <div class="d4">操作</div>
         </li>
-    }
-</ul>
+        @foreach (Keep item in Model)
+        {
+            <li class="item">
+                <div class="d0">
+                    <input type="checkbox" />
+                </div>
+                <div class="d1">
+                    <a href="/Product/Detail/@(item.Product.PID)"><img src="@(item.Product.ImgPathArr[0])" /></a>
+                </div>
+                <div class="d2">
+                    <a href="/Product/Detail/@(item.Product.PID)">
+                        @(item.Product.Title);
+                    </a>
+                </div>
+                <div class="d3">
+                    @(PubFunction.CHPriceFormat(item.Product.Price))
+                </div>
+                <div class="d4">
+                    <div class="sbtn1">
+                        删除
+                    </div>
+                    <div class="sbtn1">
+                        购买
+                    </div>
+                </div>
+            </li>
+        }
+        <div class="pullupDiv"></div>
+    </ul>
+</div>

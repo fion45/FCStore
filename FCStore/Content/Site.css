@@ -1990,3 +1990,81 @@ body .li1
             #addAddressDlg .content .value1 input {
                 width:98%;
             }
+
+/* Favorite List
+----------------------------------------------------------*/
+#favoriteList{
+    margin-top:10px;
+    width:100%;
+    height:auto;
+}
+
+#favoriteList h2 {
+    text-align:left;
+    margin-bottom:5px;
+}
+
+#favoriteTB {
+    border:solid 1px #cccccc;
+}
+
+    #favoriteTB li {
+        float:left;
+        height:70px;
+        line-height:70px;
+        padding:3px 0px;
+        border-bottom:dashed 1px #cccccc;
+    }
+
+    #favoriteTB .header {
+        border-bottom:solid 1px #cccccc;
+        height:25px;
+        line-height:25px;
+        font-weight:bold;
+        min-height:25px;
+        text-align:center;
+        width:100%;
+    }
+    
+    #favoriteTB .header div{
+        height:25px;
+        line-height:25px;
+    }
+
+        #favoriteTB li .d0 {
+            width:8%;
+            float:left;
+        }
+
+        #favoriteTB li .d1 {
+            width:15%;
+            float:left;
+        }
+
+            #favoriteTB li .d1 img {
+                width:70px;
+                height:70px;
+            }
+
+        #favoriteTB li .d2 {
+            width:40%;
+            float:left;
+            line-height:22px;
+            text-align:left;
+        }
+
+        #favoriteTB li .d3 {
+            width:20%;
+            float:left;
+        }
+
+        #favoriteTB li .d4 {
+            width:17%;
+            float:left;
+        }
+
+    #favoriteTB .item {
+        width:100%;
+        padding:3px 0px;
+        border-bottom:dashed 1px #cccccc;
+    }

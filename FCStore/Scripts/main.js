@@ -577,7 +577,7 @@ var ProductList = {
         return item;
     },
     onFavoriteClick : function() {
-    	window.location = "/";
+        window.location = "/Keep/List";
     }
 };
 
