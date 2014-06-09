@@ -107,6 +107,8 @@
         downEle: $("#CartDiv .spinnerLeft"),
         minVal : 1
     });
+    
+    $("#favoriteTB .checkAll:first").checkAll("#favoriteTB .checkItem");
 });
 
 var MainLayout = {
@@ -841,5 +843,120 @@ var CartPage = {
             	
             }
 		});
+	}
+};
+
+var KeepPage = {
+	Buy : function(IDArrStr,eles) {
+		var MIArr = [];
+		$.each(eles,function(i,n){
+			var obj = {
+				ele : eles.children(".d1"),
+				html : eles.children(".d2 a").html()
+			}
+			MIArr.push(obj);
+		});
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : null,
+            url: "/Keep/Buy/" + IDArrStr,
+            data: null,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.content == "OK") {
+            		$.each(MIArr,function(i,n){
+            			var viewItem = n.ele;
+	            		var tmpOS = viewItem.offset();
+	            		var tmpW = viewItem.width();
+	            		var tmpH = viewItem.height();
+	            		tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+	            		tmpItem.appendTo($("body:first"));
+	            		tmpItem.css({
+	            			top:tmpOS.top,
+	            			left:tmpOS.left,
+	            			width:tmpW,
+	            			height:tmpH,
+	            			padding:viewItem.css("padding")
+	            		});
+	            		var favorite = $("#Favorite");
+	            		tmpOS = favorite.offset();
+	            		tmpW = favorite.width();
+	            		tmpH = favorite.height();
+	        			tmpItem.animate({
+		            			top:tmpOS.top - tmpH,
+		            			left:tmpOS.left + 10,
+		            			width:tmpW - 20,
+		            			height:tmpH
+		            		},{
+		            		queue:false,
+		            		duration:1000,
+		            		complete : function() {
+		            			var moveContent = $("<label>" + n.html + "</label>");
+		            			tmpItem.removeAttr("style");
+		            			tmpItem.append(moveContent);
+		            			//收藏夹增加内容
+		            			tmpItem.appendTo($("#plInFavorit"));
+		            		}
+		            	});
+            		});
+            	}
+            }
+		});
+	},
+	Delete : function(IDArrStr,eles) {
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : null,
+            url: "/Keep/Delete/" + IDArrStr,
+            data: null,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.content == "OK") {
+            		$.each(eles,function(i,n){
+						$(n).animate({
+							height:0
+						}, "normal", "linear",function(){
+							$(n).remove();
+		            	});
+					});
+            	}
+            }
+		});
+	},
+	onDeleteBtnClick : function(PID,obj) {
+		var item = $(obj).parentsUntil("ul").last();
+		KeepPage.Delete(PID,item);
+	},
+	onBuyBtnClick : function(PID,obj) {
+		var item = $(obj).parentsUntil("ul").last();
+		KeepPage.Buy(PID,item);
+	},
+	onAllDeleteBtnClick : function() {
+		var tmpStr = "";
+		$.each($("#favoriteList .checkItem:checked"),function(i,n){
+			tmpStr += $(n).val() + ",";
+		});
+		var checkedEles = $("#favoriteList .checkItem:checked");
+		var delItems = [];
+		$.each(checkedEles,function(i,n){
+			delItems.push($(n).parentsUntil("ul").last());
+		});
+		KeepPage.Delete(tmpStr,delItems);
+	},
+	onAllBuyBtnClick : function() {
+		var tmpStr = "";
+		$.each($("#favoriteList .checkItem:checked"),function(i,n){
+			tmpStr += $(n).val() + ",";
+		});
+		var checkedEles = $("#favoriteList .checkItem:checked");
+		var delItems = [];
+		$.each(checkedEles,function(i,n){
+			delItems.push($(n).parentsUntil("ul").last());
+		});
+		KeepPage.Buy(tmpStr,delItems);
 	}
 };

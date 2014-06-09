@@ -49,7 +49,6 @@ namespace FCStore.Controllers
                         {
                             //登陆用户
                             Keep exsisKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == tmpUser.UID);
-
                             if (exsisKeep == null)
                             {
                                 if(db.Keeps.Local.FirstOrDefault(r => r.PID == PID && r.UID == tmpUser.UID) == null)
@@ -129,6 +128,72 @@ namespace FCStore.Controllers
                 }
             }
             return View(keeps);
+        }
+
+        public ActionResult Buy(string id)
+        {
+            return View();
+        }
+
+        public ActionResult Delete(string id)
+        {
+            string[] tmpIDArr = id.Split(new char[] { ',' });
+            List<int> PIDArr = new List<int>();
+            foreach(string tmpStr in tmpIDArr)
+            {
+                int PID = int.Parse(tmpStr);
+                PIDArr.Add(PID);
+            }
+
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
+            HttpCookie cookie = null;
+            if (!hasCookie)
+            {
+                cookie = new HttpCookie("Keeps");
+                cookie.Expires = DateTime.Now.AddMonths(1);
+            }
+            else
+            {
+                cookie = Request.Cookies["Keeps"];
+            }
+            MyUser user = HttpContext.User as MyUser;
+            if (HttpContext.User.Identity.IsAuthenticated && user != null)
+            {
+                List<Keep> keepLST = db.Keeps.Where(r => r.UID == user.UID).ToList();
+                string tmpStr = "";
+                foreach(Keep tmpKeep in keepLST)
+                {
+                    if (PIDArr.Contains(tmpKeep.PID))
+                    {
+                        db.Keeps.Remove(tmpKeep);
+                    }
+                    else
+                    {
+                        tmpStr += tmpKeep.Product.PID + "," + tmpKeep.Product.Title.Substring(0, Math.Min(20, tmpKeep.Product.Title.Length)) + "," + tmpKeep.Product.ImgPathArr[0] + ",";
+                    }
+                }
+                db.SaveChanges();
+                cookie.Value = Server.UrlEncode(tmpStr);
+                Response.Cookies.Add(cookie);
+            }
+            else if(hasCookie)
+            {
+                string tmpStr = "";
+                string cookieStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(KEEPCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(cookieStr);
+                int tmpC = tmpMatch.Groups["KITEM"].Captures.Count;
+                for (int i = 0; i < tmpC; i++)
+                {
+                    if (!PIDArr.Contains(int.Parse(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)))
+                    {
+                        tmpStr += tmpMatch.Groups["PRODUCTID"].Captures[i].Value + "," + tmpMatch.Groups["TITLE"].Captures[i].Value + "," + tmpMatch.Groups["IMG"].Captures[i].Value + ",";
+                    }
+                }
+                cookie.Value = Server.UrlEncode(tmpStr);
+                Response.Cookies.Add(cookie);
+            }
+            return View();
         }
 
         protected override void Dispose(bool disposing)
