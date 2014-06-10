@@ -1712,6 +1712,7 @@ body .li1
             width:29px;
             height:24px;
             float:left;
+            text-align:center;
         }
 
         #CartDiv .order .li4 .spinnerLeft {
@@ -2151,16 +2152,23 @@ body .li1
         border-bottom:dashed 1px #cccccc;
     }
 
-    #favoriteTB .footer div {
-        float:left;
-    }
+        #favoriteTB .footer div {
+            float:left;
+        }
 
-    #favoriteTB .footer .d11 {
-        width:30%;
-    }
+        #favoriteTB .footer .d11 {
+            width:30%;
+        }
 
-    #favoriteTB .footer .d11 a {
-        margin-left:20px;
-    }
+        #favoriteTB .footer .d11 a {
+            margin-left:20px;
+        }
 
-    
+    #favoriteTB .p1
+    {
+        width:100%;
+        height:200px;
+        line-height:200px;
+        vertical-align:middle;
+        text-align:center;
+    }

@@ -39,7 +39,9 @@ jQuery.fn.mySpinner = function (config) {
         downEle: null,
         step: 1,
         minVal: null,
-        maxVal : null
+        maxVal : null,
+        UCB : null,
+        DCB : null
     };
     $.extend(this.config, config);
     var _self = this;
@@ -55,6 +57,9 @@ jQuery.fn.mySpinner = function (config) {
                 tmpI += _self.config.step;
             }
             tmpTB.val(tmpI);
+            if(_self.config.UCB != null) {
+            	_self.config.UCB(_self);
+            }
         });
     }
     if (this.config.downEle != null) {
@@ -69,6 +74,9 @@ jQuery.fn.mySpinner = function (config) {
                 tmpI -= _self.config.step;
             }
             tmpTB.val(tmpI);
+            if(_self.config.DCB != null) {
+            	_self.config.DCB(_self);
+            }
         });
     }
     _self.keypress(function (ev) {
@@ -220,7 +228,7 @@ var BuildPullHeightDiv = function(par) {
 	par.append("<div class=\"pullupDiv\"></div>");
 };
 
-var PriceFormat = function(tmpF) {
+var PriceFormat = function(tmpF,tag) {
 	var tmpStr = "" + tmpF;
 	var charIndex = tmpStr.indexOf(".");
 	if(charIndex != -1) {
@@ -230,5 +238,5 @@ var PriceFormat = function(tmpF) {
 	else {
 		tmpStr += ".00";
 	}
-	return tmpStr;
+	return tag ? "￥" + tmpStr : tmpStr;
 };

@@ -337,6 +337,17 @@ namespace FCStore.Controllers
                     {
                         order = new Order();
                         db.Orders.Add(order);
+                        order.Packets = new List<OrderPacket>();
+                        order.UID = null;
+                        order.Postage = 0;
+                        order.Subscription = 0;
+                        order.Status = (int)Order.EOrderStatus.OS_Init;
+                        order.SendType = (int)Order.ESendType.ST_Direct;
+                        order.PayType = (int)Order.EPayType.PT_Alipay;
+                        order.OrderDate = null;
+                        order.CompleteDate = null;
+                        order.Packets.Add(packet);
+                        db.OrderPackets.Add(packet);
                         db.SaveChanges();
                         tmpStr = order.OID + "," + product.PID + "," + count.ToString() + "," + product.Title.Substring(0, Math.Min(20, product.Title.Length)) + "," + product.ImgPathArr[0] + ",";
                     }

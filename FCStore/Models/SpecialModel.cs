@@ -5,9 +5,11 @@ using System.Web;
 
 namespace FCStore.Models
 {
-    public struct SubmitObj
+    [Serializable]
+    public class SubmitObj
     {
-        public struct PacketObj
+        [Serializable]
+        public class PacketObj
         {
             public int PacketID;
             public int Count;
@@ -18,7 +20,7 @@ namespace FCStore.Models
             set;
         }
 
-        public List<PacketObj> Packets
+        public PacketObj[] Packets
         {
             get;
             set;

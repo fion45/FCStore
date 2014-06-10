@@ -7,6 +7,12 @@
 }
 
 <div id="CartDiv" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div><a href="/">首页</a></div>
+        <div>></div>
+        <div>订单页面</div>
+    </div>
     <div class="p1 flowDiv">
         <div class="item sel">
             <div class="line"></div>

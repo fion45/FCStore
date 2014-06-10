@@ -105,7 +105,9 @@
     $("#CartDiv .spinner").mySpinner({
         upEle: $("#CartDiv .spinnerRight"),
         downEle: $("#CartDiv .spinnerLeft"),
-        minVal : 1
+        minVal : 1,
+        UCB : CartPage.Calculate,
+        DCB : CartPage.Calculate
     });
     
     $("#favoriteTB .checkAll:first").checkAll("#favoriteTB .checkItem");
@@ -254,7 +256,6 @@ var ProductList = {
 	onKeepBtnClick : function() {
 		//收藏按钮
 		var PID = $("#PIDLB").text();
-		//购买按钮
 		$.myAjax({
         	historyTag : false,
         	loadEle : $("#Center"),
@@ -265,7 +266,9 @@ var ProductList = {
             contentType: "application/json;charset=utf-8",
             success: function (data,status,options) {
             	if(data.successTag) {
-            		//购买成功,添加到收藏夹里
+            		//添加到收藏夹里
+            		$("#keepBtn").removeClass("btn1");
+            		$("#keepBtn").addClass("btn13gray");
             		var viewItem = $("#PD_View .top");
             		var tmpOS = viewItem.offset();
             		var tmpW = viewItem.width();
@@ -831,18 +834,41 @@ var CartPage = {
 			obj.Packets.push(packet);
 		});
 		//提交订单
-		$.myAjax({
-        	historyTag : false,
-        	loadEle : $("#CartDiv"),
-            url: "/Order/SubmitOrder/",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            success: function (data,status,options) {
-            	
-            }
+		$.post("/Order/SubmitOrder/", obj,function() {
+		    alert("提交成功");
 		});
+//		$.myAjax({
+//        	historyTag : false,
+//        	loadEle : $("#CartDiv"),
+//            url: "/Order/SubmitOrder/",
+//            data: JSON.stringify(obj),
+//            dataType: "json",
+//            type: "POST",
+//            contentType: "application/json;charset=utf-8",
+//    		traditional: true,
+//            success: function (data,status,options) {
+//            	
+//            }
+//		});
+	},
+	Calculate : function() {
+		var itemArr = $("#CartDiv .order .item");
+		var total = 0;
+		$.each(itemArr,function(i,n){
+			var item = $(n);
+			var count = parseInt(item.find(".spinner").val());
+			var univalence = parseInt(item.find(".li3").text().substring(1));
+			var discount = parseInt(item.find(".li5").text().substring(1));
+			var cal = count * (univalence - discount);
+			total += cal;
+			item.find(".li6").text(PriceFormat(cal,true));
+		});
+		var footer = $("#CartDiv .order .footer .li31");
+		footer.children(".price").text(PriceFormat(total,true));
+		footer.children(".postPrice:eq(0)").text(PriceFormat(total * 0.01,true));
+		footer.children(".postPrice:eq(1)").text(PriceFormat(0,true));
+		footer.children(".amount:eq(0)").text(PriceFormat(total * 1.01,true));
+		footer.children(".amount:eq(1)").text(PriceFormat(total,true));
 	}
 };
 
@@ -851,8 +877,8 @@ var KeepPage = {
 		var MIArr = [];
 		$.each(eles,function(i,n){
 			var obj = {
-				ele : eles.children(".d1"),
-				html : eles.children(".d2 a").html()
+				ele : $(n).children(".d1"),
+				html : $(n).find(".d2 a").html()
 			}
 			MIArr.push(obj);
 		});
@@ -871,7 +897,7 @@ var KeepPage = {
 	            		var tmpOS = viewItem.offset();
 	            		var tmpW = viewItem.width();
 	            		var tmpH = viewItem.height();
-	            		tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+	            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
 	            		tmpItem.appendTo($("body:first"));
 	            		tmpItem.css({
 	            			top:tmpOS.top,
@@ -880,10 +906,10 @@ var KeepPage = {
 	            			height:tmpH,
 	            			padding:viewItem.css("padding")
 	            		});
-	            		var favorite = $("#Favorite");
-	            		tmpOS = favorite.offset();
-	            		tmpW = favorite.width();
-	            		tmpH = favorite.height();
+            			var cart = $("#Cart");
+	            		tmpOS = cart.offset();
+	            		tmpW = cart.width();
+	            		tmpH = cart.height();
 	        			tmpItem.animate({
 		            			top:tmpOS.top - tmpH,
 		            			left:tmpOS.left + 10,
@@ -896,8 +922,8 @@ var KeepPage = {
 		            			var moveContent = $("<label>" + n.html + "</label>");
 		            			tmpItem.removeAttr("style");
 		            			tmpItem.append(moveContent);
-		            			//收藏夹增加内容
-		            			tmpItem.appendTo($("#plInFavorit"));
+		            			//购物车增加内容
+		            			tmpItem.appendTo($("#plInCar"));
 		            		}
 		            	});
             		});
@@ -921,6 +947,7 @@ var KeepPage = {
 							height:0
 						}, "normal", "linear",function(){
 							$(n).remove();
+							$("#plInFavorit a[data='" + IDArrStr[i] + "']").remove();
 		            	});
 					});
             	}
@@ -929,18 +956,22 @@ var KeepPage = {
 	},
 	onDeleteBtnClick : function(PID,obj) {
 		var item = $(obj).parentsUntil("ul").last();
-		KeepPage.Delete(PID,item);
+		KeepPage.Delete([PID],[item]);
 	},
 	onBuyBtnClick : function(PID,obj) {
 		var item = $(obj).parentsUntil("ul").last();
-		KeepPage.Buy(PID,item);
+		KeepPage.Buy([PID],[item]);
 	},
 	onAllDeleteBtnClick : function() {
 		var tmpStr = "";
-		$.each($("#favoriteList .checkItem:checked"),function(i,n){
+		var checkedEles = $("#favoriteList .checkItem:checked");
+		if(checkedEles.length <= 0) {
+			alert("请选择至少一项商品");
+			return;
+		}
+		$.each(checkedEles,function(i,n){
 			tmpStr += $(n).val() + ",";
 		});
-		var checkedEles = $("#favoriteList .checkItem:checked");
 		var delItems = [];
 		$.each(checkedEles,function(i,n){
 			delItems.push($(n).parentsUntil("ul").last());
@@ -949,10 +980,14 @@ var KeepPage = {
 	},
 	onAllBuyBtnClick : function() {
 		var tmpStr = "";
-		$.each($("#favoriteList .checkItem:checked"),function(i,n){
+		var checkedEles = $("#favoriteList .checkItem:checked");
+		if(checkedEles.length <= 0) {
+			alert("请选择至少一项商品");
+			return;
+		}
+		$.each(checkedEles,function(i,n){
 			tmpStr += $(n).val() + ",";
 		});
-		var checkedEles = $("#favoriteList .checkItem:checked");
 		var delItems = [];
 		$.each(checkedEles,function(i,n){
 			delItems.push($(n).parentsUntil("ul").last());

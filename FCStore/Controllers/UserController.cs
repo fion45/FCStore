@@ -143,7 +143,7 @@ namespace FCStore.Controllers
                     }
                     else
                     {
-                        cookie = new HttpCookie("Order");
+                        cookie = new HttpCookie("Keeps");
                         cookie.Expires = DateTime.Now.AddMonths(1);
                     }
                     List<Keep> keepArr = db.Keeps.Where(r => r.UID == user.UID && !PIDArr.Contains(r.PID)).ToList();

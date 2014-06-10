@@ -6,6 +6,12 @@
     ViewBag.Title = "List";
 }
 <div id="favoriteList">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div><a href="/">首页</a></div>
+        <div>></div>
+        <div>收藏列表</div>
+    </div>
     <h2>收藏列表</h2>
     <ul id="favoriteTB">
         <li class="header">
@@ -15,46 +21,53 @@
             <div class="d3">商品价格</div>
             <div class="d4">操作</div>
         </li>
-        @foreach (Keep item in Model)
-        {
-            <li class="item">
+        @if(Model.Count() > 0)
+        { 
+            foreach (Keep item in Model)
+            {
+                <li class="item">
+                    <div class="d0">
+                        <input value="@(item.Product.PID)" class="checkItem" type="checkbox" />
+                    </div>
+                    <div class="d1">
+                        <a href="/Product/Detail/@(item.Product.PID)"><img src="@(item.Product.ImgPathArr[0])" /></a>
+                    </div>
+                    <div class="d2">
+                        <a href="/Product/Detail/@(item.Product.PID)">
+                            @(item.Product.Title);
+                        </a>
+                    </div>
+                    <div class="d3">
+                        @(PubFunction.CHPriceFormat(item.Product.Price))
+                    </div>
+                    <div class="d4">
+                        <div class="btnDiv">
+                            <div class="sbtn3" onclick="KeepPage.onBuyBtnClick(@(item.Product.PID),this)">
+                                购买
+                            </div>
+                        </div>
+                        <div class="btnDiv">
+                            <div class="sbtn2" onclick="KeepPage.onDeleteBtnClick(@(item.Product.PID),this)">
+                                删除
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+            <li class="footer">
                 <div class="d0">
-                    <input value="@(item.Product.PID)" class="checkItem" type="checkbox" />
+                    <label><input class="checkAll" type="checkbox" />全选</label>
                 </div>
-                <div class="d1">
-                    <a href="/Product/Detail/@(item.Product.PID)"><img src="@(item.Product.ImgPathArr[0])" /></a>
-                </div>
-                <div class="d2">
-                    <a href="/Product/Detail/@(item.Product.PID)">
-                        @(item.Product.Title);
-                    </a>
-                </div>
-                <div class="d3">
-                    @(PubFunction.CHPriceFormat(item.Product.Price))
-                </div>
-                <div class="d4">
-                    <div class="btnDiv">
-                        <div class="sbtn3" onclick="KeepPage.onBuyBtnClick(@(item.Product.PID),this)">
-                            购买
-                        </div>
-                    </div>
-                    <div class="btnDiv">
-                        <div class="sbtn2" onclick="KeepPage.onDeleteBtnClick(@(item.Product.PID),this)">
-                            删除
-                        </div>
-                    </div>
+                <div class="d11">
+                    <a onclick="KeepPage.onAllDeleteBtnClick()">删除所选</a>
+                    <a onclick="KeepPage.onAllBuyBtnClick()">购买所选</a>
                 </div>
             </li>
         }
-        <li class="footer">
-            <div class="d0">
-                <label><input class="checkAll" type="checkbox" />全选</label>
-            </div>
-            <div class="d11">
-                <a onclick="KeepPage.onAllDeleteBtnClick()">删除所选</a>
-                <a onclick="KeepPage.onAllBuyBtnClick()">购买所选</a>
-            </div>
-        </li>
+        else
+        {
+            <li class="p1">列表为空</li>
+        }
         <div class="pullupDiv"></div>
     </ul>
 </div>

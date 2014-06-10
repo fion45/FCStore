@@ -132,12 +132,95 @@ namespace FCStore.Controllers
 
         public ActionResult Buy(string id)
         {
-            return View();
+            string[] tmpIDArr = id.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            List<int> PIDArr = new List<int>();
+            foreach (string PIDStr in tmpIDArr)
+            {
+                int PID = int.Parse(PIDStr);
+                PIDArr.Add(PID);
+            }
+            List<Product> products = db.Products.Where(r => PIDArr.Contains(r.PID)).ToList();
+            string tmpStr = "";
+            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+            HttpCookie cookie = null;
+            Order order = null;
+            if (hasCookie)
+            {
+                cookie = Request.Cookies["Order"];
+                tmpStr = Server.UrlDecode(cookie.Value);
+                Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                Match tmpMatch = cookieRgx.Match(tmpStr);
+                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                {
+                    Group gi = tmpMatch.Groups["ORDERID"];
+                    int OrderID = int.Parse(gi.Value);
+                    order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                }
+            }
+            else
+            {
+                cookie = new HttpCookie("Order");
+                cookie.Expires = DateTime.Now.AddMonths(1);
+            }
+            foreach(Product product in products)
+            {
+                OrderPacket packet = new OrderPacket();
+                packet.PID = product.PID;
+                packet.Product = product;
+                packet.Univalence = product.Price;
+                packet.Discount = product.Discount;
+                packet.Count = 1;
+                if(order == null)
+                {
+                    order = new Order();
+                    order.Packets = new List<OrderPacket>();
+                    order.UID = null;
+                    order.Postage = 0;
+                    order.Subscription = 0;
+                    order.Status = (int)Order.EOrderStatus.OS_Init;
+                    order.SendType = (int)Order.ESendType.ST_Direct;
+                    order.PayType = (int)Order.EPayType.PT_Alipay;
+                    order.OrderDate = null;
+                    order.CompleteDate = null;
+                    db.Orders.Add(order);
+                }
+                order.Packets.Add(packet);
+                db.OrderPackets.Add(packet);
+            }
+            if(HttpContext.User.Identity.IsAuthenticated && order.UID == null)
+            {
+                //已登录
+                MyUser tmpUser = HttpContext.User as MyUser;
+                if (tmpUser != null)
+                {
+                    //登陆用户
+                    order.UID = tmpUser.UID;
+                }
+            }
+            order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            db.SaveChanges();
+            tmpStr = order.OID.ToString() + ",";
+            foreach (OrderPacket packet in order.Packets)
+            {
+                tmpStr += packet.Product.PID + ",1," + packet.Product.Title.Substring(0, Math.Min(20, packet.Product.Title.Length)) + "," + packet.Product.ImgPathArr[0] + ",";
+            }
+            cookie.Value = Server.UrlEncode(tmpStr);
+            Response.Cookies.Add(cookie);
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult Delete(string id)
         {
-            string[] tmpIDArr = id.Split(new char[] { ',' });
+            string[] tmpIDArr = id.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             List<int> PIDArr = new List<int>();
             foreach(string tmpStr in tmpIDArr)
             {
@@ -193,7 +276,15 @@ namespace FCStore.Controllers
                 cookie.Value = Server.UrlEncode(tmpStr);
                 Response.Cookies.Add(cookie);
             }
-            return View();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         protected override void Dispose(bool disposing)

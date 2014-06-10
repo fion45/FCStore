@@ -2,7 +2,7 @@
 
 <div id="PD_View">
     <div id="categoryNav">
-        <div>货品类别：</div>
+        <div>当前位置：</div>
     @{
         FCStore.Models.Category tmpCate = Model.Category;
         int CID = -1;
@@ -148,7 +148,7 @@
                     <div class="btn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">购买</div>
                 </div>
                 <div class="p2">
-                    <div class="btn1 @(ViewBag.KeepTag ? "btn13gray" : "")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
+                    <div class="@(ViewBag.KeepTag ? "btn13gray" : "btn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
                 </div>
             </div>
             <div class="pullupDiv"></div>

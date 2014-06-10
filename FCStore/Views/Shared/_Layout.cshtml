@@ -88,7 +88,7 @@
         {
             for (int i = 0; i < tmpMatch.Groups["KITEM"].Captures.Count; i++)
             {
-                <a class="MoveItem" href="/Product/Detail/@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)">
+                <a data="@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)" class="MoveItem" href="/Product/Detail/@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)">
                     <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
                     <label>
                         @(tmpMatch.Groups["TITLE"].Captures[i].Value)
