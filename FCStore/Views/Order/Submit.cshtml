@@ -1,0 +1,176 @@
+﻿@model FCStore.Models.OrderVM
+@using FCStore.Models;
+@using FCStore.Common;
+
+@{
+    ViewBag.Title = "Submit";
+    Order order = Model.OrderArr != null && Model.OrderArr.Count > 0 ? Model.OrderArr.First() : null;
+}
+
+@if(order != null)
+{
+    <form id="SubmitDiv" method="post" action="@(order.OID)" data="@(order.OID)">
+        <div id="categoryNav">
+            <div>当前位置：</div>
+            <div><a href="/">首页</a></div>
+            <div>></div>
+            <div>订单确认</div>
+        </div>
+        <div class="p1 flowDiv">
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">填写订单</div>
+            </div>
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">确认支付</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">付款成功</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">评价</div>
+            </div>
+        </div>
+        <div class="order">
+            <h2>订单列表</h2>
+            <ul>
+                <li class="title">
+                    <div class="li0"></div>
+                    <div class="li1">商品图片</div>
+                    <div class="li2">商品名称</div>
+                    <div class="li3">商品价格</div>
+                    <div class="li4">数量</div>
+                    <div class="li5">优惠</div>
+                    <div class="li6">小计</div>
+                </li>
+                @{
+                    decimal postPayment = 0;
+                    if (order.Packets.Count > 0)
+                    {
+                        int Count = 0;
+                        decimal Amount = 0;
+                        foreach (var item in order.Packets)
+                        {
+                            Count += item.Count;
+                            Amount += item.PayAmount;
+                            postPayment += (decimal)0.01 * item.PayAmount;
+                            Product product = item.Product;
+                            <li class="item">
+                                <div class="li0"></div>
+                                <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
+                                <div class="li2">@(product.Title)</div>
+                                <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
+                                <div class="li4">@(item.Count)</div>
+                                <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
+                                <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
+                            </li>
+                        }
+                        <li class="footer">
+                            <div class="li51"></div>
+                            <div class="li21">
+                                <label>
+                                    共计<label class="count">@(Count)</label>件商品，合计金额：
+                                </label>
+                            </div>
+                            <div class="li31">
+                                <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
+                                <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
+                                <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                                <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="p1">订单为空</li>
+                    }
+                }
+                <div class="pullupDiv"></div>
+            </ul>
+        </div>
+        <div class="addresses">
+            <h2>收货地址</h2>
+            <div data="@(Model.Client.DefaultAddress.AddID)" class="addressItem sel">
+                <div class="name">
+                    @(Model.Client.UserName)收
+                </div>
+                <div class="addressStr">
+                    @(Model.Client.DefaultAddress.AddressName)
+                </div>
+                <div class="tip">
+                    收货地址
+                </div>
+            </div>
+        </div>
+        <div class="postType">
+            <h2>邮寄方式</h2>
+            @if (order.SendType == (int)Order.ESendType.ST_Direct)
+            { 
+                <div class="item sel">
+                    <div class="title">
+                        直邮
+                    </div>
+                    <div class="price">
+                        加收总价的百分之一费用即：@(PubFunction.CHPriceFormat(postPayment))
+                    </div>
+                    <div>
+                        从美国直接邮寄至客户手中
+                    </div>
+                    <div class="tip">
+                        邮寄方式
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="item p2 sel">
+                    <div class="title">
+                        转邮
+                    </div>
+                    <div class="price">
+                        免邮费
+                    </div>
+                    <div>
+                        从美国邮寄至RightGo手中，再通过国内快递邮寄至客户手中
+                    </div>
+                    <div class="tip">
+                        邮寄方式
+                    </div>
+                </div>
+            }
+            <div class="pullupDiv"></div>
+        </div>
+        <div class="payType">
+            <h2>支付方式</h2>
+            <div>
+                <div class="item">
+                    <label><input name="payType" type="radio" checked="checked" />支付宝支付</label>
+                </div>
+                <div class="item">
+                    <label><input name="payType" type="radio" />网银在线支付</label>
+                </div>
+            </div>
+            <div class="pullupDiv"></div>
+        </div>
+        <div class="btnDiv">
+            @{
+                bool tag = order.Packets.Count > 0;
+                <div class="p3">
+                </div>
+                <div class="p3">
+                    <a href="/Order/Cart"><div class="btn3">修改订单</div></a>
+                </div>
+                <div class="p3">
+                    <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")">确认订单</div>
+                </div>
+            }
+        </div>
+    </form>
+}

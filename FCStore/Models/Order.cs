@@ -25,8 +25,8 @@ namespace FCStore.Models
 
         public enum ESendType
         {
-            ST_Direct,          //直邮
-            ST_Indirect         //转邮
+            ST_Direct = 0,          //直邮
+            ST_Indirect = 1         //转邮
         }
 
         public enum EPayType

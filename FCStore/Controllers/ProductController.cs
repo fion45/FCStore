@@ -369,7 +369,7 @@ namespace FCStore.Controllers
                 order.Status = (int)Order.EOrderStatus.OS_Init;
                 order.SendType = (int)Order.ESendType.ST_Direct;
                 order.PayType = (int)Order.EPayType.PT_Alipay;
-                order.OrderDate = null;
+                order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 order.CompleteDate = null;
                 order.Packets.Add(packet);
                 if (HttpContext.User.Identity.IsAuthenticated)
@@ -380,7 +380,6 @@ namespace FCStore.Controllers
                     {
                         //登陆用户
                         order.UID = tmpUser.UID;
-                        order.OrderDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                     }
                 }
                 //添加到数据库

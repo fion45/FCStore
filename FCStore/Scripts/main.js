@@ -823,6 +823,7 @@ var CartPage = {
 	onSubmitBtnClick : function() {
 		var obj = {
 			OrderID : $("#CartDiv").attr("data"),
+			SendType : $("#CartDiv .postType .sel").attr("data"),
 			Packets : []
 		};
 		$.each($("#CartDiv .order .item"),function(i,n){
@@ -833,23 +834,26 @@ var CartPage = {
 			}
 			obj.Packets.push(packet);
 		});
-		//提交订单
-		$.post("/Order/SubmitOrder/", obj,function() {
-		    alert("提交成功");
+		
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#CartDiv"),
+            url: "/Order/SubmitOrder/",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+    		traditional: true,
+            success: function (data,status,options) {
+            	if(data.content == "OK") {
+            		//下一页
+            		$("#CartDiv")[0].submit();
+            	}
+            	else {
+            		alert("Error");
+            	}
+            }
 		});
-//		$.myAjax({
-//        	historyTag : false,
-//        	loadEle : $("#CartDiv"),
-//            url: "/Order/SubmitOrder/",
-//            data: JSON.stringify(obj),
-//            dataType: "json",
-//            type: "POST",
-//            contentType: "application/json;charset=utf-8",
-//    		traditional: true,
-//            success: function (data,status,options) {
-//            	
-//            }
-//		});
 	},
 	Calculate : function() {
 		var itemArr = $("#CartDiv .order .item");

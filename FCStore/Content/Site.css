@@ -1540,27 +1540,27 @@ textarea {
     }
 
 
-/* Ensure Cart 
+/* Ensure Cart,Ensure Order
 ----------------------------------------------------------*/
-#CartDiv {
+#CartDiv,#SubmitDiv {
     width:100%;
     height:auto;
 }
 
-    #CartDiv h2
+    #CartDiv h2,#SubmitDiv h2
     {
         text-align:left;
         margin-bottom:5px;
     }
 
-    #CartDiv .flowDiv {
+    #CartDiv .flowDiv,#SubmitDiv .flowDiv {
         width:98%;
         line-height:22px;
         vertical-align:middle;
         margin-bottom:8px;
     }
 
-        #CartDiv .flowDiv .line {
+        #CartDiv .flowDiv .line,#SubmitDiv .flowDiv .line {
             width:100%;
             float:left;
             border-top:solid 2px #FFAA00;
@@ -1569,45 +1569,43 @@ textarea {
             margin:5px 0px;
         }
 
-        #CartDiv .flowDiv .item {
+        #CartDiv .flowDiv .item,#SubmitDiv .flowDiv .item {
             width:25%;
             float:left;
             text-align: right;
         }
 
-            #CartDiv .flowDiv .item .point {
+            #CartDiv .flowDiv .item .point,#SubmitDiv .flowDiv .item .point {
                 width:20px;
                 height:20px;
                 margin:0px 0px 0px 95%;
                 background:url("/Content/themes/image/main.png") no-repeat -238px -175px;
             }
 
-            #CartDiv .flowDiv .sel .line {
+            #CartDiv .flowDiv .sel .line,#SubmitDiv .flowDiv .sel .line {
                 background-color:#FFAA00;
             }
 
-            #CartDiv .flowDiv .sel .point {
+            #CartDiv .flowDiv .sel .point,#SubmitDiv .flowDiv .sel .point {
                 background:url("/Content/themes/image/main.png") no-repeat -261px -175px;
 
             }
 
-            #CartDiv .flowDiv .item .title {
+            #CartDiv .flowDiv .item .title,#SubmitDiv .flowDiv .item .title {
                 color:#777777;
                 font-size:9pt;
                 width:100%;
             }
 
-            #CartDiv .flowDiv .sel .title {
+            #CartDiv .flowDiv .sel .title,#SubmitDiv .flowDiv .sel .title {
                 color:#FFAA00;
             }
 
-    #CartDiv .order ul
-    {
+    #CartDiv .order ul,#SubmitDiv .order ul {
         border:solid 1px #cccccc;
     }
 
-    #CartDiv .order li
-    {
+    #CartDiv .order li,#SubmitDiv .order li {
         float:left;
         height:70px;
         line-height:70px;
@@ -1615,18 +1613,17 @@ textarea {
         border-bottom:dashed 1px #cccccc;
     }
 
-    #CartDiv .order .item {
+    #CartDiv .order .item,#SubmitDiv .order .item {
         width:100%;
         padding:3px 0px;
     }
     
-    #CartDiv .order .item div {
+    #CartDiv .order .item div,#SubmitDiv .order .item div {
         height:70px;
         float:left;
     }
 
-    #CartDiv .order .title
-    {
+    #CartDiv .order .title,#SubmitDiv .order .title {
         border-bottom:solid 1px #cccccc;
         height:25px;
         line-height:25px;
@@ -1636,67 +1633,69 @@ textarea {
         width:100%;
     }
 
-        #CartDiv .order .title div {
+        #CartDiv .order .title div,#SubmitDiv .order .title div {
             float:left;
         }
 
-        #CartDiv .order .title .li0 {
+        #CartDiv .order .title .li0,#SubmitDiv .order .title .li0 {
             height:25px;
             line-height:25px;
         }
 
-    #CartDiv .order .footer {
-        
+    #SubmitDiv .order .footer
+    {
+        width:100%;
     }
 
-    #CartDiv .order .footer div {
+    #CartDiv .order .footer div,#SubmitDiv .order .footer div {
         float:left;
     }
 
-    #CartDiv .order .li0
-    {
+    #CartDiv .order .li0 {
         text-align:left;
         clear:left;
         width:5%;
         padding-left:3%;
     }
 
-    #CartDiv .order .li1
-    {
+    #SubmitDiv .order .li0 {
+        text-align:left;
+        clear:left;
+        width:5%;
+        padding-left:3%;
+        height:70px;
+        line-height:70px;
+    }
+
+    #CartDiv .order .li1,#SubmitDiv .order .li1 {
         width:17%;
     }
 
-        #CartDiv .order .li1 img
-        {
+        #CartDiv .order .li1 img,#SubmitDiv .order .li1 img {
             width:70px;
             height:70px;
         }
 
-body .li1
-{
+body .li1 {
     width:17%;
 }
 
-    body .li1 img
-    {
+    body .li1 img {
         width:70px;
         height:70px;
     }
 
-    #CartDiv .order .li2
-    {
+    #CartDiv .order .li2,#SubmitDiv .order .li2 {
         width:31%;
         line-height:22px;
         text-align:left;
     }
 
-    #CartDiv .order .li3
-    {
+    #CartDiv .order .li3,#SubmitDiv .order .li3 {
         width:10%;
     }
 
-    #CartDiv .order .li4
-    {
+    #CartDiv .order .li4,#SubmitDiv .order .li4 {
         width:13%;
         text-align:center;
     }
@@ -1739,18 +1738,15 @@ body .li1
             background-position-x:-90px;
         }
 
-    #CartDiv .order .li5
-    {
+    #CartDiv .order .li5,#SubmitDiv .order .li5 {
         width:7%;
     }
 
-    #CartDiv .order .li6
-    {
+    #CartDiv .order .li6,#SubmitDiv .order .li6 {
         width:10%;
     }
 
-    #CartDiv .order .p1
-    {
+    #CartDiv .order .p1,#SubmitDiv .order .p1 {
         width:100%;
         height:200px;
         line-height:200px;
@@ -1758,76 +1754,70 @@ body .li1
         text-align:center;
     }
 
-    #CartDiv .order .li11
-    {
+    #CartDiv .order .li11 {
         width:26%;
     }
 
-        #CartDiv .order .li11 a
-        {
+        #CartDiv .order .li11 a {
             margin-left:15px;
         }
 
-    #CartDiv .order .li41
-    {
+    #CartDiv .order .li41 {
         width:18%;
     }
 
-    #CartDiv .order .li41 div
-    {
+    #CartDiv .order .li41 div {
         line-height:30px;
         text-align:left;
     }
 
-    #CartDiv .order .li21
-    {
+    #SubmitDiv .order .li51 {
+        width:52%;
+        height:22px;
+        line-height:22px;
+    }
+
+    #CartDiv .order .li21,#SubmitDiv .order .li21 {
         width:25%;
         text-align:right;
     }
 
-    #CartDiv .order .li31
-    {
+    #CartDiv .order .li31,#SubmitDiv .order .li31 {
         width:20%;
         text-align:right;
     }
 
-        #CartDiv .order .li21 .count
-        {
+        #CartDiv .order .li21 .count,#SubmitDiv .order .li21 .count {
             color:#cc0000;
             font-size:120%;
             font-weight:bold;
             margin:0px 5px;
         }
 
-        #CartDiv .order .li31 div
-        {
+        #CartDiv .order .li31 div,#SubmitDiv .order .li31 div {
             float:left;
             height:18px;
             line-height:18px;
             text-align:right;
         }
 
-        #CartDiv .order .li31 .price
-        {
+        #CartDiv .order .li31 .price,#SubmitDiv .order .li31 .price {
             width:94%;
             padding-right:4%;
         }
 
-        #CartDiv .order .li31 .add
-        {
+        #CartDiv .order .li31 .add,#SubmitDiv .order .li31 .add {
             text-align:right;
             width:20%;
         }
 
-        #CartDiv .order .li31 .postPrice
-        {
+        #CartDiv .order .li31 .postPrice,#SubmitDiv .order .li31 .postPrice {
             width:74%;
             padding-right:4%;
             border-bottom:solid 1px #cccccc;
         }
 
-        #CartDiv .order .li31 .amount
-        {
+        #CartDiv .order .li31 .amount,#SubmitDiv .order .li31 .amount {
             width:94%;
             padding-right:4%;
             height:20px;
@@ -1837,20 +1827,17 @@ body .li1
             font-weight:bold;
         }
 
-    #CartDiv .addresses
-    {
+    #CartDiv .addresses {
         margin-top:10px;
     }
 
-    #CartDiv .addresses .addAddr
-    {
+    #CartDiv .addresses .addAddr {
         font-size:10pt;
         margin-left:20px;
         font-weight:normal;
     }
 
-        #CartDiv .addresses .scrollDiv
-        {
+        #CartDiv .addresses .scrollDiv {
             width:100%;
             height:100%;
             overflow-x:scroll;
@@ -1858,8 +1845,7 @@ body .li1
             border:solid 1px #cccccc;
         }
 
-        #CartDiv .addresses .scrollDiv .content
-        {
+        #CartDiv .addresses .scrollDiv .content {
             height:120px;
         }
 
@@ -1877,7 +1863,11 @@ body .li1
     background-color:white;
 }
 
-    #CartDiv .addresses .sel {
+    #SubmitDiv .addressItem {
+        width: 395px;
+    }
+
+    #CartDiv .addresses .sel,#SubmitDiv .addresses .sel {
         border:solid 1px #FFAA00;
     }
 
@@ -1896,7 +1886,11 @@ body .li1
         top:100px;
     }
 
-        #CartDiv .addresses .sel .tip {
+#SubmitDiv .addressItem .tip {
+    width:417px;
+}
+
+        #CartDiv .addresses .sel .tip,#SubmitDiv .addresses .sel .tip {
             display:block;
             background-color:#FFAA00;
             color:white;
@@ -1904,22 +1898,34 @@ body .li1
             text-align:center;
         }
 
+    #SubmitDiv .addresses {
+        float:left;
+        margin-top:10px;
+        width:50%;
+    }
+
+    #SubmitDiv .postType {
+        float:left;
+        margin-top:10px;
+        width:50%;
+    }
+    
     #CartDiv .postType {
         margin-top:10px;
     }
-        #CartDiv .postType .content {
+        #CartDiv .postType .content,#SubmitDiv .postType .content {
             border:solid 1px #cccccc;
         }
 
-            #CartDiv .postType .content .item {
+            #CartDiv .postType .content .item,#SubmitDiv .postType .item {
                 border: solid 1px #FFFFFF;
             }
 
-            #CartDiv .postType .content .sel {
+            #CartDiv .postType .content .sel,#SubmitDiv .postType .sel {
                 border:solid 1px #FFAA00;
             }
 
-            #CartDiv .postType .content .p2 {
+            #CartDiv .postType .content .item,#SubmitDiv .postType .item {
                 margin:8px;
                 padding:10px;
                 float:left;
@@ -1929,22 +1935,22 @@ body .li1
                 cursor:pointer;
             }
 
-            #CartDiv .postType .content .p2 div {
+            #CartDiv .postType .content .item div,#SubmitDiv .postType .item div {
                 width:100%;
                 float:left;
                 text-align:left;
             }
 
-            #CartDiv .postType .content .p2 .title {
+            #CartDiv .postType .content .item .title,#SubmitDiv .postType .item .title {
                 font-weight:bold;
                 margin-bottom:10px;
             }
 
-            #CartDiv .postType .content .p2 .price {
+            #CartDiv .postType .content .item .price,#SubmitDiv .postType .item .price {
                 margin-bottom:3px;
             }
 
-            #CartDiv .postType .content .p2 .tip {
+            #CartDiv .postType .content .item .tip,#SubmitDiv .postType .item .tip {
                 position:absolute;
                 display:none;
                 height:20px;
@@ -1954,7 +1960,7 @@ body .li1
                 top:100px;
             }
 
-            #CartDiv .postType .content .sel .tip {
+            #CartDiv .postType .content .sel .tip,#SubmitDiv .postType .sel .tip {
                 display:block;
                 background-color:#FFAA00;
                 color:white;
@@ -1962,19 +1968,35 @@ body .li1
                 text-align:center;
             }
             
-    #CartDiv .btnDiv {
+    #CartDiv .btnDiv,#SubmitDiv .btnDiv {
         margin-top:10px;
         width:100%;
+        float:left;
     }
             
-    #CartDiv .btnDiv .p3 {
+    #CartDiv .btnDiv .p3,#SubmitDiv .btnDiv .p3 {
         float:left;
         text-align:center;
     }
+
+    #SubmitDiv .btnDiv .p3 {
+        height:51px;
+    }
             
-        #CartDiv .btnDiv .p3 div {
+        #CartDiv .btnDiv .p3 div,#SubmitDiv .btnDiv .p3 div {
             margin:0px auto;
         }
+
+#SubmitDiv .payType {
+        float:left;
+        margin-top:10px;
+        width:100%;
+}
+
+#SubmitDiv .payType .item {
+    width:100%;
+    text-align:left;
+}
 
 #addAddressDlg {
     display:none;

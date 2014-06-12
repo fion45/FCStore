@@ -6,7 +6,7 @@
     ViewBag.Title = "Cart";
 }
 
-<div id="CartDiv" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
+<form id="CartDiv" method="post" action= "@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit/" + Model.OrderArr.First().OID : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
     <div id="categoryNav">
         <div>当前位置：</div>
         <div><a href="/">首页</a></div>
@@ -160,7 +160,7 @@
     <div class="postType">
         <h2>邮寄方式</h2>
         <div class="content">
-            <div class="item p2 sel" data="1">
+            <div class="item p2 sel" data="0">
                 <div class="title">
                     直邮
                 </div>
@@ -174,7 +174,7 @@
                     邮寄方式
                 </div>
             </div>
-            <div class="item p2" data="2">
+            <div class="item p2" data="1">
                 <div class="title">
                     转邮
                 </div>
@@ -198,10 +198,10 @@
                 <div class="btn3" onclick="CartPage.onGOONBtnClick()">继续购物</div>
             </div>
             <div class="p3">
-                <div class="btn3 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onCancelBtnClick()" : "")" >撤销订单</div>
+                <div class="btn3 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onCancelBtnClick()" : "")">撤销订单</div>
             </div>
             <div class="p3">
-                <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")" >提交订单</div>
+                <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")">提交订单</div>
             </div>
         }
     </div>
@@ -264,4 +264,4 @@
             </div>
         </div>
     </div>
-</div>
+</form>

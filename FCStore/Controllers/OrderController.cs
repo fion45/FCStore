@@ -28,6 +28,7 @@ namespace FCStore.Controllers
                 tmpVM.OrderArr = new List<Order>();
                 bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
                 HttpCookie cookie = null;
+                int OrderID = -1;
                 if(hasCookie)
                 {
                     cookie = Request.Cookies["Order"];
@@ -37,7 +38,7 @@ namespace FCStore.Controllers
                     if (!string.IsNullOrEmpty(tmpMatch.Value))
                     {
                         Group gi = tmpMatch.Groups["ORDERID"];
-                        int OrderID = int.Parse(gi.Value);
+                        OrderID = int.Parse(gi.Value);
                         Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
                         if (order != null)
                         {
@@ -47,7 +48,7 @@ namespace FCStore.Controllers
                         }
                     }
                 }
-                List<Order> tmpOArr = db.Orders.Where(r => (r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).ToList();
+                List<Order> tmpOArr = db.Orders.Where(r => (r.OID != OrderID && r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).OrderByDescending(r => r.OrderDate).ToList();
                 tmpVM.OrderArr.AddRange(tmpOArr);
             }
             return View(tmpVM);
@@ -62,12 +63,45 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult Submit()
+        public ActionResult Submit(int id)
         {
 
-            return View();
+            OrderVM tmpVM = new OrderVM();
+            //设置订单为其用户的订单
+            MyUser user = HttpContext.User as MyUser;
+            if (HttpContext.User.Identity.IsAuthenticated && user != null)
+            {
+                tmpVM.Client = db.Users.FirstOrDefault(r => r.UID == user.UID);
+                tmpVM.OrderArr = new List<Order>();
+                bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+                HttpCookie cookie = null;
+                int OrderID = -1;
+                if (hasCookie)
+                {
+                    cookie = Request.Cookies["Order"];
+                    string tmpStr = Server.UrlDecode(cookie.Value);
+                    Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                    Match tmpMatch = cookieRgx.Match(tmpStr);
+                    if (!string.IsNullOrEmpty(tmpMatch.Value))
+                    {
+                        Group gi = tmpMatch.Groups["ORDERID"];
+                        OrderID = int.Parse(gi.Value);
+                        Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                        if (order != null)
+                        {
+                            order.UID = user.UID;
+                            db.SaveChanges();
+                            tmpVM.OrderArr.Add(order);
+                        }
+                    }
+                }
+                List<Order> tmpOArr = db.Orders.Where(r => (r.OID != OrderID && r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).OrderByDescending(r => r.OrderDate).ToList();
+                tmpVM.OrderArr.AddRange(tmpOArr);
+            }
+            return View(tmpVM);
         }
 
+        [MyAuthorizeAttribute]
         public ActionResult DeletePacket(string id)
         {
             string[] tmpIDArr = id.Split(new char[] { ',' });
@@ -143,12 +177,37 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult SubmitOrder(SubmitObj order)
+        public ActionResult SubmitOrder(int OrderID,int SendType,PacketObj[] packets)
         {
-
+            string tmpResult = "OK";
+            try
+            {
+                //提交订单
+                MyUser tmpUser = HttpContext.User as MyUser;
+                if (tmpUser != null)
+                {
+                    Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID && r.UID == tmpUser.UID);
+                    if(order != null)
+                    {
+                        order.SendType = SendType;
+                        foreach(OrderPacket packet in order.Packets)
+                        {
+                            PacketObj tmpPacket = packets.FirstOrDefault(r => r.PacketID == packet.PacketID);
+                            if(tmpPacket == null)
+                                throw new Exception("Order Packet is different!");
+                            packet.Count = tmpPacket.Count;
+                        }
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+                tmpResult = "Err";
+            }
             if (Request.IsAjaxRequest())
             {
-                string jsonStr = PubFunction.BuildResult("OK");
+                string jsonStr = PubFunction.BuildResult(tmpResult);
                 return Content(jsonStr);
             }
             else

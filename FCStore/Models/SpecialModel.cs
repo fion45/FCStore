@@ -2,31 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace FCStore.Models
 {
-    [Serializable]
-    public class SubmitObj
+    public class PacketObj
     {
-        [Serializable]
-        public class PacketObj
-        {
-            public int PacketID;
-            public int Count;
-        }
-        public int OrderID
+        public int PacketID
         {
             get;
             set;
         }
-
-        public PacketObj[] Packets
+        public int Count
         {
             get;
             set;
         }
     }
-
 
     [Serializable]
     public class ProductListVM
