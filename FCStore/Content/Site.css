@@ -373,6 +373,7 @@ textarea {
 #userArea {
     float:right;
     margin-right:20px;
+    vertical-align:middle;
 }
 
     #userArea .title {
@@ -383,13 +384,27 @@ textarea {
             margin:0px 3px;
         }
 
-    #userArea a {
-        color:#cccccc;
+    #qqLoginBtn {
+        margin-top:4px;
+        float:left;
     }
 
-        #userArea a:hover {
-            color: #cc0000;
-        }
+    #userArea .VADiv {
+        height:16px;
+        line-height:16px;
+        margin-top:8px;
+        margin-left:5px;
+        vertical-align:middle;
+        float:left;
+    }
+
+    #userArea .VADiv a {
+        color:#ffffff;
+    }
+
+    #userArea .VADiv a:hover {
+        color: #cc0000;
+    }
 
 /* Category List
 ----------------------------------------------------------*/
