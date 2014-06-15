@@ -111,6 +111,22 @@
     });
     
     $("#favoriteTB .checkAll:first").checkAll("#favoriteTB .checkItem");
+
+    $("#Brands img").lazyload({
+        placeholder: "/Content/themes/image/BrandBlank.jpg",
+        event: "sporty"
+    });
+
+    $("#Center .productFI").lazyload({
+        placeholder: "/Content/themes/image/ColumBlank.jpg"
+    });
+
+    setTimeout(function () {
+        $("#Brands img:lt(" + (MainLayout.BCPerPage + MainLayout.HRBC) + ")").trigger("sporty");
+        MainLayout.HRBC += MainLayout.BCPerPage;
+    }, 200);
+
+    MainLayout.StartBrandMove();
 });
 
 var MainLayout = {
@@ -200,6 +216,79 @@ var MainLayout = {
             }
 		});
 		return false;
+	},
+	BrandListHeight: $("#Brands .content").height(),
+	ExtentTag: false,
+	MarginTop: 0,
+	BCPerPage: Math.floor($(document.body).width() / 121),
+	HRBC: Math.floor($(document.body).width() / 121),
+    BInterval : null,
+	onExtentClick : function(obj) {
+	    if (MainLayout.ExtentTag) {
+	        MainLayout.ShrinkBrandList(obj);
+	    }
+	    else {
+	        MainLayout.ExtendBrandList(obj);
+	    }
+
+	},
+	StartBrandMove: function () {
+	    MainLayout.MarginTop = 0;
+	    $("#Brands .content").css({
+	        marginTop: MainLayout.MarginTop
+	    });
+	    MainLayout.HRBC = MainLayout.BCPerPage * 2;
+	    MainLayout.BInterval = setInterval(function () {
+	        MainLayout.MarginTop -= 60;
+	        $("#Brands .content").animate({
+	            marginTop: MainLayout.MarginTop
+	        }, "fast", "linear");
+	        $("#Brands img:lt(" + (MainLayout.BCPerPage + MainLayout.HRBC) + ")").trigger("sporty");
+	        MainLayout.HRBC += MainLayout.BCPerPage;
+	        if ((MainLayout.MarginTop - 60) * -1 >= MainLayout.BrandListHeight) {
+	            MainLayout.HRBC = MainLayout.BCPerPage;
+	            MainLayout.MarginTop = 60;
+	        }
+	    }, 4000);
+	},
+	StopBrandMove : function() {
+	    clearInterval(MainLayout.BInterval);
+	    $("#Brands .content").css({
+	        marginTop: 0
+	    });
+	},
+    ShrinkBrandList: function (obj) {
+        var target = $(obj);
+	    var contentDiv = $("#Brands .content");
+	    contentDiv.animate({
+	        height: 58
+	    }, "slow", "linear", function () {
+	        contentDiv.height(MainLayout.BrandListHeight);
+	        $("#Brands").css({
+	            overflow: "hidden",
+	        });
+	        MainLayout.ExtentTag = false;
+	        target.toggleClass("downBtn");
+	    });
+	    MainLayout.StartBrandMove();
+	},
+    ExtendBrandList: function (obj) {
+        MainLayout.StopBrandMove();
+	    var contentDiv = $("#Brands .content");
+	    var target = $(obj);
+	    $("#Brands img").trigger("sporty");
+	    contentDiv.css({
+	        height: 58
+	    });
+	    $("#Brands").css({
+	        overflow: "visible",
+	    });
+	    contentDiv.animate({
+	        height: MainLayout.BrandListHeight
+	    }, "slow", "linear", function () {
+	        MainLayout.ExtentTag = true;
+	        target.toggleClass("downBtn");
+	    });
 	}
 };
 

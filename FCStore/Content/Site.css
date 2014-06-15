@@ -337,23 +337,49 @@ textarea {
 /* Brand List
 ----------------------------------------------------------*/
 #Brands {
+    position:absolute;
+    top:0px;
+    left:0px;
+    float:none;
     width:100%;
     overflow:hidden;
     height:58px;
-    max-height:120px;
-    background:url("/Content/themes/image/topBK.png") repeat;
 }
-    #Brands li{
-        position:relative;
-        width:117px;
-        height:58px;
-        float:left;
-        margin-right:4px;
-        margin-bottom:2px;
+
+    #Brands .content {
+        background:url("/Content/themes/image/topBK.png") repeat;
+        height:auto;
+        overflow:hidden;
     }
+    
+        #Brands .content li {
+            position:relative;
+            width:117px;
+            height:58px;
+            float:left;
+            margin-right:4px;
+            margin-bottom:2px;
+        }
+
+    #Brands .btn {
+        top : 0px;
+        left: 100%;
+        margin-left:-44px;
+        width : 44px;
+        height : 25px;
+        position : absolute;
+        cursor:pointer;
+        background:url("/Content/themes/image/main.png") no-repeat -335px -175px;
+    }
+
+    #Brands .downBtn {
+        background:url("/Content/themes/image/main.png") no-repeat -286px -175px;
+    }
+
 /* Toolbar
 ----------------------------------------------------------*/
 #Toolbar {
+    margin-top:58px;
     width:100%;
     height:30px;
     background-color:#50A6BD;
@@ -564,6 +590,7 @@ textarea {
         margin-left:5px;
         background-color:white;
         overflow:hidden;
+        z-index:auto;
     }
 
     #plInFavorit .MoveItem label{
@@ -604,7 +631,6 @@ textarea {
     height:145px;
     margin: -155px 0px 0px -160px;
     background:url("/Content/themes/image/shoppingCart.png") no-repeat center;
-
 }
 
 #plInCar {
@@ -629,6 +655,7 @@ textarea {
         position:relative;
         margin-bottom:5px;
         background-color:white;
+        z-index:auto;
     }
 
     #plInCar .MoveItem label {

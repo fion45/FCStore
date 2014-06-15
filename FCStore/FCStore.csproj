@@ -231,7 +231,9 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\image\alipay.jpg" />
+    <Content Include="Content\themes\image\BrandBlank.jpg" />
     <Content Include="Content\themes\image\chinabank.jpg" />
+    <Content Include="Content\themes\image\ColumBlank.jpg" />
     <Content Include="Content\themes\image\favorite.png" />
     <Content Include="Content\themes\image\loading.gif" />
     <Content Include="Content\themes\image\LoginTop.png" />
@@ -242,6 +244,7 @@
     <Content Include="Content\themes\image\topBK.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\qc_loader.js" />
     <Content Include="zone.xml" />
     <None Include="Properties\PublishProfiles\rightgo.pubxml" />

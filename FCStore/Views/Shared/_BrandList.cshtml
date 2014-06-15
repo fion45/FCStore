@@ -1,14 +1,33 @@
 ﻿@model IEnumerable<FCStore.Models.Brand>
-@foreach (var item in Model)
-{
-    <li class="bItem">
-        <a class="brandA" href="/Product/ListByBrand/@(item.BID)">
-            <div class="name">
-                @Html.DisplayFor(modelItem => item.NameStr)
-            </div>
-            <div class="icon">
-                <img src="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
-            </div>
-        </a>
-    </li>
-}
+
+
+<div id="Brands">
+    <div class="content">
+        <ul>
+            <li class="FCIcon">
+                <div class="icon">
+                    <img src="/Brand/BrandBlank.jpg" data-original="/Brand/FC.jpg" alt="FC Icon" />
+                </div>
+                <div class="name cut">
+                    FC Store
+                </div>
+            </li>
+            @foreach (var item in Model)
+            {
+                <li class="bItem">
+                    <a class="brandA" href="/Product/ListByBrand/@(item.BID)">
+                        <div class="name">
+                            @Html.DisplayFor(modelItem => item.NameStr)
+                        </div>
+                        <div class="icon">
+                            <img src="/Content/themes/image/BrandBlank.jpg" data-original="/Brand/@(item.Tag).jpg" alt="@(item.Name2)" />
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+        <div class="pullupDiv"></div>
+    </div>
+    <div class="btn downBtn" onclick="MainLayout.onExtentClick(this)">
+    </div>
+</div>

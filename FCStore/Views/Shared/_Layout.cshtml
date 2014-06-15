@@ -16,20 +16,6 @@
 </head>
 <body>
     <header>
-        <div id="Brands">
-            <ul>
-                <li class="FCIcon">
-                    <div class="icon">
-                        <img src="/Brand/FC.jpg" alt="FC Icon" />
-                    </div>
-                    <div class="name cut">
-                        FC Store
-                    </div>
-                </li>
-                @{Html.RenderAction("_BrandList", "Brand");}
-            </ul>
-            <div class="pullupDiv"></div>
-        </div>
         <div id="Toolbar">
             <label class="title">搜索：</label>
             <input type="text" />
@@ -53,6 +39,7 @@
                             免费注册
                         </a>
                     }
+                </div>
             </div>
         </div>
     </header>
@@ -175,10 +162,13 @@
             <a class="balance" href="/Order/Cart"></a>
         </div>
     </div>
+    @{Html.RenderAction("_BrandList", "Brand");}
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/main")
+    @Scripts.Render("~/bundles/jquerylazyload")
+    
     @RenderSection("scripts", required: false)
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="@(System.Configuration.ConfigurationManager.AppSettings["APPID"])" charset="utf-8"></script>
     <script type="text/javascript">

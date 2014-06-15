@@ -61,7 +61,7 @@
             <div class="item">足不出户，轻松购遍美国</div>
             <div class="otherLogin">
                 <div class="tFont">使用其他账号登录FCStore购物网：</div>
-                <div class="p2">QQ登陆</div>
+                <span id="qqLoginBtn"></span>
                 <div class="p2">新浪微博</div>
                 <div class="p2">人人网</div>
                 <div class="p2">豆瓣登陆</div>
@@ -89,5 +89,11 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/login")
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="@(System.Configuration.ConfigurationManager.AppSettings["APPID"])" charset="utf-8"></script>
+    <script type="text/javascript">
+        QC.Login({
+            btnId: "qqLoginBtn"	//插入按钮的节点id
+        });
+    </script>
 </body>
 </html>
