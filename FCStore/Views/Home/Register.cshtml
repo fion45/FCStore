@@ -18,27 +18,27 @@
             <div class="inputDiv">
                 <div class="title">用户名：</div>
                 <div class="value">
-                    <input name="UserNameTB" id="UserNameTB" type="text" class="required maxlength:10" />
-                </div>
+                    <input name="UserNameTB" id="UserNameTB" type="text" class="required" />
+                </div>  
                 <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">登陆时使用，少于10位字母或数字</div>
 
                 <div class="title">邮箱：</div>
                 <div class="value">
-                    <input id="EmailTB" type="text" class="required email" />
+                    <input name="EmailTB" id="EmailTB" type="text" class="email" />
                 </div>
-                <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">真实的邮箱地址，登陆时也可使用</div>
+                <div class="tip" data-valmsg-for="EmailTB" data-valmsg-replace="true">真实的邮箱地址，登陆时也可使用</div>
 
                 <div class="title">设置密码：</div>
                 <div class="value">
-                    <input id="PSWTB" type="password" class="required maxlength:16 minlength:6" />
+                    <input name="PSWTB" id="PSWTB" type="password" class="required" />
                 </div>
-                <div class="tip">密码为6-16位字母或数字</div>
+                <div class="tip" data-valmsg-for="PSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
 
                 <div class="title">确认密码：</div>
                 <div class="value">
-                    <input id="EPSWTB" type="password" class="equalTo:'#PSWTB'" />
+                    <input name="EPSWTB" id="EPSWTB" type="password" class="equalTo:'#PSWTB'" />
                 </div>
-                <div class="tip">密码为6-16位字母或数字</div>
+                <div class="tip" data-valmsg-for="EPSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
 
                 <div class="title">验证码：</div>
                 <div class="ccDiv1">
