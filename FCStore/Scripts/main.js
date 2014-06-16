@@ -265,7 +265,7 @@ var MainLayout = {
 	    }, "slow", "linear", function () {
 	        contentDiv.height(MainLayout.BrandListHeight);
 	        $("#Brands").css({
-	            overflow: "hidden",
+	            overflow: "hidden"
 	        });
 	        MainLayout.ExtentTag = false;
 	        target.toggleClass("downBtn");
@@ -281,7 +281,7 @@ var MainLayout = {
 	        height: 58
 	    });
 	    $("#Brands").css({
-	        overflow: "visible",
+	        overflow: "visible"
 	    });
 	    contentDiv.animate({
 	        height: MainLayout.BrandListHeight

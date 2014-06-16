@@ -8,7 +8,8 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width" />       <!--qq登陆接口认证-->
+    <meta property="wb:webmaster" content="a0b16827b5ccd126" /> <!--微博登陆接口认证-->
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/css")
@@ -21,6 +22,7 @@
             <input type="text" />
             <div id="userArea">
                 <span id="qqLoginBtn" ></span>
+                <span id="wb_connect_btn"></span>
                 <div class="VADiv">
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -170,10 +172,31 @@
     @Scripts.Render("~/bundles/jquerylazyload")
     
     @RenderSection("scripts", required: false)
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="@(System.Configuration.ConfigurationManager.AppSettings["APPID"])" charset="utf-8"></script>
+
+    <!--Other Login-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" 
+            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])" 
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])" 
+            type="text/javascript" charset="utf-8"></script>
+
     <script type="text/javascript">
         QC.Login({
             btnId: "qqLoginBtn"	//插入按钮的节点id
+        });
+        WB2.anyWhere(function (W) {
+            W.widget.connectButton({
+                id: "wb_connect_btn",
+                type: '3,2',
+                callback: {
+                    login: function (o) {
+                        alert(o.screen_name)
+                    },
+                    logout: function () {
+                        alert('logout');
+                    }
+                }
+            });
         });
     </script>
 

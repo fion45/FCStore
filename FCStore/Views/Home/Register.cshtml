@@ -12,33 +12,37 @@
 </head>
 <body>
     <div id="regCDiv">
-        <div id="register">
+        <form id="register">
             <div class="ltTitle">用户注册</div>
             <div class="gif">现在注册可立即获得<font color="#cc0000" size="4">100</font>积分</div>
             <div class="inputDiv">
                 <div class="title">用户名：</div>
                 <div class="value">
-                    <input id="UserNameTB" />
+                    <input name="UserNameTB" id="UserNameTB" type="text" class="required maxlength:10" />
                 </div>
-                <div class="tip">登陆时使用，少于10位字母或数字</div>
+                <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">登陆时使用，少于10位字母或数字</div>
+
                 <div class="title">邮箱：</div>
                 <div class="value">
-                    <input id="EmailTB" />
+                    <input id="EmailTB" type="text" class="required email" />
                 </div>
-                <div class="tip">真实的邮箱地址，登陆时也可使用</div>
+                <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">真实的邮箱地址，登陆时也可使用</div>
+
                 <div class="title">设置密码：</div>
                 <div class="value">
-                    <input id="PSWTB" type="password" />
+                    <input id="PSWTB" type="password" class="required maxlength:16 minlength:6" />
                 </div>
                 <div class="tip">密码为6-16位字母或数字</div>
+
                 <div class="title">确认密码：</div>
                 <div class="value">
-                    <input id="EPSWTB" type="password" />
+                    <input id="EPSWTB" type="password" class="equalTo:'#PSWTB'" />
                 </div>
                 <div class="tip">密码为6-16位字母或数字</div>
+
                 <div class="title">验证码：</div>
                 <div class="ccDiv1">
-                    <input id="CheckCodeTB" />
+                    <input id="CheckCodeTB" type="text" />
                 </div>
                 <div class="ccDiv2">
                     <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
@@ -46,12 +50,12 @@
                 </div>
                 <div class="btnDiv">
                     <div class="cDiv">
-                        <button onclick="LoginPageView.register.OnRegisterBtnClick()" class="registerBtn">同意一下协议，提交注册</button>
-                        <button onclick="LoginPageView.register.OnResetBtnClick()" class="resetBtn">重置</button>
+                        <button type="submit" class="registerBtn">同意以下协议，提交注册</button>
+                        <button class="resetBtn">重置</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <div class="rightDiv">
             <div class="ltTitle">
                 RightGo网会员享受如下服务：
@@ -60,11 +64,9 @@
             <div class="item">第一时间获得美国商家打折信息</div>
             <div class="item">足不出户，轻松购遍美国</div>
             <div class="otherLogin">
-                <div class="tFont">使用其他账号登录FCStore购物网：</div>
+                <div class="tFont">使用其他账号登录RightGO网：</div>
                 <span id="qqLoginBtn"></span>
-                <div class="p2">新浪微博</div>
-                <div class="p2">人人网</div>
-                <div class="p2">豆瓣登陆</div>
+                <span id="wb_connect_btn"></span>
             </div>
         </div>
         <div class="agreement">
@@ -88,11 +90,43 @@
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/login")
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="@(System.Configuration.ConfigurationManager.AppSettings["APPID"])" charset="utf-8"></script>
+
+    <!--Other Login-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
+            type="text/javascript" charset="utf-8"></script>
+
     <script type="text/javascript">
         QC.Login({
             btnId: "qqLoginBtn"	//插入按钮的节点id
+        });
+        WB2.anyWhere(function (W) {
+            W.widget.connectButton({
+                id: "wb_connect_btn",
+                type: '3,2',
+                callback: {
+                    login: function (o) {
+                        alert(o.screen_name)
+                    },
+                    logout: function () {
+                        alert('logout');
+                    }
+                }
+            });
+        });
+        $(function () {
+            var tmpForm = $("#register");
+            var validator = tmpForm.validate();
+            validator.settings.submitHandler = function () {
+                LoginPageView.register.OnRegisterBtnClick();
+            }
+            tmpForm.find(".resetBtn").click(function (ev) {
+                validator.resetForm();
+            });
         });
     </script>
 </body>

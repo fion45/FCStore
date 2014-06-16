@@ -92,6 +92,9 @@
                         	alert("邮箱已被注册，请重新输入");
                         	$("#EmailTB").val("");
                         }
+                        else if(data.errCode == -4) {
+                        	alert("输入信息未完整");
+                        }
                         //刷新验证码
                 		LoginPageView.register.OnRefreshCCode();
                     }

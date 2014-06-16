@@ -175,6 +175,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CBPage\qc_callback.html" />
     <Content Include="Content\LoginPage.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -245,7 +246,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery.lazyload.js" />
-    <Content Include="Scripts\qc_loader.js" />
     <Content Include="zone.xml" />
     <None Include="Properties\PublishProfiles\rightgo.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

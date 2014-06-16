@@ -97,8 +97,9 @@ body {
             width:100%;
         }
         
-            #loginDiv .rightDiv .otherLogin div{
+            #loginDiv .rightDiv .otherLogin span{
                 float:left;
+                clear:left;
             }
 
     #loginDiv .ele div {
@@ -400,6 +401,12 @@ body {
             margin:20px 3% 0px 3%;
             width:94%;
         }
+
+#qqLoginBtn,#wb_connect_btn {
+    margin-top:3px;
+    float:left;
+    clear:left;
+}
 
     #regCDiv .agreement {
         float:left;

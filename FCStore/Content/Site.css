@@ -367,13 +367,14 @@ textarea {
         margin-left:-44px;
         width : 44px;
         height : 25px;
-        position : absolute;
         cursor:pointer;
         background:url("/Content/themes/image/main.png") no-repeat -335px -175px;
+        position : fixed;
     }
 
     #Brands .downBtn {
         background:url("/Content/themes/image/main.png") no-repeat -286px -175px;
+        position : absolute;
     }
 
 /* Toolbar
@@ -410,10 +411,16 @@ textarea {
             margin:0px 3px;
         }
 
-    #qqLoginBtn {
-        margin-top:4px;
-        float:left;
-    }
+#qqLoginBtn {
+    margin-top:4px;
+    float:left;
+}
+
+#wb_connect_btn {
+    margin-left:5px;
+    margin-top:-1px;
+    float:left;
+}
 
     #userArea .VADiv {
         height:16px;

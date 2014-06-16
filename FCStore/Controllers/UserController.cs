@@ -176,9 +176,17 @@ namespace FCStore.Controllers
 
         public ActionResult Register(string userName, string email, string psw, string checkCode)
         {
-            if (userName == null || email == null || psw == null || checkCode == null || Session["Validate_code"] == null)
+            if (!string.IsNullOrEmpty(userName) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(psw) || !string.IsNullOrEmpty(checkCode) || !string.IsNullOrEmpty(Session["Validate_code"].ToString()))
             {
-                return RedirectToAction("Register", "Home");
+                if (Request.IsAjaxRequest())
+                {
+                    string jsonStr = PubFunction.BuildResult("err", null, false, -4);
+                    return Content(jsonStr);
+                }
+                else
+                {
+                    return RedirectToAction("Register", "Home");
+                }
             }
             User user = null;
             if (checkCode != (Session["Validate_code"].ToString()))
