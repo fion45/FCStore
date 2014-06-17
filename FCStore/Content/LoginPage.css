@@ -17,6 +17,31 @@ body {
     width:50%;
 }
 
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
 #centerDiv {
     position:absolute;
     left:50%;
@@ -126,6 +151,10 @@ body {
             border:1px solid #dbdbdb;
             width:100%;
 
+        }
+
+        #loginDiv .ele .content .input-validation-error {
+            border:solid 1px #f00;
         }
 
     #loginDiv .ele .ccDiv1 {
@@ -301,10 +330,27 @@ body {
         }
 
             #register .inputDiv .value input {
+                float:left;
                 font-size:10pt;
-                width:250px;
+                width:230px;
                 height:18px;
                 margin:auto 1%
+            }
+
+            #register .inputDiv .value .icon {
+                float:left;
+                width:15px;
+                height:15px;
+                margin-left:3px;
+                color:#f00;
+            }
+
+            #register .inputDiv .value .icon-validation-error {
+                background:url("/Content/themes/image/main.png") no-repeat -42px -199px;
+            }
+
+            #register .inputDiv .value .icon-validation-valid {
+                background:url("/Content/themes/image/main.png") no-repeat -23px -199px;
             }
 
         #register .inputDiv .tip {
@@ -317,6 +363,22 @@ body {
             vertical-align:middle;
             margin-bottom:5px;
             padding-left:110px;
+        }
+
+        #register .inputDiv .field-validation-error {
+            color:#f00;
+        }
+
+        #register .inputDiv .field-validation-valid {
+            display:block;
+        }
+
+        #register .inputDiv .field-validation-error .icon {
+            width:15px;
+            height:15px;
+            margin-top:2px;
+            margin-right:8px;
+            background:url("/Content/themes/image/main.png") no-repeat -42px -199px;
         }
 
         #register .inputDiv .ccDiv1{

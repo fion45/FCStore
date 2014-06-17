@@ -39,5 +39,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public int Important
+        {
+            get;
+            set;
+        }
     }
 }

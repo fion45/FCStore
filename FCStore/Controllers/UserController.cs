@@ -176,7 +176,7 @@ namespace FCStore.Controllers
 
         public ActionResult Register(string userName, string email, string psw, string checkCode)
         {
-            if (!string.IsNullOrEmpty(userName) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(psw) || !string.IsNullOrEmpty(checkCode) || !string.IsNullOrEmpty(Session["Validate_code"].ToString()))
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(psw) || string.IsNullOrEmpty(checkCode) || string.IsNullOrEmpty(Session["Validate_code"].ToString()))
             {
                 if (Request.IsAjaxRequest())
                 {

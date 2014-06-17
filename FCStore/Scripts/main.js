@@ -127,6 +127,8 @@
     }, 200);
 
     MainLayout.StartBrandMove();
+    
+    $.myEditArea.init();
 });
 
 var MainLayout = {

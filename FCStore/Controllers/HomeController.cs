@@ -36,6 +36,10 @@ namespace FCStore.Controllers
                     }
                 }
             }
+            if (HttpContext.User.Identity.IsAuthenticated && HttpContext.User.IsInRole("admin"))
+            {
+                ViewBag.IsAdmin = true;
+            }
 
             return View(db.Columns.ToList());
         }

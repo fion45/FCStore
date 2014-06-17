@@ -14,30 +14,30 @@
     <div id="centerDiv">
         <div id="loginDiv" style="@(User.Identity.IsAuthenticated ? "display:none" : "")">
             <div class="ltTitle">用户登陆</div>
-            <form class="ele">
+            <form id="loginer" class="ele">
                 <div class="title">
                     <label>用户名：</label>
                 </div>
                 <div class="content">
-                    <input id="UIDTB" class="enterTB required" type="text" />
+                    <input id="UIDTB" name="UIDTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" />
                 </div>
                 <div class="title">
                     <label>密码：</label>
                 </div>
                 <div class="content">
-                    <input id="PSWTB" class="enterTB" type="password" />
+                    <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
                 </div>
                 <div class="title">
                     <label>验证码：</label>
                 </div>
                 <div class="content ccDiv1">
-                    <input id="checkCodeTB" class="enterTB" type="text" />
+                    <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
                 </div>
                 <div class="content ccDiv2">
                     <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
                 </div>
                 <div class="content">
-                    <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="button" value="登陆" />
+                    <input id="loginBtn" type="submit" value="登陆" />
                 </div>
             </form>
             <div class="rightDiv">
@@ -75,25 +75,34 @@
             type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript">
-        QC.Login({
-            btnId: "qqLoginBtn"	//插入按钮的节点id
-        });
-        WB2.anyWhere(function (W) {
-            W.widget.connectButton({
-                id: "wb_connect_btn",
-                type: '3,2',
-                callback: {
-                    login: function (o) {
-                        alert(o.screen_name)
-                    },
-                    logout: function () {
-                        alert('logout');
-                    }
+        $(function () {
+            //控件验证
+            var tmpForm = $("#loginer");
+            var validator = tmpForm.validate();
+            $.extend(validator.settings, {
+                submitHandler: function () {
+                    LoginPageView.register.OnLoginBtnClick();
                 }
+            });
+            QC.Login({
+                btnId: "qqLoginBtn"	//插入按钮的节点id
+            });
+            WB2.anyWhere(function (W) {
+                W.widget.connectButton({
+                    id: "wb_connect_btn",
+                    type: '3,2',
+                    callback: {
+                        login: function (o) {
+                            alert(o.screen_name)
+                        },
+                        logout: function () {
+                            alert('logout');
+                        }
+                    }
+                });
             });
         });
     </script>
-
     @if(User.Identity.IsAuthenticated)
     {
         <script type="text/javascript">

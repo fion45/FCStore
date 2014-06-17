@@ -26,5 +26,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public virtual List<Brand> Brands
+        {
+            get;
+            set;
+        }
     }
 }

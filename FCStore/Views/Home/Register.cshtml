@@ -18,31 +18,35 @@
             <div class="inputDiv">
                 <div class="title">用户名：</div>
                 <div class="value">
-                    <input name="UserNameTB" id="UserNameTB" type="text" class="required" />
+                    <input name="UserNameTB" id="UserNameTB" type="text" data-val="true" data-val-required="必填字段"/>
+                    <div class="icon" data-valicon-for="UserNameTB">*</div>
                 </div>  
                 <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">登陆时使用，少于10位字母或数字</div>
 
                 <div class="title">邮箱：</div>
                 <div class="value">
-                    <input name="EmailTB" id="EmailTB" type="text" class="email" />
+                    <input name="EmailTB" id="EmailTB" type="text" data-val="true" data-val-required="必填字段" data-val-email="请输入正确格式的电子邮件" />
+                    <div class="icon" data-valicon-for="EmailTB">*</div>
                 </div>
                 <div class="tip" data-valmsg-for="EmailTB" data-valmsg-replace="true">真实的邮箱地址，登陆时也可使用</div>
 
                 <div class="title">设置密码：</div>
                 <div class="value">
-                    <input name="PSWTB" id="PSWTB" type="password" class="required" />
+                    <input name="PSWTB" id="PSWTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
+                    <div class="icon" data-valicon-for="PSWTB">*</div>
                 </div>
                 <div class="tip" data-valmsg-for="PSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
 
                 <div class="title">确认密码：</div>
                 <div class="value">
-                    <input name="EPSWTB" id="EPSWTB" type="password" class="equalTo:'#PSWTB'" />
+                    <input name="EPSWTB" id="EPSWTB" type="password" data-val="true" data-val-required="必填字段" data-val-equalto="与输入的密码不相同" data-val-equalto-other="*.PSWTB" />
+                    <div class="icon" data-valicon-for="EPSWTB">*</div>
                 </div>
                 <div class="tip" data-valmsg-for="EPSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
 
                 <div class="title">验证码：</div>
                 <div class="ccDiv1">
-                    <input id="CheckCodeTB" type="text" />
+                    <input id="CheckCodeTB" name="CheckCodeTB" type="text" class="required" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
                 </div>
                 <div class="ccDiv2">
                     <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
@@ -51,7 +55,7 @@
                 <div class="btnDiv">
                     <div class="cDiv">
                         <button type="submit" class="registerBtn">同意以下协议，提交注册</button>
-                        <button class="resetBtn">重置</button>
+                        <button type="reset" class="resetBtn">重置</button>
                     </div>
                 </div>
             </div>
@@ -101,31 +105,68 @@
             type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript">
-        QC.Login({
-            btnId: "qqLoginBtn"	//插入按钮的节点id
-        });
-        WB2.anyWhere(function (W) {
-            W.widget.connectButton({
-                id: "wb_connect_btn",
-                type: '3,2',
-                callback: {
-                    login: function (o) {
-                        alert(o.screen_name)
-                    },
-                    logout: function () {
-                        alert('logout');
+        $(function () {
+            //控件验证
+            var tmpForm = $("#register");
+            var validator = tmpForm.validate();
+            $.extend(validator.settings, {
+                submitHandler: function () {
+                    LoginPageView.register.OnRegisterBtnClick();
+                },
+                errorPlacement: function (error, inputElement) {
+                    var tmpName = inputElement[0].name.replace(/([!"#$%&'()*+,./:;<=>?@@\[\\\]^`{|}~])/g, "\\$1");
+                    var container = tmpForm.find("[data-valmsg-for='" + tmpName + "']");
+                    var iconDiv = tmpForm.find("[data-valicon-for='" + tmpName + "']");
+                    var replaceAttrValue = container.attr("data-valmsg-replace");
+                    var replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) !== false : null;
+
+                    iconDiv.removeClass("icon-validation-valid").addClass("icon-validation-error");
+                    container.removeClass("field-validation-valid").addClass("field-validation-error");
+                    error.data("unobtrusiveContainer", container);
+                    error.data("icon", iconDiv);
+
+                    container.empty();
+                    iconDiv.empty();
+
+                    error.removeClass("input-validation-error").appendTo(container);
+                },
+                success: function (error) {
+                    var container = error.data("unobtrusiveContainer");
+                    var iconDiv = error.data("icon");
+
+                    var replaceAttrValue = container.attr("data-valmsg-replace");
+                    var replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) : null;
+
+                    if (container) {
+                        container.addClass("field-validation-valid").removeClass("field-validation-error");
+                        iconDiv.addClass("icon-validation-valid").removeClass("icon-validation-error");
+
+                        error.removeData("unobtrusiveContainer");
+                        error.removeData("icon");
+
+                        container.empty();
+                        iconDiv.empty();
                     }
                 }
             });
-        });
-        $(function () {
-            var tmpForm = $("#register");
-            var validator = tmpForm.validate();
-            validator.settings.submitHandler = function () {
-                LoginPageView.register.OnRegisterBtnClick();
-            }
-            tmpForm.find(".resetBtn").click(function (ev) {
-                validator.resetForm();
+            //QQ登陆
+            QC.Login({
+                btnId: "qqLoginBtn"	//插入按钮的节点id
+            });
+            //微博登陆
+            WB2.anyWhere(function (W) {
+                W.widget.connectButton({
+                    id: "wb_connect_btn",
+                    type: '3,2',
+                    callback: {
+                        login: function (o) {
+                            alert(o.screen_name)
+                        },
+                        logout: function () {
+                            alert('logout');
+                        }
+                    }
+                });
             });
         });
     </script>
