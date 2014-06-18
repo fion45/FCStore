@@ -20,7 +20,8 @@ namespace FCStore.Models
             OS_InlandSending,
             OS_InClient,
             OS_Payment,
-            OS_Complete
+            OS_Complete,
+            OS_SaleReturn
         }
 
         public enum ESendType

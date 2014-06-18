@@ -17,6 +17,20 @@ namespace FCStore.Models
             set;
         }
 
+        [ForeignKey("Order")]
+        public int OID
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public virtual Order Order
+        {
+            get;
+            set;
+        }
+
         [ForeignKey("Product")]
         public int PID
         {
@@ -70,6 +84,14 @@ namespace FCStore.Models
             get
             {
                 return Amount * Discount;
+            }
+        }
+
+        public int Status
+        {
+            get
+            {
+                return Order.Status;
             }
         }
     }

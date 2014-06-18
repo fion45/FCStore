@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<FCStore.Models.Column>
 
+@section scripts{    
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $("#Center .productFI").lazyload({
+                placeholder: "/Content/themes/image/ColumBlank.jpg"
+            });
+        });
+    </script>
+}
+
 @foreach (var item in Model)
 {
     bool tag = item.Products != null && item.Products.Count > 0;

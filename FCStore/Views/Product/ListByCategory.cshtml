@@ -24,22 +24,25 @@
     <div class="title">
         品牌：
     </div>
-    <div id="plBrands" class="content">
-        @foreach (var item in Model.Brands)
-        {
-            <div class="item">
-                <label>
-                    <input @((ViewBag.chkBrands != null && ViewBag.chkBrands.Contains(item.BID)) ? "checked=\"checked\"" : "" ) class="brandCB" type="checkbox" value="@(item.BID)" />
-                    @(item.NameStr)/@(item.Name2)
-                </label>
-            </div>
-        }
+    <div class="content">
+        <div id="plBrands" class="hiddenDiv">
+            @foreach (var item in Model.Brands)
+            {
+                <div class="item">
+                    <label>
+                        <input @((ViewBag.chkBrands != null && ViewBag.chkBrands.Contains(item.BID)) ? "checked=\"checked\"" : "") class="brandCB" type="checkbox" value="@(item.BID)" />
+                        @(item.NameStr)/@(item.Name2)
+                    </label>
+                </div>
+            }
+            <div class="pullupDiv"></div>
+        </div>
     </div>
     <div class="btn">
-        <button onclick="ProductList.getProductListByCategory(1);">确定</button>
+        <button onclick="ProductList.getProductListByCategory(1);">过滤</button>
         @if(Model.Brands.Count > 16)
         {
-            <button class="most">更多</button>
+            <button class="most" onclick="ProductList.onSBMoreBtnClick()">更多</button>
         }
     </div>
     <div class="pullupDiv"></div>
@@ -60,7 +63,7 @@
         <div class="item">
             <a href="/Product/Detail/@(item.PID)">
                 <div class="img">
-                    <img src="@((item.ImgPathArr != null && item.ImgPathArr.Length > 1) ? item.ImgPathArr[0] : "")" />
+                    <img src="@((item.ImgPathArr != null && item.ImgPathArr.Length >= 1) ? item.ImgPathArr[0] : "")" />
                 </div>
                 <div class="title">
                     @(item.Title)

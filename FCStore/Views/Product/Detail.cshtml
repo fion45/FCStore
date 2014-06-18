@@ -1,5 +1,18 @@
 ﻿@model FCStore.Models.Product
 
+@section scripts{
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $("#productSaleInput .spinner").mySpinner({
+                upEle: $("#productSaleInput .spinnerRight"),
+                downEle: $("#productSaleInput .spinnerLeft"),
+                minVal: 1
+            });
+        });
+    </script>
+@Scripts.Render("~/bundles/productDetail")
+}
+
 <div id="PD_View">
     <div id="categoryNav">
         <div>当前位置：</div>
@@ -155,11 +168,11 @@
         </div>
         <div class="pullupDiv"></div>
     </div>
-    <div id="tabs">
+    <div id="productTabs">
         <ul>
             <li><a href="#descriptContent">商品详情</a></li>
-            <li><a href="#message">客户评价</a></li>
-            <li><a href="#log">销售记录</a></li>
+            <li><a href="#evaluation">客户评价</a></li>
+            <li><a href="#saleLog">销售记录</a></li>
         </ul>
         <div id="descriptContent">
             @{
@@ -167,13 +180,9 @@
                 @html
             }
         </div>
-        <div id="message">
+        <div id="evaluation">
         </div>
-        <div id="log">
+        <div id="saleLog">
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/productDetail")
-}

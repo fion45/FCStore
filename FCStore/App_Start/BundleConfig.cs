@@ -33,7 +33,8 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
+                "~/Content/qqReport.css"));
 
             bundles.Add(new StyleBundle("~/Content/loginPage").Include("~/Content/LoginPage.css"));
 
@@ -59,6 +60,7 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                 "~/Scripts/common.js",
                 "~/Scripts/sidebar-follow-jquery.js",
+                "~/Scripts/qqReport.js",
                 "~/Scripts/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(

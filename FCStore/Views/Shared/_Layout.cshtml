@@ -164,6 +164,34 @@
             <a class="balance" href="/Order/Cart"></a>
         </div>
     </div>
+
+    <!-- QQ在线客服 -->
+    <div id='qq_icon'></div>
+    <div id='cs_online'>
+        <ul class='qq_context'>
+            <li>
+                <span class='span_t'>在线客服01：</span>
+                <span class='qq_num'></span>
+            </li>
+            <li>
+                <span class='span_t'>在线客服02：</span>
+                <span class='qq_num'></span>
+            </li>
+            <li>
+                <span class='span_t'>在线客服03：</span>
+                <span class='qq_num'></span>
+            </li>
+            <li>
+                <span class='span_t'>在线客服04：</span>
+                <span class='qq_num'></span>
+            </li>
+            <li>
+                <span class='span_t'>在线客服05：</span>
+                <span class='qq_num'></span>
+            </li>
+        </ul>
+    </div>
+
     @{Html.RenderAction("_BrandList", "Brand");}
 
     @Scripts.Render("~/bundles/jquery")
@@ -171,7 +199,6 @@
     @Scripts.Render("~/bundles/main")
     @Scripts.Render("~/bundles/jquerylazyload")
     
-    @RenderSection("scripts", required: false)
 
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" 
@@ -180,28 +207,7 @@
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])" 
             type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript">
-        QC.Login({
-            btnId: "qqLoginBtn"	//插入按钮的节点id
-        });
-        WB2.anyWhere(function (W) {
-            W.widget.connectButton({
-                id: "wb_connect_btn",
-                type: '3,2',
-                callback: {
-                    login: function (o) {
-                        alert(o.screen_name)
-                    },
-                    logout: function () {
-                        alert('logout');
-                    }
-                }
-            });
-        });
-    </script>
-
-    <footer>
-
-    </footer>
+    @RenderSection("scripts", required: false)
+    <footer></footer>
 </body>
 </html>

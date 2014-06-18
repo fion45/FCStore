@@ -5,6 +5,15 @@
 @{
     ViewBag.Title = "List";
 }
+
+@section scripts{    
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $("#favoriteTB .checkAll:first").checkAll("#favoriteTB .checkItem");
+        });
+    </script>
+}
+
 <div id="favoriteList">
     <div id="categoryNav">
         <div>当前位置：</div>

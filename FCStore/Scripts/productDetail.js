@@ -9,7 +9,7 @@
     });
     $("#spec-list").jdMarquee({
         deriction: "left",
-        width: 350,
+        width: 318,
         height: 82,
         step: 2,
         speed: 4,

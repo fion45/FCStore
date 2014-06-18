@@ -39,5 +39,7 @@ namespace FCStore.Models
         public DbSet<OrderPacket> OrderPackets { get; set; }
 
         public DbSet<Keep> Keeps { get; set; }
+
+        public DbSet<Evaluation> Evaluations { get; set; }
     }
 }

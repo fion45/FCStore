@@ -25,6 +25,8 @@ namespace FCStore.Controllers
             if (HttpContext.User.Identity.IsAuthenticated && user != null)
             {
                 tmpVM.Client = db.Users.FirstOrDefault(r => r.UID == user.UID);
+                if(tmpVM.Client.DefaultAddress == null && tmpVM.Client.Addresses.Count > 0)
+                    tmpVM.Client.DefaultAddress = tmpVM.Client.Addresses.First();
                 tmpVM.OrderArr = new List<Order>();
                 bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
                 HttpCookie cookie = null;

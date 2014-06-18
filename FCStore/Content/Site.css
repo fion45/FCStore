@@ -885,6 +885,7 @@ textarea {
 #spec-list {
     width:318px;
     position:relative;
+    overflow:hidden;
 }
 
     #spec-list li {
@@ -1116,26 +1117,26 @@ textarea {
     margin-bottom:5px;
 }
 
-#tabs {
+#productTabs {
     margin-top:10px;
     border-radius:8px;
     box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
 }
 
-#tabs .ui-widget-header{
+#productTabs .ui-widget-header{
     background:none;
 }
 
-#tabs .ui-widget-header li:first-child {
+#productTabs .ui-widget-header li:first-child {
     margin-left:8px;
 }
 
-#tabs .ui-tabs-panel {
+#productTabs .ui-tabs-panel {
     width:98%;
     padding:0px 1%;
 }
 
-#tabs .ui-tabs-nav {
+#productTabs .ui-tabs-nav {
     border:none;
     border-bottom:solid 1px #cccccc;
 }
@@ -1143,7 +1144,7 @@ textarea {
 #descriptContent {
     margin-top:10px;
     width:100%;
-    text-align:center;
+    text-align:left;
 }
 
 #descriptContent * {
@@ -1240,30 +1241,36 @@ textarea {
 }
 
 .brandFilter {
-    width:100%;
+    width:94%;
     border:solid 1px #cccccc;
     margin-bottom:5px;
+    padding:10px 3%;
 }
 
     .brandFilter .title {
         float:left;
-        width:5%;
+        width:8%;
         text-align:left;
-        margin:10px;
     }
 
     .brandFilter .content {
         float:left;
         width:80%;
-        margin:10px 0px;
-        max-height:80px;
+        height:102px;
         overflow:hidden;
+    }
+
+    .brandFilter .content .hiddenDiv {
+        width:100%;
+    }
+
+    .brandFilter .nonMaxHeight {
+        max-height:none;
     }
 
     .brandFilter .btn {
         float:left;
-        width:5%;
-        margin:10px;
+        width:12%;
         text-align:center;
     }
 

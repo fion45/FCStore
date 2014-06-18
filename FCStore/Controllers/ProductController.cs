@@ -401,6 +401,36 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult getEvaluationByPID(int ID)
+        {
+            //获得销售记录
+            int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
+            List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status)).ToList();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(tmpOPLST);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult getSaleLogByPID(int ID)
+        {
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

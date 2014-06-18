@@ -76,7 +76,7 @@ namespace FCStore.Models
             set;
         }
 
-        public uint Gift
+        public int Gift
         {
             get;
             set;

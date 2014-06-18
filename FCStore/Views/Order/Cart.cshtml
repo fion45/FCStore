@@ -6,6 +6,76 @@
     ViewBag.Title = "Cart";
 }
 
+@section scripts{
+    @if (Model.Client.DefaultAddress == null)
+    {
+        <script type="text/javascript" charset="utf-8">
+            $(function () {
+                alert("你还没有默认的收货地址，请填写。");
+                CartPage.onAddAddressBtnClick();
+            });
+        </script>
+    }
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $(".choseItemPar .choseItem").click(function () {
+                var item = $(this);
+                var par = item.parent();
+                var selItem = par.children(".sel").removeClass("sel");
+                item.addClass("sel");
+            });
+
+            $("#productTabs").tabs({
+                select: function (event, ui) {
+                    var panel = ui.panel;
+                    var PID = parseInt($("#PIDLB").html());
+                    switch (ui.index) {
+                        case 0: {
+                            break;
+                        }
+                        case 1: {
+                            //显示评价
+                            ProductList.getEvaluationByPID(panel, PID);
+                            break;
+                        }
+                        case 2: {
+                            //显示销售记录
+                            ProductList.getSaleLogByPID(panel, PID);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            $("#CartDiv .checkAll:first").checkAll("#CartDiv .checkItem");
+
+            $.selectOne("#CartDiv .addresses .content .addressItem", "sel", ".addressItem");
+
+            $.selectOne("#CartDiv .postType .content .item", "sel", ".item");
+
+            $("#CartDiv .addresses .content").on("click", ".addressItem", CartPage.onAddressItemClick);
+
+            $("#CartDiv .postType .content").on("click", ".item", CartPage.onPostTypeItemClick);
+
+            $("#AreaSelector").areaSelector({
+                changeCB: CartPage.onAreaChangeCB,
+                PID: parseInt($("#AreaSelector .province").val()),
+                CID: parseInt($("#AreaSelector .city").val()),
+                TID: parseInt($("#AreaSelector .county").val())
+            });
+
+            $("#CartDiv .spinner").mySpinner({
+                upEle: $("#CartDiv .spinnerRight"),
+                downEle: $("#CartDiv .spinnerLeft"),
+                minVal: 1,
+                UCB: CartPage.Calculate,
+                DCB: CartPage.Calculate
+            });
+        });
+    </script>
+
+}
+
 <form id="CartDiv" method="post" action= "@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit/" + Model.OrderArr.First().OID : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
     <div id="categoryNav">
         <div>当前位置：</div>
