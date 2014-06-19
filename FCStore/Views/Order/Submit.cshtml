@@ -6,7 +6,13 @@
     ViewBag.Title = "Submit";
     Order order = Model.OrderArr != null && Model.OrderArr.Count > 0 ? Model.OrderArr.First() : null;
 }
-
+@section scripts{
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $.selectOne("#SubmitDiv .payType .content .item", "sel", ".item");
+        });
+    </script>
+}
 @if(order != null)
 {
     <form id="SubmitDiv" method="post" action="@(order.OID)" data="@(order.OID)">
@@ -96,8 +102,8 @@
             </ul>
         </div>
         <div class="addresses">
-            <h2>收货地址</h2>
-            <div data="@(Model.Client.DefaultAddress.AddID)" class="addressItem sel">
+    <h2>收货地址</h2>
+    <div data="@(Model.Client.DefaultAddress.AddID)" class="addressItem sel">
                 <div class="name">
                     @(Model.Client.UserName)收
                 </div>
@@ -112,7 +118,7 @@
         <div class="postType">
             <h2>邮寄方式</h2>
             @if (order.SendType == (int)Order.ESendType.ST_Direct)
-            { 
+            {
                 <div class="item sel">
                     <div class="title">
                         直邮
@@ -149,18 +155,29 @@
         </div>
         <div class="payType">
             <h2>支付方式</h2>
-            <div>
-                <div class="item">
-                    <label><input name="payType" type="radio" checked="checked" />支付宝支付</label>
+            <div class="borderDiv">
+                <div class="content">
+                    <div class="item sel" data-payvalue="0">
+                        <img alt="支付宝支付" src="/Content/themes/image/alipay.jpg" />
+                        <div class="tip">支付方式</div>
+                    </div>
+                    <div class="item" data-payvalue="1">
+                        <img alt="网银支付" src="/Content/themes/image/chinabank.jpg" />
+                        <div class="tip">支付方式 </div>
+                    </div>
+                    <div class="pullupDiv"></div>
                 </div>
-                <div class="item">
-                    <label><input name="payType" type="radio" />网银在线支付</label>
+                <div class="content">
+                    <div class="item" data-payvalue="2">
+                        <img alt="农行支付" />
+                        <div class="tip">支付方式</div>
+                    </div>
+                    <div class="pullupDiv"></div>
                 </div>
             </div>
-            <div class="pullupDiv"></div>
         </div>
         <div class="btnDiv">
-            @{
+    @{
                 bool tag = order.Packets.Count > 0;
                 <div class="p3">
                 </div>
@@ -168,7 +185,7 @@
                     <a href="/Order/Cart"><div class="btn3">修改订单</div></a>
                 </div>
                 <div class="p3">
-                    <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")">确认订单</div>
+                    <div class="btn2 @(tag ? "" : "btn13gray")" onclick="@(tag ? "SubmitPage.onSubmitBtnClick()" : "")">确认订单</div>
                 </div>
             }
         </div>

@@ -158,7 +158,9 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Column.cs" />
-    <Compile Include="Models\Evaluation.cs" />
+    <Compile Include="Models\Evaluation.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\Keep.cs" />
     <Compile Include="Models\Order.cs" />

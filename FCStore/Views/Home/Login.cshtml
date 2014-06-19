@@ -67,6 +67,12 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/login")
 
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script type="text/javascript">
+            LoginPageView.login.OnFiveSecondsTicket();
+        </script>
+    }
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
@@ -74,7 +80,7 @@
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
             type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript">
+    <script type="text/javascript" charset="utf-8">
         $(function () {
             //控件验证
             var tmpForm = $("#loginer");
@@ -103,11 +109,5 @@
             });
         });
     </script>
-    @if(User.Identity.IsAuthenticated)
-    {
-        <script type="text/javascript">
-            LoginPageView.login.OnFiveSecondsTicket();
-        </script>
-    }
 </body>
 </html>

@@ -11,17 +11,20 @@ namespace FCStore.Models
     {
         public enum EOrderStatus
         {
-            OS_Init,
-            OS_Order,
-            OS_Subscription,
-            OS_InStore,
-            OS_ForeignSending,
-            OS_InDealer,
-            OS_InlandSending,
-            OS_InClient,
-            OS_Payment,
-            OS_Complete,
-            OS_SaleReturn
+            OS_Init                 = 0,            //初始化
+            OS_Order                = 1,            //已下单
+            OS_Subscription         = 2,            //已落订
+            OS_Payment              = 3,            //已付款
+            OS_InStore              = 4,            //国外已购买
+            OS_ForeignSending       = 5,            //国外邮递中
+            OS_InDealer             = 6,            //在经销商手上
+            OS_InlandSending        = 7,            //国内邮递中
+            OS_InClient             = 8,            //到客人手上
+            OS_Complete             = 9,            //已完成
+            OS_RTN_Apply            = 10,           //申请退货中
+            OS_RTN_InlandSending    = 11,           //退货在国内邮递中
+            OS_RTN_InStore          = 12,           //已回仓库
+            OS_RTN_Complete         = 13            //退货完成
         }
 
         public enum ESendType

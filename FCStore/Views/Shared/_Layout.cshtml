@@ -48,6 +48,7 @@
     <div id="Main">
         <div id="Center">
             @RenderBody()
+            <div class="pullupDiv"></div>
         </div>
     </div>
     <nav id="Categorys">
@@ -192,13 +193,14 @@
         </ul>
     </div>
 
+    <footer></footer>
     @{Html.RenderAction("_BrandList", "Brand");}
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/main")
     @Scripts.Render("~/bundles/jquerylazyload")
-    
+    @Scripts.Render("~/bundles/main")
+    @RenderSection("scripts", required: false)
 
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" 
@@ -206,8 +208,5 @@
             data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])" 
             type="text/javascript" charset="utf-8"></script>
-
-    @RenderSection("scripts", required: false)
-    <footer></footer>
 </body>
 </html>

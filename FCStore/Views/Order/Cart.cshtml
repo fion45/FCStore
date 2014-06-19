@@ -7,7 +7,7 @@
 }
 
 @section scripts{
-    @if (Model.Client.DefaultAddress == null)
+    @if (Model.Client != null && Model.Client.DefaultAddress == null)
     {
         <script type="text/javascript" charset="utf-8">
             $(function () {
@@ -25,33 +25,9 @@
                 item.addClass("sel");
             });
 
-            $("#productTabs").tabs({
-                select: function (event, ui) {
-                    var panel = ui.panel;
-                    var PID = parseInt($("#PIDLB").html());
-                    switch (ui.index) {
-                        case 0: {
-                            break;
-                        }
-                        case 1: {
-                            //显示评价
-                            ProductList.getEvaluationByPID(panel, PID);
-                            break;
-                        }
-                        case 2: {
-                            //显示销售记录
-                            ProductList.getSaleLogByPID(panel, PID);
-                            break;
-                        }
-                    }
-                }
-            });
-
             $("#CartDiv .checkAll:first").checkAll("#CartDiv .checkItem");
 
             $.selectOne("#CartDiv .addresses .content .addressItem", "sel", ".addressItem");
-
-            $.selectOne("#CartDiv .postType .content .item", "sel", ".item");
 
             $("#CartDiv .addresses .content").on("click", ".addressItem", CartPage.onAddressItemClick);
 

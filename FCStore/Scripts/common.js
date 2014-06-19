@@ -265,15 +265,16 @@ jQuery.extend({
 			className = "sel";
 		ele = $(eleStr);
 		if(childCN != null) {
-			ele.parent().on("click",childCN,function(ev){
-				ele = $(eleStr);
+			var par = ele.parent(); 
+			par.on("click",childCN,function(ev){
+				ele = par.children(childCN);
 				ele.removeClass(className);
 				$(ev.currentTarget).addClass(className);
 			});
 		}
 		else {
+			ele = $(eleStr);
 			ele.on("click",function(ev){
-				ele = $(eleStr);
 				ele.removeClass(className);
 				$(ev.currentTarget).addClass(className);
 			});

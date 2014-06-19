@@ -1,15 +1,6 @@
 ﻿@model FCStore.Models.Product
 
 @section scripts{
-    <script type="text/javascript" charset="utf-8">
-        $(function () {
-            $("#productSaleInput .spinner").mySpinner({
-                upEle: $("#productSaleInput .spinnerRight"),
-                downEle: $("#productSaleInput .spinnerLeft"),
-                minVal: 1
-            });
-        });
-    </script>
 @Scripts.Render("~/bundles/productDetail")
 }
 
@@ -36,7 +27,7 @@
             <div class="jqzoom" id="spec-n1">
                 @if (Model.ImgPathArr.Length > 0)
                 {
-                    <img id="productImage" src="@(Model.ImgPathArr[0])" />
+                    <img id="productImage" src="@(Model.ImgPathArr[0])" jqimg="@(Model.ImgPathArr[0])" />
                 }
             </div>
             <div id="spec-n5" class="picNav">
@@ -158,10 +149,10 @@
             </div>
             <div id="productBtn" class="p1">
                 <div class="p2">
-                    <div class="btn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">购买</div>
+                    <div class="@(ViewBag.KeepTag ? "btn13gray" : "btn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
                 </div>
                 <div class="p2">
-                    <div class="@(ViewBag.KeepTag ? "btn13gray" : "btn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
+                    <div class="btn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">购买</div>
                 </div>
             </div>
             <div class="pullupDiv"></div>
@@ -181,6 +172,7 @@
             }
         </div>
         <div id="evaluation">
+
         </div>
         <div id="saleLog">
         </div>

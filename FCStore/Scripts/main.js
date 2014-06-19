@@ -670,12 +670,6 @@ var ProductList = {
 	    	},"fast","linear");
 	    	$("#plBrands").data("tag",true);
     	}
-    },
-    getEvaluationByPID : function(panel,PID) {
-    	
-    },
-    getSaleLogByPID : function(panel,PID) {
-    	
     }
 };
 
@@ -825,7 +819,7 @@ var CartPage = {
 		var tmpData = parseInt(target.attr("data"));
 		$("#CartDiv .postType .item").removeClass("sel");
 		switch(tmpData) {
-			case 1 : {
+			case 0 : {
 				//直邮
 				$("#CartDiv .postType .item:eq(0)").addClass("sel");
 				$("#CartDiv .order .li41 input:eq(0)").attr("checked",'checked');
@@ -833,7 +827,7 @@ var CartPage = {
 				$("#CartDiv .order .withoutPostPay").hide();
 				break;
 			}
-			case 2 : {
+			case 1 : {
 				//转邮
 				$("#CartDiv .postType .item:eq(1)").addClass("sel");
 				$("#CartDiv .order .li41 input:eq(1)").attr("checked",'checked');
@@ -884,7 +878,10 @@ var CartPage = {
 	                                    "收货地址" +
 	                                "</div>"+
 	                            "</div>");
-	                var selItem = $("#CartDiv .addresses .content .sel,#CartDiv .addresses .content .addressItem");
+	                var selItem = $("#CartDiv .addresses .content .sel");
+	                if(selItem.length == 0) {
+	                	selItem = $("#CartDiv .addresses .content .addressItem");
+	                }
 	                if(selItem.length > 0) {
 	                	item.insertBefore(selItem);
 	                	selItem.removeClass("sel");
@@ -892,6 +889,7 @@ var CartPage = {
 	                else {
 	                	item.appendTo($("#CartDiv .addresses .content"));
 	                }
+	                $("#CartDiv .addresses .content").width(293 * $("#CartDiv .addresses .content").children().length);
 	            }
 			});
 			$("#addAddressDlg").dialog("close");
@@ -976,6 +974,35 @@ var CartPage = {
 		footer.children(".postPrice:eq(1)").text(PriceFormat(0,true));
 		footer.children(".amount:eq(0)").text(PriceFormat(total * 1.01,true));
 		footer.children(".amount:eq(1)").text(PriceFormat(total,true));
+	}
+};
+
+var SubmitPage = {
+	onSubmitBtnClick : function() {
+		//根据所选支付方式，提交订单
+		var payItem = $("#SubmitDiv .payType .content .sel");
+		if(payItem.length == 0) {
+			alert("请选择支付方式");
+			return;
+		}
+		var payValue = parseInt(payItem.attr('data-payvalue'));
+		switch(payValue) {
+			case 0:{
+				//支付宝支付
+				
+				break;
+			}
+			case 1:{
+				//网银支付
+				
+				break;
+			}
+			case 2:{
+				//农行支付
+				
+				break;
+			}
+		}
 	}
 };
 

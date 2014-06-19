@@ -39,7 +39,7 @@
                     leftpos = imageLeft + imageWidth + settings.offset;
                 }
             }
-            $("div.zoomdiv").css({ top: 0, left: 340 });//.css({top:imageTop,left:leftpos});
+            $("div.zoomdiv").css({ top: 0, left: 351 });//.css({top:imageTop,left:leftpos});
             $("div.zoomdiv").width(settings.xzoom);
             $("div.zoomdiv").height(settings.yzoom);
             $("div.zoomdiv").show();
@@ -55,8 +55,12 @@
                 if (isNaN(scalex) | isNaN(scaley)) {
                     var scalex = (bigwidth / imageWidth);
                     var scaley = (bigheight / imageHeight);
-                    $("div.jqZoomPup").width((settings.xzoom) / (scalex * 1));
-                    $("div.jqZoomPup").height((settings.yzoom) / (scaley * 1));
+                    //fion修改
+                    var tmpW = Math.min((settings.xzoom) / (scalex * 1),imageWidth);
+                    var tmpH = Math.min((settings.yzoom) / (scaley * 1),imageHeight);
+                    
+                    $("div.jqZoomPup").width(tmpW);
+                    $("div.jqZoomPup").height(tmpH);
                     if (settings.lens) {
                         $("div.jqZoomPup").css('visibility', 'visible');
                     }
