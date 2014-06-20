@@ -442,10 +442,14 @@ namespace FCStore.Controllers
 
         public ActionResult getSaleLogByPID(int ID)
         {
-
+            //获得销售记录
+            int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
+            List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status)).ToList();
+            List<Order> tmpOArr = (from opl in tmpOPLST
+                                   select opl.Order).Distinct().ToList();
             if (Request.IsAjaxRequest())
             {
-                string jsonStr = PubFunction.BuildResult("OK");
+                string jsonStr = PubFunction.BuildResult(tmpOArr);
                 return Content(jsonStr);
             }
             else

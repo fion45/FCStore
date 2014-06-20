@@ -26,22 +26,6 @@ namespace FCStore
 
         protected void Application_Start()
         {
-            ////改变连接字符串里的|DataDirectory|
-            //string tmpStr = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
-            //string dataDir = AppDomain.CurrentDomain.BaseDirectory;
-            //if (dataDir.EndsWith(@"\bin\Debug\")
-            //|| dataDir.EndsWith(@"\bin\Release\"))
-            //{
-            //    dataDir = System.IO.Directory.GetParent(dataDir).Parent.Parent.FullName + "\\App_Data";
-            //    AppDomain.CurrentDomain.SetData("DataDirectory", dataDir);
-            //}
-            //Database.SetInitializer(
-            //        new CreateDatabaseIfNotExists<FCStoreDbContext>());
-            //using (var context = new FCStoreDbContext())
-            //{
-            //    context.Database.Initialize(true);
-            //}
-
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);

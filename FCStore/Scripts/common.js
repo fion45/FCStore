@@ -32,7 +32,8 @@
 		}
 	},
 	mySpinner : function (config) {
-	    this.config = {
+		var _self = $(this);
+	    _self.config = {
 	        upEle: null,
 	        downEle: null,
 	        step: 1,
@@ -41,10 +42,15 @@
 	        UCB : null,
 	        DCB : null
 	    };
-	    $.extend(this.config, config);
-	    var _self = this;
-	    if (this.config.upEle != null) {
-	        this.config.upEle.click(function (ev) {
+	    $.extend(_self.config, config);
+	    if(_self.config.upEle == null) {
+	    	_self.config.upEle = _self.next();
+	    }
+	    if(_self.config.downEle == null) {
+	    	_self.config.downEle = _self.prev();
+	    }
+	    if (_self.config.upEle != null) {
+	        _self.config.upEle.click(function (ev) {
 	        	var target = $(ev.currentTarget);
 	        	var tmpTB = target.prev("input");
 	            var tmpI = parseInt(tmpTB.val());
@@ -56,12 +62,12 @@
 	            }
 	            tmpTB.val(tmpI);
 	            if(_self.config.UCB != null) {
-	            	_self.config.UCB(_self);
+	            	_self.config.UCB(_self,tmpI);
 	            }
 	        });
 	    }
-	    if (this.config.downEle != null) {
-	        this.config.downEle.click(function (ev) {
+	    if (_self.config.downEle != null) {
+	        _self.config.downEle.click(function (ev) {
 	        	var target = $(ev.currentTarget);
 	        	var tmpTB = target.next("input");
 	            var tmpI = parseInt(tmpTB.val());
@@ -73,7 +79,7 @@
 	            }
 	            tmpTB.val(tmpI);
 	            if(_self.config.DCB != null) {
-	            	_self.config.DCB(_self);
+	            	_self.config.DCB(_self,tmpI);
 	            }
 	        });
 	    }
@@ -236,29 +242,37 @@ jQuery.extend({
 			}
 		}
 	},
+	myAjaxCache : [],
 	myAjax : function(setting) {
 		jQuery.extend({
 			loadEle : null,
 			historyTag : true,
 			success : null,
+			refreshTag : false,
 			url : "/"
 		},setting);
-		var loadEle = setting.loadEle;
-		if(loadEle != null)
-			loadEle.showLoading();
-			var funPtr = setting.success;
-			jQuery.extend(setting,{
-				success : [
-					funPtr,
-					function(){
-						loadEle.hideLoading();
-					}
-				]
-			});
-		if (setting.historyTag && history && history.pushState) {
-	    	history.pushState(null, document.title, setting.url);
-	    }
-		$.ajax(setting);
+		if(setting.refreshTag || typeof($.myAjaxCache[setting.url]) == "undefined") {
+			var loadEle = setting.loadEle;
+			if(loadEle != null)
+				loadEle.showLoading();
+				var funPtr = setting.success;
+				jQuery.extend(setting,{
+					success : [
+						funPtr,
+						function(data,status,options){
+							$.myAjaxCache[setting.url] = data;
+							loadEle.hideLoading();
+						}
+					]
+				});
+			if (setting.historyTag && history && history.pushState) {
+		    	history.pushState(null, document.title, setting.url);
+		    }
+			$.ajax(setting);
+		}
+		else {
+			setting.success($.myAjaxCache[setting.url],null,null);
+		}
 	},
 	selectOne : function(eleStr,className,childCN) {
 		if(!className)
@@ -299,22 +313,22 @@ var PriceFormat = function(tmpF,tag) {
 	return tag ? "￥" + tmpStr : tmpStr;
 };
 
-jQuery.extend(jQuery.validator.messages, {
-	required: "必填字段",
-	remote: "请修正该字段",
-	email: "请输入正确格式的电子邮件",
-	url: "请输入合法的网址",
-	date: "请输入合法的日期",
-	dateISO: "请输入合法的日期 (ISO).",
-	number: "请输入合法的数字",
-	digits: "只能输入整数",
-	creditcard: "请输入合法的信用卡号",
-	equalTo: "请再次输入相同的值",
-	accept: "请输入拥有合法后缀名的字符串",
-	maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-	minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-	rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-	range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-	max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-	min: jQuery.validator.format("请输入一个最小为{0} 的值")
-});
+//jQuery.extend(jQuery.validator.messages, {
+//	required: "必填字段",
+//	remote: "请修正该字段",
+//	email: "请输入正确格式的电子邮件",
+//	url: "请输入合法的网址",
+//	date: "请输入合法的日期",
+//	dateISO: "请输入合法的日期 (ISO).",
+//	number: "请输入合法的数字",
+//	digits: "只能输入整数",
+//	creditcard: "请输入合法的信用卡号",
+//	equalTo: "请再次输入相同的值",
+//	accept: "请输入拥有合法后缀名的字符串",
+//	maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+//	minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+//	rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+//	range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+//	max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+//	min: jQuery.validator.format("请输入一个最小为{0} 的值")
+//});

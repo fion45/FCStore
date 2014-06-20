@@ -218,6 +218,39 @@ a:hover {
     z-index:1000;
 }
 
+.spinner {
+    float:left;
+    width:50px;
+    height:24px;
+    line-height:24px;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.spinnerLeft {
+    width:29px;
+    height:30px;
+    float:left;
+    background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+    cursor:pointer;
+}
+
+.spinnerRight {
+    width:29px;
+    height:30px;
+    float:left;
+    background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+    cursor:pointer;
+}
+
+.spinnerLeft:hover {
+    background-position-x:-61px;
+}
+
+.spinnerRight:hover {
+    background-position-x:-90px;
+}
+
 /* loading
 -----------------------------------------------------------*/
 .loadingEle {
@@ -1205,10 +1238,21 @@ textarea {
 
     #evaluation .title {
         font-size:12pt;
-        font-weight:bold;
         text-align:left;
         margin-top:10px;
+        height:33px;
+        background:#e3eaec;
+        border:1px solid #dee4e7;
     }
+
+        #evaluation .title span {
+            margin-left:6px;
+            margin-top:6px;
+            line-height: 28px;
+            display:inline-block;
+            padding:0 15px;
+            background-color:white;
+        }
 
     #evaluation .item {
         width:96%;
@@ -1239,32 +1283,70 @@ textarea {
             }
 
         #evaluation .item .btnDiv {
-            width:85%;
+            width:80%;
             text-align:right;
             margin-top:8px;
             float:left;
+            margin-right:5%
         }
 
             #evaluation .item .btnDiv p {
                 margin-right:40px;
             }
 
-            #evaluation .item .btnDiv input {
-                margin-left:10px;
-            }
+#subEvaluationBtn {
+    margin-left:10px;
+}
             
 #evaluater {
     float:left;
+    margin-left:90px;
+    line-height:30px;
+    height:30px;
 }
 
 #evaluater .star {
     float:left;
     width:25px;
     height:25px;
+    margin-right:5px;
+    background:url("/Content/themes/image/main.png") no-repeat -384px -174px;
+    cursor:pointer;
 }
 
 #evaluater .empty {
+    background:url("/Content/themes/image/main.png") no-repeat -384px -173px;
+}
 
+#evaluater .half {
+    background:url("/Content/themes/image/main.png") no-repeat -413px -173px;
+}
+
+#evaluater .full {
+    background:url("/Content/themes/image/main.png") no-repeat -442px -173px;
+}
+
+    #evaluation .hne {
+        width:100%;
+        height:250px;
+        line-height:250px;
+        vertical-align:central;
+        text-align:center;
+    }
+
+        #evaluation .hne label {
+            font-size:large;
+            font-weight:bold;
+        }
+
+#evaluation .btnDiv .coutTxt {
+    color:#999;
+}
+
+#evaluation .btnDiv .maxNum {
+    font:26px/30px Georgia, Tahoma, Arial;
+    padding:0 5px;
+    color:#999;
 }
 
 #saleLog {

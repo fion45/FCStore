@@ -4,7 +4,8 @@ function myEvent(obj,ev,fn){
 	}else{
 		obj.addEventListener(ev,fn,false);
 	};
-};
+}
+
 function getbyClass(id,sClass){
 	var oParent = document.getElementById(id);
 	var all = oParent.getElementsByTagName('*');
@@ -15,14 +16,16 @@ function getbyClass(id,sClass){
 		};
 	};
 	return array;
-};
+}
+
 function getStyle(obj,name){
 	if(obj.currentStyle){
 		return obj.currentStyle[name];
 	}else{
 		return getComputedStyle(obj,false)[name];
 	};
-};
+}
+
 function Running(obj,json,fnEnd){
 	clearInterval(obj.timer);
 	obj.timer=setInterval(function(){
@@ -50,6 +53,7 @@ function Running(obj,json,fnEnd){
 		}
 	}, 30);
 }
+
 function Flexing(obj,json,fnEnd){
 	clearInterval(obj.timer);
 	obj.timer=setInterval(function(){
@@ -77,6 +81,7 @@ function Flexing(obj,json,fnEnd){
 		};
 	}, 30);
 }
+
 function setqq(obj,num){
 	if (obj.length!=num.length){
 		alert('qq数量不一致');
@@ -86,18 +91,21 @@ function setqq(obj,num){
 			obj[i].innerHTML = "<a target='_blank' href='http://wpa.qq.com/msgrd?v=3&uin="+num[i]+"&site=qq&menu=yes'><img border='0' src='http://wpa.qq.com/pa?p=2:"+num[i]+":51' alt='点击这里给我发消息' title='点击这里给我发消息'/></a>";
 		};
 	};
-};
+}
+
 function settop(id,id2,top){
 	var obj = document.getElementById(id);
 	var box = document.getElementById(id2);
 	obj.style.top = box.style.top = top+'px';
-};
+}
+
 function dealy(id,time){
 	var obj = document.getElementById(id);
 	var timer = setTimeout(function(){
 		Flexing(obj,{right:-100});
 	},time*1000);
-};
+}
+
 function click_fn(id,id2){
 	var obj = document.getElementById(id);
 	var box = document.getElementById(id2);
@@ -115,4 +123,4 @@ function click_fn(id,id2){
 			});			
 		},3000);
 	};
-};
+}

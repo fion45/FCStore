@@ -239,11 +239,14 @@
     <Content Include="Content\themes\image\chinabank.jpg" />
     <Content Include="Content\themes\image\ColumBlank.jpg" />
     <Content Include="Content\themes\image\favorite.png" />
+    <Content Include="Content\themes\image\footerBK.png" />
     <Content Include="Content\themes\image\loading.gif" />
     <Content Include="Content\themes\image\LoginTop.png" />
     <Content Include="Content\themes\image\main.png" />
     <Content Include="Content\themes\image\mainBlockTop.png" />
     <Content Include="Content\themes\image\priceBK.png" />
+    <Content Include="Content\themes\image\qq_bg.png" />
+    <Content Include="Content\themes\image\qq_icon.png" />
     <Content Include="Content\themes\image\shoppingCart.png" />
     <Content Include="Content\themes\image\topBK.png" />
     <Content Include="Global.asax" />

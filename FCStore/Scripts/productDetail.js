@@ -50,7 +50,7 @@
 
     $("#productTabs").tabs({
         select: function (event, ui) {
-            var panel = ui.panel;
+            var panel = $(ui.panel);
             var PID = parseInt($("#PIDLB").html());
             switch (ui.index) {
                 case 0: {
@@ -72,16 +72,55 @@
 })
 
 var ProductDetail = {
+	InputMaxNum : 140,
+	SetEvaluatorScore : function(spinner,value) {
+		spinner.val(value);
+		var tmpV = Math.floor(value / 2);
+		$("#evaluater .star:lt(" + tmpV + ")").prop("className","star full");
+		if(value % 2 > 0) {			
+			$("#evaluater .star:eq(" + tmpV + ")").prop("className","star half");
+			tmpV += 1;
+		}
+		$("#evaluater .star:gt(" + (tmpV - 1) + ")").prop("className","star empty");
+	},
 	CreateInput : function(panel,OID) {
-		$("<div class='item' >" +
+		var item = $("<div class='item' >" +
 				"<div class='headDiv'><img class='headImg' /></div>" +
-				"<div class='inputDiv'><textarea class='eInput' ></textarea></div>" +
+				"<div class='inputDiv'><textarea id='eInput' class='eInput' ></textarea></div>" +
 				"<div class='btnDiv'><p>" +
-				"<div id='evaluater'><div class='star empty'></div><div class='star empty'></div><div class='star empty'></div><div class='star empty'></div><div class='star empty'></div></div>" +
-				"<span><span class='coutTxt'>还能输入</span><strong class='maxNum'>140</strong><span>个字</span></span><input class='sbtn1' type='button' value='提交' />" +
+				"<div id='evaluater'><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='floatLeft'><div class='spinnerLeft'></div><input id='evaluationSpinner' class='spinner' type='text' value='10' /><div class='spinnerRight'></div>分</div></div>" +
+				"<span><span class='coutTxt'>还能输入</span><strong id='ewcLB' class='maxNum'>" + ProductDetail.InputMaxNum + "</strong><span>个字</span></span><input id='subEvaluationBtn' class='sbtn1' type='button' value='提交' />" +
 				"</p></div>" +
 				"<div class='pullupDiv'></div>" +
-			"</div>").appendTo(panel);
+			"</div>");
+		item.appendTo(panel);
+		item.find("#evaluationSpinner").mySpinner({
+	        minVal: 1,
+	        maxVal: 10,
+	        UCB: ProductDetail.SetEvaluatorScore,
+	        DCB: ProductDetail.SetEvaluatorScore
+	    });
+	    item.find("#evaluater .star").on("click",function(ev){
+	    	var target = $(ev.target);
+	    	var ox = ev.offsetX;
+	    	var tmpVal = target.prevAll(".star").length * 2;
+	    	if(ox > target.width() / 2) {
+	    		tmpVal += 2;
+	    	}
+	    	else {
+	    		tmpVal += 1;
+	    	}
+	    	ProductDetail.SetEvaluatorScore($("#evaluationSpinner"),tmpVal);
+	    });
+	    item.find("#eInput").on("change",function(){
+	    	var tmpStr = item.find("#eInput").val();
+			var tmpLen = ProductDetail.InputMaxNum - tmpStr.length;
+			if(tmpLen < 0) {
+				item.find("#eInput").val(tmpStr.substring(0,ProductDetail.InputMaxNum));
+				tmpLen = 0;
+			}
+			item.find("#ewcLB").text(tmpLen);
+	    });
 	},
 	CreateEvaluation : function(panel,evaluation) {
 		$("<div class='item' >" +
@@ -101,10 +140,11 @@ var ProductDetail = {
             contentType: "application/json;charset=utf-8",
     		traditional: true,
             success: function (data,status,options) {
+        		panel.empty();
             	var myEvaluation = null;
             	if(data.custom != null && data.custom.buyedOID != -1) {
             		myEvaluation = data.custom.myEvaluation;
-            		$("<div class='title'>您的评价：</div>").appendTo(panel);
+            		$("<div class='title'><span>您的评价：</span></div>").appendTo(panel);
 	            	if(myEvaluation != null) {
 	            		//已评价
 	            		ProductDetail.CreateEvaluation(panel,myEvaluation);
@@ -114,13 +154,41 @@ var ProductDetail = {
 	            	}
             	}
             	var evaluationArr = data.content;
-            	$.each(evaluationArr,function(i,n){
-            		ProductDetail.CreateEvaluation(panel,n);
-            	});
+        		$("<div class=title><span>大家的评价：</span></div>").appendTo(panel);
+            	if(evaluationArr.length > 0) {
+	            	$.each(evaluationArr,function(i,n){
+	            		ProductDetail.CreateEvaluation(panel,n);
+	            	});
+            	}
+            	else {
+            		//没有评价
+            		$("<div class='hne' ><label>还没有收到评价喔，亲</label></div>").appendTo(panel);
+            	}
             }
 		});
     },
+    CreateSaleLog : function(panel,order) {
+    	$("<div class='item' >" +
+    			"<div></div>" +
+    			"<div></div>" +
+    			"<div>购买时间：" + order.OrderDate + "收货时间：" + order.CompleteDate + "</div>" +
+			"</div>").appendTo(panel);
+    },
     getSaleLogByPID : function(panel,PID) {
-    	
+    	$.myAjax({
+        	historyTag : true,
+        	loadEle : $("#evaluation"),
+            url: "/Product/getSaleLogByPID/" + PID,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+    		traditional: true,
+            success: function (data,status,options) {
+            	$(data.content,function(i,n){
+            		ProductDetail.CreateSaleLog(panel,n);
+            	});
+            }
+		});
     }
 };

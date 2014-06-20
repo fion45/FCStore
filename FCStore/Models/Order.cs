@@ -148,6 +148,12 @@ namespace FCStore.Models
             set;
         }
 
+        public string ReceivedDate
+        {
+            get;
+            set;
+        }
+
         public string CompleteDate
         {
             get;
@@ -162,6 +168,45 @@ namespace FCStore.Models
                 result += OID.ToString() + "," + op.Count + "," + op.Product.Title.Substring(0, Math.Min(20, op.Product.Title.Length)) + "," + op.Product.ImgPathArr[0] + ",";
             }
             return result;
+        }
+
+        //收货信息
+        public string Contacts
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey("BelongTown")]
+        public int? TownID
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public virtual Town BelongTown
+        {
+            get;
+            set;
+        }
+
+        public string AddressName
+        {
+            get;
+            set;
+        }
+
+        public string Phone
+        {
+            get;
+            set;
+        }
+
+        public string PostCode
+        {
+            get;
+            set;
         }
     }
 }

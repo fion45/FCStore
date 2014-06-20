@@ -67,7 +67,6 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult Submit(int id)
         {
-
             OrderVM tmpVM = new OrderVM();
             //设置订单为其用户的订单
             MyUser user = HttpContext.User as MyUser;
@@ -92,6 +91,12 @@ namespace FCStore.Controllers
                         if (order != null)
                         {
                             order.UID = user.UID;
+                            order.Contacts = tmpVM.Client.DefaultAddress.Contacts;
+                            order.TownID = tmpVM.Client.DefaultAddress.TownID;
+                            order.BelongTown = tmpVM.Client.DefaultAddress.BelongTown;
+                            order.AddressName = tmpVM.Client.DefaultAddress.AddressName;
+                            order.Phone = tmpVM.Client.DefaultAddress.Phone;
+                            order.PostCode = tmpVM.Client.DefaultAddress.PostCode;
                             db.SaveChanges();
                             tmpVM.OrderArr.Add(order);
                         }
