@@ -1298,14 +1298,14 @@ textarea {
     margin-left:10px;
 }
             
-#evaluater {
+#evaluation .starArea {
     float:left;
     margin-left:90px;
     line-height:30px;
     height:30px;
 }
 
-#evaluater .star {
+#evaluation .starArea .star {
     float:left;
     width:25px;
     height:25px;
@@ -1314,30 +1314,34 @@ textarea {
     cursor:pointer;
 }
 
-#evaluater .empty {
+#evaluation .starArea .empty {
     background:url("/Content/themes/image/main.png") no-repeat -384px -173px;
 }
 
-#evaluater .half {
+#evaluation .starArea .half {
     background:url("/Content/themes/image/main.png") no-repeat -413px -173px;
 }
 
-#evaluater .full {
+#evaluation .starArea .full {
     background:url("/Content/themes/image/main.png") no-repeat -442px -173px;
 }
+            
+#evaluation .description {
+    float:left;
+}
 
-    #evaluation .hne {
-        width:100%;
-        height:250px;
-        line-height:250px;
-        vertical-align:central;
-        text-align:center;
+#evaluation .hne {
+    width:100%;
+    height:250px;
+    line-height:250px;
+    vertical-align:central;
+    text-align:center;
+}
+
+    #evaluation .hne label {
+        font-size:large;
+        font-weight:bold;
     }
-
-        #evaluation .hne label {
-            font-size:large;
-            font-weight:bold;
-        }
 
 #evaluation .btnDiv .coutTxt {
     color:#999;

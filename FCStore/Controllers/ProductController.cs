@@ -458,6 +458,28 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult submitEvaluation(Evaluation evaluation)
+        {
+
+            if(HttpContext.User.Identity.IsAuthenticated)
+            {
+                MyUser user = HttpContext.User as MyUser;
+                if(user != null)
+                    evaluation.UID = user.UID;
+                db.Evaluations.Add(evaluation);
+                db.SaveChanges();
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

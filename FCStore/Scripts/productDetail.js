@@ -88,7 +88,7 @@ var ProductDetail = {
 				"<div class='headDiv'><img class='headImg' /></div>" +
 				"<div class='inputDiv'><textarea id='eInput' class='eInput' ></textarea></div>" +
 				"<div class='btnDiv'><p>" +
-				"<div id='evaluater'><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='floatLeft'><div class='spinnerLeft'></div><input id='evaluationSpinner' class='spinner' type='text' value='10' /><div class='spinnerRight'></div>分</div></div>" +
+				"<div class='starArea' id='evaluater'><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='star full'></div><div class='floatLeft'><div class='spinnerLeft'></div><input id='evaluationSpinner' class='spinner' type='text' value='10' /><div class='spinnerRight'></div>分</div></div>" +
 				"<span><span class='coutTxt'>还能输入</span><strong id='ewcLB' class='maxNum'>" + ProductDetail.InputMaxNum + "</strong><span>个字</span></span><input id='subEvaluationBtn' class='sbtn1' type='button' value='提交' />" +
 				"</p></div>" +
 				"<div class='pullupDiv'></div>" +
@@ -112,7 +112,7 @@ var ProductDetail = {
 	    	}
 	    	ProductDetail.SetEvaluatorScore($("#evaluationSpinner"),tmpVal);
 	    });
-	    item.find("#eInput").on("change",function(){
+	    item.find("#eInput").on("input propertychange", function () {
 	    	var tmpStr = item.find("#eInput").val();
 			var tmpLen = ProductDetail.InputMaxNum - tmpStr.length;
 			if(tmpLen < 0) {
@@ -121,13 +121,35 @@ var ProductDetail = {
 			}
 			item.find("#ewcLB").text(tmpLen);
 	    });
+	    item.find("#subEvaluationBtn").on("click", function (ev) {
+	        var PID = $("#PIDLB").text();
+	        ProductDetail.submitEvaluation(PID, OID);
+	    });
 	},
-	CreateEvaluation : function(panel,evaluation) {
-		$("<div class='item' >" +
-				"<div><img class='headImg' /></div>" +
-				"<div><label class='eLabel' ></label></div>" +
+	CreateEvaluation: function (panel, evaluation) {
+	    var item = $("<div class='item' >" +
+				"<div class='headDiv'><img class='headImg' /></div>" +
+				"<div class='starArea'></div>" +
+				"<div class='description'>" + evaluation.Description + "</div>" +
 				"<div class='pullupDiv'></div>" +
-			"</div>").appendTo(panel);
+			"</div>");
+	    item.appendTo(panel);
+	    var fsc = Math.floor(evaluation.StarCount / 2);
+	    var tmpStr = "";
+	    for (i = 0; i < 5; i++)
+	    {
+	        if (i < fsc) {
+	            tmpStr += "<div class='star full'></div>";
+	        }
+	        else if(i == fsc && evaluation.StarCount % 2 > 0) {
+	            tmpStr += "<div class='star half'></div>";
+	        }
+	        else {
+	            tmpStr += "<div class='star empty'></div>";
+	        }
+	    }
+	    tmpStr += "<span>" + evaluation.StarCount + "分</span>";
+	    item.find(".starArea").append($(tmpStr));
 	},
     getEvaluationByPID : function(panel,PID) {
     	$.myAjax({
@@ -176,7 +198,7 @@ var ProductDetail = {
     },
     getSaleLogByPID : function(panel,PID) {
     	$.myAjax({
-        	historyTag : true,
+        	historyTag : false,
         	loadEle : $("#evaluation"),
             url: "/Product/getSaleLogByPID/" + PID,
             data: null,
@@ -190,5 +212,27 @@ var ProductDetail = {
             	});
             }
 		});
+    },
+    submitEvaluation: function (PID,OID) {
+        var item = $("#eInput");
+        var evaluation = {
+            Description: $("#eInput").val(),
+            StarCount: $("#evaluationSpinner").val(),
+            PID : PID,
+            OID : OID
+        };
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#evaluation .item:first"),
+            url: "/Product/submitEvaluation/",
+            data: JSON.stringify(evaluation),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            traditional: true,
+            success: function (data, status, options) {
+
+            }
+        });
     }
 };
