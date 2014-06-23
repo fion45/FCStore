@@ -74,5 +74,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public string DataTime
+        {
+            get;
+            set;
+        }
     }
 }

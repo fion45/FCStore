@@ -129,9 +129,16 @@ var ProductDetail = {
 	CreateEvaluation: function (panel, evaluation) {
 	    var item = $("<div class='item' >" +
 				"<div class='headDiv'><img class='headImg' /></div>" +
-				"<div class='starArea'></div>" +
-				"<div class='description'>" + evaluation.Description + "</div>" +
-				"<div class='pullupDiv'></div>" +
+				"<div class='starDiv'>" +
+                    "<div class='starArea'></div>" +
+                "</div>" +
+                "<div class='lbDiv'>" +
+				    "<div class='description'>" + evaluation.Description + "</div>" +
+                "</div>" +
+                "<div class='dataDiv'>" +
+                evaluation.DataTime +
+                "</div>" +
+                "<div class='pullupDiv'></div>" +
 			"</div>");
 	    item.appendTo(panel);
 	    var fsc = Math.floor(evaluation.StarCount / 2);
