@@ -84,7 +84,7 @@ var ProductDetail = {
 		$("#evaluater .star:gt(" + (tmpV - 1) + ")").prop("className","star empty");
 	},
 	CreateInput : function(panel,OID) {
-		var item = $("<div class='item' >" +
+		var item = $("<div id='evaluationInput' class='item' >" +
 				"<div class='headDiv'><img class='headImg' /></div>" +
 				"<div class='inputDiv'><textarea id='eInput' class='eInput' ></textarea></div>" +
 				"<div class='btnDiv'><p>" +
@@ -130,6 +130,7 @@ var ProductDetail = {
 	    var item = $("<div class='item' >" +
 				"<div class='headDiv'><img class='headImg' /></div>" +
 				"<div class='starDiv'>" +
+					"<div class='unDiv'>" + evaluation.IDLabel + "：</div>" +
                     "<div class='starArea'></div>" +
                 "</div>" +
                 "<div class='lbDiv'>" +
@@ -162,7 +163,7 @@ var ProductDetail = {
     	$.myAjax({
         	historyTag : false,
         	loadEle : $("#evaluation"),
-            url: "/Product/getEvaluationByPID/" + PID,
+            url: "/Evaluation/getEvaluationByPID/" + PID,
             data: null,
             dataType: "json",
             type: "GET",
@@ -174,24 +175,29 @@ var ProductDetail = {
             	if(data.custom != null && data.custom.buyedOID != -1) {
             		myEvaluation = data.custom.myEvaluation;
             		$("<div class='title'><span>您的评价：</span></div>").appendTo(panel);
+            		var tmpEle = $("<div id='yourEvaluationArea'></div>");
+            		tmpEle.appendTo(panel);
 	            	if(myEvaluation != null) {
 	            		//已评价
-	            		ProductDetail.CreateEvaluation(panel,myEvaluation);
+	            		ProductDetail.CreateEvaluation(tmpEle,myEvaluation);
 	            	}
 	            	else {
-	            		ProductDetail.CreateInput(panel,data.custom.buyedOID);
+	            		ProductDetail.CreateInput(tmpEle,data.custom.buyedOID);
 	            	}
             	}
             	var evaluationArr = data.content;
         		$("<div class=title><span>大家的评价：</span></div>").appendTo(panel);
+        		tmpEle = $("<div id='ourEvaluationArea'></div>");
+        		tmpEle.appendTo(panel);
             	if(evaluationArr.length > 0) {
 	            	$.each(evaluationArr,function(i,n){
-	            		ProductDetail.CreateEvaluation(panel,n);
+	            		if(myEvaluation == null || myEvaluation.EID != n.EID)
+	            			ProductDetail.CreateEvaluation(tmpEle,n);
 	            	});
             	}
             	else {
             		//没有评价
-            		$("<div class='hne' ><label>还没有收到评价喔，亲</label></div>").appendTo(panel);
+            		$("<div class='hne' ><label>还没有收到评价喔，亲</label></div>").appendTo(tmpEle);
             	}
             }
 		});
@@ -231,14 +237,17 @@ var ProductDetail = {
         $.myAjax({
             historyTag: false,
             loadEle: $("#evaluation .item:first"),
-            url: "/Product/submitEvaluation/",
+            url: "/Evaluation/submitEvaluation/",
             data: JSON.stringify(evaluation),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
             traditional: true,
             success: function (data, status, options) {
-
+				//添加成功
+            	var panel = $("#evaluationInput");
+            	panel.empty();
+            	ProductDetail.CreateEvaluation(panel,data.content);
             }
         });
     }

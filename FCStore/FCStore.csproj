@@ -140,6 +140,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\EvaluationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KeepController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -332,6 +333,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Evaluation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

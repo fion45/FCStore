@@ -7,6 +7,7 @@
 	        obj.checkCode = $("#checkCodeTB").val();
 	        if (obj.checkCode.length == 4) {
 	            $.myAjax({
+	            	refreshTag : true,
 	                loadEle: $("#loginDiv"),
 	                url: "/User/Login",
 	                data: JSON.stringify(obj),

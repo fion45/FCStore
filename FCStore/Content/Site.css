@@ -1289,6 +1289,12 @@ textarea {
             text-align:right;
         }
 
+            #evaluation .item .starDiv .unDiv {
+                font-size:12px;
+                color:#b0b0b0;
+                float:left;
+            }
+
             #evaluation .item .starDiv .starArea {
                 float:right;
             }

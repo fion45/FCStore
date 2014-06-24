@@ -401,45 +401,6 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult getEvaluationByPID(int ID)
-        {
-            //获得销售记录
-            int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
-            List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status)).ToList();
-            List<int> tmpOIDArr = (from opl in tmpOPLST
-                                   select opl.Order.OID).Distinct().ToList();
-            //只取前20条
-            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).Take(20).ToList();
-            if (Request.IsAjaxRequest())
-            {
-                string customStr = "";
-                if(HttpContext.User.Identity.IsAuthenticated)
-                {
-                    MyUser tmpUser = HttpContext.User as MyUser;
-                    //查找该用户是否有购买该产品并未提交评价的
-                    OrderPacket tmpOP = db.OrderPackets.OrderByDescending(r => r.Order.OrderDate).FirstOrDefault(r => r.PID == ID && r.Order.UID == tmpUser.UID);
-                    string tmpME = "null";
-                    if(tmpOP != null)
-                    {
-                        //已购买
-                        Evaluation tmpEva = db.Evaluations.FirstOrDefault(r => r.PID == ID && r.OID == tmpOP.OID);
-                        if(tmpEva != null)
-                        {
-                            //已评价
-                            tmpME = Newtonsoft.Json.JsonConvert.SerializeObject(tmpEva);
-                        }
-                    }
-                    customStr = string.Format("{{\"buyedOID\":{0},\"myEvaluation\":{1}}}", tmpOP == null ? -1 : tmpOP.OID, tmpME);
-                }
-                string jsonStr = PubFunction.BuildResult(tmpELST, customStr);
-                return Content(jsonStr);
-            }
-            else
-            {
-                return View(tmpELST);
-            }
-        }
-
         public ActionResult getSaleLogByPID(int ID)
         {
             //获得销售记录
@@ -450,28 +411,6 @@ namespace FCStore.Controllers
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(tmpOArr);
-                return Content(jsonStr);
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-        public ActionResult submitEvaluation(Evaluation evaluation)
-        {
-
-            if(HttpContext.User.Identity.IsAuthenticated)
-            {
-                MyUser user = HttpContext.User as MyUser;
-                if(user != null)
-                    evaluation.UID = user.UID;
-                db.Evaluations.Add(evaluation);
-                db.SaveChanges();
-            }
-            if (Request.IsAjaxRequest())
-            {
-                string jsonStr = PubFunction.BuildResult("OK");
                 return Content(jsonStr);
             }
             else

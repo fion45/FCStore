@@ -211,6 +211,52 @@
 				position : "absolute"
 			});
 		});
+	},
+	myMovement : function(config) {
+	    this.config = {
+	    	inEle : null,
+	    	width : null,
+	    	height : null,
+	    	removeTag : true,
+	    	speed : "normal",
+	    	easing : "swing",
+	    	beginCB : null,
+	    	endAnimationCB : function() {
+//	    		var _self = $(this);
+	    		_self.cloneEle.remove('MoveItem');
+	    		_self.cloneEle.appendTo(_self.config.inEle);
+	    		if(_self.config.endCB != null) {
+	    			_self.config.endCB();
+	    		}
+	    	},
+	    	endCB : null
+	    };
+	    $.extend(this.config, config);
+	    var _self = this;
+	    if(_self.config.beginCB != null) {
+	    	_self.config.beginCB();	
+	    }
+		var pos = _self.offset();
+		var toPos = _self.config.inEle.offset();
+		_self.cloneEle = _self.clone(false);
+		var tmpW = _self.config.width == null ? _self.width() : _self.config.width;
+		var tmpH = _self.config.height == null ? _self.height() : _self.config.height;
+		var body = $(window.document.body);
+		if(_self.config.removeTag) {
+			_self.remove();
+		}
+		_self.cloneEle.appendTo(body);
+		_self.cloneEle.addClass("MoveItem");
+		_self.cloneEle.css({
+			top : pos.top,
+			left: pos.left
+		});
+		_self.cloneEle.animate({
+			top : toPos.top,
+			left : toPos.left,
+			height : tmpH,
+			width : tmpW
+		},"normal",_self.config.endAnimationCB);
 	}
 });
 jQuery.extend({

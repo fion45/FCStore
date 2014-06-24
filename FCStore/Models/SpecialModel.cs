@@ -58,4 +58,49 @@ namespace FCStore.Models
             set;
         }
     }
+
+    public class EvaluationVM
+    {
+        public EvaluationVM(Evaluation eval)
+        {
+            this.EID = eval.EID;
+            int tmpLen = eval.User.UserName.Length;
+            int tmpI = tmpLen / 3;
+            string tmpStr = eval.User.UserName.Substring(0, tmpI) + new string('*', tmpLen - 2 * tmpI) + eval.User.UserName.Substring(tmpLen - tmpI);
+            this.IDLabel = string.Format("{0}({1})", tmpStr, eval.Order.BelongTown.FullName);
+            this.Description = eval.Description;
+            this.StarCount = eval.StarCount;
+            this.DataTime = eval.DataTime;
+        }
+
+        public int EID
+        {
+            get;
+            set;
+        }
+
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        public int StarCount
+        {
+            get;
+            set;
+        }
+
+        public string DataTime
+        {
+            get;
+            set;
+        }
+
+        public string IDLabel
+        {
+            set;
+            get;
+        }
+    }
 }

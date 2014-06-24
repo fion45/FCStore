@@ -29,7 +29,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
-        public User User
+        public virtual User User
         {
             get;
             set;
@@ -43,7 +43,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
-        public Product Product
+        public virtual Product Product
         {
             get;
             set;
@@ -57,7 +57,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
-        public Order Order
+        public virtual Order Order
         {
             get;
             set;
