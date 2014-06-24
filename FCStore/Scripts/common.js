@@ -248,7 +248,7 @@ jQuery.extend({
 			loadEle : null,
 			historyTag : true,
 			success : null,
-			refreshTag : false,
+			refreshTag : true,
 			url : "/"
 		},setting);
 		if(setting.refreshTag || typeof($.myAjaxCache[setting.url]) == "undefined") {

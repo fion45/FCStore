@@ -38,6 +38,7 @@ namespace FCStore.Models
             set;
         }
 
+        [JsonIgnore]
         public virtual Product Product
         {
             get;
