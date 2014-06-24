@@ -1,6 +1,6 @@
 ﻿jQuery.fn.extend({
 	elementHaveClassName : function(className) {
-		return $(this).prop('class').toLowerCase().indexOf(className.toLowerCase()) != -1;
+		return (' ' + $(this).prop('class').toLowerCase() + ' ').indexOf(' ' + className.toLowerCase() + ' ') != -1;
 	},
 	showLoading : function(srcStr) {
 		var ele = $(this);

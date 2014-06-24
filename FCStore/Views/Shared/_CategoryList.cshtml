@@ -8,8 +8,10 @@
     List<FCStore.Models.Category> topCategoryList = (from cate in Model
                                                      where cate.ParCID == 1 && cate.CID != 1
                                                      select cate).ToList();
+    string tmpStr = "";
     foreach (var item in topCategoryList)
     {
+        @{tmpStr = item.NameStr + ",";}
         <li class="TCategory">
             <a class="TCItem" href="/Product/ListByCategory/@(item.CID)">
                 <div class="item">
@@ -23,6 +25,7 @@
                                                         select cate).ToList();
                     foreach (var sitem in secondCategory)
                     {
+        @{tmpStr += sitem.NameStr + ",";}
                         <div class="scDiv">
                             <div class="p1 scName">
                                 <a href="/Product/ListByCategory/@(sitem.CID)">
@@ -36,6 +39,7 @@
                                                                        select cate).ToList();
                                     foreach (var titem in threeCategory)
                                     {
+        @{tmpStr += titem.NameStr + ",";}
                                         <div class="tcDiv">
                                             <a href="/Product/ListByCategory/@(titem.CID)">
                                                 @(titem.NameStr)
