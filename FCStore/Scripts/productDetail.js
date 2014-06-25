@@ -213,16 +213,33 @@ var ProductDetail = {
     	$.myAjax({
         	historyTag : false,
         	loadEle : $("#evaluation"),
-            url: "/Product/getSaleLogByPID/" + PID,
+            url: "/Order/getSaleLogByPID/" + PID,
             data: null,
             dataType: "json",
             type: "GET",
             contentType: "application/json;charset=utf-8",
     		traditional: true,
             success: function (data,status,options) {
-            	$(data.content,function(i,n){
-            		ProductDetail.CreateSaleLog(panel,n);
-            	});
+			    var tmpChart = $("#chartDiv").highcharts({
+			    	title: {
+			    		text : ''
+			    	},
+			    	xAxis : {
+			    		type: "category",
+			    		categories: data.content.DTStrArr
+			    	},
+			        yAxis: {
+			            title: {
+			                text: '售出的数量'
+			            }
+			        },
+			        series: [{
+			        	data: data.content.CountArr
+			        }],
+			        legend: {
+			            enabled : false
+			        }
+				});
             }
 		});
     },

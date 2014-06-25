@@ -1,6 +1,7 @@
 ﻿@model FCStore.Models.Product
 
 @section scripts{
+@Scripts.Render("~/bundles/HighChart")
 @Scripts.Render("~/bundles/productDetail")
 }
 
@@ -175,6 +176,7 @@
 
         </div>
         <div id="saleLog">
+            <div id="chartDiv"></div>
         </div>
     </div>
 </div>

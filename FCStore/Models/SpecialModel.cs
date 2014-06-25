@@ -103,4 +103,19 @@ namespace FCStore.Models
             get;
         }
     }
+
+    public class SaleLogVM
+    {
+        public List<int> CountArr
+        {
+            get;
+            set;
+        }
+
+        public List<string> DTStrArr
+        {
+            get;
+            set;
+        }
+    }
 }

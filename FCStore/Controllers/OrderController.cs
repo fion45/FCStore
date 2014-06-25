@@ -12,6 +12,21 @@ using FCStore.Common;
 
 namespace FCStore.Controllers
 {
+    //public class SaleLog
+    //{
+    //    public int count
+    //    {
+    //        get;
+    //        set;
+    //    }
+
+    //    public string DTStr
+    //    {
+    //        get;
+    //        set;
+    //    }
+    //}
+
     public class OrderController : Controller
     {
         private FCStoreDbContext db = new FCStoreDbContext();
@@ -215,6 +230,37 @@ namespace FCStore.Controllers
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(tmpResult);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult getSaleLogByPID(int ID)
+        {
+            //获得销售记录
+            string DTFormat = "yyyy-MM-dd hh:mm:ss";
+            int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
+            string DTStr = DateTime.Now.AddMonths(-1).ToString(DTFormat);
+            List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status) &&  r.Order.OrderDate.CompareTo(DTStr) > 0).ToList();
+            DateTime tmpDT = DateTime.Now;
+            string BDTStr = tmpDT.ToString(DTFormat);
+            string EDTStr;
+            SaleLogVM tmpSLVM = new SaleLogVM();
+            for(int i=0;i<4;i++)
+            {
+                tmpDT = tmpDT.AddDays(-7);
+                EDTStr = tmpDT.ToString(DTFormat);
+
+                BDTStr = EDTStr;
+            }
+
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(tmpSLVM);
                 return Content(jsonStr);
             }
             else

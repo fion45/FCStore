@@ -16,7 +16,6 @@ namespace FCStore
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
-                        //"~/Scripts/jquery.metadata*",
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquerycookie").Include(
@@ -56,6 +55,9 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/productDetail").Include(
                         "~/Scripts/productDetail.js",
                         "~/Scripts/productDetailRollImg.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/HighChart").Include(
+                "~/Scripts/highcharts.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
                 "~/Scripts/common.js",
