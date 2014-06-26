@@ -228,10 +228,14 @@ var ProductDetail = {
 			    		type: "category",
 			    		categories: data.content.DTStrArr
 			    	},
-			        yAxis: {
+			    	yAxis: {
+			    	    lineWidth: 1,
 			            title: {
 			                text: '售出的数量'
-			            }
+			            },
+			            min: 0,
+                        max: 50,
+                        minPadding: 0
 			        },
 			        series: [{
 			        	data: data.content.CountArr

@@ -12,20 +12,6 @@ using FCStore.Common;
 
 namespace FCStore.Controllers
 {
-    //public class SaleLog
-    //{
-    //    public int count
-    //    {
-    //        get;
-    //        set;
-    //    }
-
-    //    public string DTStr
-    //    {
-    //        get;
-    //        set;
-    //    }
-    //}
 
     public class OrderController : Controller
     {
@@ -246,18 +232,22 @@ namespace FCStore.Controllers
             string DTStr = DateTime.Now.AddMonths(-1).ToString(DTFormat);
             List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status) &&  r.Order.OrderDate.CompareTo(DTStr) > 0).ToList();
             DateTime tmpDT = DateTime.Now;
-            string BDTStr = tmpDT.ToString(DTFormat);
-            string EDTStr;
+            string EDTStr = tmpDT.ToString(DTFormat);
+            string BDTStr;
             SaleLogVM tmpSLVM = new SaleLogVM();
+            tmpSLVM.DTStrArr = new List<string>();
+            tmpSLVM.CountArr = new List<int>();
             for(int i=0;i<4;i++)
             {
                 tmpDT = tmpDT.AddDays(-7);
-                EDTStr = tmpDT.ToString(DTFormat);
-
-                BDTStr = EDTStr;
+                BDTStr = tmpDT.ToString(DTFormat);
+                var opArr = from op in tmpOPLST
+                                          where op.Order.OrderDate.CompareTo(BDTStr) > 0 && op.Order.OrderDate.CompareTo(EDTStr) <= 0
+                                          select op;
+                tmpSLVM.DTStrArr.Add(BDTStr.Substring(0,10));
+                tmpSLVM.CountArr.Add(opArr.Sum(r => r.Count));
+                EDTStr = BDTStr;
             }
-
-
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(tmpSLVM);
