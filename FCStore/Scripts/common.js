@@ -409,6 +409,98 @@ var GetDateTimeStr = function(dt,formatStr){
 	return formatStr;
 }
 
+var AddSeconds = function(temp,addSeconds) {
+	if(temp.getDate != null){
+		temp = this.GetDateTimeStr(temp,'yyyy-M-d h:m:s');
+	}
+    var dayCountArray=[31,28,31,30,31,30,31,31,30,31,30,31];
+    var tempArray= temp.split(':');
+    var tempS=parseInt(tempArray[2]);
+    var tempM=parseInt(tempArray[1]);
+    tempArray=tempArray[0].split(' ');
+    var tempH=parseInt(tempArray[1]);
+    tempArray=tempArray[0].split('-');
+    var tempD=parseInt(tempArray[2]);
+    var tempMM=parseInt(tempArray[1]);
+    var tempY=parseInt(tempArray[0]);
+    //判断是不是闰年
+    if((tempY % 4 == 0 && tempY % 100 != 0) || tempY % 400 == 0)
+    {
+    	dayCountArray[1] = 29;
+    }
+    tempS+=addSeconds;
+    var addMinute=Math.floor(tempS/60);
+    tempS%=60;
+    if(tempS<0)
+    {
+        tempS+=60;
+    }
+    tempS = '0' + tempS;
+    tempS = tempS.substring(tempS.length - 2, tempS.length);
+    tempM+=addMinute;
+    var addHour=Math.floor(tempM/60);
+    tempM%=60;
+    if(tempM<0)
+    {
+        tempM+=60;
+    }
+    tempM = '0' + tempM;
+    tempM = tempM.substring(tempM.length - 2, tempM.length);
+    tempH+=addHour;
+    var addDay=Math.floor(tempH/24);
+    tempH%=24;
+    if(tempH<0)
+    {
+        tempH+=24;
+    }
+    tempH = '0' + tempH;
+    tempH = tempH.substring(tempH.length - 2, tempH.length);
+    tempD+=addDay;
+    var addMM = 0;
+    var tag = 1;
+    if(tempD <= 0){
+    	tag = -1;
+    	addMM = -1;
+    }
+    while(tempD * tag > 0){
+    	var tmpAI = (tempMM + addMM - 1) % 12;
+    	if(tmpAI < 0){
+    		tmpAI += 12;
+    	}
+    	tempD -= tag * dayCountArray[tmpAI];
+    	addMM += tag * 1;
+    }
+    if(tag > 0){
+    	tempD += tag * dayCountArray[(tempMM + addMM - 1 - tag * 1) % 12];
+    }
+    addMM -= tag * 1;
+//	    addMM += Math.floor(tempD/(dayCountArray[tempMM-1] + 1));
+//	    tempD%=(dayCountArray[tempMM - 1]+1);
+    if(tempD<0)
+    {
+        tempD+=dayCountArray[tempMM-1];
+    }
+    tempD = '0' + tempD;
+    tempD = tempD.substring(tempD.length - 2, tempD.length);
+    tempMM+=addMM;
+    var addY = 0;
+    if(tempMM == 0){
+    	addY = -1;
+    	tempMM = 12;
+    }
+    addY+=Math.floor(tempMM/12);
+    tempMM%=12;
+    if(tempMM<=0)
+    {
+        tempMM+=12;
+        addY-=1;
+    }
+    tempMM = '0' + tempMM;
+    tempMM = tempMM.substring(tempMM.length - 2, tempMM.length);
+    tempY+=addY;
+    return tempY+'-'+tempMM+'-'+tempD+' '+tempH+':'+tempM+':'+tempS;
+}
+
 //jQuery.extend(jQuery.validator.messages, {
 //	required: "必填字段",
 //	remote: "请修正该字段",

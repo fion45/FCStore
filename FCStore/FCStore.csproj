@@ -252,6 +252,7 @@
     <Content Include="Content\themes\image\topBK.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\qqReport.js" />
     <Content Include="zone.xml" />

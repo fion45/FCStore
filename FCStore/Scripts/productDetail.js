@@ -220,30 +220,47 @@ var ProductDetail = {
             contentType: "application/json;charset=utf-8",
     		traditional: true,
             success: function (data,status,options) {
-			    var tmpChart = $("#chartDiv").highcharts({
-			    	title: {
-			    		text : ''
-			    	},
-			    	xAxis : {
-			    		type: "category",
-			    		categories: data.content.DTStrArr
-			    	},
-			    	yAxis: {
+            	var chart = $('#chartDiv').highcharts();
+            	if(chart) {
+            		chart.series[0].setData(data.content.CountArr);
+            	}
+            	else {
+					var minY = 0;
+					var maxY = 10;
+					$.each(data.content.CountArr,function(i,n){
+						maxY = Math.max(maxY,n);
+					});
+					maxY += Math.ceil(maxY / 10) * 10;
+	            	var yAxis = {
 			    	    lineWidth: 1,
 			            title: {
-			                text: '售出的数量'
+			                text: '最近一个月售出的数量'
 			            },
-			            min: 0,
-                        max: 50,
-                        minPadding: 0
-			        },
-			        series: [{
-			        	data: data.content.CountArr
-			        }],
-			        legend: {
-			            enabled : false
-			        }
-				});
+	            		min: minY,
+	            		max: maxY
+	            	};
+				    $("#chartDiv").highcharts({
+				    	title: {
+				    		text : ''
+				    	},
+				    	xAxis : {
+				    		type: "category",
+				    		categories: data.content.DTStrArr
+				    	},
+				    	yAxis: yAxis,
+				        series: [{
+				        	data: data.content.CountArr
+				        }],
+				        legend: {
+				            enabled : false
+				        },
+				        tooltip: {
+							formatter: function() {
+								return "<div>在\"" + this.x + "\"内已卖出" + this.y + "件商品</div>";
+							}  
+						}
+					});
+            	}
             }
 		});
     },

@@ -228,11 +228,12 @@ namespace FCStore.Controllers
         {
             //获得销售记录
             string DTFormat = "yyyy-MM-dd hh:mm:ss";
+            string DTF = "M月d日";
             int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
             string DTStr = DateTime.Now.AddMonths(-1).ToString(DTFormat);
             List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status) &&  r.Order.OrderDate.CompareTo(DTStr) > 0).ToList();
             DateTime tmpDT = DateTime.Now;
-            string EDTStr = tmpDT.ToString(DTFormat);
+            string EDTStr = tmpDT.ToString(DTF);
             string BDTStr;
             SaleLogVM tmpSLVM = new SaleLogVM();
             tmpSLVM.DTStrArr = new List<string>();
@@ -240,11 +241,12 @@ namespace FCStore.Controllers
             for(int i=0;i<4;i++)
             {
                 tmpDT = tmpDT.AddDays(-7);
-                BDTStr = tmpDT.ToString(DTFormat);
+                BDTStr = tmpDT.ToString(DTF);
                 var opArr = from op in tmpOPLST
                                           where op.Order.OrderDate.CompareTo(BDTStr) > 0 && op.Order.OrderDate.CompareTo(EDTStr) <= 0
                                           select op;
-                tmpSLVM.DTStrArr.Add(BDTStr.Substring(0,10));
+                string tmpDTStr = string.Format("\"{0}\" 至 \"{1}\"",BDTStr,EDTStr);
+                tmpSLVM.DTStrArr.Insert(0,tmpDTStr);
                 tmpSLVM.CountArr.Add(opArr.Sum(r => r.Count));
                 EDTStr = BDTStr;
             }
