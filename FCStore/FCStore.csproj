@@ -334,7 +334,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Evaluation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
