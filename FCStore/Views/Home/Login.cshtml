@@ -76,7 +76,7 @@
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
-            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8" ></script>
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
             type="text/javascript" charset="utf-8"></script>
 
@@ -92,6 +92,25 @@
             });
             QC.Login({
                 btnId: "qqLoginBtn"	//插入按钮的节点id
+            },
+            function (reqData, opts) {//登录成功  
+                //根据返回数据，更换按钮显示状态方法
+                alert(1);
+                var dom = document.getElementById(opts['btnId']),
+                _logoutTemplate = [
+                        //头像  
+                        '<span><img src="{figureurl}" class="{size_key}"/></span>',
+                        //昵称  
+                        '<span>{nickname}</span>',
+                        //退出  
+                        '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
+                ].join("");
+                dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+                    nickname: QC.String.escHTML(reqData.nickname),
+                    figureurl: reqData.figureurl
+                }));
+            }, function (opts) {//注销成功  
+                alert('QQ登录 注销成功');
             });
             WB2.anyWhere(function (W) {
                 W.widget.connectButton({

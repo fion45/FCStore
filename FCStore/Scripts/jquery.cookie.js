@@ -1,12 +1,8 @@
-/**
- * Cookie plugin
- *
- * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
+/* Dual licensed under the MIT and GPL licenses:
+    * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
- *
- */
+    *
+    */
 
 /**
  * Create a cookie with the given name and value and other optional parameters.
@@ -58,7 +54,6 @@ jQuery.cookie = function(name, value, options) {
         options = options || {};
         if (value === null) {
             value = '';
-            options = $.extend({}, options); // clone object since it's unexpected behavior if the expired property were changed
             options.expires = -1;
         }
         var expires = '';
@@ -72,7 +67,7 @@ jQuery.cookie = function(name, value, options) {
             }
             expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
         }
-        // NOTE Needed to parenthesize options.path and options.domain
+        // CAUTION: Needed to parenthesize options.path and options.domain
         // in the following expressions, otherwise they evaluate to undefined
         // in the packed version for some reason...
         var path = options.path ? '; path=' + (options.path) : '';
@@ -92,15 +87,6 @@ jQuery.cookie = function(name, value, options) {
                 }
             }
         }
-        //add from fion
-    	var result = {};
-        var re = new RegExp("(\\w+)\\s*=\\s*([^&]+)","gi");
-        var match = re.exec(cookieValue);
-        while(match != null)
-        {
-        	result[match[1]] = match[2];
-        	match = re.exec(cookieValue);
-        }
-        return result;
+        return cookieValue;
     }
 };
