@@ -2,24 +2,49 @@
     QC.Login({
         btnId: "qqLoginBtn"	//插入按钮的节点id
     },
-    function (reqData, opts) {//登录成功  
-        //根据返回数据，更换按钮显示状态方法  
-        var dom = document.getElementById(opts['btnId']),
-        _logoutTemplate = [
-             //头像  
-             '<span><img src="{figureurl}" class="{size_key}"/></span>',
-             //昵称  
-             '<span>{nickname}</span>',
-             //退出  
-             '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
-        ].join("");
-        dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
-            nickname: QC.String.escHTML(reqData.nickname),
-            figureurl: reqData.figureurl
-        }));
-    }, function (opts) {//注销成功  
-        alert('QQ登录 注销成功');
-
+    function (reqData, opts) {
+    	//判断该QQ号是否已注册
+    	if(QC.Login.check()){
+	    	QC.Login.getMe(function(openId, accessToken){
+	    		//openId和accessToken保存到本地
+	    		$.myajax({
+	    			loadEle : $(window.document.body),
+		        	historyTag : false,
+		        	loadEle : null,
+		            url: "/User/LoginByQQ/" + openId + "/" + accessToken,
+		            data: null,
+		            dataType: "json",
+		            type: "GET",
+		            contentType: "application/json;charset=utf-8",
+		            success: function (data,status,options) {
+		            	
+		            }
+				});
+	    	});
+	        //登录成功 
+	        //根据返回数据，更换按钮显示状态方法  
+	        var dom = document.getElementById(opts['btnId']);
+	        var tmpStr = 
+	        	"<div class=UserHead >" +
+	        		"<div class=img >" +
+	        			"<img src=\"{figureurl}\" />" +
+	        		"</div>" +
+	        		"<div class=info >" +
+	        			"<div>RightGO网欢迎{nickname} | <a href=\"javascript:QC.Login.signOut();\">退出</a></div>" +
+	        		"</div>" +
+	    		"</div>";
+	        dom && (dom.innerHTML = QC.String.format(tmpStr, {
+	            figureurl: reqData.figureurl,
+	            nickname: QC.String.escHTML(reqData.nickname)
+	        }));
+	        $("#wb_connect_btn").hide();
+	        $("#userArea .VADiv").hide();
+    	}
+    }, function (opts) {
+    	//注销成功  
+        alert("已退出登录");
+        $("#wb_connect_btn").show();
+        $("#userArea .VADiv").show();
     });
     
     WB2.anyWhere(function (W) {

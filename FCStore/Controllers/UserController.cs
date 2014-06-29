@@ -11,6 +11,7 @@ using FCStore.FilterAttribute;
 using System.Text;
 using System.Text.RegularExpressions;
 using FCStore.Common;
+using System.Collections.Generic;
 
 namespace FCStore.Controllers
 {
@@ -264,6 +265,27 @@ namespace FCStore.Controllers
             else
             {
                 return View(user);
+            }
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult LoginByQQ(string openID,string accessToken)
+        {
+            //判断该QQ是否已有账号关联
+            User user = db.Users.FirstOrDefault(r => r.QQOpenID == openID);
+            if (user != null)
+            {
+                //已关联账号
+
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(user);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
             }
         }
 

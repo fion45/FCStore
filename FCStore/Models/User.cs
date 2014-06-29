@@ -99,5 +99,17 @@ namespace FCStore.Models
                 return null;
             }
         }
+
+        public string QQOpenID
+        {
+            get;
+            set;
+        }
+
+        public string QQAccessToken
+        {
+            get;
+            set;
+        }
     }
 }

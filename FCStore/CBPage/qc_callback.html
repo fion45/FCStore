@@ -1,7 +1,7 @@
 ﻿<html> 
    <head> 
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	 <title> QQConnect JSDK - redirectURI </title>
+	 <title> 欢迎登陆RightGO外购网 </title>
 	 <style type="text/css">
 		html, body{font-size:14px; line-height:180%;}
 	 </style>
@@ -17,4 +17,49 @@
 </html>
 
 <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
+<script type="text/javascript" charset="utf-8" >
+    window.onload = function () {
+        //登陆成功,更新后台信息
+        //声明一个xmlHttpRequest变量，用于接收XMLHttpRequest对象。根据IE和非IE进行if和else判断
+        var xmlHttpRequest = null;
+        //alert(window.ActiveXObject); //判断是否IE
+        if(window.ActiveXObject){
+            //如果是IE
+            xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        } else if(window.XMLHttpRequest){
+            //非IE
+            xmlHttpRequest = new XMLHttpRequest();
+        }
+        //xmlHttpRequest对象已经生成了，接下来向服务器发送请求了！
+        if (null != xmlHttpRequest) {
+            alert(location.search.substring(1));
+            var tmpStr = "/User/LoginByQQ/" + location.search.substring(1);
+            //open表示准备向服务器发送请求！
+            //第一个参数，表示使用什么方式去请求：
+            //第二个参数，表示的是请求的url；
+            //第三个参数，表示是否以异步方式发送请求：true表示是
+            xmlHttpRequest.open("GET", tmpStr, true);
+            //监听状态改变，关联好回调函数。也就是每一步状态的改变都会调用到这个ajaxCallback.
+            //onreadystatechange总共有四个状态为，只有当这个状态真正达到了最后一步再进行调用回调函数
+            xmlHttpRequest.onreadystatechange = ajaxCallback;
+            //真正向服务器端发送数据
+            //调用send方法时，如果是post方式，则参数以key/value方式通过send方式进行传输；
+            //如果是get方式，则send方法传参为空！参数跟在url?name=value第二个参数后面
+            xmlHttpRequest.send(null);
+        }
+    }
+    function ajaxCallback(){
+        //只需要判断是否已经发送请求，并且已经返回值了，才进行处理返回值！
+        if(xmlHttpRequest.readyState == 4){
+            alert(xmlHttpRequest.status); //通过服务器发送请求，只有返回值后，这个status才为200；
+            //////////////////////////////////////
+            //如果是两个页面本身在本地进行ajax尝试，则返回值status=0.记住，这里返回是0.因为没有通过服务器请求
+            /////////////////////////////////////
+            if(xmlHttpRequest.status == 200){
+                var responseText = xmlHttpRequest.responseText;
+                alert(responseText);
+            }
+        }
+    }
+</script>
 

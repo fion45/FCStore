@@ -470,6 +470,26 @@ footer .centerDiv {
     float:left;
 }
 
+    #qqLoginBtn .UserHead {
+        margin-top:-4px;
+        width:195px;
+        height:30px;
+    }
+
+        #qqLoginBtn .UserHead .img{
+            width:30px;
+            height:30px;
+            margin-right:5px;
+            float:left;
+        }
+
+        #qqLoginBtn .UserHead .info {
+            float:left;
+            width:160px;
+            height:30px;
+            line-height:30px;
+        }
+
 #wb_connect_btn {
     margin-left:5px;
     margin-top:-1px;
