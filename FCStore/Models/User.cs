@@ -50,6 +50,12 @@ namespace FCStore.Models
             set;
         }
 
+        public bool Sex             //false:女,true:男
+        {
+            get;
+            set;
+        }
+
 
         [ForeignKey("DefaultAddress")]
         public int? DefaultAddrID
@@ -107,6 +113,12 @@ namespace FCStore.Models
         }
 
         public string QQAccessToken
+        {
+            get;
+            set;
+        }
+
+        public string LastLoginDT
         {
             get;
             set;

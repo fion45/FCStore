@@ -1,4 +1,57 @@
 ﻿$(function () {
+	var tmpEle = $("<div id=associateUserDlg >" +
+			"<div class=description>QQ用户必须关联新用户或已有用户</div>" +
+			"<div id=auTabs>" +
+				"<ul>" +
+					"<li><a href='#tabs-nu' >新用户</a></li>" +
+					"<li><a href='#tabs-ou' >已有用户</a></li>" +
+				"</ul>" +
+				"<div id='tabs-nu'>" +
+					"<div class=title >用户名：</div>" +
+					"<div class=content >" +
+						"<input type=text />" +
+					"</div>" +
+					"<div class=title >登陆密码：</div>" +
+					"<div class=content >" +
+						"<input type=password />" +
+					"</div>" +
+					"<div class=pullupDiv ></div>" +
+				"</div>" +
+				"<div id='tabs-ou'>" +
+					"<div class=title >用户名：</div>" +
+					"<div class=content >" +
+						"<input type=text />" +
+					"</div>" +
+					"<div class=title >登陆密码：</div>" +
+					"<div class=content >" +
+						"<input type=password />" +
+					"</div>" +
+					"<div class=title >密码确认：</div>" +
+					"<div class=content >" +
+						"<input type=password />" +
+					"</div>" +
+					"<div class=pullupDiv ></div>" +
+				"</div>" +
+			"</div>" +
+		"</div>");
+	tmpEle.appendTo($(window.document.body));
+    $( "#auTabs" ).tabs({
+      event: "mouseover"
+    });
+	tmpEle.dialog({
+  		dialogClass: "no-topbar",
+		width: 350,
+		height: 250,
+  		resizable: false,
+      	modal: true,
+      	buttons: {
+	        Ok: function() {
+	        	alert("OK");
+	          	$( this ).dialog( "close" );
+	        }
+      	}
+	});
+	
     QC.Login({
         btnId: "qqLoginBtn"	//插入按钮的节点id
     },
@@ -6,6 +59,7 @@
     	//判断该QQ号是否已注册
     	if(QC.Login.check()){
 	    	QC.Login.getMe(function(openId, accessToken){
+	    		$(window.document.body).showLoading();
 	    		//openId和accessToken保存到本地
 	    		$.myajax({
 	    			loadEle : $(window.document.body),
@@ -17,7 +71,43 @@
 		            type: "GET",
 		            contentType: "application/json;charset=utf-8",
 		            success: function (data,status,options) {
-		            	
+		            	$(window.document.body).hideLoading();
+		            	if(data.content == null) {
+		            		//未关联，要求输入ID和密码
+		            		var tmpEle = $("<div id=associateUserDlg >" +
+		            				"<div class=title >用户名：</div>" +
+		            				"<div class=content >" +
+		            					"<input type=text />" +
+		            				"</div>" +
+		            				"<div class=title >登陆密码：</div>" +
+		            				"<div class=content >" +
+		            					"<input type=password />" +
+		            				"</div>" +
+		            				"<div class=title >密码确认：</div>" +
+		            				"<div class=content >" +
+		            					"<input type=password />" +
+		            				"</div>" +
+		            				"<div class=btn >" +
+		            					"<input class=btn2 type=button />" +
+		            				"</div>" +
+            					"</div>");
+        					tmpEle.appendTo($(window.document.body));
+		            		tmpEle.dialog({
+					      		resizable: false,
+					      		height:140,
+						      	modal: true,
+						      	buttons: {
+							        Ok: function() {
+							        	alert("OK");
+							          	$( this ).dialog( "close" );
+							        }
+						      	}
+					    	});
+		            	}
+		            	else {
+		            		//关联了
+		            		
+		            	}
 		            }
 				});
 	    	});

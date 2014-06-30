@@ -351,6 +351,37 @@ footer .centerDiv {
     font-weight:bold;
 }
 
+
+/* associateUserDlg 
+----------------------------------------------------------*/
+.no-topbar .ui-dialog-titlebar {
+  display: none;
+}
+
+    #associateUserDlg .description {
+        text-align:left;
+        width:100%;
+        float:left;
+        font-size:large;
+        line-height:35px;
+    }
+
+    #associateUserDlg .title {
+        width:30%;
+        text-align:right;
+        float:left;
+        height:35px;
+        line-height:35px;
+    }
+
+    #associateUserDlg .content {
+        width:70%;
+        text-align:left;
+        float:left;
+        height:35px;
+        line-height:35px;
+    }
+
 /* Brand Item 
 ----------------------------------------------------------*/
 
