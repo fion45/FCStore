@@ -354,7 +354,12 @@ footer .centerDiv {
 
 /* associateUserDlg 
 ----------------------------------------------------------*/
-.no-topbar .ui-dialog-titlebar {
+body .justOverlayer {
+    background:none;
+    border:none;
+}
+
+.justOverlayer .ui-dialog-titlebar {
   display: none;
 }
 
@@ -380,6 +385,19 @@ footer .centerDiv {
         float:left;
         height:35px;
         line-height:35px;
+    }
+    
+    #associateUserDlg .btn {
+        width:90%;
+        padding:5px 5%;
+        float:left;
+        height:35px;
+        line-height:35px;
+        text-align:center;
+    }
+
+    #associateUserDlg .ui-tabs-panel {
+        height:170px;
     }
 
 /* Brand Item 

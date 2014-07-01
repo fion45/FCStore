@@ -501,6 +501,11 @@ var AddSeconds = function(temp,addSeconds) {
     return tempY+'-'+tempMM+'-'+tempD+' '+tempH+':'+tempM+':'+tempS;
 }
 
+function GetUIDHex(num) {
+	var tmpStr = '00000000' + num.toString(16);
+	return tmpStr.substring(tmpStr.length - 8,tmpStr.length);
+}
+
 //jQuery.extend(jQuery.validator.messages, {
 //	required: "必填字段",
 //	remote: "请修正该字段",

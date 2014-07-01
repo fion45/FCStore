@@ -22,13 +22,19 @@
             <label class="title">搜索：</label>
             <input type="text" />
             <div id="userArea">
-                <span id="qqLoginBtn" ></span>
-                <span id="wb_connect_btn"></span>
+                <div class="nonLogin">
+                    <span id="qqLoginBtn"></span>
+                    <span id="wb_connect_btn"></span>
+
+                </div>
+                
                 <div class="VADiv">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <label class="title">欢迎<a href="/User/Details">@(User.Identity.Name)</a>光临RightGO美国代购网！</label>
                         <a href="/User/Exit">退出</a>
+                        
+                        
                     }
                     else
                     {

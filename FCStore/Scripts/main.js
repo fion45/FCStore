@@ -1,141 +1,13 @@
 ﻿$(function () {
-	var tmpEle = $("<div id=associateUserDlg >" +
-			"<div class=description>QQ用户必须关联新用户或已有用户</div>" +
-			"<div id=auTabs>" +
-				"<ul>" +
-					"<li><a href='#tabs-nu' >新用户</a></li>" +
-					"<li><a href='#tabs-ou' >已有用户</a></li>" +
-				"</ul>" +
-				"<div id='tabs-nu'>" +
-					"<div class=title >用户名：</div>" +
-					"<div class=content >" +
-						"<input type=text />" +
-					"</div>" +
-					"<div class=title >登陆密码：</div>" +
-					"<div class=content >" +
-						"<input type=password />" +
-					"</div>" +
-					"<div class=pullupDiv ></div>" +
-				"</div>" +
-				"<div id='tabs-ou'>" +
-					"<div class=title >用户名：</div>" +
-					"<div class=content >" +
-						"<input type=text />" +
-					"</div>" +
-					"<div class=title >登陆密码：</div>" +
-					"<div class=content >" +
-						"<input type=password />" +
-					"</div>" +
-					"<div class=title >密码确认：</div>" +
-					"<div class=content >" +
-						"<input type=password />" +
-					"</div>" +
-					"<div class=pullupDiv ></div>" +
-				"</div>" +
-			"</div>" +
-		"</div>");
-	tmpEle.appendTo($(window.document.body));
-    $( "#auTabs" ).tabs({
-      event: "mouseover"
-    });
-	tmpEle.dialog({
-  		dialogClass: "no-topbar",
-		width: 350,
-		height: 250,
-  		resizable: false,
-      	modal: true,
-      	buttons: {
-	        Ok: function() {
-	        	alert("OK");
-	          	$( this ).dialog( "close" );
-	        }
-      	}
-	});
-	
     QC.Login({
         btnId: "qqLoginBtn"	//插入按钮的节点id
-    },
-    function (reqData, opts) {
-    	//判断该QQ号是否已注册
-    	if(QC.Login.check()){
-	    	QC.Login.getMe(function(openId, accessToken){
-	    		$(window.document.body).showLoading();
-	    		//openId和accessToken保存到本地
-	    		$.myajax({
-	    			loadEle : $(window.document.body),
-		        	historyTag : false,
-		        	loadEle : null,
-		            url: "/User/LoginByQQ/" + openId + "/" + accessToken,
-		            data: null,
-		            dataType: "json",
-		            type: "GET",
-		            contentType: "application/json;charset=utf-8",
-		            success: function (data,status,options) {
-		            	$(window.document.body).hideLoading();
-		            	if(data.content == null) {
-		            		//未关联，要求输入ID和密码
-		            		var tmpEle = $("<div id=associateUserDlg >" +
-		            				"<div class=title >用户名：</div>" +
-		            				"<div class=content >" +
-		            					"<input type=text />" +
-		            				"</div>" +
-		            				"<div class=title >登陆密码：</div>" +
-		            				"<div class=content >" +
-		            					"<input type=password />" +
-		            				"</div>" +
-		            				"<div class=title >密码确认：</div>" +
-		            				"<div class=content >" +
-		            					"<input type=password />" +
-		            				"</div>" +
-		            				"<div class=btn >" +
-		            					"<input class=btn2 type=button />" +
-		            				"</div>" +
-            					"</div>");
-        					tmpEle.appendTo($(window.document.body));
-		            		tmpEle.dialog({
-					      		resizable: false,
-					      		height:140,
-						      	modal: true,
-						      	buttons: {
-							        Ok: function() {
-							        	alert("OK");
-							          	$( this ).dialog( "close" );
-							        }
-						      	}
-					    	});
-		            	}
-		            	else {
-		            		//关联了
-		            		
-		            	}
-		            }
-				});
-	    	});
-	        //登录成功 
-	        //根据返回数据，更换按钮显示状态方法  
-	        var dom = document.getElementById(opts['btnId']);
-	        var tmpStr = 
-	        	"<div class=UserHead >" +
-	        		"<div class=img >" +
-	        			"<img src=\"{figureurl}\" />" +
-	        		"</div>" +
-	        		"<div class=info >" +
-	        			"<div>RightGO网欢迎{nickname} | <a href=\"javascript:QC.Login.signOut();\">退出</a></div>" +
-	        		"</div>" +
-	    		"</div>";
-	        dom && (dom.innerHTML = QC.String.format(tmpStr, {
-	            figureurl: reqData.figureurl,
-	            nickname: QC.String.escHTML(reqData.nickname)
-	        }));
-	        $("#wb_connect_btn").hide();
-	        $("#userArea .VADiv").hide();
-    	}
-    }, function (opts) {
-    	//注销成功  
-        alert("已退出登录");
-        $("#wb_connect_btn").show();
-        $("#userArea .VADiv").show();
-    });
+    },MainLayout.QQLoginSuccess);
+//    , function (opts) {
+//    	//注销成功  
+//        alert("已退出登录");
+//        $("#wb_connect_btn").show();
+//        $("#userArea .VADiv").show();
+//    });
     
     WB2.anyWhere(function (W) {
         W.widget.connectButton({
@@ -406,6 +278,186 @@ var MainLayout = {
 	        MainLayout.ExtentTag = true;
 	        target.toggleClass("downBtn");
 	    });
+	},
+	onRNUOKBtn : function() {
+		var tmpPar = $("#tabs-nu"); 
+		var tmpUN = tmpPar.find(".UserNameTB").val();
+		var tmpPSW = tmpPar.find(".PSWTB").val();
+		var QQInfo = $("#associateUserDlg").data("QQInfo");
+		var tmpData = {
+			NTag : true,
+			LoginID : tmpUN,
+			PSW : tmpPSW,
+			UserName : QQInfo.nickname,
+			sex : QQInfo.gender == "男",
+			figureurl_qq_1 : QQInfo.figureurl_qq_1,
+			figureurl_qq_2 : QQInfo.figureurl_qq_2,
+			openId : QQInfo.openId,
+			accessToken : QQInfo.accessToken
+		};
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#associateUserDlg"),
+            url: "/User/QQRelativeUser",
+            data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.content != null) {
+            		//注册新用户成功
+            		$("#associateUserDlg").dialog( "close" );
+            	}
+            	else {
+            		alert("已有同名用户，请重新修改提交。");
+            	}
+            }
+		});
+	},
+	onROUOKBtn : function() {
+		var tmpPar = $("#tabs-ou");
+		var tmpUN = tmpPar.find(".UserNameTB").val();
+		var tmpPSW = tmpPar.find(".PSWTB").val();
+		var QQInfo = $("#associateUserDlg").data("QQInfo");
+		var tmpData = {
+			NTag : false,
+			LoginID : tmpUN,
+			PSW : tmpPSW,
+			UserName : QQInfo.nickname,
+			sex : QQInfo.gender == "男",
+			figureurl_qq_1 : QQInfo.figureurl_qq_1,
+			figureurl_qq_2 : QQInfo.figureurl_qq_2,
+			openId : QQInfo.openId,
+			accessToken : QQInfo.accessToken
+		};
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#associateUserDlg"),
+            url: "/User/QQRelativeUser",
+            data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.content != null) {
+            		//关联旧用户成功
+            		$("#associateUserDlg").dialog( "close" );
+            	}
+            	else {
+            		alert("用户名或者密码错误，请重新输入");
+            	}
+            }
+		});
+	},
+	QQLoginSuccess : function(reqData, opts) {
+		//登录成功 
+        //根据返回数据，更换按钮显示状态方法  
+        var dom = document.getElementById(opts['btnId']);
+        var tmpStr = 
+        	"<div class=UserHead >" +
+        		"<div class=img >" +
+        			"<img src=\"{figureur}\" />" +
+        		"</div>" +
+        		"<div class=info >" +
+        			"<div>RightGO网欢迎<label class=nameLB >{nickname}</label> | <a href=\"javascript:QC.Login.signOut();\">退出</a></div>" +
+        		"</div>" +
+    		"</div>";
+        dom && (dom.innerHTML = QC.String.format(tmpStr, {
+            figureur: reqData.figureurl_qq_1,
+            nickname: QC.String.escHTML(reqData.nickname)
+        }));
+        $("#wb_connect_btn").hide();
+        $("#userArea .VADiv").hide();
+    	//判断该QQ号是否已注册
+    	if(QC.Login.check()){
+	    	QC.Login.getMe(function(openId, accessToken){
+	    		$(window.document.body).showLoading();
+	    		//openId和accessToken保存到本地
+	    		$.myajax({
+	    			loadEle : $(window.document.body),
+		        	historyTag : false,
+		        	loadEle : null,
+		            url: "/User/LoginByQQ/" + openId + "/" + accessToken,
+		            data: null,
+		            dataType: "json",
+		            type: "GET",
+		            contentType: "application/json;charset=utf-8",
+		            success: function (data,status,options) {
+		            	$(window.document.body).hideLoading();
+		            	if(data.content == null) {
+		            		//未关联，要求输入ID和密码
+							var tmpEle = $("<div id='associateUserDlg' >" +
+									"<div id='auTabs'>" +
+										"<ul>" +
+											"<li><a href='#tabs-nu' >新用户</a></li>" +
+											"<li><a href='#tabs-ou' >已有用户</a></li>" +
+										"</ul>" +
+										"<div id='tabs-nu'>" +
+											"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
+											"<div class='title' >新用户名：</div>" +
+											"<div class='content' >" +
+												"<input class='UserNameTB' type='text' />" +
+											"</div>" +
+											"<div class='title' >登陆密码：</div>" +
+											"<div class='content' >" +
+												"<input class='PSWTB' type='password' />" +
+											"</div>" +
+											"<div class='title' >密码确认：</div>" +
+											"<div class='content' >" +
+												"<input class='EnsurePSWTB' type='password' />" +
+											"</div>" +
+											"<div class='btn'>" +
+												"<input onclick='MainLayout.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+											"</div>" +
+											"<div class='pullupDiv' ></div>" +
+										"</div>" +
+										"<div id='tabs-ou'>" +
+											"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
+											"<div class='title' >老用户名：</div>" +
+											"<div class='content' >" +
+												"<input class='UserNameTB' type='text' />" +
+											"</div>" +
+											"<div class='title' >登陆密码：</div>" +
+											"<div class='content' >" +
+												"<input class='PSWTB' type='password' />" +
+											"</div>" +
+											"<div class='btn'>" +
+												"<input onclick='MainLayout.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+											"</div>" +
+											"<div class='pullupDiv' ></div>" +
+										"</div>" +
+									"</div>" +
+								"</div>");
+							tmpEle.appendTo($("#Main"));
+						    $( "#auTabs" ).tabs({
+						      event: "mouseover"
+						    });
+							tmpEle.dialog({
+						  		dialogClass: "justOverlayer",
+								width: 350,
+						  		resizable: false,
+						      	modal: true
+							});
+							var QQInfo = {
+								openId : openId,
+								accessToken : accessToken,
+								nickname : QC.String.escHTML(reqData.nickname),
+								gender : reqData.gender,
+								figureurl_qq_1 : reqData.figureurl_qq_1,
+								figureurl_qq_2 : reqData.figureurl_qq_2
+							};
+							tmpEle.data("QQInfo",QQInfo);
+		            	}
+		            	else {
+		            		//关联了
+		            		var tmpEle = $(dom); 
+		            		tmpEle.find(".img").prop("src","/UserInfo/" + GetUIDHex($.cookie("UserInfo").UID) + ".jpg");
+		            		tmpEle.find(".nameLB").text($.cookie("UserInfo").UserName);
+		            	}
+		            }
+				});
+	    	});
+    	}
 	}
 };
 

@@ -12,6 +12,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using FCStore.Common;
 using System.Collections.Generic;
+using System.Net;
+using System.IO;
+using System.Drawing;
 
 namespace FCStore.Controllers
 {
@@ -283,6 +286,81 @@ namespace FCStore.Controllers
             {
                 LoginSuccess(user);
             }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(user);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult QQRelativeUser(bool NTag, string LoginID, string PSW, string UserName, bool sex,string figureurl_qq_1, string figureurl_qq_2, string openId, string accessToken)
+        {
+            User user = null;
+            bool gfTag = false;
+            if (NTag)
+            {
+                //新用户,判断该用户名是否已存在
+                user = db.Users.FirstOrDefault(r => r.LoginID == LoginID);
+                if(user == null)
+                {
+                    user = new User()
+                    {
+                        LoginID = LoginID,
+                        LoginPSW = PSW,
+                        UserName = UserName,
+                        Sex = sex,
+                        QQOpenID = openId,
+                        QQAccessToken = accessToken
+                    };
+                    db.Users.Add(user);
+                    db.SaveChanges();
+
+                    gfTag = true;
+                }
+            }
+            else
+            {
+                //旧用户
+                user = db.Users.FirstOrDefault(r => r.LoginID == LoginID && r.LoginPSW == PSW);
+                if (user != null)
+                {
+                    user.QQOpenID = openId;
+                    user.QQAccessToken = accessToken;
+                    user.Sex = sex;
+                    user.UserName = UserName;
+                    db.SaveChanges();
+
+                    gfTag = true;
+                }
+            }
+            if(gfTag)
+            {
+                //获取用户图片
+                Uri uri = new Uri(figureurl_qq_1);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream resStream = response.GetResponseStream();
+                Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
+                string tmpFloder = Server.MapPath("~\\UserInfo\\");
+                string tmpStr = "00000000" + Convert.ToString(user.UID, 16).ToUpper();
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                string tmpFN = tmpFloder + tmpStr + "_40_40.jpg";
+                sourcebm.Save(tmpFN);
+
+                uri = new Uri(figureurl_qq_2);
+                request = (HttpWebRequest)WebRequest.Create(uri);
+                response = (HttpWebResponse)request.GetResponse();
+                resStream = response.GetResponseStream();
+                sourcebm = new Bitmap(resStream);
+                tmpFN = tmpFloder + tmpStr + "_100_100.jpg";
+                sourcebm.Save(tmpFN);
+            }
+            if(user != null)
+                LoginSuccess(user);
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(user);
