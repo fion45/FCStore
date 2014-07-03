@@ -24,6 +24,7 @@ header, footer, nav, section {
 
 li {
     list-style-type:none;
+    float:left;
 }
 
 div {
@@ -339,22 +340,10 @@ textarea {
     padding:3px 0px 10px 0px;
 }
 
-/* footer 
-----------------------------------------------------------*/
-footer {
-    text-align:center;
-}
-
-footer .centerDiv {
-    width:600px;
-    margin:0px auto;
-    font-weight:bold;
-}
-
 
 /* associateUserDlg 
 ----------------------------------------------------------*/
-body .justOverlayer {
+/*body .justOverlayer {
     background:none;
     border:none;
 }
@@ -398,169 +387,115 @@ body .justOverlayer {
 
     #associateUserDlg .ui-tabs-panel {
         height:170px;
-    }
+    }*/
 
-/* Brand Item 
+/* toolbar
 ----------------------------------------------------------*/
-
-.brandA {
-    display:block;
-    position:relative;
-    width:117px;
-    height:58px;
-}
-
-.brandA .icon {
-    width:100%;
-    height:100%;
-    float:left;
-    display:none;
-}
-
-.brandA .icon img {
-    width:100%;
-    height:100%;
-}
-
-.brandA .name {
-    position:absolute;
-    left:0px;
-    top:50%;
-    font-size:12pt;
-    font-weight:900;
-    width:100%;
-    margin-top: -9px;
-    word-wrap:break-word;
-    text-wrap:normal;
-    vertical-align:middle;
-    text-align:center;
-    color:#a2a2a2;
-}
-
-/* Brand List
-----------------------------------------------------------*/
-#Brands {
-    position:absolute;
-    top:0px;
-    left:0px;
-    float:none;
-    width:100%;
-    overflow:hidden;
-    height:58px;
-}
-
-    #Brands .content {
-        background:url("/Content/themes/image/topBK.png") repeat;
-        height:auto;
-        overflow:hidden;
-    }
-    
-        #Brands .content li {
-            position:relative;
-            width:117px;
-            height:58px;
-            float:left;
-            margin-right:4px;
-            margin-bottom:2px;
-        }
-
-    #Brands .btn {
-        top : 0px;
-        left: 100%;
-        margin-left:-44px;
-        width : 44px;
-        height : 25px;
-        cursor:pointer;
-        background:url("/Content/themes/image/main.png") no-repeat -335px -175px;
-        position : fixed;
-    }
-
-    #Brands .downBtn {
-        background:url("/Content/themes/image/main.png") no-repeat -286px -175px;
-        position : absolute;
-    }
-
-/* Toolbar
-----------------------------------------------------------*/
-#Toolbar {
-    margin-top:58px;
+#toolbar {
     width:100%;
     height:30px;
-    background-color:#50A6BD;
-    margin-bottom:10px;
     line-height:30px;
     vertical-align:middle;
-    box-shadow:0px 3px 8px 1px rgb(88, 88, 88);
-    color:white;
     font-size:10pt;
-    font-weight:bold;
+    text-align:center;
 }
 
-    #Toolbar .title {
-        margin-left:20px;
+    #toolbar .centerDiv {
+        width:880px;
+        margin:0 auto;
     }
 
-#userArea {
-    float:right;
-    margin-right:20px;
-    vertical-align:middle;
-}
-
-    #userArea .title {
-        margin-right:10px;
-    }
-
-        #userArea .title a {
-            margin:0px 3px;
-        }
-
-#qqLoginBtn {
-    margin-top:4px;
-    float:left;
-}
-
-    #qqLoginBtn .UserHead {
-        margin-top:-4px;
-        width:195px;
-        height:30px;
-    }
-
-        #qqLoginBtn .UserHead .img{
-            width:30px;
-            height:30px;
-            margin-right:5px;
-            float:left;
-        }
-
-        #qqLoginBtn .UserHead .info {
-            float:left;
-            width:160px;
-            height:30px;
-            line-height:30px;
-        }
-
-#wb_connect_btn {
-    margin-left:5px;
-    margin-top:-1px;
-    float:left;
-}
-
-    #userArea .VADiv {
-        height:16px;
-        line-height:16px;
-        margin-top:8px;
-        margin-left:5px;
-        vertical-align:middle;
+    #toolbar .centerDiv .help {
         float:left;
     }
 
-    #userArea .VADiv a {
-        color:#ffffff;
+    #toolbar .centerDiv .userInfo {
+        float:right;
     }
 
-    #userArea .VADiv a:hover {
-        color: #cc0000;
+        #toolbar .centerDiv .help a,#toolbar .centerDiv .userInfo a {
+            margin:0 3px;
+        }
+
+/* iconDiv
+----------------------------------------------------------*/
+#iconDiv {
+    width:100%;
+    text-align:center;
+}
+
+    #iconDiv .centerDiv {
+        margin:0 auto;
+        width:880px;
+        height:60px;
+        line-height:60px;
+        vertical-align:middle;
     }
+
+/* navigatorDiv
+----------------------------------------------------------*/
+#navigatorDiv {
+    width:100%;
+    text-align:center;
+}
+
+    #navigatorDiv .centerDiv {
+        margin:0 auto;
+        width:880px;
+    }
+
+        #navigatorDiv .centerDiv .item {
+            width:15%;
+        }
+
+            #navigatorDiv .centerDiv .item a {
+                width:90%;
+                margin:0px 5%;
+                height:45px;
+                line-height:45px;
+                vertical-align:middle;
+            }
+            
+        #navigatorDiv .centerDiv .myCart {
+            width:40%;
+        }
+
+            #NavigatorDiv .centerDiv .myCart a {
+                width:30%;
+                float:right;
+            }
+            
+/* searchDiv
+----------------------------------------------------------*/
+#searchDiv {
+    width:100%;
+    text-align:center;
+}
+
+    #searchDiv .centerDiv {
+        margin:0 auto;
+        width:880px;
+    }
+
+#searchTB {
+    margin-left:40%;
+}
+
+    #searchDiv .centerDiv .hotLi {
+        margin-left:1px;
+    }
+
+/* footer 
+----------------------------------------------------------*/
+footer {
+    text-align:center;
+}
+
+footer .centerDiv {
+    width:600px;
+    margin:0px auto;
+    font-weight:bold;
+}
 
 /* Category List
 ----------------------------------------------------------*/

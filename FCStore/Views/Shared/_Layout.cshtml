@@ -18,37 +18,58 @@
 </head>
 <body>
     <header>
-        <div id="Toolbar">
-            <label class="title">搜索：</label>
-            <input type="text" />
-            <div id="userArea">
-                <div class="nonLogin">
-                    <span id="qqLoginBtn"></span>
-                    <span id="wb_connect_btn"></span>
-
+        <div id="toolbar">
+            <div class="centerDiv" >
+                <div class="help">
+                    <a>设为首页</a>|
+                    <a>收藏我们</a>|
+                    <a>帮助中心</a>
                 </div>
-                
-                <div class="VADiv">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <label class="title">欢迎<a href="/User/Details">@(User.Identity.Name)</a>光临RightGO美国代购网！</label>
-                        <a href="/User/Exit">退出</a>
-                        
-                        
-                    }
-                    else
-                    {
-                        string tmpStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(HttpContext.Current.Request.Url.AbsoluteUri));
-                        <label> | </label>
-                        <a href="/Home/Login/@(tmpStr)">
-                            请登陆
-                        </a>
-                        <label> | </label>
-                        <a href="/Home/Register/@(tmpStr)">
-                            免费注册
-                        </a>
-                    }
+                <div class="userInfo">
+                    <a>登陆商城</a>|
+                    <a>免费注册</a>
                 </div>
+            </div>
+        </div>
+        <div id="iconDiv">
+            <div class="centerDiv">
+                正品保障 | 免费配送 | 无理由退货 | 客服电话
+            </div>
+        </div>
+        <div id="navigatorDiv">
+            <div class="centerDiv">
+                <ul id="navigator">
+                    <li class="item">
+                        <a>首页</a>
+                    </li>
+                    <li class="item">
+                        <a>母婴专栏</a>
+                    </li>
+                    <li class="item">
+                        <a>汽车专栏</a>
+                    </li>
+                    <li class="item">
+                        <a>美容保养</a>
+                    </li>
+                    <li class="item myCart">
+                        <a>我的购物车</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="searchDiv">
+            <div class="centerDiv">
+                <ul>
+                    <li>
+                        <input id="searchTB" type="text" />
+                    </li>
+                    <li>
+                        <input id="searchBTN" type="button" value="搜索" />
+                    </li>
+                    <li class="hotLi">
+                        <label>热门：</label>
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
@@ -205,7 +226,6 @@
             <label>Copyright  2004-2014  RightGO网  All Rights Reserved <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">粤ICP备14045853号-1</a></label>
         </div>
     </footer>
-    @{Html.RenderAction("_BrandList", "Brand");}
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
