@@ -40,7 +40,6 @@ namespace FCStore.Controllers
             {
                 ViewBag.IsAdmin = true;
             }
-
             return View(db.Columns.ToList());
         }
 

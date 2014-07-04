@@ -71,51 +71,6 @@
         		ele.hide();
         }
     });
-    
-    //收藏夹
-    (new SidebarFollow()).init({
-        element: $('#Favorite'),
-        distanceToTop: $('#Favorite').position().top
-    });
-    $("#plInFavorit").one("mouseenter",MainLayout.enterPLInFavorit);
-    
-    //购物车
-    (new SidebarFollow()).init({
-        element: $('#Cart'),
-        distanceToTop: $('#Cart').position().top
-    });
-    $("#plInCar").one("mouseenter",MainLayout.enterPLInCar);
-    
-    //QQ在线客服
-    dealy('qq_icon',3);						//2秒后显示QQ图标，默认为2秒，可自行设置
-	settop('qq_icon','cs_online',150);		//设置在线客服的高度，默认150，可自行设置
-	var span_q = getbyClass('cs_online','qq_num');
-	setqq(span_q,['86945494','460927737','86945494','460927737','86945494']);		//填写5个QQ号码
-	click_fn('qq_icon','cs_online');
-    
-	//品牌滚动功能
-    setTimeout(function () {
-        $("#Brands img:lt(" + (MainLayout.BCPerPage + MainLayout.HRBC) + ")").trigger("sporty");
-        MainLayout.HRBC += MainLayout.BCPerPage;
-    }, 200);
-    MainLayout.StartBrandMove();
-    $(".brandA").mouseenter(function () {
-        var item = $(this);
-        item.children(".name").hide();
-        item.children(".icon").show();
-    }).mouseleave(function () {
-        var item = $(this);
-        item.children(".name").show();
-        item.children(".icon").hide();
-    });
-    $("#Brands img").lazyload({
-        placeholder: "/Content/themes/image/BrandBlank.jpg",
-        event: "sporty"
-    });
-    
-//    $.myEditArea.init();
-    
-   	
 });
 
 var MainLayout = {

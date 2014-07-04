@@ -1,77 +1,184 @@
 ﻿@model IEnumerable<FCStore.Models.Column>
+@using FCStore.Models;
+@using FCStore.Common;
 
 @section scripts{    
     <script type="text/javascript" charset="utf-8">
-        $(function () {
-            $("#Center .productFI").lazyload({
-                placeholder: "/Content/themes/image/ColumBlank.jpg"
-            });
-        });
+        //$(function () {
+        //    $("#Center .productFI").lazyload({
+        //        placeholder: "/Content/themes/image/ColumBlank.jpg"
+        //    });
+        //});
     </script>
+}
+<div id="bannerDiv">
+    <ul>
+        <li class="left">
+            <script type="text/javascript" charset="utf-8">
+                document.getElementById("Categorys").style.top = "165px";
+                document.getElementById("Categorys").style.left = "565px";
+            </script>
+        </li>
+        <li class="right">
+            <div class="mainBanner">
+                <img alt="主" />
+            </div>
+            <div class="subBanner">
+                <img alt="母婴专区" />
+            </div>
+            <div class="subBanner mid">
+                <img alt="汽车专区" />
+            </div>
+            <div class="subBanner">
+                <img alt="美容保健" />
+            </div>
+        </li>
+    </ul>
+</div>
+@{
+    string niStr = "";
+    niStr += ";限时抢购;";
+    var sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("限时抢购") == 0);
+    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
+    {
+        //包含限时抢购
+        <div class="MainBlock" id="discountInTime">
+            <div class="left">
+                <label class="title">
+                    限时抢购
+                </label>
+            </div>
+            <div class="center">
+                <div class="title">
+                    <label>极速到货，免运费</label>
+                    <a>更多</a>
+                </div>
+                <ul>
+                    @for(int i=0;i<Math.Min(sitem.Products.Count,4);i++)
+                    {
+                        Product product = sitem.Products[i];
+                        <li class="productItem">
+                            <div>
+                                <img class="thum" src="@(product.ImgPathArr.First())" />
+                            </div>
+                            <div class="description" >
+                                @(product.Title)
+                            </div>
+                            <div>
+                                <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
+                                <div class="price">@(PubFunction.CHPriceFormat(product.Price))</div>
+                            </div>
+                            <div>
+                                <a></a>
+                            </div>
+                            <div class="textLeft">
+                                剩余时间
+                            </div>
+                            <div>
+
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="right">
+
+            </div>
+        </div>
+    }
+    niStr += ";新品上市;";
+    sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("新品上市") == 0);
+    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
+    {
+        //包含新品上市
+        <div class="MainBlock biMB" id="discountInTime">
+            <div class="left">
+                <label class="title">
+                    新品上市
+                </label>
+            </div>
+            <div class="center">
+                <div class="brandDiv">
+                    @{
+                        int m = 0;
+                        for (m = 0; m < Math.Min(sitem.Brands.Count, 4); m++)
+                        {
+                            <div class="brandItem">
+                                <img src="/Brand/@(sitem.Brands[m].Tag).jpg" />
+                            </div>
+                        }
+                        Product proItem = sitem.Products.First();
+                    }
+                </div>
+                <ul>
+                    <li class="bigPI" >
+                        <div>
+                            <img class="thum" src="@(proItem.ImgPathArr.First())" />
+                        </div>
+                        <div class="description">
+                            @(sitem.Products.First().Title)
+                        </div>
+                        <div>
+                            <div class="marketPrice">@(PubFunction.CHPriceFormat(proItem.MarketPrice))</div>
+                            <div class="price">@(PubFunction.CHPriceFormat(proItem.Price))</div>
+                        </div>
+                        <div>
+                            <a></a>
+                        </div>
+                    </li>
+                    @for(int i=1;i<Math.Min(sitem.Products.Count,5);i++)
+                    {
+                        Product product = sitem.Products[i];
+                        <li class="productItem">
+                            <div>
+                                <img class="thum" src="@(product.ImgPathArr.First())" />
+                            </div>
+                            <div class="description" >
+                                @(product.Title)
+                            </div>
+                            <div>
+                                <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
+                                <div class="price">@(PubFunction.CHPriceFormat(product.Price))</div>
+                            </div>
+                            <div>
+                                <a></a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="right">
+
+            </div>
+        </div>
+    }
+    niStr += ";团购优惠;";
+    sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("团购优惠") == 0);
+    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
+    {
+        //包含团购优惠
+        <div>
+
+        </div>
+    }
 }
 
 @foreach (var item in Model)
 {
     bool tag = item.Products != null && item.Products.Count > 0;
     <div class="MainBlock">
-        <div class="top">
-            <label class="name">@(item.Describe)</label>
-            <label class="more">
-                <a>更多...</a>
+        <div class="title">
+            <label class="title">
+
             </label>
-            @{
-            int j = 0;
-            for (j = 0; j < Math.Min(3, item.Brands.Count); j++)
-            {
-                FCStore.Models.Brand brand = item.Brands[j];
-                <label class="brand" data-meopt="3">
-                    <a href="/Brand/ProductList/@(brand.BID)">
-                        @(brand.NameStr)
-                    </a>
-                </label>
-            }
-            if (j < 3)
-            {
-                List<FCStore.Models.Brand> brandList = (from pro in item.Products
-                                                        where pro.Brand.NameStr != "其他"
-                                                        select pro.Brand).Distinct().ToList();
-                for (; j < Math.Min(3, brandList.Count); j++)
-                {
-                    FCStore.Models.Brand brand = brandList[j];
-                        <label class="brand">
-                            <a href="/Brand/ProductList/@(brand.BID)">
-                                @(brand.NameStr)
-                            </a>
-                        </label>
-                    }
-                }
-            }
-            <label class ="pinpai">品牌：</label>
-            <div class="pullupDiv"></div>
         </div>
-        <div class="show">
-            @{
-                for (int i = 0; i < Math.Min(item.Products.Count, 10); i++)
-                {
-                    FCStore.Models.Product product = item.Products[i];
-                    <div class="item">
-                        <a href="/Product/Detail/@(product.PID)">
-                            <div class="price">
-                                <label class="mpLB">￥@(product.MarketPrice)</label><br />
-                                <label class="pLB">￥@(product.Price)</label>
-                            </div>
-                            <div>
-                                <img class="productFI" src="/Content/themes/image/ColumBlank.jpg " data-original="@(product.ImgPathArr[0])" />
-                            </div>
-                            <div class="title">
-                                @(product.Title)
-                            </div>
-                        </a>
-                    </div>
-                }
-                <div class="pullupDiv"></div>
-            }
+        <div class="content">
+            <div class="top">
+
+            </div>
+            <div class="bottom">
+
+            </div>
         </div>
-        <div class="bottom"></div>
     </div>
 }

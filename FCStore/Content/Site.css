@@ -252,6 +252,10 @@ a:hover {
     background-position-x:-90px;
 }
 
+.textLeft {
+    text-align:left;
+}
+
 /* loading
 -----------------------------------------------------------*/
 .loadingEle {
@@ -601,6 +605,8 @@ footer .centerDiv {
             font-weight:normal;
         }
 
+/* TopBtn
+----------------------------------------------------------*/
 #TopBtn {
     position:absolute;
     width:60px;
@@ -627,253 +633,104 @@ footer .centerDiv {
         color:#50A6BD;
     }
 
-#Favorite {
-    position:absolute;
-    top:100%;
-    left:10pt;
-    width:150px;
-    height:150px;
-    margin:-160px 0px 0px 0px;
-    background:url("/Content/themes/image/favorite.png") no-repeat center;
-    cursor:pointer;
+/* Banner
+----------------------------------------------------------*/
+#bannerDiv {
+    width:100%;
+    height:450px;
 }
 
-#plInFavorit {
-    position:absolute;
-    top:30px;
-    left:130px;
-    width:40px;
-    height:97px;
-    overflow:hidden;
-}
-
-    #plInFavorit .MoveItem {
-        float:right;
-        width:88px;
-        height:95px;
-        position:relative;
-        margin-left:5px;
-        background-color:white;
-        overflow:hidden;
-        z-index:auto;
+    #bannerDiv .left {
+        width:30%;
+        margin-right:3%;
+        height:450px;
     }
 
-    #plInFavorit .MoveItem label{
-        float:left;
-        width:80px;
-        height:15px;
-        font-size:7pt;
-        overflow:hidden;
-        margin:0px 4px 5px 4px;
+    #bannerDiv .right {
+        width:67%;
     }
 
-    #plInFavorit .MoveItem img {
-        float:left;
-        width:70px;
-        margin:5px 9px 0px 9px;
-        height:70px;
-    }
+        #bannerDiv .right .mainBanner {
+            width:100%;
+            height:350px;
+            float:left;
+        }
 
-    #plInFavorit .MoveItem .deleteBtn {
-        top:0px;
-        left:76px;
-        height:12px;
-        width:12px;
-        color:red;
-        position:absolute;
-        cursor:pointer;
-        background-color:white;
-        line-height:12px;
-        text-align:center;
-        vertical-align:middle;
-    }
+        #bannerDiv .right .subBanner {
+            width:32%;
+            height:100px;
+            float:left;
+        }
 
-#Cart {
-    position:absolute;
-    top:100%;
-    left:100%;
-    width:160px;
-    height:145px;
-    margin: -155px 0px 0px -160px;
-    background:url("/Content/themes/image/shoppingCart.png") no-repeat center;
-}
+        #bannerDiv .right .mid {
+            margin:0 2%;
+        }
 
-#plInCar {
-    position:absolute;
-    top:10px;
-    left:20px;
-    width:90px;
-    height:25px;
-    overflow:hidden;
-}
-
-    #plInCar .relativeDiv {
-        min-height:500px;
-        overflow-y:auto;
-    }
-
-
-    #plInCar .MoveItem {
-        float:left;
-        width:88px;
-        height:95px;
-        position:relative;
-        margin-bottom:5px;
-        background-color:white;
-        z-index:auto;
-    }
-
-    #plInCar .MoveItem label {
-        float:left;
-        width:80px;
-        height:15px;
-        font-size:7pt;
-        overflow:hidden;
-        margin:0px 4px 5px 4px;
-    }
-
-    #plInCar .MoveItem img {
-        float:left;
-        width:70px;
-        margin:5px 9px 0px 9px;
-        height:70px;
-    }
-
-    #plInCar .MoveItem .deleteBtn {
-        top:0px;
-        left:76px;
-        height:12px;
-        width:12px;
-        color:red;
-        position:absolute;
-        cursor:pointer;
-        background-color:white;
-        line-height:12px;
-        text-align:center;
-        vertical-align:middle;
-    }
-
-    #plInCar .MoveItem .countShow {
-        top:0px;
-        left:0px;
-        height:12px;
-        width:12px;
-        color:red;
-        position:absolute;
-        background-color:white;
-        line-height:12px;
-        text-align:center;
-        vertical-align:middle;
-    }
-
-    #Cart .balance {
-        position:absolute;
-        top:42px;
-        left:45px;
-        width:45px;
-        height:45px;
-        cursor:pointer;
-        background:url("/Content/themes/image/main.png") no-repeat -276px -3px;
-    }
 /* Main Block
 ----------------------------------------------------------*/
-.MainBlock {
-    width:100%;
-    margin-bottom:18px;
-    height:396px;
-    box-shadow:0px 10px 8px 3px rgb(204, 204, 204);
+.MainBlock .left {
+    float:left;
+    width:15%;
+    height:320px;
 }
 
-    .MainBlock .top {
-        width:100%;
-        background:url("/Content/themes/image/mainBlockTop.png") repeat-x 0px 0px;
-        height:22px;
-        line-height:22px;
-        vertical-align:baseline;
-        color:#35879d;
+    .MainBlock .left .title {
+        width: 1em;
+        font-size: 40px;
+        letter-spacing: 40px; /* arbitrarily large letter-spacing for safety */
+        line-height:38px;
     }
 
-        .MainBlock .top .name {
-            margin-left:10px;
-            float:left;
-            font-size:11pt;
-            font-weight:bold;
-        }
+.MainBlock .center {
+    float:left;
+    width:83%;
+    height:320px;
+}
 
-        .MainBlock .pinpai {
-            float:right;
-        }
+.MainBlock .right {
+    float:left;
+    width:2%;
+    height:320px;
+}
 
-        .MainBlock .top .brand {
-            float:right;
-            margin-right:15px;
-        }
+.biMB .left,.biMB .center,.biMB .right {
+    height:620px;
+}
 
-        .MainBlock .top .more {
-            float:right;
-            margin-left:15px;
-            margin-right:8px;
-        }
-
-    .MainBlock .show {
+    .biMB .center .brandDiv {
         width:100%;
-        height:374px;
+        height:75px;
     }
 
-        .MainBlock .show .item {
-            float:left;
-            margin:0px 5px;
-            position:relative;
-        }
+    .MainBlock .center .productItem {
+        width:21%;
+        padding:10px 2%;
+    }
+    
+    .biMB .center .bigPI {
+        width:46%;
+        padding:10px 2%;
+    }
+    
+    .biMB .center .bigPI .thum {
+        width:200px;
+        height:240px;
+    }
 
-        .MainBlock .show .item:hover {
-            margin:-2px 3px;
-            border:2px solid #cc0000;
-        }
 
-            .MainBlock .show .item .price {
-                position:absolute;
-                left:0px;
-                top:8px;
-                transform: rotate(-10deg);    
-		        -o-transform: rotate(-10deg);
-		        -webkit-transform: rotate(-10deg);
-                filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.7660444431189777, M12=-0.6427876096865394, M21=0.6427876096865398, M22=0.7660444431189779);
-                background-color:white;
-            }
+    .MainBlock .center .productItem .description {
+        text-align:left;
+        height:40px;
+        font-size:11pt;
+        overflow:hidden;
+    }
 
-                .MainBlock .show .item .price .mpLB {
-                    text-decoration:line-through;
-                    font-size:8pt;
-                }
+    .MainBlock .center .productItem .thum {
+        width:100px;
+        height:120px;
+    }
 
-                .MainBlock .show .item .price .pLB {
-                    color:#cc0000;
-                    font-size:10pt;
-                    font-weight:bold;
-                }
 
-            .MainBlock .show .item img {
-                width:145px;
-                height:145px;
-                margin:5px 5px 2px 2px;
-            }
-
-            .MainBlock .show .item .title {
-                width:166px;
-                height:30px;
-                font-size:9pt;
-                text-align:left;
-                margin:0px 0px 2px 0px;
-                overflow:hidden;
-            }
-
-    .MainBlock .bottom {
-        width:100%;
-        height:9px;
-        background:url("/Content/themes/image/main.png") repeat-x 0px -72px;
-        background-color:none;
-    }                
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {

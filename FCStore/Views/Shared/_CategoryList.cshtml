@@ -1,58 +1,58 @@
 ﻿@model IEnumerable<FCStore.Models.Category>
-
-<ul>
-    <li class="TCategory">
-        商品分类
-    </li>
-    @{
-    List<FCStore.Models.Category> topCategoryList = (from cate in Model
-                                                     where cate.ParCID == 1 && cate.CID != 1
-                                                     select cate).ToList();
-    string tmpStr = "";
-    foreach (var item in topCategoryList)
-    {
+<div id="Categorys" >
+    <ul>
         <li class="TCategory">
-            <a class="TCItem" href="/Product/ListByCategory/@(item.CID)">
-                <div class="item">
-                    @Html.DisplayFor(modelItem => item.NameStr)
-                </div>
-            </a>
-            <div class="subCategory">
-                @{
-                    List<FCStore.Models.Category> secondCategory = (from cate in Model
-                                                        where cate.Parent == item
-                                                        select cate).ToList();
-                    foreach (var sitem in secondCategory)
+            所有商品分类
+        </li>
+        @{
+            List<FCStore.Models.Category> topCategoryList = (from cate in Model
+                                                             where cate.ParCID == 1 && cate.CID != 1
+                                                             select cate).ToList();
+            foreach (var item in topCategoryList)
+            {
+                <li class="TCategory">
+                    <a class="TCItem" href="/Product/ListByCategory/@(item.CID)">
+                        <div class="item">
+                            @Html.DisplayFor(modelItem => item.NameStr)
+                        </div>
+                    </a>
+                    <div class="subCategory">
+                        @{
+                List<FCStore.Models.Category> secondCategory = (from cate in Model
+                                                                where cate.Parent == item
+                                                                select cate).ToList();
+                foreach (var sitem in secondCategory)
+                {
+                    <div class="scDiv">
+                        <div class="p1 scName">
+                            <a href="/Product/ListByCategory/@(sitem.CID)">
+                                @(sitem.NameStr)
+                            </a>
+                        </div>
+                        <div class="p1 threeCategory">
+                            @{
+                    List<FCStore.Models.Category> threeCategory = (from cate in Model
+                                                                   where cate.Parent == sitem
+                                                                   select cate).ToList();
+                    foreach (var titem in threeCategory)
                     {
-                        <div class="scDiv">
-                            <div class="p1 scName">
-                                <a href="/Product/ListByCategory/@(sitem.CID)">
-                                    @(sitem.NameStr)
-                                </a>
-                            </div>
-                            <div class="p1 threeCategory">
-                                @{
-                                    List<FCStore.Models.Category> threeCategory = (from cate in Model
-                                                                       where cate.Parent == sitem
-                                                                       select cate).ToList();
-                                    foreach (var titem in threeCategory)
-                                    {
-                                        <div class="tcDiv">
-                                            <a href="/Product/ListByCategory/@(titem.CID)">
-                                                @(titem.NameStr)
-                                            </a>
-                                        </div>
-                                    }
-                                    <div class="pullupDiv"></div>
-                                }
-                            </div>
+                        <div class="tcDiv">
+                            <a href="/Product/ListByCategory/@(titem.CID)">
+                                @(titem.NameStr)
+                            </a>
                         </div>
                     }
+                    <div class="pullupDiv"></div>
+                            }
+                        </div>
+                    </div>
                 }
-            </div>
+                        }
+                    </div>
+                </li>
+            }
+        }
+        <li class="TCategory">
         </li>
-    }
-}
-    <li class="TCategory">
-    </li>
-</ul>
+    </ul>
+</div>

@@ -72,157 +72,36 @@
                 </ul>
             </div>
         </div>
-    </header>
+    </header>    
+    @{Html.RenderAction("_CategoryList", "Category");}
     <div id="Main">
         <div id="Center">
             @RenderBody()
             <div class="pullupDiv"></div>
         </div>
     </div>
-    <nav id="Categorys">
-        @{Html.RenderAction("_CategoryList", "Category");}
-    </nav>
     <div id="TopBtn" onclick="MainLayout.onTopBtnClick(this);">
         <div class="title">回到顶部</div>
     </div>
-    <div id="Contact">
-    </div>
-    <div id="Favorite" onclick="ProductList.onFavoriteClick()">
-        <div class="relativeDiv">
-            <div id="plInFavorit">
-@{
-    //获得cookie
-    if (Request.Cookies.AllKeys.Contains("Keeps"))
-    {
-        Regex cookieRgx = new Regex(FCStore.Controllers.KeepController.KEEPCOOKIERGX);
-        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Keeps"].Value));
-        if (!string.IsNullOrEmpty(tmpMatch.Value))
-        {
-            for (int i = 0; i < tmpMatch.Groups["KITEM"].Captures.Count; i++)
-            {
-                <a data="@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)" class="MoveItem" href="/Product/Detail/@(tmpMatch.Groups["PRODUCTID"].Captures[i].Value)">
-                    <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
-                    <label>
-                        @(tmpMatch.Groups["TITLE"].Captures[i].Value)
-                    </label>
-                </a>
-            }
-        }
-    }
-    else if (HttpContext.Current.User.Identity.IsAuthenticated)
-    {
-        //获得当前用户收藏的东西
-        MyUser user = HttpContext.Current.User as MyUser;
-        FCStoreDbContext db = new FCStoreDbContext();
-        List<Keep> keeplst = db.Keeps.Where(r => r.UID == user.UID).ToList();
-        foreach (Keep keepItem in keeplst)
-        {
-            <a class="MoveItem" href="/Product/Detail/@(keepItem.Product.PID)">
-                <img src="@(keepItem.Product.ImgPathArr[0])" />
-                <label>
-                    @(keepItem.Product.Title)
-                </label>
-            </a>
-        }
-        db.Dispose();
-    }
-}
-            </div>
-        </div>
-    </div>
-@{
-    bool showCart = true;
-    showCart = Request.Url.AbsolutePath.IndexOf("/Order/Cart") > -1;
-}
-    <div id="Cart" style="@(showCart ? "visibility:hidden" : "")" >
-        <div class="relativeDiv">
-            <div id="plInCar">
-@{
-    //获得cookie
-    bool sTag = Request.Cookies.AllKeys.Contains("Order");
-    if (sTag)
-    {
-        Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
-        Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
-        sTag = !string.IsNullOrEmpty(tmpMatch.Value);
-        if (sTag)
-        {
-            for (int i = 0; i < tmpMatch.Groups["TITLE"].Captures.Count; i++)
-            {
-                int BuyCount = 1;
-                int.TryParse(tmpMatch.Groups["COUNT"].Captures[i].Value, out BuyCount);
-                <div class="MoveItem">
-                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
-                    <a href="/Product/Detail/@(tmpMatch.Groups["PID"].Captures[i].Value)">
-                        <div class="countShow" style="display:@(BuyCount > 1 ? "normal" : "none")">@(BuyCount)</div>
-                        <img src="@(tmpMatch.Groups["IMG"].Captures[i].Value)" />
-                        <label>
-                            @(tmpMatch.Groups["TITLE"].Captures[i].Value)
-                        </label>
-                    </a>
-                </div>
-            }
-        }
-    }
-    if (!sTag && HttpContext.Current.User.Identity.IsAuthenticated)
-    {
-        //获得当前用户未处理的订单
-        MyUser user = HttpContext.Current.User as MyUser;
-        FCStoreDbContext db = new FCStoreDbContext();
-        Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
-        if (order != null && order.Packets != null)
-        {
-            foreach (OrderPacket tmpOP in order.Packets)
-            {
-                <div class="MoveItem">
-                    <div class="deleteBtn" onclick="MainLayout.onDeleteCarItem(this)">X</div>
-                    <a href="/Product/Detail/@(tmpOP.Product.PID)">
-                        <div class="countShow" style="display:@(tmpOP.Count > 1 ? "normal" : "none")">@(tmpOP.Count)</div>
-                        <img src="@(tmpOP.Product.ImgPathArr[0])" />
-                        <label>
-                            @(tmpOP.Product.Title)
-                        </label>
-                    </a>
-                </div>
-            }
-        }
-        db.Dispose();
-    }
-}
-            </div>
-            <a class="balance" href="/Order/Cart"></a>
-        </div>
-    </div>
-
-    <!-- QQ在线客服 -->
-    <div id='qq_icon'></div>
-    <div id='cs_online'>
-        <ul class='qq_context'>
-            <li>
-                <span class='span_t'>在线客服01：</span>
-                <span class='qq_num'></span>
-            </li>
-            <li>
-                <span class='span_t'>在线客服02：</span>
-                <span class='qq_num'></span>
-            </li>
-            <li>
-                <span class='span_t'>在线客服03：</span>
-                <span class='qq_num'></span>
-            </li>
-            <li>
-                <span class='span_t'>在线客服04：</span>
-                <span class='qq_num'></span>
-            </li>
-            <li>
-                <span class='span_t'>在线客服05：</span>
-                <span class='qq_num'></span>
-            </li>
-        </ul>
-    </div>
-
     <footer>
         <div class="centerDiv">
+            <ul>
+                <li>
+                    <div>新手指南</div>
+                </li>
+                <li>
+                    <div>支付方式</div>
+                </li>
+                <li>
+                    <div>送货方式</div>
+                </li>
+                <li>
+                    <div>售后服务</div>
+                </li>
+                <li>
+                    <div>帮助中心</div>
+                </li>
+            </ul>
             <label>Copyright  2004-2014  RightGO网  All Rights Reserved <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">粤ICP备14045853号-1</a></label>
         </div>
     </footer>
