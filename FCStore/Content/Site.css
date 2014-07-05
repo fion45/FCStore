@@ -6,7 +6,7 @@
 body {
     font-size: .85em;
     font-family: Tahoma, Geneva, sans-serif;
-    color:#434343;
+    color:#676767;
     background-color: #fff;
 }
 
@@ -397,11 +397,12 @@ textarea {
 ----------------------------------------------------------*/
 #toolbar {
     width:100%;
-    height:30px;
+    height:31px;
     line-height:30px;
     vertical-align:middle;
     font-size:10pt;
     text-align:center;
+    background:url("/Content/themes/image/TopBK.png") repeat-x;
 }
 
     #toolbar .centerDiv {
