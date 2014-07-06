@@ -15,8 +15,8 @@
     <ul>
         <li class="left">
             <script type="text/javascript" charset="utf-8">
-                document.getElementById("Categorys").style.top = "165px";
-                document.getElementById("Categorys").style.left = "565px";
+                document.getElementById("Categorys").style.top = "190px";
+                document.getElementById("Categorys").style.left = (document.body.clientWidth - document.getElementById("Center").clientWidth) / 2 + "px";
             </script>
         </li>
         <li class="right">
@@ -44,13 +44,16 @@
         //包含限时抢购
         <div class="MainBlock" id="discountInTime">
             <div class="left">
-                <label class="title">
+                <div class="subTitle">
+                    正品+ 便宜
+                </div>
+                <div class="title">
                     限时抢购
-                </label>
+                </div>
             </div>
             <div class="center">
                 <div class="title">
-                    <label>极速到货，免运费</label>
+                    <div>极速到货，免运费</div>
                     <a>更多</a>
                 </div>
                 <ul>
@@ -81,9 +84,7 @@
                     }
                 </ul>
             </div>
-            <div class="right">
-
-            </div>
+            <div class="pullupDiv"></div>
         </div>
     }
     niStr += ";新品上市;";
@@ -93,9 +94,9 @@
         //包含新品上市
         <div class="MainBlock biMB" id="discountInTime">
             <div class="left">
-                <label class="title">
+                <div class="title">
                     新品上市
-                </label>
+                </div>
             </div>
             <div class="center">
                 <div class="brandDiv">
@@ -111,7 +112,7 @@
                     }
                 </div>
                 <ul>
-                    <li class="bigPI" >
+                    <li class="productItem bigPI">
                         <div>
                             <img class="thum" src="@(proItem.ImgPathArr.First())" />
                         </div>
@@ -147,9 +148,7 @@
                     }
                 </ul>
             </div>
-            <div class="right">
-
-            </div>
+            <div class="pullupDiv"></div>
         </div>
     }
     niStr += ";团购优惠;";
@@ -168,9 +167,9 @@
     bool tag = item.Products != null && item.Products.Count > 0;
     <div class="MainBlock">
         <div class="title">
-            <label class="title">
+            <div class="title">
 
-            </label>
+            </div>
         </div>
         <div class="content">
             <div class="top">
@@ -180,5 +179,6 @@
 
             </div>
         </div>
+        <div class="pullupDiv"></div>
     </div>
 }

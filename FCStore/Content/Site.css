@@ -43,7 +43,6 @@ div {
 a, a:visited {
     cursor:pointer;
     text-decoration:none;
-    color:#0078b6;
 }
 
 a:hover {
@@ -427,14 +426,16 @@ textarea {
 #iconDiv {
     width:100%;
     text-align:center;
+    background-color:#FFFFFF;
 }
 
     #iconDiv .centerDiv {
         margin:0 auto;
         width:880px;
-        height:60px;
+        height:78px;
         line-height:60px;
         vertical-align:middle;
+        background:url("/Content/themes/image/Superiority.png") no-repeat 260px -0px #FFFFFF;
     }
 
 /* navigatorDiv
@@ -442,6 +443,8 @@ textarea {
 #navigatorDiv {
     width:100%;
     text-align:center;
+    background:url("/Content/themes/image/NavigaterBK.png") repeat-x;
+    height:44px;
 }
 
     #navigatorDiv .centerDiv {
@@ -459,14 +462,27 @@ textarea {
                 height:45px;
                 line-height:45px;
                 vertical-align:middle;
+                font-size:11pt;
+                font-weight:bold;
+                color:white;
+            }
+
+            #navigatorDiv .centerDiv .sel {
+                background:url("/Content/themes/image/NavigaterSelItem.png") no-repeat 23px 0px;
+            }
+            
+            #navigatorDiv .centerDiv .sel a {
+                font-size:12pt;
+                color:#EFEA8A;
             }
             
         #navigatorDiv .centerDiv .myCart {
-            width:40%;
+            float:right;
+            width:167px;
+            background:url("/Content/themes/image/MyShopCart.png") no-repeat;
         }
 
             #NavigatorDiv .centerDiv .myCart a {
-                width:30%;
                 float:right;
             }
             
@@ -475,6 +491,9 @@ textarea {
 #searchDiv {
     width:100%;
     text-align:center;
+    background:url("/Content/themes/image/SearchBK.png") repeat-x;
+    height:28px;
+    padding-top:4px;
 }
 
     #searchDiv .centerDiv {
@@ -508,21 +527,17 @@ footer .centerDiv {
     position:absolute;
     top:100px;
     left:10px;
-    width:150px;
+    width:170px;
     color:white;
-    border-radius:7px;
-    box-shadow:0px 3px 8px 3px rgb(204, 204, 204);
 }
+
     #Categorys .TCategory {
         font-size:13pt;
         font-weight:bold;
-        height:30px;
-        line-height:30px;
         width:100%;
         text-align:center;
-        border-top:solid 1px #cccccc;
         position:relative;
-        background-color:white;
+        background:url("/Content/themes/image/CategoryBK.png") repeat-x bottom #B20000;
     }
 
         #Categorys .TCategory .hover .item{
@@ -532,28 +547,24 @@ footer .centerDiv {
             font-weight:700;
         }
 
-    #Categorys .TCategory:first-child {
-        border-top:none;
-        background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
-        background-color:none;
-    }
-
     #Categorys .TCategory:last-child {
-        height:8px;
-        border-top:none;
-        border-bottom:none;
-        background:url("/Content/themes/image/main.png") no-repeat -1px -43px;
-        background-color:none;
+        height:12px;
+        background:none;
+        background-color:#950000;
     }
 
     #Categorys .item {
-        width:148px;
-        height:30px;
-        color:#434343;
+        width:84%;
+        padding:7px 8%;
+        height:26px;
+        color:#ffffff;
         font-size:11pt;
         font-weight:600;
-        border-left:solid 1px #cccccc;
-        border-right:solid 1px #cccccc;
+        text-align:left;
+    }
+
+    #Categorys .TCategory:first-child .item {
+        height:18px;
     }
 
     #Categorys .subCategory {
@@ -669,32 +680,48 @@ footer .centerDiv {
 
 /* Main Block
 ----------------------------------------------------------*/
-.MainBlock .left {
-    float:left;
-    width:15%;
-    height:320px;
+.MainBlock {
+    margin-top:20px;
 }
+
+.MainBlock .left,.MainBlock .center,.MainBlock .right {
+    float:left;
+    height:314px;
+}
+
+.MainBlock .left {
+    width:128px;
+    position:relative;
+}
+
+    .MainBlock .left .subTitle {
+        width: 1em;
+        font-size: 20px;
+        letter-spacing: 20px; /* arbitrarily large letter-spacing for safety */
+        line-height:20px;
+        color:#D5AFD1;
+        position:absolute;
+        top:38px;
+        left:20px;
+    }
 
     .MainBlock .left .title {
         width: 1em;
         font-size: 40px;
         letter-spacing: 40px; /* arbitrarily large letter-spacing for safety */
         line-height:38px;
+        color:white;
+        position:absolute;
+        top:33px;
+        left:50px;
     }
 
 .MainBlock .center {
-    float:left;
-    width:83%;
-    height:320px;
+    width:762px;
+    margin-left:-10px;
 }
 
-.MainBlock .right {
-    float:left;
-    width:2%;
-    height:320px;
-}
-
-.biMB .left,.biMB .center,.biMB .right {
+.biMB .left,.biMB .center {
     height:620px;
 }
 
@@ -718,12 +745,16 @@ footer .centerDiv {
         height:240px;
     }
 
-
     .MainBlock .center .productItem .description {
         text-align:left;
         height:40px;
+        line-height:20px;
         font-size:11pt;
         overflow:hidden;
+    }
+
+    .MainBlock .center .productItem .marketPrice {
+
     }
 
     .MainBlock .center .productItem .thum {
@@ -731,6 +762,28 @@ footer .centerDiv {
         height:120px;
     }
 
+#discountInTime .left {
+    background:url("/Content/themes/image/MainBlockBK_Purple.png") no-repeat;
+}
+
+    #discountInTime .center .title {
+        height:40px;
+        line-height:40px;
+        vertical-align:middle;
+        color:#B06AA9;
+        border-bottom:1px solid #C6C6C6;
+        text-align:left;
+    }
+
+    #discountInTime .center .title div {
+        margin-left:30px;
+        float:left;
+    }
+
+    #discountInTime .center .title a {
+        text-align:right;
+        float:right;
+    }
 
 /* Product Detail
 ----------------------------------------------------------*/
