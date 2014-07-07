@@ -7,15 +7,7 @@ body {
     font-size: .85em;
     font-family: Tahoma, Geneva, sans-serif;
     color:#676767;
-    background-color: #fff;
-}
-
-footer {
-    clear:both;
-    padding-top:10px;
-    width:100%;
-    height:85px;
-    background:url("/Content/themes/image/footerBK.png") #69B3C4 repeat;
+    background-color: #EFEFEF;
 }
 
 header, footer, nav, section {
@@ -51,6 +43,10 @@ a:hover {
 
 .floatLeft {
     float:left;
+}
+
+.floatRight {
+    float:right;
 }
 
 .p1 {
@@ -512,14 +508,60 @@ textarea {
 /* footer 
 ----------------------------------------------------------*/
 footer {
+    clear:both;
+    width:100%;
     text-align:center;
+    padding-top:10px;
+    margin-top:10px;
+    border-top:1px solid #C6C6C6;
+    background-color:#EFEFEF;
 }
 
-footer .centerDiv {
-    width:600px;
-    margin:0px auto;
-    font-weight:bold;
-}
+    footer .centerDiv {
+        width:1140px;
+        margin:0px auto;
+    }
+
+        footer .centerDiv li {
+            width:20%;
+            min-height:90px;
+        }
+
+            footer .centerDiv li div {
+                font-size:8pt;
+                text-align:left;
+                padding-left:50px;
+            }
+
+            footer .centerDiv li div:first-child {
+                font-weight:bold;
+                margin-bottom:5px;
+                height:20px;
+            }
+
+        footer .centerDiv .newerGuide {
+            background:url("/Content/themes/image/FooterIcon.png") no-repeat 0px 0px;
+        }
+
+        footer .centerDiv .payType {
+            background:url("/Content/themes/image/FooterIcon.png") no-repeat 0px -20px;
+        }
+
+        footer .centerDiv .sendType {
+            background:url("/Content/themes/image/FooterIcon.png") no-repeat 0px -40px;
+        }
+
+        footer .centerDiv .saleServer {
+            background:url("/Content/themes/image/FooterIcon.png") no-repeat 0px -60px;
+        }
+
+        footer .centerDiv .helpCenter {
+            background:url("/Content/themes/image/FooterIcon.png") no-repeat 0px -80px;
+        }
+
+        footer .centerDiv li {
+
+        }
 
 /* Category List
 ----------------------------------------------------------*/
@@ -684,6 +726,14 @@ footer .centerDiv {
     margin-top:20px;
 }
 
+.MainBlock a {
+    color:#555555;
+}
+
+.MainBlock a:hover {
+    color:#FE2727;
+}
+
 .MainBlock .left,.MainBlock .center,.MainBlock .right {
     float:left;
     height:314px;
@@ -692,6 +742,7 @@ footer .centerDiv {
 .MainBlock .left {
     width:128px;
     position:relative;
+    background-image:url("/Content/themes/image/MainBlockBK.png");
 }
 
     .MainBlock .left .subTitle {
@@ -699,7 +750,7 @@ footer .centerDiv {
         font-size: 20px;
         letter-spacing: 20px; /* arbitrarily large letter-spacing for safety */
         line-height:20px;
-        color:#D5AFD1;
+        color:#FFFFFF;
         position:absolute;
         top:38px;
         left:20px;
@@ -716,45 +767,79 @@ footer .centerDiv {
         left:50px;
     }
 
-.MainBlock .center {
-    width:762px;
-    margin-left:-10px;
-}
-
-.biMB .left,.biMB .center {
-    height:620px;
-}
-
-    .biMB .center .brandDiv {
-        width:100%;
-        height:75px;
+    .MainBlock .center {
+        width:762px;
+        margin-left:-10px;
+        background-color:#ffffff;
     }
 
-    .MainBlock .center .productItem {
+        .MainBlock .center .title {
+            height:40px;
+            line-height:40px;
+            vertical-align:middle;
+            border-bottom:1px solid #C6C6C6;
+            text-align:left;
+        }
+
+        .MainBlock .center .title div {
+            margin-left:30px;
+            float:left;
+        }
+
+        .MainBlock .center .title a {
+            text-align:right;
+            float:right;
+        }
+
+    .bigMainBlock .left,.bigMainBlock .center {
+        height:564px;
+    }
+
+        .MainBlock .center .brandDiv {
+            width:100%;
+            height:88px;
+            border-bottom:1px solid #C6C6C6;
+        }
+
+            .MainBlock .center .brandDiv li {
+                position:relative;
+            }
+
+            .MainBlock .center .brandDiv .topLeft {
+                position:absolute;
+                left:0px;
+                top:7px;
+            }
+
+            .MainBlock .center .brandDiv .brandItem {
+                float:left;
+                margin-left:15px;
+                margin-top:25px;
+            }
+
+    .MainBlock .center .p4 {
         width:21%;
         padding:10px 2%;
     }
-    
-    .biMB .center .bigPI {
+
+    .MainBlock .center .p2 {
         width:46%;
         padding:10px 2%;
     }
     
-    .biMB .center .bigPI .thum {
+    .MainBlock .center .p2 .thum {
         width:200px;
         height:240px;
     }
 
-    .MainBlock .center .productItem .description {
-        text-align:left;
-        height:40px;
-        line-height:20px;
-        font-size:11pt;
-        overflow:hidden;
+    .MainBlock .center .p2 {
+        width:46%;
+        padding:10px 2%;
     }
 
-    .MainBlock .center .productItem .marketPrice {
-
+    .MainBlock .center .dashLine {
+        width:100%;
+        border-top:dashed 2px #ffffff;
     }
 
     .MainBlock .center .productItem .thum {
@@ -762,29 +847,111 @@ footer .centerDiv {
         height:120px;
     }
 
+    .MainBlock .center .productItem .description {
+        text-align:left;
+        max-height:34px;
+        line-height:17px;
+        font-size:10pt;
+        overflow:hidden;
+    }
+
+    .MainBlock .center .productItem .marketPrice {
+        text-align:left;
+        font-size:10pt;
+        color:#999999;
+        margin-top:8px;
+    }
+
+    .MainBlock .center .productItem .price {
+        text-align:left;
+        font-size:16pt;
+        color:#FE2727;
+        margin-left:-3px;
+    }
+
+    .MainBlock .center .productItem .price .buy {
+        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat 0px 0px;
+        float:right;
+        width:27px;
+        height:27px;
+    }
+
+    .MainBlock .center .remain {
+        padding-top:3px;
+        text-align:left;
+        font-size:10pt;
+    }
+
+    .MainBlock .center .remain .p4 {
+        padding-top:0px;
+    }
+
 #discountInTime .left {
-    background:url("/Content/themes/image/MainBlockBK_Purple.png") no-repeat;
+    background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px 0px;
 }
 
+    #discountInTime .left .subTitle {
+        color:#D5AFD1;
+    }
+
     #discountInTime .center .title {
-        height:40px;
-        line-height:40px;
-        vertical-align:middle;
         color:#B06AA9;
-        border-bottom:1px solid #C6C6C6;
+    }
+
+    #discountInTime .center .dashLine {
+        border-top:dashed 2px #B85D7F;
+    }
+
+#newProduct .left {
+    background:url("/Content/themes/image/MainBlockBigBK.png") no-repeat -128px 0px;
+}
+
+    #newProduct .left .subTitle {
+        color:#C5D5BE;
+    }
+
+    #newProduct .center .dashLine {
+        border-top:dashed 2px #769B65;
+    }
+
+    #newProduct .center .brandDiv .titleItem {
+        margin-left:10px;
+        margin-top:7px;
+        line-height:20px;
+        vertical-align:middle;
+        color:#769B65;
         text-align:left;
     }
 
-    #discountInTime .center .title div {
-        margin-left:30px;
-        float:left;
+    #newProduct .center .brandDiv .titleItem:nth-child(1) {
+        padding-left:15px;
     }
 
-    #discountInTime .center .title a {
-        text-align:right;
-        float:right;
+    #newProduct .center .brandDiv .titleItem:nth-child(2) {
+        padding-left:30px;
     }
 
+    #newProduct .center .brandDiv .titleItem:nth-child(3) {
+        padding-left:45px;
+    }
+        
+        #newProduct .center .brandDiv .imgDiv {
+            background:url("/Content/themes/image/OtherIcon.png");
+            width:225px;
+            height:88px;
+        }
+
+#groupBuy .left {
+    background:url("/Content/themes/image/MainBlockBK.png") no-repeat -256px 0px;
+}
+
+    #groupBuy .left .subTitle {
+        color:#cbdef8;
+    }
+
+    #groupBuy .center .title {
+        color:#85A9DA;
+    }
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {

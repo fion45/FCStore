@@ -21,6 +21,18 @@ namespace FCStore.Models
             set;
         }
 
+        public string SubDescribe
+        {
+            get;
+            set;
+        }
+
+        public string TopTitle
+        {
+            get;
+            set;
+        }
+
         public virtual List<Product> Products
         {
             get;
