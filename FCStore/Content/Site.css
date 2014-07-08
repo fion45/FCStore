@@ -336,7 +336,7 @@ textarea {
 #Center {
     margin:0px auto;
     width:880px;
-    padding:3px 0px 10px 0px;
+    padding:3px 0px 30px 0px;
 }
 
 
@@ -512,7 +512,6 @@ footer {
     width:100%;
     text-align:center;
     padding-top:10px;
-    margin-top:10px;
     border-top:1px solid #C6C6C6;
     background-color:#EFEFEF;
 }
@@ -598,7 +597,7 @@ footer {
     #Categorys .item {
         width:84%;
         padding:7px 8%;
-        height:26px;
+        height:36px;
         color:#ffffff;
         font-size:11pt;
         font-weight:600;
@@ -695,13 +694,13 @@ footer {
 }
 
     #bannerDiv .left {
-        width:30%;
-        margin-right:3%;
+        width:190px;
+        margin-right:8px;
         height:450px;
     }
 
     #bannerDiv .right {
-        width:67%;
+        width:678px;
     }
 
         #bannerDiv .right .mainBanner {
