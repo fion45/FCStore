@@ -33,6 +33,7 @@ div {
 }
 
 a, a:visited {
+    color:#676767;
     cursor:pointer;
     text-decoration:none;
 }
@@ -513,7 +514,7 @@ footer {
     text-align:center;
     padding-top:10px;
     border-top:1px solid #C6C6C6;
-    background-color:#EFEFEF;
+    background-color:#FFFFFF;
 }
 
     footer .centerDiv {
@@ -869,7 +870,7 @@ footer {
     }
 
     .MainBlock .center .productItem .price .buy {
-        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat 0px 0px;
+        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
         float:right;
         width:27px;
         height:27px;

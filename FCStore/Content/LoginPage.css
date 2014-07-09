@@ -11,6 +11,7 @@ body,html {
 body {
     font-size: .85em;
     font-family: Tahoma, Geneva, sans-serif;
+    background-color:#F8F8F8;
 }
 
 .p2 {
@@ -44,18 +45,18 @@ body {
 
 #centerDiv {
     position:absolute;
-    left:50%;
-    top:50%;
-    margin-left:-320px;
-    margin-top:-140px;
-    width:640px;
-    height:280px;
+    left:70%;
+    top:40%;
+    margin-left:-200px;
+    margin-top:-275px;
+    width:400px;
+    height:550px;
     border:solid 1px #cccccc;
     border-radius:8px;
     box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
     color:rgb(88, 88, 88);
-    padding:66px 8px 8px 8px;
-    background-color:#D3DBDE;
+    padding:8px 8px 8px 8px;
+    background-color:#ffffff;
     color:white;
 }
 
@@ -78,94 +79,88 @@ body {
     width:100%;
     height:100%;
     position:relative;
-    background-color:#50a6bd;
+    background-color:#FFFFFF;
 }
 
-    #loginDiv .ele {
-        position:absolute;
-        top:40px;
-        left:50px;
-        width:260px;
-        height:210px;
-        padding:10px;
-    }
+#loginer {    
+    margin:3% 3%;
+    width:94%;
+    height:94%;
+    font-family:'Microsoft YaHei';
+    color:#DBD7D9;
+}
 
-    #loginDiv .ltTitle
+    #loginer .ltTitle
     {
-        position:absolute;
-        top:10px;
-        left:40px;
-        font-size:15pt;
-        font-weight:700;
-        color:#444444;
+        font-size:25pt;
+        font-weight:bold;
+        letter-spacing:5px;
     }
 
-    #loginDiv .tFont
-    {
-        font-size:12pt;
-        font-weight:600;
-        margin-bottom:5px;
-    }
-
-    #loginDiv .rightDiv {
-        position:absolute;
-        top:20px;
-        left:360px;
-        width:220px;
-        height:210px;
-        padding:10px 10px 10px 20px;
-        border-left:solid 1px #cccccc;
-    }
-    
-        #loginDiv .rightDiv .otherLogin {
-            margin-top:30px;
-            width:100%;
-        }
-        
-            #loginDiv .rightDiv .otherLogin span{
-                float:left;
-                clear:left;
-            }
-
-    #loginDiv .ele div {
+    #loginer div {
         float:left;
         vertical-align:middle;
     }
 
-    #loginDiv .ele .title {
+    #loginer .content {
+        position:relative;
         width:100%;
-        text-align:left;
-        margin-bottom:3px;
+        font-size:14pt;
     }
 
-    #loginDiv .ele .content {
-        height:23px;
-        line-height:23px;
-        width:100%;
-        margin:0px 0px 8px 0px;
-    }
-
-        #loginDiv .ele .content .enterTB {
-            height:23px;
-            line-height:23px;
-            border:1px solid #dbdbdb;
-            width:100%;
-
+        #loginer .content .inBox {
+            position:absolute;
+            top:0px;
+            left:45px;
+            height:40px;
+            line-height:40px;
+            font-weight:bold;
+            letter-spacing:3px;
         }
 
-        #loginDiv .ele .content .input-validation-error {
+        #loginer .content .inBoxIMG {
+            position:absolute;
+            top:0px;
+            left:100%;
+            height:40px;
+            line-height:40px;
+            margin-top:1px;
+            margin-left:-54px;
+        }
+
+    #loginer .UIDDIV {
+        margin-top:20px;
+    }
+
+        #loginer .content .enterTB {
+            height:40px;
+            line-height:40px;
+            border:1px solid #dbdbdb;
+            width:72%;
+            padding-left:28%;
+        }
+
+        #loginer .UIDDIV .enterTB {
+            border-bottom:none;
+        }
+
+#UIDTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px 0px;
+}
+
+#PSWTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px -40px;
+}
+
+        #loginer .content .input-validation-error {
             border:solid 1px #f00;
         }
 
-    #loginDiv .ele .ccDiv1 {
+    #loginer .ccDiv {
         height:23px;
         line-height:23px;
-        width:140px;
-        margin:0px 0px 8px 0px;
-    }
-
-    #loginDiv .ele .ccDiv2 {
-        width:100px;
+        margin:8px 0px 8px 0px;
+        visibility:hidden;
     }
 
 #resultDiv {
@@ -219,14 +214,17 @@ body {
     cursor:pointer;
 }
 
-#loginDiv #loginBtn {
+#loginBtn {
     margin-top:20px;
     width:100%;
-    height:23px;
-}
-
-#loginDiv #checkCodeTB {
-    width:100%;
+    height:40px;
+    line-height:40px;
+    background-color:#EC0A17;
+    border:none;
+    font-size:23px;
+    letter-spacing:40px;
+    font-weight:bolder;
+    color:#DBD7D9;
 }
 
 #registerBtn {
@@ -381,43 +379,6 @@ body {
             background:url("/Content/themes/image/main.png") no-repeat -42px -199px;
         }
 
-        #register .inputDiv .ccDiv1{
-            float:left;
-            width:80px;
-        }
-
-            #register .inputDiv .ccDiv1 input {
-                font-size:10pt;
-                width:74px;
-                height:18px;
-                margin:auto 3px;
-            }
-
-        #register .inputDiv .ccDiv2{
-            float:left;
-            width:220px;
-        }
-
-            #register .inputDiv .ccDiv2 * {
-                float:left;
-            }
-
-            #register .inputDiv .ccDiv2 a {
-                font-size:10pt;
-                color:#cccccc;
-                height:23px;
-                line-height:23px;
-                vertical-align:middle;
-                padding-left:5px;
-                border:none;
-                width:120px;
-                cursor:pointer;
-            }
-
-                #register .inputDiv .ccDiv2 a:hover {
-                    color:#cc0000;
-                }
-
             #register .inputDiv .btnDiv {
                 float:left;
                 margin:10px 0px;
@@ -492,3 +453,13 @@ body {
             height:100px;
             margin:5px 2%;
         }
+
+#LBDiv {
+    background:url(/Content/themes/image/LoginSource1.png) no-repeat;
+    width:982px;
+    height:909px;
+    position:absolute;
+    left:0px;
+    top:100%;
+    margin-top:-909px;
+}

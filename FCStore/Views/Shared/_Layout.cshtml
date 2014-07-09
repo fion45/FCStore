@@ -26,8 +26,8 @@
                     <a>帮助中心</a>
                 </div>
                 <div class="userInfo">
-                    <a>登陆商城</a>|
-                    <a>免费注册</a>
+                    <a href="Home/Login">登陆商城</a>|
+                    <a href="Home/Register">免费注册</a>
                 </div>
             </div>
         </div>
@@ -125,18 +125,11 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jquerylazyload")
     @*@Scripts.Render("~/bundles/main")*@
-
     <script type="text/javascript" charset="utf-8" src="~/Scripts/common.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/sidebar-follow-jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/qqReport.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/main.js"></script>
-    @RenderSection("scripts", required: false)
 
-<!--Other Login-->
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
-            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
-    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
-            type="text/javascript" charset="utf-8"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

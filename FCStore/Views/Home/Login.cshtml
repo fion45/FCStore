@@ -11,57 +11,36 @@
     @Styles.Render("~/Content/loginPage")
 </head>
 <body>
+    <div id="LBDiv"></div>
     <div id="centerDiv">
         <div id="loginDiv" style="@(User.Identity.IsAuthenticated ? "display:none" : "")">
-            <div class="ltTitle">用户登陆</div>
             <form id="loginer" class="ele">
-                <div class="title">
-                    <label>用户名：</label>
-                </div>
-                <div class="content">
+                <div class="ltTitle">用户登陆</div>
+                <div class="content UIDDIV">
                     <input id="UIDTB" name="UIDTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" />
-                </div>
-                <div class="title">
-                    <label>密码：</label>
+                    <div class="inBox">用户名</div>
                 </div>
                 <div class="content">
                     <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
+                    <div class="inBox">密&#12288;码</div>
                 </div>
-                <div class="title">
-                    <label>验证码：</label>
-                </div>
-                <div class="content ccDiv1">
+                <div class="content ccDiv">
                     <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
-                </div>
-                <div class="content ccDiv2">
-                    <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                    <div class="inBox">验证码</div>
+                    <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
                 </div>
                 <div class="content">
                     <input id="loginBtn" type="submit" value="登陆" />
                 </div>
             </form>
-            <div class="rightDiv">
-                <div class="register">
-                    <label class="tFont">还不是RightGO会员吗？立刻成为会员，即享100积分</label>                    
-                    @{
-                        string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ? "http://" + HttpContext.Current.Request.Url.Authority + "/Home/Index" : ViewBag.returnUrl;
-                    }
-                    <a id="registerBtn" href="/Home/Register/@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(urlStr)))">免费注册</a>
-                </div>
-                <div class="otherLogin">
-                    <div class="tFont">使用其他账号登录RightGO网：</div>
-                    <span id="qqLoginBtn"></span>
-                    <span id="wb_connect_btn"></span>
-                </div>
-            </div>
         </div>
-        <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
+        @*<div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
             <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
             <label class="blb welcome">Welcome Welcome</label>
             <div class="bottom"><label>程序在</label><label class="ticket">3</label><label>秒后跳转至：</label><a class="returnUrl" href="@(urlStr)">@(urlStr)</a></div>
-        </div>
+        </div>*@
     </div>
-    <div id="loginTop"></div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/jqueryval")
@@ -70,7 +49,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <script type="text/javascript">
-            LoginPageView.login.OnFiveSecondsTicket();
+            //LoginPageView.login.OnFiveSecondsTicket();
         </script>
     }
     <!--Other Login-->
@@ -81,52 +60,51 @@
             type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
-        $(function () {
-            //控件验证
-            var tmpForm = $("#loginer");
-            var validator = tmpForm.validate();
-            $.extend(validator.settings, {
-                submitHandler: function () {
-                    LoginPageView.login.OnLoginBtnClick();
-                }
-            });
-            QC.Login({
-                btnId: "qqLoginBtn"	//插入按钮的节点id
-            },
-            function (reqData, opts) {//登录成功  
-                //根据返回数据，更换按钮显示状态方法
-                alert(1);
-                var dom = document.getElementById(opts['btnId']),
-                _logoutTemplate = [
-                        //头像  
-                        '<span><img src="{figureurl}" class="{size_key}"/></span>',
-                        //昵称  
-                        '<span>{nickname}</span>',
-                        //退出  
-                        '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
-                ].join("");
-                dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
-                    nickname: QC.String.escHTML(reqData.nickname),
-                    figureurl: reqData.figureurl
-                }));
-            }, function (opts) {//注销成功  
-                alert('QQ登录 注销成功');
-            });
-            WB2.anyWhere(function (W) {
-                W.widget.connectButton({
-                    id: "wb_connect_btn",
-                    type: '3,2',
-                    callback: {
-                        login: function (o) {
-                            alert(o.screen_name)
-                        },
-                        logout: function () {
-                            alert('logout');
-                        }
-                    }
-                });
-            });
-        });
+        //$(function () {
+        //    //控件验证
+        //    var tmpForm = $("#loginer");
+        //    var validator = tmpForm.validate();
+        //    $.extend(validator.settings, {
+        //        submitHandler: function () {
+        //            LoginPageView.login.OnLoginBtnClick();
+        //        }
+        //    });
+        //    QC.Login({
+        //        btnId: "qqLoginBtn"	//插入按钮的节点id
+        //    },
+        //    function (reqData, opts) {//登录成功  
+        //        //根据返回数据，更换按钮显示状态方法
+        //        var dom = document.getElementById(opts['btnId']),
+        //        _logoutTemplate = [
+        //                //头像  
+        //                '<span><img src="{figureurl}" class="{size_key}"/></span>',
+        //                //昵称  
+        //                '<span>{nickname}</span>',
+        //                //退出  
+        //                '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
+        //        ].join("");
+        //        dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+        //            nickname: QC.String.escHTML(reqData.nickname),
+        //            figureurl: reqData.figureurl
+        //        }));
+        //    }, function (opts) {//注销成功  
+        //        alert('QQ登录 注销成功');
+        //    });
+        //    WB2.anyWhere(function (W) {
+        //        W.widget.connectButton({
+        //            id: "wb_connect_btn",
+        //            type: '3,2',
+        //            callback: {
+        //                login: function (o) {
+        //                    alert(o.screen_name)
+        //                },
+        //                logout: function () {
+        //                    alert('logout');
+        //                }
+        //            }
+        //        });
+        //    });
+        //});
     </script>
 </body>
 </html>

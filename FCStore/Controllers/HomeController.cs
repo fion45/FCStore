@@ -92,8 +92,8 @@ namespace FCStore.Controllers
             }
             Session["Validate_code"] = validater;
 
-            int iWidth = validater.Length * 11;
-            Bitmap img = new Bitmap(iWidth, 20);
+            int iWidth = validater.Length * 32;
+            Bitmap img = new Bitmap(iWidth, 40);
             Graphics g = Graphics.FromImage(img);
             g.Clear(Color.White);
 
@@ -101,15 +101,15 @@ namespace FCStore.Controllers
             for (int i = 0; i < validater.Length; i++)
             {
                 Color c = colors[rand.Next(0, colors.Length)];
-                Font f = new Font("Courier New", 11);
+                Font f = new Font("Courier New", 25, FontStyle.Bold);
                 Brush b = new System.Drawing.SolidBrush(c);
 
                 //画字符
-                g.DrawString(validater.Substring(i, 1), f, b, (i * 10) + 1, 1, StringFormat.GenericDefault);
+                g.DrawString(validater.Substring(i, 1), f, b, (i * 32) + 1, 1, StringFormat.GenericDefault);
             }
 
             //描边
-            g.DrawRectangle(new Pen(Color.Black), 0, 0, img.Width - 1, img.Height - 1);
+            //g.DrawRectangle(new Pen(Color.Black), 0, 0, img.Width - 1, img.Height - 1);
 
 
             //保存图片数据
