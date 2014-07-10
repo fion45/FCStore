@@ -10,8 +10,8 @@ body,html {
 
 body {
     font-size: .85em;
-    font-family: Tahoma, Geneva, sans-serif;
-    background-color:#F8F8F8;
+    font-family:'Microsoft YaHei';
+    background:url("/Content/themes/image/sky.png") no-repeat center top #F8F8F8;
 }
 
 .p2 {
@@ -56,38 +56,22 @@ body {
     box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
     color:rgb(88, 88, 88);
     padding:8px 8px 8px 8px;
-    background-color:#ffffff;
+    background-color:rgba(255, 255, 255, 0.6)!important;
+    filter:Alpha(opacity=60);
     color:white;
 }
 
-#loginTop {
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:600px;
-    height:165px;
-    margin-left:-300px;
-    margin-top:-243px;
-    background:url(/Content/themes/image/LoginTop.png) no-repeat center;
-}
-
-    #centerDiv label {
-        color:white;
-    }
-
 #loginDiv {
     width:100%;
-    height:100%;
+    height:98%;
     position:relative;
-    background-color:#FFFFFF;
+    color:#666666;
 }
 
-#loginer {    
+#loginer {
     margin:3% 3%;
     width:94%;
-    height:94%;
-    font-family:'Microsoft YaHei';
-    color:#DBD7D9;
+    height:250px;
 }
 
     #loginer .ltTitle
@@ -110,12 +94,13 @@ body {
 
         #loginer .content .inBox {
             position:absolute;
-            top:0px;
+            top:2px;
             left:45px;
             height:40px;
             line-height:40px;
             font-weight:bold;
             letter-spacing:3px;
+            color:#DBD7D9;
         }
 
         #loginer .content .inBoxIMG {
@@ -123,6 +108,7 @@ body {
             top:0px;
             left:100%;
             height:40px;
+            width:120px;
             line-height:40px;
             margin-top:1px;
             margin-left:-54px;
@@ -136,20 +122,20 @@ body {
             height:40px;
             line-height:40px;
             border:1px solid #dbdbdb;
-            width:72%;
-            padding-left:28%;
+            width:70%;
+            padding-left:30%;
         }
 
         #loginer .UIDDIV .enterTB {
             border-bottom:none;
         }
 
-#UIDTB {
-    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px 0px;
+#loginer #UIDTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px 0px #FFFFFF;
 }
 
-#PSWTB {
-    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px -40px;
+#loginer #PSWTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px -40px #FFFFFF;
 }
 
         #loginer .content .input-validation-error {
@@ -224,12 +210,46 @@ body {
     font-size:23px;
     letter-spacing:40px;
     font-weight:bolder;
-    color:#DBD7D9;
+    color:#FFFFFF;
+}
+
+#loginDiv .other {
+    margin:0px 3%;
+    width:94%;
+    height:30px;
+}
+
+#loginDiv .forgot {
+    margin:0px 3%;
+    width:94%;
+    font-size:18pt;
+    font-weight:bolder;
+}
+
+#loginDiv .registerDiv {
+    margin:0px 3%;
+    width:94%;
+    height:200px;
+    line-height:200px;
+    vertical-align:middle;
+    text-align:center;
+}
+            
+#qqLoginBtn {
+    float:left;
+}
+
+#wb_connect_btn {
+    float:left;
+    margin-left:8px;
 }
 
 #registerBtn {
-    width:100%;
-    clear:left;
+    height:48px;
+    width:200px;
+    background:url("/Content/themes/image/LoginSource2.png") repeat-x 0px -80px;
+    border:solid 2px #EC0A17;
+    border-radius:8px;
 }
 
 /* loading
@@ -256,210 +276,178 @@ body {
         margin-top:-16px;
     }
 
+#LBDiv {
+    background:url(/Content/themes/image/LoginSource1.png) no-repeat;
+    width:700px;
+    height:648px;
+    position:absolute;
+    left:0px;
+    top:100%;
+    margin-top:-648px;
+}
+
+
 /* register
 -----------------------------------------------------------*/
 #regCDiv {
     position:absolute;
-    left:50%;
-    top:50%;
-    margin-left:-375px;
-    margin-top:-255px;
-    width:750px;
-    height:460px;
+    left:70%;
+    top:40%;
+    margin-left:-200px;
+    margin-top:-300px;
+    padding:3%;
+    width:400px;
+    height:600px;
     border:solid 1px #cccccc;
     border-radius:8px;
     box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
     color:rgb(88, 88, 88);
-    padding:10px;
+    padding:8px 8px 8px 8px;
+    background-color:rgba(255, 255, 255, 0.6)!important;
+    filter:Alpha(opacity=60);
+    color:#666666;
 }
 
 #register {
-    float:left;
-    width:55%;
-    position:relative;
-    height:310px;
-    border-right:1px solid #cccccc;
+    margin:3% 3%;
+    width:94%;
+    height:auto;
+    color:#666666;
 }
 
     #register .ltTitle {
-        position:absolute;
-        left:15px;
-        top:8px;
-        font-size:21px;
-        font-family:"Microsoft yahei";
-        color:#333333;
+        font-size:25pt;
         font-weight:bold;
+        letter-spacing:5px;
     }
 
     #register .gif {
-        position:absolute;
-        left:135px;
-        top:20px;
-        font-size:12pt;
-        font-family:"Microsoft yahei";
-        color:#333333;
+        text-align:right;
+        color:#EC0A17;
     }
 
     #register .inputDiv {
-        position:absolute;
-        left:25px;
-        top:48px;
-        width:400px;
-        font-size:11pt;
-        font-size:12pt;
-        color:#666666;
+        width:100%;
     }
 
-        #register .inputDiv .title {
-            float:left;
-            width:100px;
-            height:23px;
-            line-height:23px;
-            vertical-align:middle;
-            text-align:right;
-        }
-
         #register .inputDiv .value {
-            float:left;
-            width:270px;
-            height:23px;
-            line-height:23px;
+            width:100%;
+            height:34px;
+            line-height:34px;
             vertical-align:middle;
+            position:relative;
         }
 
             #register .inputDiv .value input {
-                float:left;
-                font-size:10pt;
-                width:230px;
-                height:18px;
-                margin:auto 1%
+                padding-left:25%;
+                width:75%;
+                height:30px;
+                line-height:30px;
+                vertical-align:middle;
+            }
+
+            #register .inputDiv .value .title {
+                position:absolute;
+                top:4px;
+                left:7px;
+                height:30px;
+                line-height:30px;
+                vertical-align:middle;
+                font-size:14pt;
+                font-weight:bold;
+                letter-spacing:3px;
+                width:88px;
+                text-align:right;
+                color:#DBD7D9;
             }
 
             #register .inputDiv .value .icon {
-                float:left;
+                position:absolute;
+                top:8px;
+                left:100%;
+                height:18px;
+                line-height:18px;
                 width:15px;
-                height:15px;
-                margin-left:3px;
-                color:#f00;
-            }
-
-            #register .inputDiv .value .icon-validation-error {
-                background:url("/Content/themes/image/main.png") no-repeat -42px -199px;
-            }
-
-            #register .inputDiv .value .icon-validation-valid {
-                background:url("/Content/themes/image/main.png") no-repeat -23px -199px;
+                margin-left:-17px;
+                border-left:solid 1px #E2E8EF;
+                color:#EC0A17;
+                padding-left:3px;
             }
 
         #register .inputDiv .tip {
-            float:left;
+            text-align:right;
             font-size:9pt;
-            color:#cccccc;
-            width:290px;
-            height:18px;
-            line-height:18px;
-            vertical-align:middle;
-            margin-bottom:5px;
-            padding-left:110px;
+            color:#DBD7D9;
+            height:17px;
+            width:100%;
+            display:inline-block;
         }
 
-        #register .inputDiv .field-validation-error {
-            color:#f00;
-        }
-
-        #register .inputDiv .field-validation-valid {
-            display:block;
-        }
-
-        #register .inputDiv .field-validation-error .icon {
-            width:15px;
-            height:15px;
-            margin-top:2px;
-            margin-right:8px;
-            background:url("/Content/themes/image/main.png") no-repeat -42px -199px;
-        }
-
-            #register .inputDiv .btnDiv {
-                float:left;
-                margin:10px 0px;
-                width:100%;
-                height:25px;
-                text-align:center;
+            #register .inputDiv .ccDiv img {
+                position:absolute;
+                top:4px;
+                left:100%;
+                margin-left:-100px;
+                height:30px;
+                width:100px;
             }
 
-            #register .inputDiv .btnDiv .cDiv {
-                margin:0px auto;
-                width:70%;
-            }
-
-                #register .inputDiv .btnDiv .registerBtn {
-                    height:22px;
-                }
-
-                #register .inputDiv .btnDiv .resetBtn {
-                    height:22px;
-                }
-
-    #regCDiv .rightDiv {
-        float:left;
-        width:44%;
-    }
-
-        #regCDiv .rightDiv .ltTitle {
-            margin:8px 3% 10px 3%;
-            width:94%;
-            font-size:21px;
-            font-family:"Microsoft yahei";
-            font-weight:bold;
-            color:#333333;
-        }
-
-        #regCDiv .rightDiv .item {
-            margin:0px 6%;
-            width:74%;
-            padding-left:7%;
-        }
-
-        #regCDiv .rightDiv .otherLogin {
-            margin:20px 3% 0px 3%;
-            width:94%;
-        }
-
-#qqLoginBtn,#wb_connect_btn {
-    margin-top:3px;
-    float:left;
-    clear:left;
-}
-
-    #regCDiv .agreement {
-        float:left;
-        clear:both;
-        width:100%;
+    #register  .btnDiv {
         margin-top:10px;
     }
 
-        #regCDiv .agreement .ltTitle {
-            font-size:15px;
-            font-family:"Microsoft yahei";
-            color:#333333;
-            font-weight:bold;
-            padding:0px 15px 0px 15px;
+    #register  .btnDiv .registerBtn {
+        width:300px;
+        height:40px;
+        line-height:40px;
+        background-color:#EC0A17;
+        border:none;
+        font-size:19px;
+        font-weight:bolder;
+        color:#FFFFFF;
+    }
+
+    #register  .btnDiv .resetBtn {
+        width:72px;
+        height:40px;
+        line-height:40px;
+        background-color:#EC0A17;
+        border:none;
+        font-size:19px;
+        font-weight:bolder;
+        color:#FFFFFF;
+    }
+
+    #regCDiv .agreement {
+        padding:0px 3%;
+        width:94%;
+    }
+
+    #regCDiv .agreement .ltTitle {
+        font-size:15pt;
+        letter-spacing:1px;
+    }
+
+    #regCDiv .agreement .content {
+        margin-top:5px;
+        border:2px solid #A9A9A9;
+        height:100px;
+        padding:2%;
+        width:96%;
+    }
+
+    #regCDiv .otherLogin {
+        margin-top:8px;
+        width:94%;
+        padding:0px 3%;
+    }
+
+        #regCDiv .otherLogin .tFont {
+            margin-bottom:3px;
+            color:#DBD7D9;
         }
 
-        #regCDiv .agreement .content {
-            border:1px solid #cccccc;
-            width:96%;
-            max-height:100px;
-            height:100px;
-            margin:5px 2%;
-        }
-
-#LBDiv {
-    background:url(/Content/themes/image/LoginSource1.png) no-repeat;
-    width:982px;
-    height:909px;
-    position:absolute;
-    left:0px;
-    top:100%;
-    margin-top:-909px;
+#register .inputDiv  .field-validation-error {
+    color:#EC0A17;
 }
+
