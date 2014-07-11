@@ -867,8 +867,10 @@ footer {
         }
 
         .MainBlock .center .title a {
+            padding-right:15px;
             text-align:right;
             float:right;
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat 22px -26px;
         }
 
     .bigMainBlock .left,.bigMainBlock .center {
@@ -1117,7 +1119,6 @@ footer {
 #spec-n5 {
     width:350px;
     height:85px;
-    background:url("/Content/themes/image/main.png") no-repeat 0px -80px;
 }
 
     #spec-n5 div {
@@ -1139,6 +1140,8 @@ footer {
     width:318px;
     position:relative;
     overflow:hidden;
+    border-top:solid 2px #999999;
+    border-bottom:solid 2px #999999;
 }
 
     #spec-list li {
@@ -1156,6 +1159,7 @@ footer {
 
 #spec-right {
     width:16px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px 0px;
     cursor:pointer;
 }
 
