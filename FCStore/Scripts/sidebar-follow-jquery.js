@@ -109,29 +109,25 @@ SidebarFollow.prototype = {
 		if(jQuery(document).scrollTop() > _self.cache.elementToTop) {
 			// 添加占位节点
 			var elementHeight = element.outerHeight();
-//			_self.cache.placeholder.css('height', elementHeight).insertBefore(element);
 			// 记录原位置
 			_self.cache.originalToTop = _self.cache.elementToTop;
 			// 修改样式
-			element.css({
-				top: toTop + 'px',
-				position: 'fixed'
-			});
+			_self.cache.oldStyle = element.attr("style"); 
+			element.attr("style","top:" + toTop + "px;position:fixed;");
+			
 			_self.cache.fixedTag = true;
 			if(_self.config.afterFollowCB != null) {
 				_self.config.afterFollowCB(element);
 			}
 		// 否则回到原位
-//		} else if(_self.cache.originalToTop > elementToTop || referenceToTop > elementToTop) {
 		} else if(_self.cache.originalToTop > _self.cache.elementToTop) {
-			// 删除占位节点
-//			_self.cache.placeholder.remove();
-			// 修改样式
-//			element.css({
-//				position: 'static'
-//			});
-//			element.removeProp("style");
-			element.removeAttr("style");
+			if(_self.cache.oldStyle) {
+				element.attr("style",_self.cache.oldStyle);
+			}
+			else {
+				element.removeAttr("style");	
+			}
+			
 			_self.cache.fixedTag = false;
 			if(_self.config.afterStopCB != null) {
 				_self.config.afterStopCB(element);

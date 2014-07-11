@@ -117,7 +117,7 @@ a:hover {
     background:url("/Content/themes/image/BtnSource.png") no-repeat -710px -1px;
 }
 
-.lbtn13gray {
+.lbtn1gray {
     width:152px;
     height:51px;
     line-height:51px;
@@ -130,7 +130,7 @@ a:hover {
     cursor:default;
 }
 
-.lbtn13gray:hover {
+.lbtn1gray:hover {
     background:url("/Content/themes/image/BtnSource.png") no-repeat -862px -1px;
 }
 
@@ -185,7 +185,7 @@ a:hover {
     background:url("/Content/themes/image/BtnSource.png") no-repeat -410px -53px;
 }
 
-.mbtn3gray {
+.mbtngray {
     width:81px;
     height:31px;
     line-height:31px;
@@ -198,16 +198,16 @@ a:hover {
     cursor:pointer;
 }
 
-.mbtn3gray:hover {
+.mbtngray:hover {
     background:url("/Content/themes/image/BtnSource.png") no-repeat -492px -53px;
 }
 
 .sbtn1 {
-    width:81px;
-    height:31px;
-    line-height:31px;
+    width:70px;
+    height:24px;
+    line-height:24px;
     vertical-align:middle;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -1px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat 0 -85px;
     border:none;
     color:white;
     font-size:10pt;
@@ -216,15 +216,15 @@ a:hover {
 }
 
 .sbtn1:hover {
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -83px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -71px -85px;
 }
 
 .sbtn2 {
-    width:81px;
-    height:31px;
-    line-height:31px;
+    width:70px;
+    height:24px;
+    line-height:24px;
     vertical-align:middle;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -165px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -142px -85px;
     border:none;
     color:white;
     font-size:10pt;
@@ -233,15 +233,15 @@ a:hover {
 }
 
 .sbtn2:hover {
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -247px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -213px -85px;
 }
 
 .sbtn3 {
-    width:81px;
-    height:31px;
-    line-height:31px;
+    width:70px;
+    height:24px;
+    line-height:24px;
     vertical-align:middle;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -329px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -284px -85px;
     border:none;
     color:white;
     font-size:10pt;
@@ -250,15 +250,15 @@ a:hover {
 }
 
 .sbtn3:hover {
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -411px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -355px -85px;
 }
 
-.sbtn3gray {
-    width:81px;
-    height:31px;
-    line-height:31px;
+.sbtngray {
+    width:70px;
+    height:24px;
+    line-height:24px;
     vertical-align:middle;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -493px -322px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -426px -85px;
     border:none;
     color:white;
     font-size:10pt;
@@ -266,8 +266,8 @@ a:hover {
     cursor:pointer;
 }
 
-.sbtn3gray:hover {
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -493px -322px;
+.sbtngray:hover {
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -426px -85px;
 }
 
 .relativeDiv {
@@ -577,15 +577,13 @@ textarea {
 }
 
     #searchDiv .centerDiv .hotLi {
-        margin-left:1px;
+        font-weight:bold;
+        margin-left:8px;
     }
 
 #searchBTN {
     margin-left:3px;
-    width:72px;
-    height:25px;
     border:none;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat 0px 0px;
 }
 
 /* footer 
@@ -649,7 +647,7 @@ footer {
 ----------------------------------------------------------*/
 #Categorys {
     position:absolute;
-    top:100px;
+    top:195px;
     left:10px;
     width:170px;
     color:white;
@@ -749,7 +747,7 @@ footer {
     height:63px;
     left:100%;
     margin-left:-60px;
-    top:1px;
+    top:700px;
     display:none;
     background:#FFF url("/Content/themes/image/main.png") no-repeat -153px 0px;
 }
@@ -1094,6 +1092,7 @@ footer {
     width:100%;
     height:30px;
     font-size:10pt;
+    border-bottom:solid 1px #cccccc;
 }
 
     #categoryNav div {
@@ -1598,12 +1597,19 @@ footer {
 
 /* Product List
 ----------------------------------------------------------*/
-.productList {
-    width:100%;
+#plMain {
+    width:96%;
     margin-top:10px;
+    background:#ffffff;
+    padding:15px 2%;
+    border-radius:12px 12px;
 }
 
-.tool,.btool {
+#plDiv {
+    width:100%;
+}
+
+#plTool,.btool {
     width:100%;
     height:20px;
     border-bottom:solid 2px #cc0000;
@@ -1611,23 +1617,26 @@ footer {
     font-size:10pt;
 }
 
-    .tool label {
+    #plTool label {
         margin-right:5px;
+        color:#676767;
+        font-weight:bold;
     }
 
-    .tool a {
+    #plTool a {
         margin-left:5px;
-        padding-left:10px;
+        padding-left:12px;
+        color:#676767;
     }
 
-    .tool .asc {
-        background:url("/Content/themes/image/main.png") no-repeat -871px -22px;
-        color:#0000cc;
+    #plTool .asc {
+        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -37px;
+        color:#85A9DB;
     }
 
-    .tool .desc {
-        background:url("/Content/themes/image/main.png") no-repeat -871px -42px;
-        color:#cc0000;
+    #plTool .desc {
+        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -64px;
+        color:#D73E3E;
     }
 
 .btool {
@@ -1638,7 +1647,7 @@ footer {
     height:36px;
 }
     .btool .page {
-        margin:7px auto;
+        margin:9px auto;
     }
 
         .btool .page .pItem {
@@ -1647,14 +1656,23 @@ footer {
             padding:2px 5px;
         }
 
+        .btool .page .pItem:hover {
+            border:solid 1px #CC0000;
+            color:#CC0000;
+        }
+
         .btool .page .in {
-            background-color:#00a3cc;
-            border-color:#00a3cc;
+            background-color:#CC0000;
+            border-color:#CC0000;
             color:white;
         }
 
         .btool .page .gray {
-            color:#fee;
+            color:#ddcccc;
+        }
+
+        .btool .page .gray:hover {
+            color:#ddcccc;
         }
 
         .btool .page .pText {
@@ -1662,8 +1680,12 @@ footer {
         }
 
             .btool .page .pText .goLB {
-                margin-left:5px;
+                margin-left:20px;
             }
+
+        .btool .page .PCLabel {
+            font-weight:bold;
+        }
         
 #GoPIInput {
     margin:0px 2px;
@@ -1672,15 +1694,45 @@ footer {
 
 .brandFilter {
     width:94%;
-    border:solid 1px #cccccc;
     margin-bottom:5px;
     padding:10px 3%;
+    position:relative;
 }
+
+    .brandFilter .p1 {
+        width:100%;
+        height:15px;
+        position:absolute;
+        top:100%;
+        margin-top:-15px;
+        text-align:center;
+    }
+
+    .brandFilter .downBtn {
+        width:28px;
+        height:15px;
+        margin:2px auto;
+        cursor:pointer;
+        background:url("/Content/themes/image/main.png") no-repeat -63px -112px;
+    }
+
+    .brandFilter .downBtn:hover {
+        background:url("/Content/themes/image/main.png") no-repeat -93px -112px;
+    }
+
+    .brandFilter .upTag {
+        background:url("/Content/themes/image/main.png") no-repeat -123px -112px;
+    }
+
+    .brandFilter .upTag:hover {
+        background:url("/Content/themes/image/main.png") no-repeat -153px -112px;
+    }
 
     .brandFilter .title {
         float:left;
         width:8%;
         text-align:left;
+        font-weight:bold;
     }
 
     .brandFilter .content {
@@ -1707,10 +1759,6 @@ footer {
         .brandFilter .btn button {
             width:70px;
             margin:0px auto;
-        }
-
-        .brandFilter .btn .most {
-            margin-top:38px;
         }
 
     .brandFilter .item {
@@ -1763,43 +1811,44 @@ footer {
             font-weight:bold;
         }
 
-    .productList .item {
+    #plDiv .item {
         float:left;
-        width:170px;
-        margin:3px;
+        width:191px;
+        padding:13px 10px;
         font-size:10pt;
+        text-align:center;
     }
 
-    .productList .item:hover {
-        border:2px solid #cc0000;
-        margin:1px;
-    }
-
-        .productList .item img{
-            height:170px;
-            width:170px;
+        #plDiv .item img{
+            height:155px;
+            width:146px;
         }
 
-        .productList .item .title{
+        #plDiv .item .title{
             width:170px;
             height:34px;
             overflow:hidden;
-            text-align:center;
+            margin:0px auto;
+            text-align:left;
         }
 
-        .productList .item .marketPrice {
+        #plDiv .item .marketPrice {
             width:170px;
+            margin:0px auto;
+            text-align:left;
         }
         
-            .productList .item .marketPrice label {
+            #plDiv .item .marketPrice label {
                 text-decoration:line-through;
             }
 
-        .productList .item .price{
+        #plDiv .item .price{
             width:170px;
+            margin:0px auto;
+            text-align:left;
         }
 
-            .productList .item .price label{
+            #plDiv .item .price label{
                 color:#cc0000;
                 font-size:12pt;
                 font-weight:bold;

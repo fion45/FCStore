@@ -39,86 +39,90 @@
         </div>
     </div>
     <div class="btn">
-        <button onclick="ProductList.getProductListByCategory(1);">过滤</button>
-        @if(Model.Brands.Count > 16)
-        {
-            <button class="most" onclick="ProductList.onSBMoreBtnClick()">更多</button>
-        }
+        <button class="sbtn1" onclick="ProductList.getProductListByCategory(1);">过滤</button>
     </div>
-    <div class="pullupDiv"></div>
-</div>
-<div id="plTool" class="tool">
-    <label>排序方式：</label>
-    @{
-        string OTStr = ViewBag.OrderType ? "asc" : "desc";
-    }
-    <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 0 ? OTStr : "")">新品</a>
-    <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 1 ? OTStr : "")">畅销</a>
-    <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 2 ? OTStr : "")">价格</a>
-    <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 3 ? OTStr : "")">浏览量</a>
-</div>
-<div id="plDiv" class="productList">
-    @foreach (FCStore.Models.Product item in Model.Products)
+    <div class="pullupDiv"></div>    
+    @if (Model.Brands.Count > 16)
     {
-        <div class="item">
-            <a href="/Product/Detail/@(item.PID)">
-                <div class="img">
-                    <img src="@((item.ImgPathArr != null && item.ImgPathArr.Length >= 1) ? item.ImgPathArr[0] : "")" />
-                </div>
-                <div class="title">
-                    @(item.Title)
-                </div>
-                <div class="marketPrice">
-                    市场价：<label>￥@(item.MarketPrice)</label>
-                </div>
-                <div class="price">
-                    代购价：<label>￥@(item.Price)</label>
-                </div>
-            </a>
+        <div class="p1">
+            <div class="downBtn" onclick="ProductList.onSBMoreBtnClick(this)"></div>
         </div>
     }
-        <div class="pullupDiv"></div>
 </div>
-<div class="btool">
-    <div class="page">
-        <span class="pIndexItem">
-            <a class="pItem fpItem @(Model.PageIndex == 1 ? "gray" : "")" @(Model.PageIndex == 1 ? "" : "href=\"/Product/ListByCategory/" + Model.Category.CID + "/" + (Model.PageIndex - 1) + "\"") onclick="@(Model.PageIndex == 1 ? "" : "ProductList.onByCategoryPageClick(-2); return false;")">上一页</a>
-            @{
-                if (Model.PageIndex >= 1)
-                {
-                    <a class="pItem @(Model.PageIndex == 1 ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/1" onclick="ProductList.onByCategoryPageClick(1); return false;">1</a>
+<div id="plMain">
+    <div id="plTool" class="tool">
+        <label>排序方式：</label>
+        @{
+            string OTStr = ViewBag.OrderType ? "asc" : "desc";
+        }
+        <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 0 ? OTStr : "")">新品</a>
+        <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 1 ? OTStr : "")">畅销</a>
+        <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 2 ? OTStr : "")">价格</a>
+        <a onclick="ProductList.onByCategoryOrderClick(this)" class="orderTag @(ViewBag.Order == 3 ? OTStr : "")">浏览量</a>
+    </div>
+    <div id="plDiv" class="productList">
+        @foreach (FCStore.Models.Product item in Model.Products)
+        {
+            <div class="item">
+                <a href="/Product/Detail/@(item.PID)">
+                    <div class="img">
+                        <img src="@((item.ImgPathArr != null && item.ImgPathArr.Length >= 1) ? item.ImgPathArr[0] : "")" />
+                    </div>
+                    <div class="title">
+                        @(item.Title)
+                    </div>
+                    <div class="marketPrice">
+                        市场价：<label>￥@(item.MarketPrice)</label>
+                    </div>
+                    <div class="price">
+                        代购价：<label>￥@(item.Price)</label>
+                    </div>
+                </a>
+            </div>
+        }
+        <div class="pullupDiv"></div>
+    </div>
+    <div class="btool">
+        <div class="page">
+            <span class="pIndexItem">
+                <a class="pItem fpItem @(Model.PageIndex == 1 ? "gray" : "")" @(Model.PageIndex == 1 ? "" : "href=\"/Product/ListByCategory/" + Model.Category.CID + "/" + (Model.PageIndex - 1) + "\"") onclick="@(Model.PageIndex == 1 ? "" : "ProductList.onByCategoryPageClick(-2); return false;")">上一页</a>
+                @{
+                    if (Model.PageIndex >= 1)
+                    {
+                        <a class="pItem @(Model.PageIndex == 1 ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/1" onclick="ProductList.onByCategoryPageClick(1); return false;">1</a>
+                    }
+                    if (Model.PageIndex >= 2)
+                    {
+                        <a class="pItem @(Model.PageIndex == 2 ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/2" onclick="ProductList.onByCategoryPageClick(2); return false;">2</a>
+                    }
+                    if (Model.PageIndex - (Model.PageCount - Model.PageIndex > 2 ? 0 : Model.PageCount - Model.PageIndex) - 3 > 2)
+                    {
+                        <label>...</label>
+                    }
+                    int tmpC = 5;
+                    int tmpPI = 1;
+                    if (Model.PageIndex <= 2)
+                    {
+                        tmpC = Math.Min(5 - Model.PageIndex, Model.PageCount - Model.PageIndex);
+                        tmpPI = Model.PageIndex + 1;
+                    }
+                    else
+                    {
+                        tmpPI = Math.Max(Math.Min(Model.PageIndex - 2, Model.PageCount - 4), 3);
+                        tmpC = Math.Min(5, Model.PageCount - tmpPI + 1);
+                    }
+                    for (int i = 0; i < tmpC; i++)
+                    {
+                        <a class="pItem @(Model.PageIndex == tmpPI + i ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/@(tmpPI + i)" onclick="ProductList.onByCategoryPageClick(@(tmpPI + i)); return false;">@(tmpPI + i)</a>
+                    }
                 }
-                if (Model.PageIndex >= 2)
-                {
-                    <a class="pItem @(Model.PageIndex == 2 ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/2" onclick="ProductList.onByCategoryPageClick(2); return false;">2</a>
-                }
-                if (Model.PageIndex - (Model.PageCount - Model.PageIndex > 2 ? 0 : Model.PageCount - Model.PageIndex) - 3 > 2)
-                {
-                    <label>...</label>
-                }
-                int tmpC = 5;
-                int tmpPI = 1;
-                if (Model.PageIndex <= 2)
-                {
-                    tmpC = Math.Min(5 - Model.PageIndex, Model.PageCount - Model.PageIndex);
-                    tmpPI = Model.PageIndex + 1;
-                }
-                else
-                {
-                    tmpPI = Math.Max(Math.Min(Model.PageIndex - 2, Model.PageCount - 4), 3);
-                    tmpC = Math.Min(5, Model.PageCount - tmpPI + 1);
-                }
-                for (int i = 0; i < tmpC; i++)
-                {
-                    <a class="pItem @(Model.PageIndex == tmpPI + i ? "in" : "")" href="/Product/ListByCategory/@(Model.Category.CID)/@(tmpPI + i)" onclick="ProductList.onByCategoryPageClick(@(tmpPI + i)); return false;">@(tmpPI + i)</a>
-                }
-            }
-            <a class="pItem lpItem @(Model.PageIndex == Model.PageCount ? "gray" : "")" @(Model.PageIndex == Model.PageCount ? "" : "href=\"/Product/ListByCategory/" + Model.Category.CID + "/" + (Model.PageIndex + 1) + "\"") onclick="@(Model.PageIndex == Model.PageCount ? "" : "ProductList.onByCategoryPageClick(-1); return false;")">下一页</a>
-        </span>
-        <span class="pText">
-            共<label class="PCLabel">@(Model.PageCount)页</label>
-            <label class="goLB">到第<input id="GoPIInput" type="text" value="@(Model.PageIndex)" />页</label>
-            <button onclick="var PI = $('#GoPIInput').val(); ProductList.onByCategoryPageClick(PI); return false;">确定</button>
-        </span>
+                <a class="pItem lpItem @(Model.PageIndex == Model.PageCount ? "gray" : "")" @(Model.PageIndex == Model.PageCount ? "" : "href=\"/Product/ListByCategory/" + Model.Category.CID + "/" + (Model.PageIndex + 1) + "\"") onclick="@(Model.PageIndex == Model.PageCount ? "" : "ProductList.onByCategoryPageClick(-1); return false;")">下一页</a>
+            </span>
+            <span class="pText">
+                共<label class="PCLabel">@(Model.PageCount)</label>页
+                <label class="goLB">到第<input id="GoPIInput" type="text" value="@(Model.PageIndex)" />页</label>
+                <button class="sbtn2" onclick="var PI = $('#GoPIInput').val(); ProductList.onByCategoryPageClick(PI); return false;">GO</button>
+            </span>
+        </div>
     </div>
 </div>

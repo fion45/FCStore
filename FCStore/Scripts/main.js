@@ -1,34 +1,9 @@
 ﻿$(function () {
-    QC.Login({
-        btnId: "qqLoginBtn"	//插入按钮的节点id
-    },MainLayout.QQLoginSuccess);
-//    , function (opts) {
-//    	//注销成功  
-//        alert("已退出登录");
-//        $("#wb_connect_btn").show();
-//        $("#userArea .VADiv").show();
-//    });
-    
-    WB2.anyWhere(function (W) {
-        W.widget.connectButton({
-            id: "wb_connect_btn",
-            type: '3,2',
-            callback: {
-                login: function (o) {
-                    alert(o.screen_name)
-                },
-                logout: function () {
-                    alert('logout');
-                }
-            }
-        });
-    });
-	
 	//类别分类选择器
-    (new SidebarFollow()).init({
-        element: $('#Categorys'),
-        distanceToTop: 15
-    });
+//    (new SidebarFollow()).init({
+//        element: $('#Categorys'),
+//        distanceToTop: 10
+//    });
     $("#Categorys .TCItem").bind("mouseenter", function (ev) {
         var item = $(this);
         item.addClass("hover");
@@ -61,7 +36,7 @@
     //顶层滚动
     (new SidebarFollow()).init({
         element: $('#TopBtn'),
-        distanceToTop: 1,
+        distanceToTop: 700,
         afterFollowCB : function(ele) {
         	if(!MainLayout.topBtnTag && $(document).scrollTop() != 0)
         		ele.show();
@@ -797,19 +772,19 @@ var ProductList = {
     onFavoriteClick : function() {
         window.location = "/Keep/List";
     },
-    onSBMoreBtnClick : function() {
+    onSBMoreBtnClick : function(ele) {
     	//显示更多的Brand
-    	if($("#plBrands").data("tag")) {
+    	if($(ele).hasClass("upTag")) {
 	    	$("#plBrands").parent().animate({
 	    		height : 102
 	    	},"fast","linear");
-	    	$("#plBrands").data("tag",false);
+	    	$(ele).removeClass("upTag");
     	}
     	else {
 	    	$("#plBrands").parent().animate({
 	    		height : $("#plBrands").height()
 	    	},"fast","linear");
-	    	$("#plBrands").data("tag",true);
+	    	$(ele).addClass("upTag");
     	}
     }
 };
