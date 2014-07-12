@@ -76,9 +76,6 @@
                             <div class="icon">
                                 <img src="/Brand/@(Model.Brand.Tag).jpg" alt="@(Model.Brand.Name2)" />
                             </div>
-                            <div class="name cut">
-                                @(Model.Brand.NameStr)
-                            </div>
                         </a>
                     </div>
                 </div>
@@ -150,10 +147,10 @@
             </div>
             <div id="productBtn" class="p1">
                 <div class="p2">
-                    <div class="@(ViewBag.KeepTag ? "btn13gray" : "btn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
+                    <div class="@(ViewBag.KeepTag ? "lbtngray" : "lbtn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
                 </div>
                 <div class="p2">
-                    <div class="btn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">购买</div>
+                    <div class="lbtn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">加入购物车</div>
                 </div>
             </div>
             <div class="pullupDiv"></div>

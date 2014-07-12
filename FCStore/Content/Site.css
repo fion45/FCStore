@@ -117,12 +117,12 @@ a:hover {
     background:url("/Content/themes/image/BtnSource.png") no-repeat -710px -1px;
 }
 
-.lbtn1gray {
+.lbtngray {
     width:152px;
     height:51px;
     line-height:51px;
     vertical-align:middle;
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -862px -1px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -911px -1px;
     border:none;
     color:#666666;
     font-size:15pt;
@@ -130,8 +130,8 @@ a:hover {
     cursor:default;
 }
 
-.lbtn1gray:hover {
-    background:url("/Content/themes/image/BtnSource.png") no-repeat -862px -1px;
+.lbtngray:hover {
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -911px -1px;
 }
 
 .mbtn1 {
@@ -743,28 +743,28 @@ footer {
 ----------------------------------------------------------*/
 #TopBtn {
     position:absolute;
-    width:60px;
-    height:63px;
+    width:41px;
+    height:41px;
     left:100%;
     margin-left:-60px;
     top:700px;
     display:none;
-    background:#FFF url("/Content/themes/image/main.png") no-repeat -153px 0px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
+    cursor:pointer;
 }
 
 #TopBtn:hover {
-    background:#FFF url("/Content/themes/image/main.png") no-repeat -212px 0px;
+    background:url("/Content/themes/image/main.png") no-repeat -43px -1px;
 }
 
     #TopBtn .title {
-        margin-top:50px;
+        margin-top:45px;
         font-size:10pt;
-        font-weight:bold;
         color:#B6B6B6
     }
 
     #TopBtn:hover .title {
-        color:#50A6BD;
+        color:#E8394D;
     }
 
 /* Banner
@@ -1048,14 +1048,16 @@ footer {
         border-radius:8px;
         box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
         padding:10px 2%;
+        background-color:#FFFFFF;
     }
 
 #preview {
-    width:348px;
+    width:351px;
     height:auto;
     float:left;
     margin:10px 0px;
     position:relative;
+    padding:5px;
 }
 
     #preview .zoomdiv {
@@ -1117,31 +1119,32 @@ footer {
 }
 
 #spec-n5 {
+    margin-top:6px;
     width:350px;
     height:85px;
 }
 
-    #spec-n5 div {
-        margin-top:3px;
-        float:left;
-        height:100%;
-    }
-
 #spec-left {
     width:16px;
+    height:79px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -98px #ffffff;
     cursor:pointer;
+    float:left;
 }
 
 #spec-left:hover {
-    background:url("/Content/themes/image/main.png") no-repeat -352px -83px;
+    background:url("/Content/themes/image/main.png") no-repeat -35px -98px #ffffff;
 }
 
 #spec-list {
     width:318px;
     position:relative;
     overflow:hidden;
-    border-top:solid 2px #999999;
-    border-bottom:solid 2px #999999;
+    height:77px;
+    float:left;
+    border-top:solid 1px #999999;
+    border-bottom:solid 1px #999999;
+    background-color: #ffffff;
 }
 
     #spec-list li {
@@ -1149,27 +1152,31 @@ footer {
     }
 
     #spec-list .ILUl img{
-        margin:7px;
+        border-color:#CCCCCC;
+        border-width:1px;
+        border-style:solid;
+        padding:3px 2px;
         width:68px;
         height:66px;
-        padding:3px 2px;
-        margin:3px;
-        border:1px solid #cccccc;
+        margin:2px 3px;
+        cursor:pointer;
     }
 
 #spec-right {
     width:16px;
-    background:url("/Content/themes/image/main.png") no-repeat -1px 0px;
+    height:79px;
+    background:url("/Content/themes/image/main.png") no-repeat -18px -98px #ffffff;
     cursor:pointer;
+    float:left;
 }
 
 #spec-right:hover {
-    background:url("/Content/themes/image/main.png") no-repeat -369px -83px;
+    background:url("/Content/themes/image/main.png") no-repeat -52px -98px #ffffff;
 }
 
 #productInfo {
     float:left;
-    width:445px;
+    width:435px;
     height:auto;
     position:relative;
     min-height:415px;
@@ -1228,7 +1235,7 @@ footer {
             width:29px;
             height:30px;
             float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+            background:url("/Content/themes/image/main.png") no-repeat -1px -50px;
             cursor:pointer;
         }
 
@@ -1236,16 +1243,16 @@ footer {
             width:29px;
             height:30px;
             float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+            background:url("/Content/themes/image/main.png") no-repeat -30px -50px;
             cursor:pointer;
         }
 
         #productSaleInput .spinnerLeft:hover {
-            background-position-x:-61px;
+            background-position-x:-60px;
         }
 
         #productSaleInput .spinnerRight:hover {
-            background-position-x:-90px;
+            background-position-x:-91px;
         }
 
 #productTitle {
@@ -1288,20 +1295,20 @@ footer {
         }
 
         #productBrand .evaluate .empty{
-            background:url("/Content/themes/image/main.png") repeat -123px -167px;
+            background:url("/Content/themes/image/main.png") repeat -123px -49px;
         }
 
         #productBrand .evaluate .half{
-            background:url("/Content/themes/image/main.png") repeat -160px -167px;
+            background:url("/Content/themes/image/main.png") repeat -160px -49px;
         }
 
         #productBrand .evaluate .full{
-            background:url("/Content/themes/image/main.png") repeat -195px -167px;
+            background:url("/Content/themes/image/main.png") repeat -195px -49px;
         }
 
 #productPrice {
     width:103%;
-    margin:5px 0px 15px 6px;
+    margin:5px 0px 15px 4px;
     padding:10px 9px 10px 0px;
     height:80px;
     color:#FFC5C5;
@@ -1337,7 +1344,7 @@ footer {
         top:100%;
         left:100%;
         margin-left:-6px;
-        background:url("/Content/themes/image/main.png") no-repeat -1px -198px;
+        background:url("/Content/themes/image/main.png") no-repeat -1px -80px;
     }
 
 #productBtn {
@@ -1366,7 +1373,19 @@ footer {
     float:left;
 }
 
-#buyBtn,#keepBtn {
+#buyBtn {
+    margin:2px auto;
+    width:120px;
+    padding-left:32px;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -1063px -1px;
+}
+
+#buyBtn:hover {
+    margin:2px auto;
+    background:url("/Content/themes/image/BtnSource.png") no-repeat -1215px -1px;
+}
+
+#keepBtn {
     margin:2px auto;
 }
 
@@ -1633,6 +1652,10 @@ footer {
         color:#676767;
     }
 
+    #plTool a:hover {
+        color:#D73E3E;
+    }
+
     #plTool .asc {
         background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -37px;
         color:#85A9DB;
@@ -1671,11 +1694,16 @@ footer {
             color:white;
         }
 
+        .btool .page .in:hover {
+            color:white;
+        }
+
         .btool .page .gray {
             color:#ddcccc;
         }
 
         .btool .page .gray:hover {
+            border-color:#ddcccc;
             color:#ddcccc;
         }
 
@@ -1717,19 +1745,19 @@ footer {
         height:15px;
         margin:2px auto;
         cursor:pointer;
-        background:url("/Content/themes/image/main.png") no-repeat -63px -112px;
+        background:url("/Content/themes/image/main.png") no-repeat -63px -83px;
     }
 
     .brandFilter .downBtn:hover {
-        background:url("/Content/themes/image/main.png") no-repeat -93px -112px;
+        background:url("/Content/themes/image/main.png") no-repeat -93px -83px;
     }
 
     .brandFilter .upTag {
-        background:url("/Content/themes/image/main.png") no-repeat -123px -112px;
+        background:url("/Content/themes/image/main.png") no-repeat -123px -83px;
     }
 
     .brandFilter .upTag:hover {
-        background:url("/Content/themes/image/main.png") no-repeat -153px -112px;
+        background:url("/Content/themes/image/main.png") no-repeat -153px -83px;
     }
 
     .brandFilter .title {
@@ -1817,10 +1845,24 @@ footer {
 
     #plDiv .item {
         float:left;
-        width:191px;
+        width:190px;
         padding:13px 10px;
         font-size:10pt;
         text-align:center;
+        position:relative;
+        border-left:dashed 1px #C5C5C5;
+        border-bottom:dashed 1px #C5C5C5;
+    }
+
+    #plDiv .item:nth-child(4n+1) {
+        border-left:none;
+    }
+
+    #plDiv .item:nth-last-child(1),
+    #plDiv .item:nth-last-child(2),
+    #plDiv .item:nth-last-child(3),
+    #plDiv .item:nth-last-child(4) {
+        border-bottom:none;
     }
 
         #plDiv .item img{
@@ -1857,6 +1899,15 @@ footer {
                 font-size:12pt;
                 font-weight:bold;
             }
+        
+        #plDiv .item .buyIcon {
+            position:absolute;
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
+            width:27px;
+            height:27px;
+            left:170px;
+            top:210px;
+        }
 
 /* User Details
 ----------------------------------------------------------*/
