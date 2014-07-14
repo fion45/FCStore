@@ -115,7 +115,7 @@ namespace FCStore
             Server.ClearError();
         }
 
-        void Application_OnPostAuthenticateRequest(object sender, EventArgs e)
+        protected void Application_OnPostAuthenticateRequest(object sender, EventArgs e)
         {
             HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null && authCookie.Value != "" && authCookie.Value != null)
@@ -131,6 +131,12 @@ namespace FCStore
                     HttpContext.Current.User = myUser;
                 }
             }
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+
+            //this.Request.UserHostAddress
         }
     }
 }
