@@ -54,8 +54,8 @@ namespace FCStore.Controllers
             }
             ViewBag.EvaluationCount = db.Evaluations.Count(r => r.Product.PID == ID);
             ViewBag.SaleCount = (from op in db.OrderPackets
-                                 where op.PID == ID && op.Order.Status > 1
-                                 select op.Count).Sum();
+                                  where op.PID == ID && op.Order.Status > 1
+                                  select op.Count).ToList().Sum();
             return View(tmpProduct);
         }
 

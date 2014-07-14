@@ -147,12 +147,12 @@ namespace FCStore.Controllers
             //设置COOKIE过期
             Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
 
-            if (userID == null || PSW == null || checkCode == null || Session["Validate_code"] == null)
+            if (userID == null || PSW == null)
             {
                 return RedirectToAction("Login","Home");
             }
             User user = null;
-            if (checkCode != (Session["Validate_code"].ToString()))
+            if (Session["Validate_code"] != null && checkCode != (Session["Validate_code"].ToString()))
             {
                 ViewBag.LoginFail = -2;
                 string jsonStr = PubFunction.BuildResult(user,null ,false, -2, "验证码错误");

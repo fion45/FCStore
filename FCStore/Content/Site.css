@@ -662,12 +662,35 @@ footer {
         background:url("/Content/themes/image/CategoryBK.png") repeat-x bottom #B20000;
     }
 
-        #Categorys .TCategory .hover .item{
-            background-color:#68BCD3;
+        #Categorys .TCategory .hover {
+            background-color:#E9394E;
             color:white;
             border-right:solid 1px #68BCD3;
             font-weight:700;
         }
+
+            #Categorys .TCategory .item .subItemUL {
+                height:17px;
+                line-height:17px;
+                overflow:hidden;
+                margin-top:3px;
+            }
+
+                #Categorys .TCategory .item .TCItem {
+                    font-size:12pt;
+                    font-weight:bold;
+                    letter-spacing:1px;
+                }
+
+                #Categorys .TCategory .item .subItem a {
+                    font-size:9pt;
+                    font-weight:normal;
+                    color:#ccdddd;
+                }
+
+                #Categorys .TCategory .item a:hover {
+                    color:#FFAA24;
+                }
 
     #Categorys .TCategory:last-child {
         height:12px;
@@ -678,12 +701,16 @@ footer {
     #Categorys .item {
         width:84%;
         padding:7px 8%;
-        height:36px;
+        height:45px;
         color:#ffffff;
         font-size:11pt;
         font-weight:600;
         text-align:left;
     }
+
+        #Categorys .item .TCItem {
+            color:#ffffff;
+        }
 
     #Categorys .TCategory:first-child .item {
         height:18px;
@@ -695,7 +722,7 @@ footer {
         top:-1px;
         width:650px;
         display:none;
-        background-color:#68BCD3;        
+        background-color:#E9394E;        
         box-shadow:8px 8px 8px -5px rgb(204, 204, 204);
     }
 
@@ -748,7 +775,6 @@ footer {
     left:100%;
     margin-left:-60px;
     top:700px;
-    display:none;
     background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
     cursor:pointer;
 }
@@ -1213,12 +1239,12 @@ footer {
     }
 
     #productChoose .choseItemPar {
-        margin:5px 0px;
+        margin:10px 0px;
         width:100%;
     }
 
 #productSaleInput {
-    margin-top:10px;
+    margin-top:15px;
     height:28px;
     line-height:28px;
     vertical-align:middle;
@@ -1282,7 +1308,8 @@ footer {
 
     #productBrand .evaluate {
         float:right;
-        margin-right:15px;
+        margin-top:10px;
+        margin-right:10px;
         width:230px;
         height:35px;
     }
@@ -1294,21 +1321,25 @@ footer {
             margin-right:8px;
         }
 
-        #productBrand .evaluate .empty{
+        #productBrand .evaluate .empty {
             background:url("/Content/themes/image/main.png") repeat -123px -49px;
         }
 
-        #productBrand .evaluate .half{
+        #productBrand .evaluate .half {
             background:url("/Content/themes/image/main.png") repeat -160px -49px;
         }
 
-        #productBrand .evaluate .full{
+        #productBrand .evaluate .full {
             background:url("/Content/themes/image/main.png") repeat -195px -49px;
         }
 
+    #productBrand .brandDiv {
+        margin-top:5px;
+    }
+
 #productPrice {
     width:103%;
-    margin:5px 0px 15px 4px;
+    margin:13px 0px 15px 4px;
     padding:10px 9px 10px 0px;
     height:80px;
     color:#FFC5C5;
@@ -1350,7 +1381,7 @@ footer {
 #productBtn {
     float:left;
     width:100%;
-    margin:10px 0px;
+    margin:15px 0px;
 }
 
     #productBtn .p2{
@@ -1608,14 +1639,15 @@ footer {
 ----------------------------------------------------------*/
 .choseItemPar .choseItem {
     cursor:pointer;
-    color:#0078b6;
+    color:#676767;
     padding:1px 5px 1px 15px;
 }
 
 .choseItemPar .sel {
-    padding:1px 4px 1px 14px;
-    border:solid 1px #35879d;
-    background: url("/Content/themes/image/main.png") no-repeat -869px 0px;
+    padding:1px 4px 1px 17px;
+    color:#E9394E;
+    border:solid 1px #E9394E;
+    background: url("/Content/themes/image/LeftRightIcon.png") no-repeat -35px -89px;
 }
 
 /* Product List
@@ -1871,7 +1903,7 @@ footer {
         }
 
         #plDiv .item .title{
-            width:170px;
+            width:180px;
             height:34px;
             overflow:hidden;
             margin:0px auto;
@@ -1879,7 +1911,7 @@ footer {
         }
 
         #plDiv .item .marketPrice {
-            width:170px;
+            width:180px;
             margin:0px auto;
             text-align:left;
         }
@@ -1889,7 +1921,7 @@ footer {
             }
 
         #plDiv .item .price{
-            width:170px;
+            width:180px;
             margin:0px auto;
             text-align:left;
         }
@@ -1905,7 +1937,7 @@ footer {
             background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
             width:27px;
             height:27px;
-            left:170px;
+            left:163px;
             top:210px;
         }
 

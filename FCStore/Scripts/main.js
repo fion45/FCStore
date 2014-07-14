@@ -1,11 +1,11 @@
 ﻿$(function () {
 	//类别分类选择器
-//    (new SidebarFollow()).init({
-//        element: $('#Categorys'),
-//        distanceToTop: 10
-//    });
-    $("#Categorys .TCItem").bind("mouseenter", function (ev) {
-        var item = $(this);
+    (new SidebarFollow()).init({
+        element: $('#Categorys'),
+        distanceToTop: 10
+    });
+    $("#Categorys .item").bind("mouseenter", function (ev) {
+        var item = $(ev.currentTarget);
         item.addClass("hover");
         var subDiv = item.next(".subCategory");
         subDiv.show();
@@ -17,7 +17,7 @@
             subDiv.animate({ "top": pos.top - oY }, "fast");
         }
     }).bind("mouseleave", function (ev) {
-        var item = $(this);
+        var item = $(ev.currentTarget);
         var subDiv = item.next(".subCategory");
         if ($(ev.toElement)[0] != subDiv[0] && $(ev.toElement).parents('.subCategory').length == 0) {
             subDiv.hide();

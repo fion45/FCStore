@@ -42,6 +42,7 @@
             "padding": "3px 2px 3px 2px"
         });
     });
+    
     $("#productSaleInput .spinner").mySpinner({
         upEle: $("#productSaleInput .spinnerRight"),
         downEle: $("#productSaleInput .spinnerLeft"),
@@ -69,7 +70,12 @@
             }
         }
     });
-})
+    
+    var choseType = $("#productChoose .choseItemPar .content");
+    $.each(choseType,function(i,n){
+    	$.selectOne($(n).find(".choseItem"), "sel");
+    });
+});
 
 var ProductDetail = {
 	InputMaxNum : 140,

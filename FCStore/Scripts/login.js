@@ -4,45 +4,46 @@
 			var obj = {};
 	        obj.userID = $("#UIDTB").val();
 	        obj.PSW = $("#PSWTB").val();
-	        obj.checkCode = $("#checkCodeTB").val();
-	        if (obj.checkCode.length == 4) {
-	            $.myAjax({
-	            	refreshTag : true,
-	                loadEle: $("#loginDiv"),
-	                url: "/User/Login",
-	                data: JSON.stringify(obj),
-	                dataType: "json",
-	                type: "POST",
-	                contentType: "application/json;charset=utf-8",
-	                success: function (data, status, options) {
-	                    if (!data.successTag) {
-	                    	if(data.errCode == -2) {
-	                    		alert("验证码错误，请重新输入");
-				                //刷新验证码
-				        		LoginPageView.register.OnRefreshCCode();
-	                    	}
-	                    	else {
-	                    		alert("密码或者用户名错误，请重新输入！");
-	                    		$("#UIDTB").val("");
-	                    		$("#PSWTB").val("");
-				                //刷新验证码
-				        		LoginPageView.register.OnRefreshCCode();
-	                    	}
-	                    }
-	                    else {
-	                    	$("#loginDiv").remove();
-	                    	$("#resultDiv").show();
-	                    	$("#resultDiv .userName").text($.cookie('UserInfo').UserName);
-	                    	LoginPageView.login.OnFiveSecondsTicket();
-	                    }
-	                }
-	            });
+	        obj.checkCode = '';
+	        if($("#loginer .ccDiv").css("visibility") != "hidden") {
+	        	obj.checkCode = $("#checkCodeTB").val();
+	        	if (obj.checkCode.length != 4) {
+	        		alert("验证码错误！");
+	                //重新输入验证码
+		            $("#checkCodeTB").val("")
+	        	}
 	        }
-	        else {
-	            alert("验证码错误！");
-                //重新输入验证码
-	            $("#checkCodeTB").val("")
-	        }
+            $.myAjax({
+            	refreshTag : true,
+                loadEle: $("#loginDiv"),
+                url: "/User/Login",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data, status, options) {
+                    if (!data.successTag) {
+                    	if(data.errCode == -2) {
+                    		alert("验证码错误，请重新输入");
+			                //刷新验证码
+			        		LoginPageView.register.OnRefreshCCode();
+                    	}
+                    	else {
+                    		alert("密码或者用户名错误，请重新输入！");
+                    		$("#UIDTB").val("");
+                    		$("#PSWTB").val("");
+			                //刷新验证码
+			        		LoginPageView.register.OnRefreshCCode();
+                    	}
+                    }
+                    else {
+                    	$("#loginDiv").remove();
+                    	$("#resultDiv").show();
+                    	$("#resultDiv .userName").text($.cookie('UserInfo').UserName);
+                    	LoginPageView.login.OnFiveSecondsTicket();
+                    }
+                }
+            });
 		},
 		OnCheckCodeImgClick : function() {
     		$("#ccImg").prop("src","/Home/GetValidateCode");

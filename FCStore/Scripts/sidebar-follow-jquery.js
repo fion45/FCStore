@@ -16,8 +16,8 @@ SidebarFollow = function() {
 
 	this.cache = {
 		originalToTop: 0, // 原本到页面顶部的距离
-		prevElement: null, // 上一个节点
-		parentToTop: 0, // 父节点的上边到顶部距离
+//		prevElement: null, // 上一个节点
+//		parentToTop: 0, // 父节点的上边到顶部距离
 //		placeholder: jQuery('<div>') // 占位节点
 		parTopTag: false,
 		fixedTag : false,
@@ -37,21 +37,21 @@ SidebarFollow.prototype = {
 		}
 
 		// 获取上一个节点
-		var prevElement = element.prev();
-		while(prevElement.is(':hidden')) {
-			prevElement = prevElement.prev();
-			if(prevElement.length <= 0) {
-				break;
-			}
-		}
-		_self.cache.prevElement = prevElement;
+//		var prevElement = element.prev();
+//		while(prevElement.is(':hidden')) {
+//			prevElement = prevElement.prev();
+//			if(prevElement.length <= 0) {
+//				break;
+//			}
+//		}
+//		_self.cache.prevElement = prevElement;
 
 		// 计算父节点的上边到顶部距离
-		var parent = element.parent();
-		var parentToTop = parent.offset().top;
-		var parentBorderTop = parent.css('border-top');
-		var parentPaddingTop = parent.css('padding-top');
-		_self.cache.parentToTop = parentToTop + parentBorderTop + parentPaddingTop;
+//		var parent = element.parent();
+//		var parentToTop = parent.offset().top;
+//		var parentBorderTop = parseInt(parent.css('border-top-width'));
+//		var parentPaddingTop = parseInt(parent.css('padding-top'));
+//		_self.cache.parentToTop = parentToTop + parentBorderTop + parentPaddingTop;
 
 		// 滚动屏幕
 		jQuery(window).scroll(function() {
@@ -69,6 +69,10 @@ SidebarFollow.prototype = {
 		if(element.css('position') == "fixed") {
 			_self.cache.fixedTop = parseInt(element.css('top'));
 		}
+		_self._scrollScreen({
+			_self : _self,
+			element : element
+		});
 	},
 
 	/**
@@ -77,8 +81,9 @@ SidebarFollow.prototype = {
 	_scrollScreen: function(args) {
 		var _self = args._self;
 		var element = args.element;
-		var prevElement = _self.cache.prevElement;
-
+//		var prevElement = _self.cache.prevElement;
+		prevElement = null;
+		
 		// 获得到顶部的距离
 		var toTop = _self.config.distanceToTop;
 
@@ -88,8 +93,8 @@ SidebarFollow.prototype = {
 			toTop += bodyToTop;
 			// 获得到顶部的绝对距离
 		}
-		if(_self.cache.fixedTag || _self.cache.fixedTop == null) {
-			_self.cache.elementToTop = element.offset().top - toTop;
+		if(!_self.cache.fixedTag || _self.cache.fixedTop == null) {
+			_self.cache.elementToTop = parseInt(element.css('top')) - toTop;
 		}
 		else {
 			_self.cache.elementToTop = parseInt(element.css('top')) - toTop;
@@ -98,12 +103,12 @@ SidebarFollow.prototype = {
 		
 
 		// 如果存在上一个节点, 获得到上一个节点的距离; 否则计算到父节点顶部的距离
-		var referenceToTop = 0;
-		if(prevElement && prevElement.length === 1) {
-			referenceToTop = prevElement.offset().top + prevElement.outerHeight();
-		} else {
-			referenceToTop = _self.cache.parentToTop - toTop;
-		}
+//		var referenceToTop = 0;
+//		if(prevElement && prevElement.length === 1) {
+//			referenceToTop = prevElement.offset().top + prevElement.outerHeight();
+//		} else {
+//			referenceToTop = _self.cache.parentToTop - toTop;
+//		}
 
 		// 当节点进入跟随区域, 跟随滚动
 		if(jQuery(document).scrollTop() > _self.cache.elementToTop) {
@@ -114,20 +119,20 @@ SidebarFollow.prototype = {
 			// 修改样式
 			_self.cache.oldStyle = element.attr("style"); 
 			element.attr("style","top:" + toTop + "px;position:fixed;");
-			
+			_self.cache.fixedTop = toTop;
 			_self.cache.fixedTag = true;
 			if(_self.config.afterFollowCB != null) {
 				_self.config.afterFollowCB(element);
 			}
 		// 否则回到原位
-		} else if(_self.cache.originalToTop > _self.cache.elementToTop) {
+		} else if(_self.cache.originalToTop >= _self.cache.elementToTop) {
 			if(_self.cache.oldStyle) {
 				element.attr("style",_self.cache.oldStyle);
 			}
 			else {
 				element.removeAttr("style");	
 			}
-			
+			_self.cache.fixedTop = null;
 			_self.cache.fixedTag = false;
 			if(_self.config.afterStopCB != null) {
 				_self.config.afterStopCB(element);

@@ -27,10 +27,10 @@
                 <div class="content ccDiv">
                     <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
                     <div class="inBox">验证码</div>
-                    <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                    @*<img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />*@
                 </div>
                 <div class="content">
-                    <input id="loginBtn" type="submit" value="登陆" />
+                    <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="submit" value="登陆" />
                 </div>
                 <div class="pullupDiv"></div>
             </form>
@@ -42,7 +42,7 @@
                 <a>忘记密码</a>
             </div>
             <div class="registerDiv">
-                <input id="registerBtn" type="button"  value="立即注册账号" />
+                <a id="registerBtn" href="/Home/Register">立即注册账号</a>
             </div>
         </div>
         @*<div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">

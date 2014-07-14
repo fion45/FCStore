@@ -67,14 +67,15 @@
                         <div class="star empty"></div>
                     }
                 </div>
-                <div>
+                <div class="brandDiv">
                     <div class="title">
                         品牌：
                     </div>
                     <div class="content">
                         <a class="brandA" href="/Product/ListByBrand/@(Model.Brand.BID)">
                             <div class="icon">
-                                <img src="/Brand/@(Model.Brand.Tag).jpg" alt="@(Model.Brand.Name2)" />
+                                @*<img src="/Brand/@(Model.Brand.Tag).jpg" alt="@(Model.Brand.Name2)" />*@
+                                @(Model.Brand.NameStr)
                             </div>
                         </a>
                     </div>
@@ -91,7 +92,7 @@
                 <div class="pullupDiv"></div>
                 <div class="conner"></div>
             </div>
-            <div id="productSaleType">
+            @*<div id="productSaleType">
                 <div class="title">
                     支付方式：
                 </div>
@@ -107,7 +108,7 @@
                     <span>支持美国直邮</span>
                     <span>支持国内转邮</span>
                 </div>
-            </div>
+            </div>*@
             <div id="productChoose">
                 @{
                     if (!string.IsNullOrEmpty(Model.Chose))
