@@ -26,16 +26,16 @@
                         <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
                         <div class="inBox">密&#12288;码</div>
                     </div>
-                    <div class="content ccDiv" @((HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1) ? "style=visibility:visible;" : "style=visibility:hidden;")>
+                    <div class="content ccDiv">                            
+                    @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1)
+                    {
                         <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
                         <div class="inBox">验证码</div>
-                        @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1)
-                        {
-                            <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
-                        }
+                        <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                    }
                     </div>
                     <div class="content">
-                        <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="submit" value="登陆" />
+                        <input id="loginBtn" type="submit" value="登陆" />
                     </div>
                     <div class="pullupDiv"></div>
                 }
@@ -68,7 +68,10 @@
         </div>
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
             <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
-            <label class="blb welcome">Welcome Welcome</label>
+            <label class="blb welcome">Welcome Welcome</label>            
+            @{
+                string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ? "http://" + HttpContext.Current.Request.Url.Authority + "/Home/Index" : ViewBag.returnUrl;
+            }
             <div class="bottom"><label>网站在</label><label class="ticket">3</label><label>秒后跳转至：</label><a class="returnUrl" href="@(urlStr)">@(urlStr)</a></div>
         </div>
     </div>

@@ -16,8 +16,18 @@ namespace FCStore.Controllers
         {
             ClientTrail tmpCT = new ClientTrail();
             tmpCT.URL = request.Url.ToString();
-            tmpCT.ControllerName = request.RequestContext.RouteData.Route.GetRouteData(request.RequestContext.HttpContext).Values["controller"].ToString();
-            tmpCT.ActionName = request.RequestContext.RouteData.Route.GetRouteData(request.RequestContext.HttpContext).Values["action"].ToString();
+            if (request.RequestContext.RouteData.Route != null)
+            {
+                object tmpObj = request.RequestContext.RouteData.Route.GetRouteData(request.RequestContext.HttpContext).Values["controller"];
+                tmpCT.ControllerName = tmpObj != null ? tmpObj.ToString() : "";
+                tmpObj = request.RequestContext.RouteData.Route.GetRouteData(request.RequestContext.HttpContext).Values["action"];
+                tmpCT.ActionName = tmpObj != null ? tmpObj.ToString() : "";
+            }
+            else
+            {
+                tmpCT.ControllerName = "";
+                tmpCT.ActionName = "";
+            }
             tmpCT.ClientIP = request.UserHostAddress;
             tmpCT.LogDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 

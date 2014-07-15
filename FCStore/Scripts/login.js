@@ -5,12 +5,13 @@
 	        obj.userID = $("#UIDTB").val();
 	        obj.PSW = $("#PSWTB").val();
 	        obj.checkCode = '';
-	        if($("#loginer .ccDiv").css("visibility") != "hidden") {
+	        if($("#checkCodeTB").length != 0) {
 	        	obj.checkCode = $("#checkCodeTB").val();
 	        	if (obj.checkCode.length != 4) {
 	        		alert("验证码错误！");
 	                //重新输入验证码
-		            $("#checkCodeTB").val("")
+		            $("#checkCodeTB").val("");
+		            return;
 	        	}
 	        }
             $.myAjax({
@@ -115,12 +116,15 @@
     		$("#ccImg").prop("src","/Home/GetValidateCode");
 		},
 		OnRefreshCCode : function() {
-			$("#checkCodeTB").val("");
 			if($("#ccImg").length == 0) {
-				var tmpIMG = $("<img class='inBoxIMG' onclick='LoginPageView.login.OnCheckCodeImgClick()' id='ccImg' src='/Home/GetValidateCode' />");
+				var tmpIMG = $(
+					"<input id='checkCodeTB' name='checkCodeTB' class='enterTB' type='text' data-val='true' data-val-required='必填字段' data-val-length='' data-val-length-min='4' data-val-length-max='4' />" +
+                    "<div class='inBox'>验证码</div>" +
+					"<img class='inBoxIMG' onclick='LoginPageView.login.OnCheckCodeImgClick()' id='ccImg' src='/Home/GetValidateCode' />");
 				tmpIMG.appendTo($("#loginer .ccDiv"));
-				$("#loginer .ccDiv").css("visibility","visible");
+				$.validator.unobtrusive.parse(document);
 			}
+			$("#checkCodeTB").val("");
     		$("#ccImg").prop("src","/Home/GetValidateCode");
 		}
 	}
