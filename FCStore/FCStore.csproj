@@ -138,16 +138,19 @@
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ClientTrailController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EvaluationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KeepController.cs" />
+    <Compile Include="Controllers\LoginPageTrailController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderPacketController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\LoginActionFilterAttribute.cs" />
     <Compile Include="Filters\MyAuthorizeAttribute.cs" />
     <Compile Include="Filters\MyHandleErrorAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
@@ -158,12 +161,14 @@
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\City.cs" />
+    <Compile Include="Models\ClientTrail.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Evaluation.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\Keep.cs" />
+    <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPacket.cs" />
     <Compile Include="Models\ProcurementPacket.cs" />

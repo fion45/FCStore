@@ -41,5 +41,9 @@ namespace FCStore.Models
         public DbSet<Keep> Keeps { get; set; }
 
         public DbSet<Evaluation> Evaluations { get; set; }
+
+        public DbSet<ClientTrail> ClientTrails { get; set; }
+
+        public DbSet<LoginPageTrail> LoginPageTrails { get; set; }
     }
 }

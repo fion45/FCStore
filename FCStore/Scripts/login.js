@@ -25,16 +25,16 @@
                     if (!data.successTag) {
                     	if(data.errCode == -2) {
                     		alert("验证码错误，请重新输入");
-			                //刷新验证码
-			        		LoginPageView.register.OnRefreshCCode();
                     	}
                     	else {
                     		alert("密码或者用户名错误，请重新输入！");
                     		$("#UIDTB").val("");
                     		$("#PSWTB").val("");
-			                //刷新验证码
-			        		LoginPageView.register.OnRefreshCCode();
                     	}
+                    	if(data.custom == -1)
+			        		LoginPageView.register.OnRefreshCCode();	//刷新验证码
+			        	else if(data.custom == -2)
+			        		window.location.reload();
                     }
                     else {
                     	$("#loginDiv").remove();
@@ -70,7 +70,7 @@
 	        obj.userName = $("#UserNameTB").val();
 	        obj.email = $("#EmailTB").val();
 	        obj.psw = $("#PSWTB").val();
-	        obj.checkCode = $("#CheckCodeTB").val();
+	        obj.checkCode = $("#checkCodeTB").val();
 	        var hArr = window.location.href.split("/");
 	        var tmpUrlStr = hArr[hArr.length - 1];
 	        tmpUrlStr = tmpUrlStr == "Register" ? "" : tmpUrlStr;
@@ -97,7 +97,6 @@
                         else if(data.errCode == -4) {
                         	alert("输入信息未完整");
                         }
-                        //刷新验证码
                 		LoginPageView.register.OnRefreshCCode();
                     }
                     else {
@@ -112,11 +111,16 @@
 			$("#EmailTB").val("");
 			$("#PSWTB").val("");
 			$("#EPSWTB").val("");
-			$("#CheckCodeTB").val("");
+			$("#checkCodeTB").val("");
     		$("#ccImg").prop("src","/Home/GetValidateCode");
 		},
 		OnRefreshCCode : function() {
-			$("#CheckCodeTB").val("");
+			$("#checkCodeTB").val("");
+			if($("#ccImg").length == 0) {
+				var tmpIMG = $("<img class='inBoxIMG' onclick='LoginPageView.login.OnCheckCodeImgClick()' id='ccImg' src='/Home/GetValidateCode' />");
+				tmpIMG.appendTo($("#loginer .ccDiv"));
+				$("#loginer .ccDiv").css("visibility","visible");
+			}
     		$("#ccImg").prop("src","/Home/GetValidateCode");
 		}
 	}

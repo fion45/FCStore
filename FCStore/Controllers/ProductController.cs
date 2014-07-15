@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
 using System.Configuration;
-using Newtonsoft.Json;
 using System.Web.Security;
 using FCStore.Common;
 using System.Text.RegularExpressions;

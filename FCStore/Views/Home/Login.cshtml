@@ -15,24 +15,45 @@
     <div id="centerDiv">
         <div id="loginDiv" style="@(User.Identity.IsAuthenticated ? "display:none" : "")">
             <form id="loginer" class="ele">
-                <div class="ltTitle">用户登陆</div>
-                <div class="content UIDDIV">
-                    <input id="UIDTB" name="UIDTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" />
-                    <div class="inBox">用户名</div>
-                </div>
-                <div class="content">
-                    <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
-                    <div class="inBox">密&#12288;码</div>
-                </div>
-                <div class="content ccDiv">
-                    <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
-                    <div class="inBox">验证码</div>
-                    @*<img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />*@
-                </div>
-                <div class="content">
-                    <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="submit" value="登陆" />
-                </div>
-                <div class="pullupDiv"></div>
+                @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) != -2)
+                {
+                    <div class="ltTitle">用户登陆</div>
+                    <div class="content UIDDIV">
+                        <input id="UIDTB" name="UIDTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" />
+                        <div class="inBox">用户名</div>
+                    </div>
+                    <div class="content">
+                        <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
+                        <div class="inBox">密&#12288;码</div>
+                    </div>
+                    <div class="content ccDiv" @((HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1) ? "style=visibility:visible;" : "style=visibility:hidden;")>
+                        <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
+                        <div class="inBox">验证码</div>
+                        @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1)
+                        {
+                            <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                        }
+                    </div>
+                    <div class="content">
+                        <input onclick="LoginPageView.login.OnLoginBtnClick()" id="loginBtn" type="submit" value="登陆" />
+                    </div>
+                    <div class="pullupDiv"></div>
+                }
+                else if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -2)
+                {
+                    <div id="abnormal">
+                        <div>登陆异常，错误次数过多，请等待一段时间重试。</div>
+                        <div>
+                            等待时间：
+                            <label id="waitTime">
+                                @(new TimeSpan(0,0,int.Parse(Session["LOGINLOCK"].ToString())).ToString())
+                            </label>
+                        </div>
+                        <div>
+                            请返回<a href="/">首页</a>浏览等待。
+                        </div>
+                    </div>
+                }
             </form>
             <div class="other">
                 <span id="qqLoginBtn"></span>
@@ -45,11 +66,11 @@
                 <a id="registerBtn" href="/Home/Register">立即注册账号</a>
             </div>
         </div>
-        @*<div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
+        <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
             <label class="blb">欢迎<a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
             <label class="blb welcome">Welcome Welcome</label>
-            <div class="bottom"><label>程序在</label><label class="ticket">3</label><label>秒后跳转至：</label><a class="returnUrl" href="@(urlStr)">@(urlStr)</a></div>
-        </div>*@
+            <div class="bottom"><label>网站在</label><label class="ticket">3</label><label>秒后跳转至：</label><a class="returnUrl" href="@(urlStr)">@(urlStr)</a></div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

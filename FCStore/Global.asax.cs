@@ -15,6 +15,7 @@ using System.Configuration;
 using System.Text;
 using FCStore.Common;
 using FCStore.Models;
+using FCStore.Controllers;
 
 namespace FCStore
 {
@@ -136,7 +137,19 @@ namespace FCStore
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
 
-            //this.Request.UserHostAddress
+        }
+
+        protected void Application_LogRequest(object sender, EventArgs e)
+        {
+            bool enableTrail = false;
+            if (System.Configuration.ConfigurationManager.AppSettings["EnableTrail"] != null)
+            {
+                if (bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["EnableTrail"], out enableTrail) && enableTrail)
+                {
+                    ClientTrailController tmpCon = new ClientTrailController();
+                    tmpCon.WriteTrail(this.Request);
+                }
+            }
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using FCStore.Models;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using System.Drawing;
 using System.IO;
+using FCStore.Filters;
 
 namespace FCStore.Controllers
 {
@@ -43,6 +43,7 @@ namespace FCStore.Controllers
             return View(db.Columns.ToList());
         }
 
+        [LoginActionFilterAttribute(beforeTag = -1)]
         //[RequireHttps]
         public ActionResult Login(string id)
         {

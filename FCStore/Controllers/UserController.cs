@@ -11,10 +11,10 @@ using FCStore.FilterAttribute;
 using System.Text;
 using System.Text.RegularExpressions;
 using FCStore.Common;
-using System.Collections.Generic;
 using System.Net;
 using System.IO;
 using System.Drawing;
+using FCStore.Filters;
 
 namespace FCStore.Controllers
 {
@@ -142,8 +142,10 @@ namespace FCStore.Controllers
             Response.Cookies.Add(cookie);
         }
 
+        [LoginActionFilterAttribute(beforeTag = 0)]
         public ActionResult Login(string userID, string PSW, string checkCode)
         {
+            //防止暴力破解
             //设置COOKIE过期
             Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
 
@@ -152,10 +154,17 @@ namespace FCStore.Controllers
                 return RedirectToAction("Login","Home");
             }
             User user = null;
-            if (Session["Validate_code"] != null && checkCode != (Session["Validate_code"].ToString()))
+            if (Session["LPTAG"] != null && int.Parse(Session["LPTAG"].ToString()) == -1 
+                && (Session["Validate_code"] == null || (Session["Validate_code"] != null && checkCode != (Session["Validate_code"].ToString()))))
             {
-                ViewBag.LoginFail = -2;
-                string jsonStr = PubFunction.BuildResult(user,null ,false, -2, "验证码错误");
+                //ViewBag.LoginFail = -2;
+                string jsonStr = PubFunction.BuildResult(user, Session["LPTAG"].ToString(), false, -2, "验证码错误");
+                return Content(jsonStr);
+            }
+            else if (Session["LPTAG"] != null && int.Parse(Session["LPTAG"].ToString()) == -2)
+            {
+                //ViewBag.LoginFail = -3;
+                string jsonStr = PubFunction.BuildResult(user, Session["LPTAG"].ToString(), false, -3, "登陆异常");
                 return Content(jsonStr);
             }
             else
@@ -167,8 +176,9 @@ namespace FCStore.Controllers
                 }
                 else
                 {
-                    ViewBag.LoginFail = -1;
-                    string jsonStr = PubFunction.BuildResult(user,null, false, -1, "用户名或密码错误");
+                    //ViewBag.LoginFail = -1;
+                    string tmpStr = Session["LPTAG"] != null ? Session["LPTAG"].ToString() : null;
+                    string jsonStr = PubFunction.BuildResult(user, tmpStr, false, -1, "用户名或密码错误");
                     return Content(jsonStr);
                 }
             }

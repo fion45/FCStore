@@ -74,6 +74,11 @@ body {
     height:250px;
 }
 
+    #abnormal div {
+        float:left;
+        width:100%;
+    }
+
     #loginer .ltTitle
     {
         font-size:25pt;
@@ -111,7 +116,7 @@ body {
             width:120px;
             line-height:40px;
             margin-top:1px;
-            margin-left:-54px;
+            margin-left:-120px;
         }
 
     #loginer .UIDDIV {
@@ -229,8 +234,6 @@ body {
 #loginDiv .registerDiv {
     margin:0px 3%;
     width:94%;
-    height:200px;
-    line-height:200px;
     vertical-align:middle;
     text-align:center;
 }
@@ -245,11 +248,18 @@ body {
 }
 
 #registerBtn {
+    margin-top:70px;
     height:48px;
+    line-height:48px;
+    vertical-align:middle;
     width:200px;
     background:url("/Content/themes/image/LoginSource2.png") repeat-x 0px -80px;
     border:solid 2px #EC0A17;
     border-radius:8px;
+    display:inline-block;
+    text-decoration:none;
+    color:#666666;
+    font-weight:bold;
 }
 
 /* loading

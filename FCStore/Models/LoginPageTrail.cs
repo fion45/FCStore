@@ -8,40 +8,22 @@ using Newtonsoft.Json;
 namespace FCStore.Models
 {
     [Serializable]
-    public class ClientTrail
+    public class LoginPageTrail
     {
         [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int CTID
+        public int LPTID
         {
             get;
             set;
         }
 
-        public int? UID
+        public int ErrorCount
         {
             get;
             set;
         }
 
         public string ClientIP
-        {
-            get;
-            set;
-        }
-
-        public string URL
-        {
-            get;
-            set;
-        }
-
-        public string ControllerName
-        {
-            get;
-            set;
-        }
-
-        public string ActionName
         {
             get;
             set;

@@ -137,6 +137,7 @@ namespace FCStore.FilterAttribute
                     filterContext.HttpContext.Response.End();
                 }
             }
+            filterContext.Result = new HttpUnauthorizedResult();
         }
     }
 }
