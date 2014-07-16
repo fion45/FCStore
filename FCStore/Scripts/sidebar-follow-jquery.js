@@ -117,7 +117,12 @@ SidebarFollow.prototype = {
 			// 记录原位置
 			_self.cache.originalToTop = _self.cache.elementToTop;
 			// 修改样式
-			_self.cache.oldStyle = element.attr("style"); 
+			if(_self.cache.oldStyle == null) {
+				_self.cache.oldStyle = element.attr("style");
+				if(_self.cache.oldStyle == null) {
+					_self.cache.oldStyle = {};
+				}
+			}
 			element.attr("style","top:" + toTop + "px;position:fixed;");
 			_self.cache.fixedTop = toTop;
 			_self.cache.fixedTag = true;

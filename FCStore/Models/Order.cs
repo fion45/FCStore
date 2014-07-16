@@ -208,5 +208,14 @@ namespace FCStore.Models
             get;
             set;
         }
+        
+        [JsonIgnore]
+        public string ReceiveAddress
+        {
+            get
+            {
+                return BelongTown.FullName + " " + AddressName;
+            }
+        }
     }
 }

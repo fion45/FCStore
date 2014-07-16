@@ -129,6 +129,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="alipay\AlipayConfig.cs" />
+    <Compile Include="alipay\AlipayCore.cs" />
+    <Compile Include="alipay\AlipayNotify.cs" />
+    <Compile Include="alipay\AlipaySubmit.cs" />
+    <Compile Include="alipay\MD5.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -257,9 +262,11 @@
     <Content Include="Content\themes\image\topBK.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="log\log.txt" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\qqReport.js" />
+    <Content Include="Views\Order\Payment.aspx" />
     <Content Include="zone.xml" />
     <None Include="Properties\PublishProfiles\RGFTP.pubxml" />
     <None Include="Properties\PublishProfiles\rightgo.pubxml" />

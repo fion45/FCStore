@@ -296,7 +296,7 @@ a:hover {
     width:29px;
     height:30px;
     float:left;
-    background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
+    background:url("/Content/themes/image/main.png") no-repeat -1px -50px;
     cursor:pointer;
 }
 
@@ -304,7 +304,7 @@ a:hover {
     width:29px;
     height:30px;
     float:left;
-    background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
+    background:url("/Content/themes/image/main.png") no-repeat -30px -50px;
     cursor:pointer;
 }
 
@@ -313,7 +313,7 @@ a:hover {
 }
 
 .spinnerRight:hover {
-    background-position-x:-90px;
+    background-position-x:-91px;
 }
 
 .textLeft {
@@ -403,9 +403,11 @@ textarea {
 }
 
 #Center {
-    margin:0px auto;
+    margin:8px auto 8px auto;
     width:880px;
     padding:3px 0px 30px 0px;
+    background-color:#FFFFFF;
+    border-radius:12px 12px;
 }
 
 
@@ -478,12 +480,45 @@ textarea {
         float:left;
     }
 
-    #toolbar .centerDiv .userInfo {
+    #toolbar .centerDiv .loginArea {
         float:right;
     }
 
-        #toolbar .centerDiv .help a,#toolbar .centerDiv .userInfo a {
+        #toolbar .centerDiv .help a,#toolbar .centerDiv .loginArea a {
             margin:0 3px;
+        }
+
+    #toolbar .centerDiv .userInfo {
+        float:right;
+        width:150px;
+        height:50px;
+        border-radius:10px;
+        margin-top:-13px;
+        padding-top:13px;
+        background-color:#E9394E;
+        box-shadow:1px 1px 3px 1px #888888;
+    }
+
+        #toolbar .centerDiv .userInfo img {
+            margin:2px 2px 2px 10px;
+            width:46px;
+            height:46px;
+            float:left;
+        }
+
+        #toolbar .centerDiv .userInfo a {
+            margin:2px 0px;
+            width:90px;
+            float:left;
+            height:21px;
+            line-height:21px;
+            vertical-align:middle;
+            font-weight:bold;
+            color:white;
+        }
+
+        #toolbar .centerDiv .userInfo a:hover {
+            color:#EFEA8A;
         }
 
 /* iconDiv
@@ -532,6 +567,10 @@ textarea {
                 color:white;
             }
 
+            #navigatorDiv .centerDiv .item:hover a {
+                color:#EFEA8A;
+            }
+
             #navigatorDiv .centerDiv .sel {
                 background:url("/Content/themes/image/NavigaterSelItem.png") no-repeat 23px 0px;
             }
@@ -547,10 +586,16 @@ textarea {
             background:url("/Content/themes/image/MyShopCart.png") no-repeat;
         }
 
-            #NavigatorDiv .centerDiv .myCart a {
+            #navigatorDiv .centerDiv .myCart a {
                 float:right;
+                margin:0px;
             }
-            
+
+#buyCountLB {
+    color:#EFEA8A;
+    font-size:13pt;
+}
+
 /* searchDiv
 ----------------------------------------------------------*/
 #searchDiv {
@@ -1119,7 +1164,8 @@ footer {
     }
 
 #categoryNav {
-    width:100%;
+    padding:0px 2%;
+    width:96%;
     height:30px;
     font-size:10pt;
     border-bottom:solid 1px #cccccc;
@@ -1255,30 +1301,6 @@ footer {
             height:24px;
             float:left;
             text-align:center;
-        }
-
-        #productSaleInput .spinnerLeft {
-            width:29px;
-            height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -1px -50px;
-            cursor:pointer;
-        }
-
-        #productSaleInput .spinnerRight {
-            width:29px;
-            height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -30px -50px;
-            cursor:pointer;
-        }
-
-        #productSaleInput .spinnerLeft:hover {
-            background-position-x:-60px;
-        }
-
-        #productSaleInput .spinnerRight:hover {
-            background-position-x:-91px;
         }
 
 #productTitle {
@@ -1657,7 +1679,6 @@ footer {
     margin-top:10px;
     background:#ffffff;
     padding:15px 2%;
-    border-radius:12px 12px;
 }
 
 #plDiv {
@@ -2165,7 +2186,8 @@ footer {
 /* Ensure Cart,Ensure Order
 ----------------------------------------------------------*/
 #CartDiv,#SubmitDiv {
-    width:100%;
+    margin:0px 2%;
+    width:96%;
     height:auto;
 }
 
@@ -2201,7 +2223,7 @@ footer {
                 width:20px;
                 height:20px;
                 margin:0px 0px 0px 95%;
-                background:url("/Content/themes/image/main.png") no-repeat -238px -175px;
+                background:url("/Content/themes/image/main.png") no-repeat -238px -56px;
             }
 
             #CartDiv .flowDiv .sel .line,#SubmitDiv .flowDiv .sel .line {
@@ -2209,7 +2231,7 @@ footer {
             }
 
             #CartDiv .flowDiv .sel .point,#SubmitDiv .flowDiv .sel .point {
-                background:url("/Content/themes/image/main.png") no-repeat -261px -175px;
+                background:url("/Content/themes/image/main.png") no-repeat -262px -56px;
 
             }
 
@@ -2233,6 +2255,17 @@ footer {
         line-height:70px;
         padding:3px 0px;
         border-bottom:dashed 1px #cccccc;
+    }
+
+    #CartDiv .order .footer,#SubmitDiv .order  .footer {
+        border-bottom:none;
+    }
+
+    #CartDiv .order .pullupDiv {
+        height:0px;
+        line-height:0px;
+        float:none;
+        border-bottom:none;
     }
 
     #CartDiv .order .item,#SubmitDiv .order .item {
@@ -2337,27 +2370,11 @@ body .li1 {
         }
 
         #CartDiv .order .li4 .spinnerLeft {
-            width:29px;
             height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -0px -167px;
-            cursor:pointer;
         }
 
         #CartDiv .order .li4 .spinnerRight {
-            width:29px;
             height:30px;
-            float:left;
-            background:url("/Content/themes/image/main.png") no-repeat -29px -167px;
-            cursor:pointer;
-        }
-
-        #CartDiv .order .li4 .spinnerLeft:hover {
-            background-position-x:-61px;
-        }
-
-        #CartDiv .order .li4 .spinnerRight:hover {
-            background-position-x:-90px;
         }
 
     #CartDiv .order .li5,#SubmitDiv .order .li5 {
@@ -2457,6 +2474,7 @@ body .li1 {
         font-size:10pt;
         margin-left:20px;
         font-weight:normal;
+        text-decoration:underline;
     }
 
         #CartDiv .addresses .scrollDiv {
@@ -2465,6 +2483,7 @@ body .li1 {
             overflow-x:scroll;
             overflow-y:hidden;
             border:solid 1px #cccccc;
+            background:#FFFFFF;
         }
 
         #CartDiv .addresses .scrollDiv .content {
@@ -2484,10 +2503,6 @@ body .li1 {
     border:solid 1px #FFFFFF;
     background-color:white;
 }
-
-    #SubmitDiv .addressItem {
-        width: 395px;
-    }
 
     #CartDiv .addresses .sel,#SubmitDiv .addresses .sel {
         border:solid 1px #FFAA00;
@@ -2509,7 +2524,9 @@ body .li1 {
     }
 
 #SubmitDiv .addressItem .tip {
-    width:417px;
+    width:100%;
+    margin:-20px 0px 0px -16px;
+    top:100%;
 }
 
         #CartDiv .addresses .sel .tip,#SubmitDiv .addresses .sel .tip {
@@ -2519,18 +2536,6 @@ body .li1 {
             font-weight:bold;
             text-align:center;
         }
-
-    #SubmitDiv .addresses {
-        float:left;
-        margin-top:10px;
-        width:50%;
-    }
-
-    #SubmitDiv .postType {
-        float:left;
-        margin-top:10px;
-        width:50%;
-    }
     
     #CartDiv .postType {
         margin-top:10px;
@@ -2539,22 +2544,19 @@ body .li1 {
             border:solid 1px #cccccc;
         }
 
-            #CartDiv .postType .content .item,#SubmitDiv .postType .item {
+            #CartDiv .postType .content .item {
                 border: solid 1px #FFFFFF;
+                padding:2% 2% 25px 2%;
+                float:left;
+                width:43%;
+                margin:8px 1%;
+                position:relative;
+                cursor:pointer;
+                height:90px;
             }
 
             #CartDiv .postType .content .sel,#SubmitDiv .postType .sel {
                 border:solid 1px #FFAA00;
-            }
-
-            #CartDiv .postType .content .item,#SubmitDiv .postType .item {
-                margin:8px;
-                padding:10px;
-                float:left;
-                width:395px;
-                height:100px;
-                position:relative;
-                cursor:pointer;
             }
 
             #CartDiv .postType .content .item div,#SubmitDiv .postType .item div {
@@ -2577,9 +2579,9 @@ body .li1 {
                 display:none;
                 height:20px;
                 line-height:20px;
-                margin:0px 0px 0px -10px;
-                width:417px;
-                top:100px;
+                margin:-20px 0px 0px -16px;
+                width:100%;
+                top:100%;
             }
 
             #CartDiv .postType .content .sel .tip,#SubmitDiv .postType .sel .tip {
@@ -2590,7 +2592,7 @@ body .li1 {
                 text-align:center;
             }
             
-    #CartDiv .btnDiv,#SubmitDiv .btnDiv {
+    #CartDiv .btnDiv {
         margin-top:10px;
         width:100%;
         float:left;
@@ -2598,13 +2600,41 @@ body .li1 {
         padding-top:10px;
     }
             
-    #CartDiv .btnDiv .p3,#SubmitDiv .btnDiv .p3 {
+    #CartDiv .btnDiv .p3 {
         float:left;
         text-align:center;
     }
 
+    #SubmitDiv .addresses,#SubmitDiv .postType {
+        float:left;
+        margin-top:10px;
+        width:50%;
+    }
+
+    #SubmitDiv .addressItem {
+        width:82%;
+        height:100px;
+        padding:10px 4%;
+        margin:8px 4%;
+        cursor:pointer;
+        position:relative;
+        float:left;
+    }
+
+    #SubmitDiv .postType .item {
+        width:82%;
+        height:100px;
+        padding:10px 4%;
+        margin:8px 4%;
+        cursor:pointer;
+        text-align:left;
+        position:relative;
+        float:left;
+    }
+
     #SubmitDiv .btnDiv .p3 {
         height:51px;
+        float:left;
     }
             
         #CartDiv .btnDiv .p3 div,#SubmitDiv .btnDiv .p3 div {
@@ -2656,6 +2686,14 @@ body .li1 {
     #SubmitDiv .payType .content img {
         width:163px;
         height:66px;
+    }
+
+    #SubmitDiv .btnDiv {
+        margin-top:10px;
+        width:100%;
+        float:left;
+        border-top:dotted 2px #cccccc;
+        padding-top:10px;
     }
 
 #addAddressDlg {

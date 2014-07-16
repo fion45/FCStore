@@ -157,8 +157,7 @@ body {
     width:90%;
     height:90%;
     padding:14px 5%;
-    background-color:#50a6bd;
-    color:white;
+    color:#666666;
 }
 
     #resultDiv .blb{
@@ -178,7 +177,7 @@ body {
         }
 
     #resultDiv a {
-        color:#cccccc;
+        color:#666666;
     }
 
     #resultDiv a:hover {

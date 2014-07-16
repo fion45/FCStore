@@ -294,5 +294,104 @@ var ProductDetail = {
             	ProductDetail.CreateEvaluation(panel,data.content);
             }
         });
-    }
+    },
+	onBuyBtnClick : function() {
+		var buyCount = $("#buyCount").val();
+		var PID = $("#PIDLB").text();
+		//购买按钮
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#Center"),
+            url: "/Product/Buy/" + PID + "/" + buyCount,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.successTag) {
+            		//购买成功
+            		var viewItem = $("#PD_View .top");
+            		var tmpOS = viewItem.offset();
+            		var tmpW = viewItem.width();
+            		var tmpH = viewItem.height();
+            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+            		tmpItem.appendTo($("body:first"));
+            		tmpItem.css({
+            			top:tmpOS.top,
+            			left:tmpOS.left,
+            			width:tmpW,
+            			height:tmpH,
+            			padding:viewItem.css("padding")
+            		});
+            		var cart = $("#Cart");
+            		tmpOS = cart.offset();
+            		tmpW = cart.width();
+            		tmpH = cart.height();
+            		tmpItem.animate({
+            			top:tmpOS.top - tmpH,
+            			left:tmpOS.left + 10,
+            			width:tmpW - 20,
+            			height:tmpH
+            		},"slow","linear",function(){
+            			tmpItem.empty();
+            			var moveContent = $("<div class=\"countShow\" style=\"display:" + (buyCount > 1 ? "normal" : "none") + "\">" + buyCount + "</div><div class=\"deleteBtn\" onclick=\"MainLayout.onDeleteCarItem(this)\">X</div><img src=" + $("#productImage").prop("src") + " /><label>" + $("#productTitle").html() + "</label>");
+            			tmpItem.removeAttr("style");
+            			tmpItem.append(moveContent);
+            			//购物车增加内容
+            			tmpItem.appendTo($("#plInCar"));
+            		});
+            	}
+            }
+		});
+	},
+	onKeepBtnClick : function() {
+		//收藏按钮
+		var PID = $("#PIDLB").text();
+		$.myAjax({
+        	historyTag : false,
+        	loadEle : $("#Center"),
+            url: "/Keep/Add/" + PID,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data,status,options) {
+            	if(data.successTag) {
+            		//添加到收藏夹里
+            		$("#keepBtn").removeClass("btn1");
+            		$("#keepBtn").addClass("btn13gray");
+            		var viewItem = $("#PD_View .top");
+            		var tmpOS = viewItem.offset();
+            		var tmpW = viewItem.width();
+            		var tmpH = viewItem.height();
+            		var tmpItem = viewItem.clone(false,false).addClass('MoveItem');
+            		tmpItem.appendTo($("body:first"));
+            		tmpItem.css({
+            			top:tmpOS.top,
+            			left:tmpOS.left,
+            			width:tmpW,
+            			height:tmpH,
+            			padding:viewItem.css("padding")
+            		});
+            		var favorite = $("#Favorite");
+            		tmpOS = favorite.offset();
+            		tmpW = favorite.width();
+            		tmpH = favorite.height();
+            		tmpItem.animate({
+            			top:tmpOS.top - tmpH + 180,
+            			left:tmpOS.left + 130,
+            			width:88,
+            			height:88
+            		},"slow","linear",function(){
+            			tmpItem.empty();
+            			var moveContent = $("<img src=" + $("#productImage").prop("src") + " /><label>" + $("#productTitle").html() + "</label>");
+            			tmpItem.removeAttr("style");
+            			tmpItem.append(moveContent);
+            			//收藏夹增加内容
+            			tmpItem.appendTo($("#plInFavorit"));
+            		});
+            	}
+            }
+		});
+	}
 };

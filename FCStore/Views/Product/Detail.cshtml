@@ -134,7 +134,6 @@
                     }
                 }
             </div>
-
             <div id="productSaleInput">
                 <div class="title">
                     购买数量：
@@ -148,10 +147,10 @@
             </div>
             <div id="productBtn" class="p1">
                 <div class="p2">
-                    <div class="@(ViewBag.KeepTag ? "lbtngray" : "lbtn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductList.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
+                    <div class="@(ViewBag.KeepTag ? "lbtngray" : "lbtn1")" id="keepBtn" onclick="@(ViewBag.KeepTag ? "" : "ProductDetail.onKeepBtnClick()")">@(ViewBag.KeepTag ? "已" : "")收藏</div>
                 </div>
                 <div class="p2">
-                    <div class="lbtn2" id="buyBtn" onclick="ProductList.onBuyBtnClick()">加入购物车</div>
+                    <div class="lbtn2" id="buyBtn" onclick="ProductDetail.onBuyBtnClick()">加入购物车</div>
                 </div>
             </div>
             <div class="pullupDiv"></div>
