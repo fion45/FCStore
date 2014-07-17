@@ -101,7 +101,6 @@
             </div>
         </div>
     </header>
-    @{Html.RenderAction("_CategoryList", "Category");}
     <div id="Main">
         <div id="Center">
             @RenderBody()
@@ -148,7 +147,7 @@
             <label>Copyright  2004-2014  RightGO网  All Rights Reserved <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">粤ICP备14045853号-1</a></label>
         </div>
     </footer>
-
+    @{Html.RenderAction("_CategoryList", "Category");}
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jquerylazyload")

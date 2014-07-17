@@ -371,10 +371,10 @@ var MainLayout = {
 	onROUCloseBtn : function() {
 		var QQInfo = $("#associateUserDlg").data("QQInfo");
 		$("#associateUserDlg").dialog( "close" );
-		$("loginDiv").hide();
-		$("userInfoDiv").show();
-		$("userInfoDiv .userHead").prop("src",QQInfo.figureurl_qq_1);
-		$("userInfoDiv .userName").html(QQInfo.nickname);
+		$("#loginDiv").hide();
+		$("#userInfoDiv").show();
+		$("#userInfoDiv .userHead").prop("src",QQInfo.figureurl_qq_1);
+		$("#userInfoDiv .userName").html(QQInfo.nickname);
 		var tmpData = {
 			UserName : QQInfo.nickname,
 			sex : QQInfo.gender == "男",

@@ -328,7 +328,7 @@ namespace FCStore.Controllers
                     db.Users.Add(user);
 
                     //关联角色
-                    Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                    Role role = db.Roles.FirstOrDefault(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
                     if (role.Users == null)
                     {
                         role.Users = new List<User>();
@@ -397,7 +397,7 @@ namespace FCStore.Controllers
                 db.Users.Add(user);
 
                 //关联角色
-                Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                Role role = db.Roles.FirstOrDefault(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
                 if (role.Users == null)
                 {
                     role.Users = new List<User>();
@@ -429,6 +429,7 @@ namespace FCStore.Controllers
             return View(user);
         }
 
+        [MyAuthorizeAttribute]
         public ActionResult Exit()
         {
             //退出，设置Cookie超时和User
