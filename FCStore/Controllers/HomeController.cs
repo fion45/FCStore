@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.IO;
 using FCStore.Filters;
+using FCStore.Common;
 
 namespace FCStore.Controllers
 {
@@ -51,6 +52,10 @@ namespace FCStore.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(id));
+            }
+            if(User.Identity.IsAuthenticated)
+            {
+                ViewBag.myUser = User as MyUser;
             }
             return View();
         }

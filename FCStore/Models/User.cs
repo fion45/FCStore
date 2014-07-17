@@ -106,6 +106,28 @@ namespace FCStore.Models
             }
         }
 
+        [NotMapped]
+        public string HeadPictureFilePath_S
+        {
+            get
+            {
+                string tmpStr = "00000000" + Convert.ToString(UID, 16);
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                return "/picture/user/" + tmpStr + "_40_40.jpg";
+            }
+        }
+
+        [NotMapped]
+        public string HeadPictureFilePath
+        {
+            get
+            {
+                string tmpStr = "00000000" + Convert.ToString(UID, 16);
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                return "/picture/user/" + tmpStr + "_100_100.jpg";
+            }
+        }
+
         public string QQOpenID
         {
             get;

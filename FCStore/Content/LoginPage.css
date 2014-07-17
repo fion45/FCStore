@@ -214,6 +214,7 @@ body {
     letter-spacing:40px;
     font-weight:bolder;
     color:#FFFFFF;
+    cursor:pointer;
 }
 
 #loginDiv .other {
@@ -380,6 +381,14 @@ body {
                 border-left:solid 1px #E2E8EF;
                 color:#EC0A17;
                 padding-left:3px;
+            }
+
+            #register .inputDiv .value .icon-validation-valid {
+                background:url(/Content/themes/image/main.png) -23px -80px no-repeat;
+            }
+
+            #register .inputDiv .value .icon-validation-error {
+                background:url(/Content/themes/image/main.png) -42px -80px no-repeat;
             }
 
         #register .inputDiv .tip {

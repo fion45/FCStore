@@ -287,8 +287,7 @@ namespace FCStore.Controllers
             }
         }
 
-        [MyAuthorizeAttribute]
-        public ActionResult LoginByQQ(string openID,string accessToken)
+        public ActionResult LoginByQQ(string openID, string accessToken)
         {
             //判断该QQ是否已有账号关联
             User user = db.Users.FirstOrDefault(r => r.QQOpenID == openID);
@@ -327,8 +326,15 @@ namespace FCStore.Controllers
                         QQAccessToken = accessToken
                     };
                     db.Users.Add(user);
-                    db.SaveChanges();
 
+                    //关联角色
+                    Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                    if (role.Users == null)
+                    {
+                        role.Users = new List<User>();
+                    }
+                    role.Users.Add(user);
+                    db.SaveChanges();
                     gfTag = true;
                 }
             }
@@ -343,7 +349,6 @@ namespace FCStore.Controllers
                     user.Sex = sex;
                     user.UserName = UserName;
                     db.SaveChanges();
-
                     gfTag = true;
                 }
             }
@@ -355,22 +360,52 @@ namespace FCStore.Controllers
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream resStream = response.GetResponseStream();
                 Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
-                string tmpFloder = Server.MapPath("~\\UserInfo\\");
-                string tmpStr = "00000000" + Convert.ToString(user.UID, 16).ToUpper();
-                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
-                string tmpFN = tmpFloder + tmpStr + "_40_40.jpg";
-                sourcebm.Save(tmpFN);
+                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
 
                 uri = new Uri(figureurl_qq_2);
                 request = (HttpWebRequest)WebRequest.Create(uri);
                 response = (HttpWebResponse)request.GetResponse();
                 resStream = response.GetResponseStream();
                 sourcebm = new Bitmap(resStream);
-                tmpFN = tmpFloder + tmpStr + "_100_100.jpg";
-                sourcebm.Save(tmpFN);
+                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
             }
-            if(user != null)
+            if (gfTag)
                 LoginSuccess(user);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(gfTag ? user : null);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult JustQQLogin(string UserName, bool sex,string figureurl_qq_1, string figureurl_qq_2, string openId, string accessToken)
+        {
+            User user = db.Users.FirstOrDefault(r => r.QQOpenID == openId);
+            if (user == null)
+            {
+                user = new User()
+                {
+                    UserName = UserName,
+                    Sex = sex,
+                    QQOpenID = openId,
+                    QQAccessToken = accessToken
+                };
+                db.Users.Add(user);
+
+                //关联角色
+                Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                if (role.Users == null)
+                {
+                    role.Users = new List<User>();
+                }
+                role.Users.Add(user);
+                db.SaveChanges();
+            }
+            LoginSuccess(user);
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(user);

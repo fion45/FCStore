@@ -208,8 +208,8 @@ namespace FCStore.Models
             get;
             set;
         }
-        
-        [JsonIgnore]
+
+        [NotMapped]
         public string ReceiveAddress
         {
             get

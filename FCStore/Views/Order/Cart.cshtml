@@ -51,142 +51,126 @@
     </script>
 
 }
-<div id="categoryNav">
-    <div>当前位置：</div>
-    <div><a href="/">首页</a></div>
-    <div>></div>
-    <div>订单页面</div>
-</div>
-<form id="CartDiv" method="post" action= "@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit/" + Model.OrderArr.First().OID : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
-    <div class="p1 flowDiv">
-        <div class="item sel">
-            <div class="line"></div>
-            <div class="point"></div>
-            <div class="title">填写订单</div>
-        </div>
-        <div class="item">
-            <div class="line"></div>
-            <div class="point"></div>
-            <div class="title">确认支付</div>
-        </div>
-        <div class="item">
-            <div class="line"></div>
-            <div class="point"></div>
-            <div class="title">付款成功</div>
-        </div>
-        <div class="item">
-            <div class="line"></div>
-            <div class="point"></div>
-            <div class="title">评价</div>
-        </div>
+<div id="CartMP">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div><a href="/">首页</a></div>
+        <div>></div>
+        <div>订单页面</div>
     </div>
-    <div class="order">
-        <h2>订单列表</h2>
-        <ul>
-            <li class="title">
-                <div class="li0"></div>
-                <div class="li1">商品图片</div>
-                <div class="li2">商品名称</div>
-                <div class="li3">商品价格</div>
-                <div class="li4">数量</div>
-                <div class="li5">优惠</div>
-                <div class="li6">小计</div>
-            </li>
-            @{
-                decimal postPayment = 0;
-                if (Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0)
-                {
-                    int Count = 0;
-                    decimal Amount = 0;
-                    foreach (var item in Model.OrderArr.First().Packets)
+    <form id="CartDiv" method="post" action="@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit/" + Model.OrderArr.First().OID : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
+        <div class="p1 flowDiv">
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">填写订单</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">确认支付</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">付款成功</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">评价</div>
+            </div>
+        </div>
+        <div class="order">
+            <h2>订单列表</h2>
+            <ul>
+                <li class="title">
+                    <div class="li0"></div>
+                    <div class="li1">商品图片</div>
+                    <div class="li2">商品名称</div>
+                    <div class="li3">商品价格</div>
+                    <div class="li4">数量</div>
+                    <div class="li5">优惠</div>
+                    <div class="li6">小计</div>
+                </li>
+                @{
+                    decimal postPayment = 0;
+                    if (Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0)
                     {
-                        Count += item.Count;
-                        Amount += item.PayAmount;
-                        postPayment += (decimal)0.01 * item.PayAmount;
-                        Product product = item.Product;
-                        <li class="item">
-                            <div class="li0"><input value="@(item.PacketID)" data="@(product.PID)" class="checkItem" type="checkbox" /></div>
-                            <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
-                            <div class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></div>
-                            <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
-                            <div class="li4">
-                                <div class="centerDiv">
-                                    <div class="spinnerLeft"></div>
-                                    <input class="spinner" value="@(item.Count)" type="text" />
-                                    <div class="spinnerRight"></div>
+                        int Count = 0;
+                        decimal Amount = 0;
+                        foreach (var item in Model.OrderArr.First().Packets)
+                        {
+                            Count += item.Count;
+                            Amount += item.PayAmount;
+                            postPayment += (decimal)0.01 * item.PayAmount;
+                            Product product = item.Product;
+                            <li class="item">
+                                <div class="li0"><input value="@(item.PacketID)" data="@(product.PID)" class="checkItem" type="checkbox" /></div>
+                                <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
+                                <div class="li2"><a href="/Product/Detail/@(product.PID)">@(product.Title)</a></div>
+                                <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
+                                <div class="li4">
+                                    <div class="centerDiv">
+                                        <div class="spinnerLeft"></div>
+                                        <input class="spinner" value="@(item.Count)" type="text" />
+                                        <div class="spinnerRight"></div>
+                                    </div>
                                 </div>
+                                <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
+                                <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
+                            </li>
+                        }
+                        <li class="footer">
+                            <div class="li0"><label><input class="checkAll" type="checkbox" />全选</label></div>
+                            <div class="li11">
+                                <a onclick="CartPage.onDeleteBtnClick()">删除所选</a>
+                                <a onclick="CartPage.onKeepBtnClick()">收藏所选</a>
                             </div>
-                            <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
-                            <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
+                            <div class="li41">
+                                <div><label><input name="postType" type="radio" data="1" checked="checked" onchange="CartPage.onPostTypeItemClick({ currentTarget: this })" />直邮（1% 邮费）</label></div>
+                                <div><label><input name="postType" type="radio" data="2" onchange="CartPage.onPostTypeItemClick({currentTarget:this})" />转邮（免邮费）</label></div>
+                            </div>
+                            <div class="li21">
+                                <label>
+                                    共计<label class="count">@(Count)</label>件商品，合计金额：
+                                </label>
+                            </div>
+                            <div class="li31">
+                                <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
+                                <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
+                                <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                                <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
+                            </div>
                         </li>
                     }
-                    <li class="footer">
-                        <div class="li0"><label><input class="checkAll" type="checkbox" />全选</label></div>
-                        <div class="li11">
-                            <a onclick="CartPage.onDeleteBtnClick()">删除所选</a>
-                            <a onclick="CartPage.onKeepBtnClick()">收藏所选</a>
-                        </div>
-                        <div class="li41">
-                            <div><label><input name="postType" type="radio" data="1" checked="checked" onchange="CartPage.onPostTypeItemClick({ currentTarget: this })" />直邮（1% 邮费）</label></div>
-                            <div><label><input name="postType" type="radio" data="2" onchange="CartPage.onPostTypeItemClick({currentTarget:this})" />转邮（免邮费）</label></div>
-                        </div>
-                        <div class="li21">
-                            <label>
-                                共计<label class="count">@(Count)</label>件商品，合计金额：
-                            </label>
-                        </div>
-                        <div class="li31">
-                            <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
-                            <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
-                            <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
-                            <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    <li class="p1">@((Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count == 0) ? "订单为空" : "订单不存在")</li>
-                }
-            }
-            <li class="pullupDiv"></li>
-        </ul>
-    </div>
-    <div class="addresses">
-        <h2>联系地址<a onclick="CartPage.onAddAddressBtnClick();" class="addAddr">添加联系地址</a></h2>
-        <div class="scrollDiv">
-            @{
-                int tmpW = 0;
-                if (Model.Client != null)
-                {
-                    tmpW += Model.Client.Addresses.Count * 293;
-                }
-            }
-            <div class="content" style="width:@(tmpW)px;">
-                @if (Model.Client != null)
-                {
-                    Address addr = Model.Client.DefaultAddress;
-                    if (addr != null)
+                    else
                     {
-                        <div data="@(addr.AddID)" class="addressItem sel">
-                            <div class="name">
-                                @(Model.Client.UserName)收
-                            </div>
-                            <div class="addressStr">
-                                @(addr.AddressName)
-                            </div>
-                            <div class="tip">
-                                收货地址
-                            </div>
-                        </div>
+                        <li class="p1">@((Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count == 0) ? "订单为空" : "订单不存在")</li>
                     }
-                    for (int i = 0; i < Model.Client.Addresses.Count; i++)
+                }
+                <li class="pullupDiv"></li>
+            </ul>
+        </div>
+        <div class="addresses">
+            <h2>联系地址<a onclick="CartPage.onAddAddressBtnClick();" class="addAddr">添加联系地址</a></h2>
+            <div class="scrollDiv">
+                @{
+                    int tmpW = 0;
+                    if (Model.Client != null)
                     {
-                        addr = Model.Client.Addresses[i];
-                        if ((Model.Client.DefaultAddress != null && Model.Client.DefaultAddress.AddID != addr.AddID) || (Model.Client.DefaultAddress == null && i != 0))
+                        tmpW += Model.Client.Addresses.Count * 293;
+                    }
+                }
+                <div class="content" style="width:@(tmpW)px;">
+                    @if (Model.Client != null)
+                    {
+                        Address addr = Model.Client.DefaultAddress;
+                        if (addr != null)
                         {
-                            <div data="@(addr.AddID)" class="addressItem @((Model.Client.DefaultAddress == null && i == 0) ? "sel" : "")">
+                            <div data="@(addr.AddID)" class="addressItem sel">
                                 <div class="name">
-                                    @(addr.Contacts)收
+                                    @(Model.Client.UserName)收
                                 </div>
                                 <div class="addressStr">
                                     @(addr.AddressName)
@@ -196,118 +180,136 @@
                                 </div>
                             </div>
                         }
+                        for (int i = 0; i < Model.Client.Addresses.Count; i++)
+                        {
+                            addr = Model.Client.Addresses[i];
+                            if ((Model.Client.DefaultAddress != null && Model.Client.DefaultAddress.AddID != addr.AddID) || (Model.Client.DefaultAddress == null && i != 0))
+                            {
+                                <div data="@(addr.AddID)" class="addressItem @((Model.Client.DefaultAddress == null && i == 0) ? "sel" : "")">
+                                    <div class="name">
+                                        @(addr.Contacts)收
+                                    </div>
+                                    <div class="addressStr">
+                                        @(addr.AddressName)
+                                    </div>
+                                    <div class="tip">
+                                        收货地址
+                                    </div>
+                                </div>
+                            }
+                        }
                     }
-                }
+                </div>
+                <div class="pullupDiv"></div>
             </div>
-            <div class="pullupDiv"></div>
         </div>
-    </div>
-    <div class="postType">
-        <h2>邮寄方式</h2>
-        <div class="content">
-            <div class="item p2 sel" data="0">
-                <div class="title">
-                    直邮
+        <div class="postType">
+            <h2>邮寄方式</h2>
+            <div class="content">
+                <div class="item p2 sel" data="0">
+                    <div class="title">
+                        直邮
+                    </div>
+                    <div class="price">
+                        加收总价的百分之一费用即：@(PubFunction.CHPriceFormat(postPayment))
+                    </div>
+                    <div>
+                        从美国直接邮寄至客户手中
+                    </div>
+                    <div class="tip">
+                        邮寄方式
+                    </div>
                 </div>
-                <div class="price">
-                    加收总价的百分之一费用即：@(PubFunction.CHPriceFormat(postPayment))
+                <div class="item p2" data="1">
+                    <div class="title">
+                        转邮
+                    </div>
+                    <div class="price">
+                        免邮费
+                    </div>
+                    <div>
+                        从美国邮寄至RightGo手中，再通过国内快递邮寄至客户手中
+                    </div>
+                    <div class="tip">
+                        邮寄方式
+                    </div>
                 </div>
-                <div>
-                    从美国直接邮寄至客户手中
-                </div>
-                <div class="tip">
-                    邮寄方式
-                </div>
+                <div class="pullupDiv"></div>
             </div>
-            <div class="item p2" data="1">
-                <div class="title">
-                    转邮
-                </div>
-                <div class="price">
-                    免邮费
-                </div>
-                <div>
-                    从美国邮寄至RightGo手中，再通过国内快递邮寄至客户手中
-                </div>
-                <div class="tip">
-                    邮寄方式
-                </div>
+        </div>
+        <div class="btnDiv">
+            @{
+                bool tag = Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0;
+            }
+            <div class="p3">
+                <div class="mbtn3" onclick="CartPage.onGOONBtnClick()">继续购物</div>
             </div>
-            <div class="pullupDiv"></div>
+            <div class="p3">
+                <div class="mbtn3 @(tag ? "" : "mbtngray")" onclick="@(tag ? "CartPage.onCancelBtnClick()" : "")">撤销订单</div>
+            </div>
+            <div class="p3">
+                <div class="mbtn2 @(tag ? "" : "mbtngray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")">提交订单</div>
+            </div>
         </div>
-    </div>
-    <div class="btnDiv">
-        @{
-            bool tag = Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count > 0;
-        }
-        <div class="p3">
-            <div class="mbtn3" onclick="CartPage.onGOONBtnClick()">继续购物</div>
-        </div>
-        <div class="p3">
-            <div class="mbtn3 @(tag ? "" : "mbtngray")" onclick="@(tag ? "CartPage.onCancelBtnClick()" : "")">撤销订单</div>
-        </div>
-        <div class="p3">
-            <div class="mbtn2 @(tag ? "" : "mbtngray")" onclick="@(tag ? "CartPage.onSubmitBtnClick()" : "")">提交订单</div>
-        </div>
-    </div>
-    <div class="pullupDiv"></div>
-    <div id="addAddressDlg" title="增加联系地址">
-        <div class="content">
-            <div id="AreaSelector">
-                @{
-                    string TName = "区县选择";
-                    string CName = "城市选择";
-                    string PName = "省份选择";
-                    Town tmpT = null;
-                    City tmpC = null;
-                    Province tmpP = null;
-                    if (Model.Client != null && Model.Client.DefaultAddrID != null && Model.Client.DefaultAddress.BelongTown != null)
-                    {
-                        tmpT = Model.Client.DefaultAddress.BelongTown;
-                        TName = tmpT.Name;
-                        tmpC = tmpT.BelongCity;
-                        CName = tmpC.Name;
-                        tmpP = tmpC.BelongProvince;
-                        PName = tmpP.Name;
+        <div class="pullupDiv"></div>
+        <div id="addAddressDlg" title="增加联系地址">
+            <div class="content">
+                <div id="AreaSelector">
+                    @{
+                        string TName = "区县选择";
+                        string CName = "城市选择";
+                        string PName = "省份选择";
+                        Town tmpT = null;
+                        City tmpC = null;
+                        Province tmpP = null;
+                        if (Model.Client != null && Model.Client.DefaultAddrID != null && Model.Client.DefaultAddress.BelongTown != null)
+                        {
+                            tmpT = Model.Client.DefaultAddress.BelongTown;
+                            TName = tmpT.Name;
+                            tmpC = tmpT.BelongCity;
+                            CName = tmpC.Name;
+                            tmpP = tmpC.BelongProvince;
+                            PName = tmpP.Name;
+                        }
                     }
-                }
-                <select class="country"><option>中国</option></select>
-                <select class="province"><option value="@(tmpP == null ? -1 : tmpP.ProvinceID)">@(PName)</option></select>
-                <select class="city"><option value="@(tmpC == null ? -1 : tmpC.CityID)">@(CName)</option></select>
-                <select class="county"><option value="@(tmpT == null ? -1 : tmpT.TownID)">@(TName)</option></select>
-            </div>
-            <div class="title">
-                详细地址：
-            </div>
-            <div class="value">
-                <textarea id="addressTA"></textarea>
-            </div>
-            <div class="p1">
-                <div class="title1">邮政编码：</div>
-                <div class="value1">
-                    <input id="postTB" value="" />
+                    <select class="country"><option>中国</option></select>
+                    <select class="province"><option value="@(tmpP == null ? -1 : tmpP.ProvinceID)">@(PName)</option></select>
+                    <select class="city"><option value="@(tmpC == null ? -1 : tmpC.CityID)">@(CName)</option></select>
+                    <select class="county"><option value="@(tmpT == null ? -1 : tmpT.TownID)">@(TName)</option></select>
                 </div>
-            </div>
-            <div class="p1">
-                <div class="title1">联系人：</div>
-                <div class="value1">
-                    <input id="contactsTB" value="@(Model.Client != null ? Model.Client.UserName : "")" />
+                <div class="title">
+                    详细地址：
                 </div>
-            </div>
-            <div class="p1">
-                <div class="title1">联系电话：</div>
-                <div class="value1">
-                    <input id="phoneTB" value="@(Model.Client != null ? Model.Client.Phone : "")" />
+                <div class="value">
+                    <textarea id="addressTA"></textarea>
                 </div>
-            </div>
-            <div class="btnDiv">
-                <div class="p2">
-                    <input type="button" value="取消" onclick="CartPage.onAACancel()" />
+                <div class="p1">
+                    <div class="title1">邮政编码：</div>
+                    <div class="value1">
+                        <input id="postTB" value="" />
+                    </div>
                 </div>
-                <div class="p2">
-                    <input type="button" value="添加" onclick="CartPage.onAAEnsure()" />
+                <div class="p1">
+                    <div class="title1">联系人：</div>
+                    <div class="value1">
+                        <input id="contactsTB" value="@(Model.Client != null ? Model.Client.UserName : "")" />
+                    </div>
+                </div>
+                <div class="p1">
+                    <div class="title1">联系电话：</div>
+                    <div class="value1">
+                        <input id="phoneTB" value="@(Model.Client != null ? Model.Client.Phone : "")" />
+                    </div>
+                </div>
+                <div class="btnDiv">
+                    <div class="p2">
+                        <input type="button" value="取消" onclick="CartPage.onAACancel()" />
+                    </div>
+                    <div class="p2">
+                        <input type="button" value="添加" onclick="CartPage.onAAEnsure()" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>

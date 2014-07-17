@@ -25,26 +25,20 @@
                     <a onclick="MainLayout.onAddFavoriteBtnClick()" >收藏我们</a>|
                     <a>帮助中心</a>
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="userInfo">
-                        <img />
-                        <a href="/User/Details">fion</a>
-                        <a href="/User/Exit">退出</a>
-                    </div>
-                }
-                else
-                {
-                    <div class="loginArea">
-                        <a href="/Home/Login">登陆商城</a>|
-                        <a href="/Home/Register">免费注册</a>
-                    </div>
-                }
+                <div id="userInfoDiv" class="userInfo" style="display: @(User.Identity.IsAuthenticated ? "block" : "none")">
+                    <img class="userHead" src="@(User.Identity.IsAuthenticated ? (User as MyUser).SmallUserHead : "/picture/user/none.jpg")" />
+                    <a class="userName" href="/User/Details">@(User.Identity.IsAuthenticated ? User.Identity.Name : "")</a>
+                    <a href="/User/Exit">退出</a>
+                </div>
+                <div id="loginDiv" class="loginArea" style="display: @(User.Identity.IsAuthenticated ? "none" : "block")">
+                    <a href="/Home/Login">登陆商城</a>|
+                    <a href="/Home/Register">免费注册</a>
+                </div>
             </div>
         </div>
         <div id="iconDiv">
             <div class="centerDiv">
-                
+
             </div>
         </div>
         <div id="navigatorDiv">
@@ -106,7 +100,7 @@
                 </ul>
             </div>
         </div>
-    </header>    
+    </header>
     @{Html.RenderAction("_CategoryList", "Category");}
     <div id="Main">
         <div id="Center">
@@ -163,7 +157,18 @@
     <script type="text/javascript" charset="utf-8" src="~/Scripts/sidebar-follow-jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/qqReport.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/main.js"></script>
-
+    <!--Other Login-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
+            type="text/javascript" charset="utf-8"></script>
+    @if(!User.Identity.IsAuthenticated)
+    {
+        <script type="text/javascript" charset="utf-8">
+            QC.Login({}, MainLayout.QQLoginSuccess);
+        </script>
+    }
     @RenderSection("scripts", required: false)
 </body>
 </html>

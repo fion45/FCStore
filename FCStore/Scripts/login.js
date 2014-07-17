@@ -1,4 +1,11 @@
 ﻿var LoginPageView = {
+	QQLoginSuccess : function(reqData, opts, par) {
+    	$("#loginDiv").remove();
+        $("#resultDiv").show();
+        $("#resultDiv .userName").html(QC.String.escHTML(reqData.nickname));
+        $("#resultDiv .userPhoto").prop("src",reqData.figureurl_qq_1);
+    	LoginPageView.login.OnFiveSecondsTicket();
+	},
 	login : {
 		OnLoginBtnClick : function() {
 			var obj = {};
@@ -76,6 +83,7 @@
 	        var tmpUrlStr = hArr[hArr.length - 1];
 	        tmpUrlStr = tmpUrlStr == "Register" ? "" : tmpUrlStr;
 			$.myAjax({
+            	refreshTag : true,
                 loadEle: $("#regCDiv"),
                 url: "/User/Register",
                 data: JSON.stringify(obj),
@@ -86,14 +94,19 @@
                     if (!data.successTag) {
                     	if(data.errCode == -1) {
                     		alert("验证码错误");
+                    		$("#checkCodeTB").val("");
                     	}
                         else if(data.errCode == -2) {
                         	alert("用户名已被注册，请重新输入");
                         	$("#UserNameTB").val("");
+                        	$("#PSWTB").val("");
+                        	$("#EPSWTB").val("");
                         }
                         else if(data.errCode == -3) {
                         	alert("邮箱已被注册，请重新输入");
                         	$("#EmailTB").val("");
+                        	$("#PSWTB").val("");
+                        	$("#EPSWTB").val("");
                         }
                         else if(data.errCode == -4) {
                         	alert("输入信息未完整");

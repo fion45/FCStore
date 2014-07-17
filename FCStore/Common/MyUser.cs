@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using FCStore.Models;
 using System.Collections.Generic;
 
@@ -17,6 +18,26 @@ namespace FCStore.Common
         public string RNameArrStr;
 
         public string Permission;
+
+        public string SmallUserHead
+        {
+            get
+            {
+                string tmpStr = "00000000" + Convert.ToString(UID, 16);
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                return "/picture/user/" + tmpStr + "_40_40.jpg";
+            }
+        }
+
+        public string UserHead
+        {
+            get
+            {
+                string tmpStr = "00000000" + Convert.ToString(UID, 16);
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                return "/picture/user/" + tmpStr + "_100_100.jpg";
+            }
+        }
 
         public MyUser(int uid,string UName, string RStr,string RNStr,string permission)
         {
@@ -83,7 +104,5 @@ namespace FCStore.Common
         {
             return Permission.IndexOf("," + permissionStr + ",") > -1;
         }
-
-
     }
 }

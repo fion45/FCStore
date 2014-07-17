@@ -83,10 +83,18 @@ jQuery.cookie = function(name, value, options) {
                 // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+                    var valArr = cookieValue.split('&');
+                    var result = {};
+                    for(var m=0; m<valArr.length; m++) {
+                    	var tmpArr = valArr[m].split('=');
+                    	result[tmpArr[0]] = tmpArr[1];
+                    }
+                    return result;
+//                    break;
                 }
             }
         }
-        return cookieValue;
+//        return cookieValue;
+        return null;
     }
 };

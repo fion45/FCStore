@@ -405,15 +405,12 @@ textarea {
 #Center {
     margin:8px auto 8px auto;
     width:880px;
-    padding:3px 0px 30px 0px;
-    background-color:#FFFFFF;
-    border-radius:12px 12px;
 }
 
 
 /* associateUserDlg 
 ----------------------------------------------------------*/
-/*body .justOverlayer {
+body .justOverlayer {
     background:none;
     border:none;
 }
@@ -457,7 +454,18 @@ textarea {
 
     #associateUserDlg .ui-tabs-panel {
         height:170px;
-    }*/
+    }
+
+    #associateUserDlg .closeBtn {
+        position:absolute;
+        width:20px;
+        height:20px;
+        left:100%;
+        top:3px;
+        margin-left:-20px;
+        cursor:pointer;
+       
+    }
 
 /* toolbar
 ----------------------------------------------------------*/
@@ -769,6 +777,7 @@ footer {
         display:none;
         background-color:#E9394E;        
         box-shadow:8px 8px 8px -5px rgb(204, 204, 204);
+        z-index:999;
     }
 
     #Categorys .subCategory a:hover {
@@ -2185,6 +2194,12 @@ footer {
 
 /* Ensure Cart,Ensure Order
 ----------------------------------------------------------*/
+#CartMP,#SubmitMP {
+    padding:3px 0px 30px 0px;
+    background-color:#FFFFFF;
+    border-radius:12px 12px;
+}
+
 #CartDiv,#SubmitDiv {
     margin:0px 2%;
     width:96%;
