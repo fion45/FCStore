@@ -93,6 +93,7 @@
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
             data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8" ></script>
+
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
             type="text/javascript" charset="utf-8"></script>
 
@@ -107,7 +108,8 @@
                 }
             });
             QC.Login({
-                btnId: "qqLoginBtn"	//插入按钮的节点id
+                btnId: "qqLoginBtn",	//插入按钮的节点id
+                size: 'A_M'             //按钮样式 （A/B/C代表三种样式。S/M/L/XL代表尺寸）包括：A_S，A_M，A_L，A_XL，B_S，B_M，B_L，C_S
             }, LoginPageView.QQLoginSuccess);
 
             WB2.anyWhere(function (W) {

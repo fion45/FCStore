@@ -47,15 +47,18 @@
         }
     });
     
-    
-	//openId和accessToken保存到本地
-	$.myAjax({
+	var tmpData = {
+		openID : 'C4B9C1B45E4FB21575C98DD4370E6653',
+		accessToken : '2CC881D0727FBEDFBE0DD40C33E41451'
+	};
+    $.myAjax({
 		refreshTag : true,
 		loadEle : $(window.document.body),
-        url: "/User/LoginByQQ/" + 111 + "/" + 111,
-        data: null,
+//        url: "/User/LoginByQQ/" + "C4B9C1B45E4FB21575C98DD4370E6653" + "/" + "2CC881D0727FBEDFBE0DD40C33E41451",
+        url: "/User/LoginByQQ/",
+        data: JSON.stringify(tmpData),
         dataType: "json",
-        type: "GET",
+        type: "POST",
         contentType: "application/json;charset=utf-8",
         success: function (data,status,options) {
         	if(data.content == null) {
@@ -100,12 +103,12 @@
 								"</div>" +
 								"<div class='pullupDiv' ></div>" +
 							"</div>" +
-        					"<div class='closeBtn' onclick='MainLayout.onROUCloseBtn()'>X</div>" +
+							"<div class='closeBtn' onclick='MainLayout.onROUCloseBtn()'>X</div>" +
 						"</div>" +
 					"</div>");
 				tmpEle.appendTo($("#Main"));
 			    $( "#auTabs" ).tabs({
-		      		event: "mouseover"
+			      event: "mouseover"
 			    });
 				tmpEle.dialog({
 			  		dialogClass: "justOverlayer",
@@ -114,12 +117,12 @@
 			      	modal: true
 				});
 				var QQInfo = {
-					openId : 123,
-					accessToken : 123,
-					nickname : 111,
-					gender : 111,
-					figureurl_qq_1 : 111,
-					figureurl_qq_2 : 111
+					openId : "C4B9C1B45E4FB21575C98DD4370E6653",
+					accessToken : "2CC881D0727FBEDFBE0DD40C33E41451",
+					nickname : "fion",
+					gender : "男",
+					figureurl_qq_1 : "test",
+					figureurl_qq_2 : "test"
 				};
 				tmpEle.data("QQInfo",QQInfo);
         	}
@@ -434,19 +437,27 @@ var MainLayout = {
             }
 		});
 	},
+	onExitBtnClick : function() {
+		QC.Login.signOut();
+		window.location.href = "/User/Exit";
+	},
 	QQLoginSuccess : function(reqData, opts) {
 		//登录成功
     	//判断该QQ号是否已注册
     	if(QC.Login.check()){
 	    	QC.Login.getMe(function(openId, accessToken){
+	    		var tmpData = {
+	    			openID : openId,
+	    			accessToken : accessToken
+	    		};
 	    		//openId和accessToken保存到本地
 	    		$.myAjax({
             		refreshTag : true,
 	    			loadEle : $(window.document.body),
-		            url: "/User/LoginByQQ/" + openId + "/" + accessToken,
-		            data: null,
+		            url: "/User/LoginByQQ/",
+		            data: JSON.stringify(tmpData),
 		            dataType: "json",
-		            type: "GET",
+		            type: "POST",
 		            contentType: "application/json;charset=utf-8",
 		            success: function (data,status,options) {
 		            	if(data.content == null) {

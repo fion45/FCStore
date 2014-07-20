@@ -28,7 +28,7 @@
                 <div id="userInfoDiv" class="userInfo" style="display: @(User.Identity.IsAuthenticated ? "block" : "none")">
                     <img class="userHead" src="@(User.Identity.IsAuthenticated ? (User as MyUser).SmallUserHead : "/picture/user/none.jpg")" />
                     <a class="userName" href="/User/Details">@(User.Identity.IsAuthenticated ? User.Identity.Name : "")</a>
-                    <a href="/User/Exit">退出</a>
+                    <a onclick="MainLayout.onExitBtnClick()">退出</a>
                 </div>
                 <div id="loginDiv" class="loginArea" style="display: @(User.Identity.IsAuthenticated ? "none" : "block")">
                     <a href="/Home/Login">登陆商城</a>|

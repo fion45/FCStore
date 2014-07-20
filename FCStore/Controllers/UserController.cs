@@ -98,33 +98,36 @@ namespace FCStore.Controllers
                 tmpStr = Server.UrlDecode(cookie.Value);
                 Regex cookieRgx = new Regex(KeepController.KEEPCOOKIERGX);
                 MatchCollection tmpMC = cookieRgx.Matches(tmpStr);
-                foreach (Match tmpMatch in tmpMC)
+                if(tmpMC.Count > 0)
                 {
-                    if (!string.IsNullOrEmpty(tmpMatch.Value))
+                    foreach (Match tmpMatch in tmpMC)
                     {
-                        Group gi = tmpMatch.Groups["PRODUCTID"];
-                        int PID = -1;
-                        Keep inDBKeep = null;
-                        if (int.TryParse(gi.Value, out PID))
+                        if (!string.IsNullOrEmpty(tmpMatch.Value))
                         {
-                            inDBKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == user.UID);
-                            KStr += tmpMatch.Groups["PRODUCTID"] + "," + tmpMatch.Groups["TITLE"] + "," + tmpMatch.Groups["IMG"] + ",";
-                            if (inDBKeep != null)
+                            Group gi = tmpMatch.Groups["PRODUCTID"];
+                            int PID = -1;
+                            Keep inDBKeep = null;
+                            if (int.TryParse(gi.Value, out PID))
                             {
-                                PIDArr.Add(inDBKeep.PID);
-                            }
-                            else
-                            {
-                                Keep keep = new Keep();
-                                keep.PID = PID;
-                                keep.UID = user.UID;
-                                keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                                db.Keeps.Add(keep);
+                                inDBKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == user.UID);
+                                KStr += tmpMatch.Groups["PRODUCTID"] + "," + tmpMatch.Groups["TITLE"] + "," + tmpMatch.Groups["IMG"] + ",";
+                                if (inDBKeep != null)
+                                {
+                                    PIDArr.Add(inDBKeep.PID);
+                                }
+                                else
+                                {
+                                    Keep keep = new Keep();
+                                    keep.PID = PID;
+                                    keep.UID = user.UID;
+                                    keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                    db.Keeps.Add(keep);
+                                }
                             }
                         }
                     }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
             else
             {
@@ -392,7 +395,8 @@ namespace FCStore.Controllers
                     UserName = UserName,
                     Sex = sex,
                     QQOpenID = openId,
-                    QQAccessToken = accessToken
+                    QQAccessToken = accessToken,
+                    Gift = 0
                 };
                 db.Users.Add(user);
 
