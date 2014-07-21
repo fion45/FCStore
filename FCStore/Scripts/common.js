@@ -136,7 +136,7 @@
 	        contentType: "application/json;charset=utf-8",
 	        success: function (data, status, options) {
 	        	provinceSelector.empty();
-	            $.each(data.ProvinceArr, function (i, n) {
+	            $.each(data.custom.ProvinceArr, function (i, n) {
 	                provinceSelector.append("<option value=\"" + n.PID + "\"" + (((_self.config.PID == n.PID) || (_self.config.PID == null && i == 0)) ? " selected=\"selected\"" : "") + ">" + n.PName + "</option>");
 	            });
 	            changeFun(provinceSelector.val(), _self.config.CID);
@@ -333,10 +333,11 @@ jQuery.extend({
 			});
 		}
 		else {
-			ele = $(eleStr);
+			ele.data("eles",ele);
 			ele.on("click",function(ev){
-				ele.removeClass(className);
-				$(ev.currentTarget).addClass(className);
+				var tmpEle = $(ev.currentTarget);
+				tmpEle.data("eles").removeClass(className);
+				tmpEle.addClass(className);
 			});
 		}
 	}

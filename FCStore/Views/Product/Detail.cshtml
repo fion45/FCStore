@@ -113,24 +113,29 @@
                 @{
                     if (!string.IsNullOrEmpty(Model.Chose))
                     {
-                        Newtonsoft.Json.Linq.JArray jArr = Newtonsoft.Json.Linq.JArray.Parse(Server.HtmlDecode(Model.Chose));
-                        foreach (Newtonsoft.Json.Linq.JObject item in jArr)
+                        try
                         {
-                            <div class="choseItemPar">
-                                <div class="title"> @(item["title"])：</div>
-                                <div class="content">
-                                    @{
-                                        bool tag = true;
-                                        foreach (Newtonsoft.Json.Linq.JObject vItem in (Newtonsoft.Json.Linq.JArray)item["values"])
-                                        {
-                                            <span class="choseItem cValue @(tag ? "sel" : "" )">@(vItem["name"])</span>
-                                            tag = false;
+                            Newtonsoft.Json.Linq.JArray jArr = Newtonsoft.Json.Linq.JArray.Parse(Server.HtmlDecode(Model.Chose));
+                            foreach (Newtonsoft.Json.Linq.JObject item in jArr)
+                            {
+                                <div class="choseItemPar">
+                                    <div class="title"> @(item["title"])：</div>
+                                    <div class="content">
+                                        @{
+                                            bool tag = true;
+                                            foreach (Newtonsoft.Json.Linq.JObject vItem in (Newtonsoft.Json.Linq.JArray)item["values"])
+                                            {
+                                                <span class="choseItem cValue @(tag ? "sel" : "" )">@(vItem["name"])</span>
+                                                tag = false;
+                                            }
                                         }
-                                    }
-                                    <div class="pullupDiv"></div>
+                                        <div class="pullupDiv"></div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         }
+                        catch
+                        { }
                     }
                 }
             </div>

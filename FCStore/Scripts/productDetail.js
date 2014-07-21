@@ -300,6 +300,7 @@ var ProductDetail = {
 		var PID = $("#PIDLB").text();
 		//购买按钮
 		$.myAjax({
+			refreshTag : true,
         	historyTag : false,
         	loadEle : $("#Center"),
             url: "/Product/Buy/" + PID + "/" + buyCount,
@@ -323,22 +324,20 @@ var ProductDetail = {
             			height:tmpH,
             			padding:viewItem.css("padding")
             		});
-            		var cart = $("#Cart");
+            		var cart = $("#navigator .myCart");
             		tmpOS = cart.offset();
-            		tmpW = cart.width();
-            		tmpH = cart.height();
+            		tmpW = 0;
+            		tmpH = 0;
             		tmpItem.animate({
             			top:tmpOS.top - tmpH,
-            			left:tmpOS.left + 10,
-            			width:tmpW - 20,
+            			left:tmpOS.left,
+            			width:tmpW,
             			height:tmpH
             		},"slow","linear",function(){
-            			tmpItem.empty();
-            			var moveContent = $("<div class=\"countShow\" style=\"display:" + (buyCount > 1 ? "normal" : "none") + "\">" + buyCount + "</div><div class=\"deleteBtn\" onclick=\"MainLayout.onDeleteCarItem(this)\">X</div><img src=" + $("#productImage").prop("src") + " /><label>" + $("#productTitle").html() + "</label>");
-            			tmpItem.removeAttr("style");
-            			tmpItem.append(moveContent);
-            			//购物车增加内容
-            			tmpItem.appendTo($("#plInCar"));
+            			var tmpI = parseInt($("#buyCountLB").html());
+            			++tmpI;
+            			$("#buyCountLB").html(tmpI);
+            			tmpItem.remove();
             		});
             	}
             }

@@ -20,14 +20,14 @@ namespace FCStore.Controllers
 
         public ActionResult GetProvinceArr()
         {
-            StringBuilder jsonStr = new StringBuilder("\"ProvinceArr\":[");
+            StringBuilder jsonStr = new StringBuilder("\"{ProvinceArr\":[");
             List<Province> ProvinceArr = db.Province.ToList();
             foreach (Province province in ProvinceArr)
             {
                 jsonStr.AppendFormat("{{\"PID\":\"{0}\",\"PName\":\"{1}\"}},", province.ProvinceID, province.Name);
             }
             jsonStr.Remove(jsonStr.Length - 1, 1);
-            jsonStr.Append("]");
+            jsonStr.Append("]}");
             if (Request.IsAjaxRequest())
             {
                 string resultStr = PubFunction.BuildResult("OK", jsonStr.ToString());

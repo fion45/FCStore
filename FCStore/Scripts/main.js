@@ -46,95 +46,6 @@
         		ele.hide();
         }
     });
-    
-	var tmpData = {
-		openID : 'C4B9C1B45E4FB21575C98DD4370E6653',
-		accessToken : '2CC881D0727FBEDFBE0DD40C33E41451'
-	};
-    $.myAjax({
-		refreshTag : true,
-		loadEle : $(window.document.body),
-//        url: "/User/LoginByQQ/" + "C4B9C1B45E4FB21575C98DD4370E6653" + "/" + "2CC881D0727FBEDFBE0DD40C33E41451",
-        url: "/User/LoginByQQ/",
-        data: JSON.stringify(tmpData),
-        dataType: "json",
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        success: function (data,status,options) {
-        	if(data.content == null) {
-        		//未关联，要求输入ID和密码
-				var tmpEle = $("<div id='associateUserDlg' >" +
-						"<div id='auTabs'>" +
-							"<ul>" +
-								"<li><a href='#tabs-nu' >新用户</a></li>" +
-								"<li><a href='#tabs-ou' >已有用户</a></li>" +
-							"</ul>" +
-							"<div id='tabs-nu'>" +
-								"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
-								"<div class='title' >新用户名：</div>" +
-								"<div class='content' >" +
-									"<input class='UserNameTB' type='text' />" +
-								"</div>" +
-								"<div class='title' >登陆密码：</div>" +
-								"<div class='content' >" +
-									"<input class='PSWTB' type='password' />" +
-								"</div>" +
-								"<div class='title' >密码确认：</div>" +
-								"<div class='content' >" +
-									"<input class='EnsurePSWTB' type='password' />" +
-								"</div>" +
-								"<div class='btn'>" +
-									"<input onclick='MainLayout.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-								"</div>" +
-								"<div class='pullupDiv' ></div>" +
-							"</div>" +
-							"<div id='tabs-ou'>" +
-								"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
-								"<div class='title' >老用户名：</div>" +
-								"<div class='content' >" +
-									"<input class='UserNameTB' type='text' />" +
-								"</div>" +
-								"<div class='title' >登陆密码：</div>" +
-								"<div class='content' >" +
-									"<input class='PSWTB' type='password' />" +
-								"</div>" +
-								"<div class='btn'>" +
-									"<input onclick='MainLayout.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-								"</div>" +
-								"<div class='pullupDiv' ></div>" +
-							"</div>" +
-							"<div class='closeBtn' onclick='MainLayout.onROUCloseBtn()'>X</div>" +
-						"</div>" +
-					"</div>");
-				tmpEle.appendTo($("#Main"));
-			    $( "#auTabs" ).tabs({
-			      event: "mouseover"
-			    });
-				tmpEle.dialog({
-			  		dialogClass: "justOverlayer",
-					width: 350,
-			  		resizable: false,
-			      	modal: true
-				});
-				var QQInfo = {
-					openId : "C4B9C1B45E4FB21575C98DD4370E6653",
-					accessToken : "2CC881D0727FBEDFBE0DD40C33E41451",
-					nickname : "fion",
-					gender : "男",
-					figureurl_qq_1 : "test",
-					figureurl_qq_2 : "test"
-				};
-				tmpEle.data("QQInfo",QQInfo);
-        	}
-        	else {
-        		//关联了
-        		$("loginDiv").hide();
-        		$("userInfoDiv").show();
-        		$("userInfoDiv .userHead").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + ".jpg");
-        		$("userInfoDiv .userName").html($.cookie("UserInfo").UserName);
-        	}
-        }
-	});
 });
 
 var MainLayout = {
@@ -527,10 +438,10 @@ var MainLayout = {
 		            	}
 		            	else {
 		            		//关联了
-		            		$("loginDiv").hide();
-		            		$("userInfoDiv").show();
-		            		$("userInfoDiv .userHead").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + ".jpg");
-		            		$("userInfoDiv .userName").html($.cookie("UserInfo").UserName);
+		            		$("#loginDiv").hide();
+		            		$("#userInfoDiv").show();
+		            		$("#userInfoDiv .userHead").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
+		            		$("#userInfoDiv .userName").html($.cookie("UserInfo").UserName);
 		            	}
 		            }
 				});
