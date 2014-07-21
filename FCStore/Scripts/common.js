@@ -153,11 +153,11 @@
 	            contentType: "application/json;charset=utf-8",
 	            success: function (data, status, options) {
 	        		citySelector.empty();
-	                $.each(data.CityArr, function (i, n) {
+	                $.each(data.custom.CityArr, function (i, n) {
 	                    citySelector.append("<option value=\"" + n.CID + "\"" + ((n.CID == CID) ? " selected=\"selected\"" : "") + ">" + n.CName + "</option>");
 	                });
 	        		countySelector.empty();
-	                $.each(data.TownArr, function (i, n) {
+	                $.each(data.custom.TownArr, function (i, n) {
 	                    countySelector.append("<option value=\"" + n.TID + "\"" + (((_self.config.TID == n.TID) || (_self.config.TID == null && i == 0)) ? " selected=\"selected\"" : "") + ">" + n.TName + "</option>");
 	                });
 	                if(_self.config.changeCB != null) {

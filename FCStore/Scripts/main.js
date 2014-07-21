@@ -413,7 +413,7 @@ var MainLayout = {
 											"</div>" +
 											"<div class='pullupDiv' ></div>" +
 										"</div>" +
-        								"<div class='closeBtn' onclick='MainLayout.onROUCloseBtn()'>X</div>" +
+        								"<div class='ui-icon ui-icon-closethick' onclick='MainLayout.onROUCloseBtn()'></div>" +
 									"</div>" +
 								"</div>");
 							tmpEle.appendTo($("#Main"));

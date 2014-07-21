@@ -20,7 +20,7 @@ namespace FCStore.Controllers
 
         public ActionResult GetProvinceArr()
         {
-            StringBuilder jsonStr = new StringBuilder("\"{ProvinceArr\":[");
+            StringBuilder jsonStr = new StringBuilder("{\"ProvinceArr\":[");
             List<Province> ProvinceArr = db.Province.ToList();
             foreach (Province province in ProvinceArr)
             {
@@ -41,7 +41,7 @@ namespace FCStore.Controllers
 
         public ActionResult GetZoneList(int PID,int CID = -1)
         {
-            StringBuilder jsonStr = new StringBuilder("\"CityArr\":[");
+            StringBuilder jsonStr = new StringBuilder("{\"CityArr\":[");
             Province tmpPro = db.Province.FirstOrDefault(r => r.ProvinceID == PID);
             if(tmpPro == null)
             {
@@ -63,7 +63,7 @@ namespace FCStore.Controllers
                 jsonStr.AppendFormat("{{\"TID\":\"{0}\",\"TName\":\"{1}\"}},", town.TownID, town.Name);
             }
             jsonStr.Remove(jsonStr.Length - 1, 1);
-            jsonStr.Append("]");
+            jsonStr.Append("]}");
             if (Request.IsAjaxRequest())
             {
                 string resultStr = PubFunction.BuildResult("OK", jsonStr.ToString());
