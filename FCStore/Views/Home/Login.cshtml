@@ -8,7 +8,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>LoginPage</title>
+    <title>LoginPage</title>    
+    @Styles.Render("~/Content/themes/base/css")
     @Styles.Render("~/Content/loginPage")
 </head>
 <body>
@@ -80,9 +81,12 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/login")
+    @*@Scripts.Render("~/bundles/login")*@
 
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/login.js"></script>
     @if (User.Identity.IsAuthenticated)
     {
         <script type="text/javascript">
