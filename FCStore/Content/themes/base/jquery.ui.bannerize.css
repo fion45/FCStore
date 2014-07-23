@@ -1,0 +1,24 @@
+﻿/* ui-banner */  
+.ui-banner{display:block;position:relative;width:820px;margin:20px auto;}  
+.ui-banner.ui-banner-invalid{display:none;}  
+.ui-banner,.ui-banner .ui-banner-slides,.ui-banner .ui-banner-slogans,.ui-banner .ui-banner-arrow{height:233px;}  
+.ui-banner .ui-banner-slides,.ui-banner .ui-banner-slogans,.ui-banner .ui-banner-arrow{position:absolute;top:0;}  
+.ui-banner ul{list-style-type:none;margin:0;padding:0;overflow:hidden;}  
+.ui-banner .ui-banner-slides{width:73%;height:100%;left:1px;}
+.ui-banner .ui-banner-slides li{display:none;position:absolute;}  
+.ui-banner .ui-banner-slides li img{border:none;}  
+.ui-banner .ui-banner-slides li.ui-banner-slides-current,.ui-banner .ui-banner-slides li.ui-banner-slides-prev,.ui-banner .ui-banner-slides li.ui-banner-slides-next{display:block;}  
+.ui-banner .ui-banner-slides li.ui-banner-slides-current{left:0;}  
+.ui-banner .ui-banner-slides li.ui-banner-slides-prev{left:-654px;}  
+.ui-banner .ui-banner-slides li.ui-banner-slides-next{left:654px;}  
+.ui-banner .ui-banner-slogans{height:100%;overflow:hidden;width:27%;right:0;}  
+.ui-banner .ui-banner-slogans .title{font-size:14pt;font-weight:bolder;}  
+.ui-banner .ui-banner-slogans .description{font-size:10pt; margin-top:10px;}  
+.ui-banner .ui-banner-slogans li{box-shadow:1px 2px 4px 1px #888888 inset;width:94%;cursor:pointer;color:#8DC4EC;text-align:left;font-weight:bold;font-size:12px;line-height:14px;padding:10px 3% 10px 3%;list-style:none;list-style-type:none;}  
+.ui-banner .ui-banner-slogans li.ui-banner-slogans-current{color:#FFF;box-shadow:none;}  
+.ui-banner .ui-banner-slogans li.ui-banner-slogans-prev{border-bottom:none;}  
+.ui-banner .ui-banner-arrow{display:block;width:45px;outline:none;}  
+.ui-banner .ui-banner-arrow.ui-banner-arrow-prev{left:-14px;top:100px;background:transparent url("images/hero-slider-arrow-left.png") no-repeat 0 0;}  
+.ui-banner .ui-banner-arrow.ui-banner-arrow-next{left:630px;top:100px;}  
+.ui-banner .ui-banner-arrow.ui-banner-arrow-next img{left:-15px;}  
+.ui-banner .ui-banner-overlay{bottom:0;height:10px;position:absolute;right:0;width:173px;} 

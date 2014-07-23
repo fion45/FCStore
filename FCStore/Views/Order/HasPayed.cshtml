@@ -1,0 +1,100 @@
+﻿@model FCStore.Models.Order
+@using FCStore.Models;
+@using FCStore.Common;
+
+@{
+    ViewBag.Title = "HasPayed";
+    int Count = 0;
+    decimal Amount = 0;
+    decimal postPayment = 0;
+}
+
+<div id="HasPayedMP" class="OrderPage">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div><a href="/">首页</a></div>
+        <div>></div>
+        <div>付款成功</div>
+    </div>
+    <div id="HasPayedDiv">
+        <div class="p1 flowDiv">
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">填写订单</div>
+            </div>
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">确认支付</div>
+            </div>
+            <div class="item sel">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">付款成功</div>
+            </div>
+            <div class="item">
+                <div class="line"></div>
+                <div class="point"></div>
+                <div class="title">评价</div>
+            </div>
+        </div>
+        <div class="order">
+            <h2>订单编号：<label>@(Model.OIDStr)</label></h2>
+            <ul>
+                <li class="title">
+                    <div class="li0"></div>
+                    <div class="li1">商品图片</div>
+                    <div class="li2">商品名称</div>
+                    <div class="li3">商品价格</div>
+                    <div class="li4">数量</div>
+                    <div class="li5">优惠</div>
+                    <div class="li6">小计</div>
+                </li>
+                @foreach (var item in Model.Packets)
+                {
+                    Count += item.Count;
+                    Amount += item.PayAmount;
+                    postPayment += (decimal)0.01 * item.PayAmount;
+                    Product product = item.Product;
+                    <li class="item">
+                        <div class="li0"></div>
+                        <div class="li1"><img class="show" src="@(product.ImgPathArr[0])" /></div>
+                        <div class="li2">@(product.Title)</div>
+                        <div class="li3">@(PubFunction.CHPriceFormat(item.PayUnivalence))</div>
+                        <div class="li4">@(item.Count)</div>
+                        <div class="li5">@(PubFunction.CHPriceFormat(item.PayUnivalence - item.Univalence))</div>
+                        <div class="li6">@(PubFunction.CHPriceFormat(item.PayAmount))</div>
+                    </li>
+                }
+                <li class="footer">
+                    <div class="li51">
+                        <label>该订单已完成付款，请等待发货。</label>
+                    </div>
+                    <div class="li21">
+                        <label>
+                            共计<label class="count">@(Count)</label>件商品，合计金额：
+                        </label>
+                    </div>
+                    <div class="li31">
+                        <div class="price">@(PubFunction.CHPriceFormat(Amount))</div>
+                        <div class="add">+</div><div class="postPrice withPostPay">（直邮）@(PubFunction.CHPriceFormat(postPayment))</div><div class="postPrice withoutPostPay" style="display:none;">（转邮）@(PubFunction.CHPriceFormat(0))</div>
+                        <div class="amount withPostPay">@(PubFunction.CHPriceFormat(Amount + postPayment))</div>
+                        <div class="amount withoutPostPay" style="display:none;">@(PubFunction.CHPriceFormat(Amount))</div>
+                    </div>
+                </li>
+                <div class="pullupDiv"></div>
+            </ul>
+        </div>
+        <div class="btnDiv">
+            <div class="p3">
+            </div>
+            <div class="p3">
+            </div>
+            <div class="p3">
+                <div class="mbtn1" onclick="CartPage.onGOONBtnClick()">继续购物</div>
+            </div>
+        </div>
+        <div class="pullupDiv"></div>
+    </div>
+</div>

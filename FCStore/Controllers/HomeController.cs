@@ -21,7 +21,7 @@ namespace FCStore.Controllers
 
         public ActionResult Index()
         {
-            //清楚不存在的order
+            //清除不存在的order
             if (Request.Cookies.AllKeys.Contains("Order"))
             {
                 Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
@@ -41,6 +41,7 @@ namespace FCStore.Controllers
             {
                 ViewBag.IsAdmin = true;
             }
+            ViewBag.BannerItems = db.BannerItems.OrderBy(r=>r.Index).ToList();
             return View(db.Columns.ToList());
         }
 

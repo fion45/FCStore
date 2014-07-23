@@ -3,6 +3,11 @@
     padding:0px;
 }
 
+html {
+    height:100%;
+    background-color:#FFFFFF;
+}
+
 body {
     font-size: .85em;
     font-family: Tahoma, Geneva, sans-serif;
@@ -400,6 +405,7 @@ textarea {
     float:left;
     width:100%;
     text-align:center;
+    min-height:600px;
 }
 
 #Center {
@@ -508,8 +514,8 @@ body .justOverlayer {
         box-shadow:1px 1px 3px 1px #888888;
     }
 
-        #toolbar .centerDiv .userInfo img {
-            margin:2px 2px 2px 10px;
+        #toolbar .centerDiv .userInfo .imgA {
+            margin:4px 2px 2px 10px;
             width:46px;
             height:46px;
             float:left;
@@ -853,24 +859,47 @@ footer {
 #bannerDiv {
     width:100%;
     height:450px;
+    background-color:white;
 }
 
-    #bannerDiv .right {
-        width:100%;
+    #bannerDiv .ui-banner-slogans li {
+        height:70px;
+        color:#A8A8A8;
+        background-color:#FFFFFF;
     }
 
-        #bannerDiv .right .mainBanner {
-            width:65%;
-            height:450px;
-            float:left;
-        }
+    #bannerDiv .ui-banner-slogans li.ui-banner-slogans-current {
+        color:#FFFFFF;
+        background-color:#E9394E;
+    }
 
-        #bannerDiv .right .subBanner {
-            width:35%;
-            height:150px;
-            float:left;
-        }
+    #bannerDiv .ui-banner-arrow.ui-banner-arrow-prev {
+        left:0px;
+        top:50%;
+        margin-top:-20px;
+        margin-left:10px;
+        background:url("/Content/themes/image/main.png") no-repeat -86px -1px;
+        width:40px;
+        height:40px;
+    }
 
+    #bannerDiv .ui-banner-arrow.ui-banner-arrow-prev:hover {
+        background:url("/Content/themes/image/main.png") no-repeat -170px -1px;
+    }
+    
+    #bannerDiv .ui-banner-arrow.ui-banner-arrow-next {
+        left:73%;
+        margin-left:-50px;
+        top:50%;
+        margin-top:-20px;
+        background:url("/Content/themes/image/main.png") no-repeat -128px -1px;
+        width:40px;
+        height:40px;
+    }
+
+    #bannerDiv .ui-banner-arrow.ui-banner-arrow-next:hover {
+        background:url("/Content/themes/image/main.png") no-repeat -212px -1px;
+    }
 /* Main Block
 ----------------------------------------------------------*/
 .MainBlock {
@@ -2185,32 +2214,38 @@ footer {
 
 /* Ensure Cart,Ensure Order
 ----------------------------------------------------------*/
-#CartMP,#SubmitMP {
+.OrderPage {
     padding:3px 0px 30px 0px;
     background-color:#FFFFFF;
     border-radius:12px 12px;
 }
 
-#CartDiv,#SubmitDiv {
+#CartDiv,#SubmitDiv,#HasPayedDiv {
     margin:0px 2%;
     width:96%;
     height:auto;
 }
 
-    #CartDiv h2,#SubmitDiv h2
+    .OrderPage h2
     {
         text-align:left;
         margin-bottom:5px;
     }
 
-    #CartDiv .flowDiv,#SubmitDiv .flowDiv {
+    .OrderPage h2 label
+    {
+        font-size:10pt;
+        font-weight:normal;
+    }
+
+    .OrderPage .flowDiv{
         width:98%;
         line-height:22px;
         vertical-align:middle;
         margin-bottom:8px;
     }
 
-        #CartDiv .flowDiv .line,#SubmitDiv .flowDiv .line {
+        .OrderPage .flowDiv .line {
             width:100%;
             float:left;
             border-top:solid 2px #FFAA00;
@@ -2219,43 +2254,43 @@ footer {
             margin:5px 0px;
         }
 
-        #CartDiv .flowDiv .item,#SubmitDiv .flowDiv .item {
+        .OrderPage .flowDiv .item {
             width:25%;
             float:left;
             text-align: right;
         }
 
-            #CartDiv .flowDiv .item .point,#SubmitDiv .flowDiv .item .point {
+            .OrderPage .flowDiv .item .point {
                 width:20px;
                 height:20px;
                 margin:0px 0px 0px 95%;
                 background:url("/Content/themes/image/main.png") no-repeat -238px -56px;
             }
 
-            #CartDiv .flowDiv .sel .line,#SubmitDiv .flowDiv .sel .line {
+            .OrderPage .flowDiv .sel .line {
                 background-color:#FFAA00;
             }
 
-            #CartDiv .flowDiv .sel .point,#SubmitDiv .flowDiv .sel .point {
+            .OrderPage .flowDiv .sel .point {
                 background:url("/Content/themes/image/main.png") no-repeat -262px -56px;
 
             }
 
-            #CartDiv .flowDiv .item .title,#SubmitDiv .flowDiv .item .title {
+            .OrderPage .flowDiv .item .title {
                 color:#777777;
                 font-size:9pt;
                 width:100%;
             }
 
-            #CartDiv .flowDiv .sel .title,#SubmitDiv .flowDiv .sel .title {
+            .OrderPage .flowDiv .sel .title {
                 color:#FFAA00;
             }
 
-    #CartDiv .order ul,#SubmitDiv .order ul {
+    .OrderPage ul {
         border:solid 1px #cccccc;
     }
 
-    #CartDiv .order li,#SubmitDiv .order li {
+    .OrderPage .order li {
         float:left;
         height:70px;
         line-height:70px;
@@ -2263,7 +2298,7 @@ footer {
         border-bottom:dashed 1px #cccccc;
     }
 
-    #CartDiv .order .footer,#SubmitDiv .order  .footer {
+    .OrderPage .order .footer {
         border-bottom:none;
     }
 
@@ -2274,17 +2309,17 @@ footer {
         border-bottom:none;
     }
 
-    #CartDiv .order .item,#SubmitDiv .order .item {
+    .OrderPage .order .item {
         width:100%;
         padding:3px 0px;
     }
     
-    #CartDiv .order .item div,#SubmitDiv .order .item div {
+    .OrderPage .order .item div {
         height:70px;
         float:left;
     }
 
-    #CartDiv .order .title,#SubmitDiv .order .title {
+    .OrderPage .order .title {
         border-bottom:solid 1px #cccccc;
         height:25px;
         line-height:25px;
@@ -2294,21 +2329,21 @@ footer {
         width:100%;
     }
 
-        #CartDiv .order .title div,#SubmitDiv .order .title div {
+        .OrderPage .order .title div {
             float:left;
         }
 
-        #CartDiv .order .title .li0,#SubmitDiv .order .title .li0 {
+        .OrderPage .order .title .li0 {
             height:25px;
             line-height:25px;
         }
 
-    #SubmitDiv .order .footer
+    .OrderPage .order .footer
     {
         width:100%;
     }
 
-    #CartDiv .order .footer div,#SubmitDiv .order .footer div {
+    .OrderPage .order .footer div {
         float:left;
     }
 
@@ -2328,11 +2363,11 @@ footer {
         line-height:70px;
     }
 
-    #CartDiv .order .li1,#SubmitDiv .order .li1 {
+    .OrderPage .order .li1 {
         width:17%;
     }
 
-        #CartDiv .order .li1 img,#SubmitDiv .order .li1 img {
+        .OrderPage .order .li1 img {
             width:70px;
             height:70px;
         }
@@ -2346,17 +2381,17 @@ body .li1 {
         height:70px;
     }
 
-    #CartDiv .order .li2,#SubmitDiv .order .li2 {
+    .OrderPage .order .li2 {
         width:31%;
         line-height:22px;
         text-align:left;
     }
 
-    #CartDiv .order .li3,#SubmitDiv .order .li3 {
+    .OrderPage .order .li3 {
         width:10%;
     }
 
-    #CartDiv .order .li4,#SubmitDiv .order .li4 {
+    .OrderPage .order .li4 {
         width:13%;
         text-align:center;
     }
@@ -2383,15 +2418,15 @@ body .li1 {
             height:30px;
         }
 
-    #CartDiv .order .li5,#SubmitDiv .order .li5 {
+    .OrderPage .order .li5 {
         width:7%;
     }
 
-    #CartDiv .order .li6,#SubmitDiv .order .li6 {
+    .OrderPage .order .li6 {
         width:10%;
     }
 
-    #CartDiv .order .p1,#SubmitDiv .order .p1 {
+    .OrderPage .order .p1 {
         width:100%;
         height:200px;
         line-height:200px;
@@ -2416,53 +2451,61 @@ body .li1 {
         text-align:left;
     }
 
-    #SubmitDiv .order .li51 {
+    #HasPayedDiv .order .li51 {
+        font-size:22px;
+        color:#B20000;
+        font-weight:bolder;
+        height:76px;
+        line-height:76px;
+    }
+
+    .OrderPage .order .li51 {
         width:52%;
         height:22px;
         line-height:22px;
     }
 
-    #CartDiv .order .li21,#SubmitDiv .order .li21 {
+    .OrderPage .order .li21 {
         width:25%;
         text-align:right;
     }
 
-    #CartDiv .order .li31,#SubmitDiv .order .li31 {
+    .OrderPage .order .li31 {
         width:20%;
         text-align:right;
     }
 
-        #CartDiv .order .li21 .count,#SubmitDiv .order .li21 .count {
+        .OrderPage .order .li21 .count {
             color:#cc0000;
             font-size:120%;
             font-weight:bold;
             margin:0px 5px;
         }
 
-        #CartDiv .order .li31 div,#SubmitDiv .order .li31 div {
+        .OrderPage .order .li31 div {
             float:left;
             height:18px;
             line-height:18px;
             text-align:right;
         }
 
-        #CartDiv .order .li31 .price,#SubmitDiv .order .li31 .price {
+        .OrderPage .order .li31 .price {
             width:94%;
             padding-right:4%;
         }
 
-        #CartDiv .order .li31 .add,#SubmitDiv .order .li31 .add {
+        .OrderPage .order .li31 .add {
             text-align:right;
             width:20%;
         }
 
-        #CartDiv .order .li31 .postPrice,#SubmitDiv .order .li31 .postPrice {
+        .OrderPage .order .li31 .postPrice {
             width:74%;
             padding-right:4%;
             border-bottom:solid 1px #cccccc;
         }
 
-        #CartDiv .order .li31 .amount,#SubmitDiv .order .li31 .amount {
+        .OrderPage .order .li31 .amount {
             width:94%;
             padding-right:4%;
             height:20px;
@@ -2598,7 +2641,7 @@ body .li1 {
                 text-align:center;
             }
             
-    #CartDiv .btnDiv {
+    .OrderPage .btnDiv {
         margin-top:10px;
         width:100%;
         float:left;
@@ -2606,10 +2649,15 @@ body .li1 {
         padding-top:10px;
     }
             
-    #CartDiv .btnDiv .p3 {
+    .OrderPage .btnDiv .p3 {
+        height:51px;
         float:left;
         text-align:center;
     }
+
+        .OrderPage .btnDiv .p3 div {
+            margin:0px auto;
+        }
 
     #SubmitDiv .addresses,#SubmitDiv .postType {
         float:left;
@@ -2637,15 +2685,6 @@ body .li1 {
         position:relative;
         float:left;
     }
-
-    #SubmitDiv .btnDiv .p3 {
-        height:51px;
-        float:left;
-    }
-            
-        #CartDiv .btnDiv .p3 div,#SubmitDiv .btnDiv .p3 div {
-            margin:0px auto;
-        }
 
     #SubmitDiv .payType {
         float:left;
@@ -2692,14 +2731,6 @@ body .li1 {
     #SubmitDiv .payType .content img {
         width:163px;
         height:66px;
-    }
-
-    #SubmitDiv .btnDiv {
-        margin-top:10px;
-        width:100%;
-        float:left;
-        border-top:dotted 2px #cccccc;
-        padding-top:10px;
     }
 
 #addAddressDlg {

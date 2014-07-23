@@ -62,13 +62,9 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult Payment()
         {
+            //转到支付宝页面，进行支付
             return View();
         }
-
-        /// <summary>
-        /// 获取支付宝GET过来通知消息，并以“参数名=参数值”的形式组成数组
-        /// </summary>
-        /// <returns>request回来的信息组成的数组</returns>
         public SortedDictionary<string, string> GetRequestGet()
         {
             int i = 0;
@@ -88,11 +84,15 @@ namespace FCStore.Controllers
             return sArray;
         }
 
+        /// <summary>
+        /// 获取支付宝GET过来通知消息，并以“参数名=参数值”的形式组成数组
+        /// </summary>
+        /// <returns>request回来的信息组成的数组</returns>
         [HttpPost, ValidateInput(false)]
         public ActionResult AlipayCB()
         {
             SortedDictionary<string, string> sPara = GetRequestGet();
-
+            Order orderPtr = null;
             if (sPara.Count > 0)//判断是否有带返回参数
             {
                 Notify aliNotify = new Notify();
@@ -100,61 +100,123 @@ namespace FCStore.Controllers
 
                 if (verifyResult)//验证成功
                 {
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //请在这里加上商户的业务逻辑程序代码
-
-
-                    //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
-                    //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表
-
                     //商户订单号
-
                     string out_trade_no = Request.QueryString["out_trade_no"];
 
-                    //支付宝交易号
+                    string OIDStr = out_trade_no.Substring(out_trade_no.Length - 8);
+                    int OID = Convert.ToInt32(OIDStr, 16);
 
+                    //支付宝交易号
                     string trade_no = Request.QueryString["trade_no"];
+
 
                     //交易状态
                     string trade_status = Request.QueryString["trade_status"];
-
-
-                    if (Request.QueryString["trade_status"] == "WAIT_SELLER_SEND_GOODS")
+                    orderPtr = db.Orders.FirstOrDefault(r => r.OID == OID);
+                    switch(trade_status)
                     {
-                        //判断该笔订单是否在商户网站中已经做过处理
-                        //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-                        //如果有做过处理，不执行商户的业务程序
-                    }
-                    else if (Request.QueryString["trade_status"] == "TRADE_FINISHED")
-                    {
-                        //判断该笔订单是否在商户网站中已经做过处理
-                        //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-                        //如果有做过处理，不执行商户的业务程序
-                    }
-                    else
-                    {
-                        Response.Write("trade_status=" + Request.QueryString["trade_status"]);
+                        case "WAIT_SELLER_SEND_GOODS":
+                            {
+                                //付款成功
+                                if (orderPtr.Status >= (int)Order.EOrderStatus.OS_Payment)
+                                {
+                                    //已支付
+                                }
+                                else
+                                {
+                                    //判断价钱是否正确
+                                    string tmpStr = Request.QueryString["price"];
+                                    decimal price = decimal.Parse(tmpStr);
+                                    tmpStr = Request.QueryString["quantity"];
+                                    int count = int.Parse(tmpStr);
+                                    tmpStr = Request.QueryString["logistics_fee"];
+                                    decimal fee = decimal.Parse(tmpStr);
+                                    if (price == orderPtr.PayAmount && count == 1 && fee == orderPtr.Postage)
+                                    {
+                                        orderPtr.Status = (int)Order.EOrderStatus.OS_Payment;
+                                        //保存淘宝交易号
+                                        orderPtr.AP_TradeNO = trade_no;
+                                        orderPtr.PayDate = Request.QueryString["notify_time"];
+                                    }
+                                    else
+                                    {
+                                        //支付信息有出入
+                                        orderPtr.Status = (int)Order.EOrderStatus.OS_ERR_PAYMENT;
+                                    }
+                                    db.SaveChanges();
+                                }
+                                return Redirect("/Order/HasPayed/" + OID);
+                                break;
+                            }
+                        case "TRADE_FINISHED":
+                            {
+                                //交易完成
+                                if (orderPtr.AP_TradeNO != trade_no)
+                                {
+                                    //支付宝单号不一致
+
+                                }
+                                if (orderPtr.Status >= (int)Order.EOrderStatus.OS_Complete)
+                                {
+                                    //已完成
+                                }
+                                else
+                                {
+                                    orderPtr.Status = (int)Order.EOrderStatus.OS_Complete;
+                                    orderPtr.CompleteDate = DateTime.Now.ToString(PubFunction.LONGDATETIMEFORMAT);
+                                    db.SaveChanges();
+                                }
+                                break;
+                            }
+                        case "WAIT_BUYER_PAY":
+                            {
+                                //等待买家付款
+                                if (orderPtr.Status != (int)Order.EOrderStatus.OS_Order && orderPtr.Status < (int)Order.EOrderStatus.OS_Payment)
+                                {
+                                    orderPtr.Status = (int)Order.EOrderStatus.OS_Order;
+                                    db.SaveChanges();
+                                }
+                                break;
+                            }
+                        case "WAIT_BUYER_CONFIRM_GOODS":
+                            {
+                                if (orderPtr.AP_TradeNO != trade_no)
+                                {
+                                    //支付宝单号不一致
+
+                                }
+                                if (orderPtr.Status >= (int)Order.EOrderStatus.OS_InlandSending)
+                                {
+                                    //已发货
+                                }
+                                else
+                                {
+                                    orderPtr.Status = (int)Order.EOrderStatus.OS_InlandSending;
+                                    db.SaveChanges();
+                                }
+                                break;
+                            }
+                        case "TRADE_CLOSED":
+                            {
+                                //无故关闭交易过程
+                                
+                                if (orderPtr.AP_TradeNO != trade_no)
+                                {
+                                    //支付宝单号不一致
+
+                                }
+                                if (orderPtr.Status != (int)Order.EOrderStatus.OS_ERR_Complete)
+                                {
+                                    orderPtr.Status = (int)Order.EOrderStatus.OS_ERR_Complete;
+                                    db.SaveChanges();
+                                }
+                                break;
+                            }
                     }
 
-                    //打印页面
-                    Response.Write("验证成功<br />");
-                    Response.Write("trade_no=" + trade_no);
-
-                    //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                }
-                else//验证失败
-                {
-                    Response.Write("验证失败");
                 }
             }
-            else
-            {
-                Response.Write("无返回参数");
-            }
-
-            return View();
+            return View(orderPtr);
         }
 
         [MyAuthorizeAttribute]
@@ -199,6 +261,36 @@ namespace FCStore.Controllers
                 tmpVM.OrderArr.AddRange(tmpOArr);
             }
             return View(tmpVM);
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult HasPayed(int id)
+        {
+            Order orderPtr = null;
+            MyUser user = HttpContext.User as MyUser;
+            if (HttpContext.User.Identity.IsAuthenticated && user != null)
+            {
+                orderPtr = db.Orders.FirstOrDefault(r => r.OID == id);
+                if (orderPtr != null && orderPtr.Status == (int)Order.EOrderStatus.OS_Payment)
+                {
+                    if(orderPtr.UID != user.UID)
+                    {
+                        orderPtr = null;
+                    }
+                }
+                else
+                {
+                    //orderPtr = null;
+                }
+            }
+            if (orderPtr == null)
+            {
+                return Redirect("/Order/Cart");
+            }
+            else
+            {
+                return View(orderPtr);
+            }
         }
 
         [MyAuthorizeAttribute]

@@ -198,12 +198,6 @@
 		},
 		onROUCloseBtn : function() {
 			var QQInfo = $("#associateUserDlg").data("QQInfo");
-			$("#associateUserDlg").dialog( "close" );
-	    	$("#loginDiv").remove();
-	        $("#resultDiv").show();
-	        $("#resultDiv .userName").html(QQInfo.nickname);
-	        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex(data.content.UID) + "_40_40.jpg");
-    		LoginPageView.login.OnFiveSecondsTicket();
 			var tmpData = {
 				UserName : QQInfo.nickname,
 				sex : QQInfo.gender == "男",
@@ -223,6 +217,12 @@
 	            success: function (data,status,options) {
 	            }
 			});
+			$("#associateUserDlg").dialog( "close" );
+	    	$("#loginDiv").remove();
+	        $("#resultDiv").show();
+	        $("#resultDiv .userName").html(QQInfo.nickname);
+	        $("#resultDiv .userPhoto").prop("src",QQInfo.figureurl_qq_1);
+    		LoginPageView.login.OnFiveSecondsTicket();
 		},
 		onROUOKBtn : function() {
 			var tmpPar = $("#tabs-ou");

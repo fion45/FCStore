@@ -408,6 +408,20 @@ namespace FCStore.Controllers
                 }
                 role.Users.Add(user);
                 db.SaveChanges();
+                //获取用户图片
+                Uri uri = new Uri(figureurl_qq_1);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream resStream = response.GetResponseStream();
+                Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
+                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
+
+                uri = new Uri(figureurl_qq_2);
+                request = (HttpWebRequest)WebRequest.Create(uri);
+                response = (HttpWebResponse)request.GetResponse();
+                resStream = response.GetResponseStream();
+                sourcebm = new Bitmap(resStream);
+                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
             }
             LoginSuccess(user);
             if (Request.IsAjaxRequest())

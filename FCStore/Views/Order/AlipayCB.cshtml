@@ -1,0 +1,18 @@
+﻿@model FCStore.Models.Order
+@using FCStore.Models;
+@{
+    ViewBag.Title = "AlipayCB";
+}
+
+<div>
+    订单编号：@(Model.OIDStr)
+</div>
+@switch(Model.Status)
+{
+    case (int)Order.EOrderStatus.OS_Payment :
+        {
+            //已付款
+            
+            break;
+        }
+}

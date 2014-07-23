@@ -14,16 +14,16 @@
     </script>
 }
 
-<div id="SubmitMP">
+<div id="SubmitMP" class="OrderPage">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div><a href="/">首页</a></div>
+        <div>></div>
+        <div>订单确认</div>
+    </div>
     @if (order != null)
     {
         <form id="SubmitDiv" method="post" action="@(order.OID)" data="@(order.OID)">
-            <div id="categoryNav">
-                <div>当前位置：</div>
-                <div><a href="/">首页</a></div>
-                <div>></div>
-                <div>订单确认</div>
-            </div>
             <div class="p1 flowDiv">
                 <div class="item sel">
                     <div class="line"></div>
@@ -47,7 +47,9 @@
                 </div>
             </div>
             <div class="order">
-                <h2>订单列表</h2>
+                <h2>
+                    订单编号：<label>@(order.OIDStr)</label>
+                </h2>
                 <ul>
                     <li class="title">
                         <div class="li0"></div>

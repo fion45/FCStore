@@ -29,7 +29,7 @@ protected	 void	 Page_Load(object	 sender, EventArgs	 e)
                 string payment_type = "1";
                 //必填，不能修改
                 //服务器异步通知页面路径
-                //string notify_url = "http://www.xxx.com/trade_create_by_buyer-CSHARP-UTF-8/notify_url.aspx";
+                //string notify_url = "http://www.rightgo.cn/order/AlipayCB";
                 //需http://格式的完整路径，不能加?id=123这类自定义参数
 
                 //页面跳转同步通知页面路径
@@ -41,11 +41,22 @@ protected	 void	 Page_Load(object	 sender, EventArgs	 e)
                 //必填
 
                 //商户订单号
-                string out_trade_no = tmpOrder.OID.ToString();
+                string out_trade_no = tmpOrder.OIDStr;
                 //商户网站订单系统中唯一订单号，必填
 
+                //订单描述
+                string body = "";
+                foreach (OrderPacket op in opLST)
+                {
+                    body += op.Product.Title + ";";
+                }
+                body = body.Trim(new char[] { ';' });
+                //商品展示地址
+                string show_url = "http://www.rightgo.cn" + opLST[0].Product.ImgPathArr[0];
+                //需以http://开头的完整路径，如：http://www.xxx.com/myorder.html
+                
                 //订单名称
-                string subject = "RightGO网订单";
+                string subject = "RightGO网订单" + body;
                 //必填
 
                 decimal totalPrice = Math.Round(tmpOrder.Amount, 2);
@@ -89,18 +100,6 @@ protected	 void	 Page_Load(object	 sender, EventArgs	 e)
                     //必填，两个值可选：SELLER_PAY（卖家承担运费）、BUYER_PAY（买家承担运费）
                 }
 
-
-                //订单描述
-                string body = "";
-                foreach (OrderPacket op in opLST)
-                {
-                    body += op.Product.Title + ";";
-                }
-                body = body.Trim(new char[] { ';' });
-                //商品展示地址
-                string show_url = "http://www.rightgo.cn" + opLST[0].Product.ImgPathArr[0];
-                //需以http://开头的完整路径，如：http://www.xxx.com/myorder.html
-
                 //收货人姓名
                 string receive_name = tmpUser.UserName;
                 //如：张三
@@ -126,11 +125,10 @@ protected	 void	 Page_Load(object	 sender, EventArgs	 e)
 
                 //把请求参数打包成数组
                 SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
-                sParaTemp.Add("partner", "test");
-                sParaTemp.Add("_input_charset", "test");
+                sParaTemp.Add("partner", Config.Partner);
+                sParaTemp.Add("_input_charset", Config.Input_charset.ToLower());
                 sParaTemp.Add("service", "trade_create_by_buyer");
                 sParaTemp.Add("payment_type", payment_type);
-                //sParaTemp.Add("notify_url", notify_url);
                 sParaTemp.Add("return_url", return_url);
                 sParaTemp.Add("seller_email", seller_email);
                 sParaTemp.Add("out_trade_no", out_trade_no);

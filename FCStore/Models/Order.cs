@@ -14,7 +14,7 @@ namespace FCStore.Models
             OS_Init                 = 0,            //初始化
             OS_Order                = 1,            //已下单
             OS_Subscription         = 2,            //已落订
-            OS_Payment              = 3,            //已付款
+            OS_Payment              = 3,            //已付款，等待卖家发货
             OS_InStore              = 4,            //国外已购买
             OS_ForeignSending       = 5,            //国外邮递中
             OS_InDealer             = 6,            //在经销商手上
@@ -22,9 +22,17 @@ namespace FCStore.Models
             OS_InClient             = 8,            //到客人手上
             OS_Complete             = 9,            //已完成
             OS_RTN_Apply            = 10,           //申请退货中
-            OS_RTN_InlandSending    = 11,           //退货在国内邮递中
-            OS_RTN_InStore          = 12,           //已回仓库
-            OS_RTN_Complete         = 13            //退货完成
+            OS_RTN_AGREE            = 11,           //淘宝退货协议上的，退款协议等待卖家确认中
+            OS_RTN_REFUSE           = 12,           //淘宝退货协议上的，卖家不同意协议，等待买家修改
+            OS_RTN_BUYER_GOODS      = 13,           //淘宝退货协议上的，退款协议达成，等待买家退货
+            OS_RTN_SELLER_GOODS     = 14,           //淘宝退货协议上的，等待卖家收货      
+            OS_RTN_InlandSending    = 15,           //退货在国内邮递中
+            OS_RTN_InStore          = 16,           //已回仓库
+            OS_RTN_SUCCESS          = 17,           //淘宝退货协议上的，退款成功
+            OS_RTN_CLOSED           = 18,           //淘宝退货协议上的，退款关闭
+            OS_RTN_Complete         = 19,           //退货完成
+            OS_ERR_PAYMENT          = 20,           //支付宝支付信息有异常
+            OS_ERR_Complete         = 21            //支付宝交易过程关闭
         }
 
         public enum ESendType
@@ -43,6 +51,17 @@ namespace FCStore.Models
         {
             get;
             set;
+        }
+
+        public string OIDStr
+        {
+            get
+            {
+                string tmpStr = "00000000" + Convert.ToString(OID,16);
+                tmpStr = tmpStr.Substring(tmpStr.Length - 8);
+                DateTime tmpDT = DateTime.Parse(OrderDate);
+                return tmpDT.ToString("yyyyMMdd") + tmpStr;
+            }
         }
 
         public virtual List<OrderPacket> Packets
@@ -148,6 +167,12 @@ namespace FCStore.Models
             set;
         }
 
+        public string PayDate
+        {
+            get;
+            set;
+        }
+
         public string ReceivedDate
         {
             get;
@@ -216,6 +241,12 @@ namespace FCStore.Models
             {
                 return BelongTown.FullName + " " + AddressName;
             }
+        }
+
+        public string AP_TradeNO
+        {
+            get;
+            set;
         }
     }
 }

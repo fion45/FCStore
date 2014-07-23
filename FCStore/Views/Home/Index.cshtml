@@ -1,34 +1,45 @@
 ﻿@model IEnumerable<FCStore.Models.Column>
 @using FCStore.Models;
 @using FCStore.Common;
-
-@section scripts{    
+@section scripts{
     <script type="text/javascript" charset="utf-8">
-        //$(function () {
-        //    $("#Center .productFI").lazyload({
-        //        placeholder: "/Content/themes/image/ColumBlank.jpg"
-        //    });
-        //});
+        $(function () {
+            //$("#Center .productFI").lazyload({
+            //    placeholder: "/Content/themes/image/ColumBlank.jpg"
+            //});
+            $('#bannerDiv').bannerize({
+                shuffle: 1,
+                interval: "5"
+            });
+        });
     </script>
 }
-<div id="bannerDiv">
-    <ul>
-        <li class="right">
-            <div class="mainBanner">
-                <img src="/picture/banner_b.png" />
-            </div>
-            <div class="subBanner">
-                <img src="/picture/banner_s1.png" />
-            </div>
-            <div class="subBanner mid">
-                <img src="/picture/banner_s2.png" />
-            </div>
-            <div class="subBanner">
-                <img src="/picture/banner_s3.png" />
-            </div>
-        </li>
-    </ul>
-</div>
+@{
+    List<BannerItem> biLst = (List<BannerItem>)ViewBag.BannerItems;
+    if(biLst.Count > 0)
+    {
+        <div id="bannerDiv" class="ui-banner">
+            <ul class="ui-banner-slides">
+                @foreach(BannerItem tmpBI in biLst)
+                {
+                    <li><a href="@(tmpBI.HrefPath)"><img src="@(tmpBI.ImgPath)" alt="" title=""></a></li>
+                }
+            </ul><!--ui-banner-slides end-->
+            <ul class="ui-banner-slogans">
+                @foreach(BannerItem tmpBI in biLst)
+                {
+                    <li>
+                        <div class="title">@(tmpBI.Title)</div>
+                        <div class="description">@(tmpBI.Description)</div>
+                    </li>
+                }
+            </ul><!--ui-banner-slogans end-->
+            <a href="" class="ui-banner-arrow ui-banner-arrow-prev png_bg"></a>
+            <a href="" class="ui-banner-arrow ui-banner-arrow-next png_bg"></a>
+            <div class="ui-banner-overlay png_bg"></div>
+        </div>
+    }
+}
 @{
     string niStr = "";
     niStr += ";限时抢购;";

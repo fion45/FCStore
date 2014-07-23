@@ -21,11 +21,14 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/jquerycookie").Include(
                         "~/Scripts/jquery.cookie.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-1.8.24.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            //            "~/Scripts/jquery-ui-1.8.24.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquerylazyload").Include(
                         "~/Scripts/jquery.lazyload.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryuibannerize").Include(
+                        "~/Scripts/jquery.ui.bannerize.js"));
 
             // 使用要用于开发和学习的 Modernizr 的开发版本。然后，当你做好
             // 生产准备时，请使用 http://modernizr.com 上的生成工具来仅选择所需的测试。
@@ -49,7 +52,8 @@ namespace FCStore
                         "~/Content/themes/base/jquery.ui.tabs.css",
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
+                        "~/Content/themes/base/jquery.ui.theme.css",
+                        "~/Content/themes/base/jquery.ui.bannerize.css"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/productDetail").Include(

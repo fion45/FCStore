@@ -51,7 +51,7 @@
     </script>
 
 }
-<div id="CartMP">
+<div id="CartMP" class="OrderPage">
     <div id="categoryNav">
         <div>当前位置：</div>
         <div><a href="/">首页</a></div>
@@ -149,7 +149,7 @@
                         <li class="p1">@((Model.OrderArr != null && Model.OrderArr.Count() > 0 && Model.OrderArr.First().Packets.Count == 0) ? "订单为空" : "订单不存在")</li>
                     }
                 }
-                <li class="pullupDiv"></li>
+                <div class="pullupDiv"></div>
             </ul>
         </div>
         <div class="addresses">

@@ -69,7 +69,7 @@
             </div>
         </div>
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
-            <label class="blb">欢迎<img class="userPhoto" src="@(ViewBag.myUser != null ? ((MyUser)ViewBag.myUser).SmallUserHead : "/picture/user/none.jpg")" /><a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
+            <label class="blb">欢迎<img class="userPhoto" onerror="javascript:this.src = '/picture/user/NoPicture_40_40.png';" src="@(ViewBag.myUser != null ? ((MyUser)ViewBag.myUser).SmallUserHead : "/picture/user/none.jpg")" /><a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
             <label class="blb welcome">Welcome Welcome</label>            
             @{
                 string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ? "http://" + HttpContext.Current.Request.Url.Authority + "/Home/Index" : ViewBag.returnUrl;
