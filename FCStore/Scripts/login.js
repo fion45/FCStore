@@ -1,4 +1,37 @@
 ﻿var LoginPageView = {
+	WBLoginSuccess : function(o) {
+		//登录成功
+    	//判断该微薄号是否已注册
+		if(WB2.checkLogin()) {
+			var tmpData = {
+				wbId : o.idstr
+			};
+			$.myAjax({
+        		refreshTag : true,
+    			loadEle : $(window.document.body),
+	            url: "/User/LoginByWB/",
+	            data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data,status,options) {
+	            	if(data.content == null) {
+	            		//未关联，要求输入ID和密码
+						var userInfo = {
+							openId : "",
+							accessToken : "",
+							wbId : o.idstr,
+							userName : o.screen_name,
+							sex : o.gender == "m",
+							smallHead : o.profile_image_url,
+							lagerHead : o.avatar_large
+						};
+						LoginPageView.login.CreateAssociateDlg(userInfo);
+	            	}
+	            }
+			});
+		}
+	},
 	QQLoginSuccess : function(reqData, opts, par) {
     	//登录成功
     	//判断该QQ号是否已注册
@@ -10,7 +43,7 @@
 	    		};
 	    		//openId和accessToken保存到本地
 	    		$.myAjax({
-            		refreshTag : true,
+	        		refreshTag : true,
 	    			loadEle : $(window.document.body),
 		            url: "/User/LoginByQQ/",
 		            data: JSON.stringify(tmpData),
@@ -20,68 +53,16 @@
 		            success: function (data,status,options) {
 		            	if(data.content == null) {
 		            		//未关联，要求输入ID和密码
-							var tmpEle = $("<div id='associateUserDlg' >" +
-									"<div id='auTabs'>" +
-										"<ul>" +
-											"<li><a href='#tabs-nu' >新用户</a></li>" +
-											"<li><a href='#tabs-ou' >已有用户</a></li>" +
-										"</ul>" +
-										"<div id='tabs-nu'>" +
-											"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
-											"<div class='title' >新用户名：</div>" +
-											"<div class='content' >" +
-												"<input class='UserNameTB' type='text' />" +
-											"</div>" +
-											"<div class='title' >登陆密码：</div>" +
-											"<div class='content' >" +
-												"<input class='PSWTB' type='password' />" +
-											"</div>" +
-											"<div class='title' >密码确认：</div>" +
-											"<div class='content' >" +
-												"<input class='EnsurePSWTB' type='password' />" +
-											"</div>" +
-											"<div class='btn'>" +
-												"<input onclick='LoginPageView.login.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-											"</div>" +
-											"<div class='pullupDiv' ></div>" +
-										"</div>" +
-										"<div id='tabs-ou'>" +
-											"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
-											"<div class='title' >老用户名：</div>" +
-											"<div class='content' >" +
-												"<input class='UserNameTB' type='text' />" +
-											"</div>" +
-											"<div class='title' >登陆密码：</div>" +
-											"<div class='content' >" +
-												"<input class='PSWTB' type='password' />" +
-											"</div>" +
-											"<div class='btn'>" +
-												"<input onclick='LoginPageView.login.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-											"</div>" +
-											"<div class='pullupDiv' ></div>" +
-										"</div>" +
-        								"<div class='ui-icon ui-icon-closethick closeBtn' onclick='LoginPageView.login.onROUCloseBtn()'></div>" +
-									"</div>" +
-								"</div>");
-							tmpEle.appendTo($(document.body));
-						    $( "#auTabs" ).tabs({
-						      event: "mouseover"
-						    });
-							tmpEle.dialog({
-						  		dialogClass: "justOverlayer",
-								width: 350,
-						  		resizable: false,
-						      	modal: true
-							});
-							var QQInfo = {
+							var userInfo = {
 								openId : openId,
 								accessToken : accessToken,
-								nickname : QC.String.escHTML(reqData.nickname),
-								gender : reqData.gender,
-								figureurl_qq_1 : reqData.figureurl_qq_1,
-								figureurl_qq_2 : reqData.figureurl_qq_2
+								wbId : "",
+								userName : QC.String.escHTML(reqData.nickname),
+								sex : reqData.gender == "男",
+								smallHead : reqData.figureurl_qq_1,
+								lagerHead : reqData.figureurl_qq_2
 							};
-							tmpEle.data("QQInfo",QQInfo);
+							LoginPageView.login.CreateAssociateDlg(userInfo);
 		            	}
 		            	else {
 		            		//关联了
@@ -89,7 +70,7 @@
 					        $("#resultDiv").show();
 					        $("#resultDiv .userName").html(QC.String.escHTML(reqData.nickname));
 					        $("#resultDiv .userPhoto").prop("src",reqData.figureurl_qq_1);
-                    		LoginPageView.login.OnFiveSecondsTicket();
+	                		LoginPageView.login.OnFiveSecondsTicket();
 		            	}
 		            }
 				});
@@ -160,22 +141,23 @@
 			var tmpPar = $("#tabs-nu"); 
 			var tmpUN = tmpPar.find(".UserNameTB").val();
 			var tmpPSW = tmpPar.find(".PSWTB").val();
-			var QQInfo = $("#associateUserDlg").data("QQInfo");
+			var userInfo = $("#associateUserDlg").data("userInfo");
 			var tmpData = {
 				NTag : true,
 				LoginID : tmpUN,
 				PSW : tmpPSW,
-				UserName : QQInfo.nickname,
-				sex : QQInfo.gender == "男",
-				figureurl_qq_1 : QQInfo.figureurl_qq_1,
-				figureurl_qq_2 : QQInfo.figureurl_qq_2,
-				openId : QQInfo.openId,
-				accessToken : QQInfo.accessToken
+				UserName : userInfo.userName,
+				sex : userInfo.sex,
+				smallHead : userInfo.smallHead,
+				lagerHead : userInfo.lagerHead,
+				openId : userInfo.openId,
+				accessToken : userInfo.accessToken,
+				wbId : userInfo.wbId
 			};
 			$.myAjax({
 	        	historyTag : false,
 	        	loadEle : $("#associateUserDlg"),
-	            url: "/User/QQRelativeUser",
+	            url: "/User/RelativeUser",
 	            data: JSON.stringify(tmpData),
 	            dataType: "json",
 	            type: "POST",
@@ -196,54 +178,27 @@
 	            }
 			});
 		},
-		onROUCloseBtn : function() {
-			var QQInfo = $("#associateUserDlg").data("QQInfo");
-			var tmpData = {
-				UserName : QQInfo.nickname,
-				sex : QQInfo.gender == "男",
-				figureurl_qq_1 : QQInfo.figureurl_qq_1,
-				figureurl_qq_2 : QQInfo.figureurl_qq_2,
-				openId : QQInfo.openId,
-				accessToken : QQInfo.accessToken
-			};
-			$.myAjax({
-	        	historyTag : false,
-	        	loadEle : $("#associateUserDlg"),
-	            url: "/User/JustQQLogin",
-	            data: JSON.stringify(tmpData),
-	            dataType: "json",
-	            type: "POST",
-	            contentType: "application/json;charset=utf-8",
-	            success: function (data,status,options) {
-	            }
-			});
-			$("#associateUserDlg").dialog( "close" );
-	    	$("#loginDiv").remove();
-	        $("#resultDiv").show();
-	        $("#resultDiv .userName").html(QQInfo.nickname);
-	        $("#resultDiv .userPhoto").prop("src",QQInfo.figureurl_qq_1);
-    		LoginPageView.login.OnFiveSecondsTicket();
-		},
 		onROUOKBtn : function() {
 			var tmpPar = $("#tabs-ou");
 			var tmpUN = tmpPar.find(".UserNameTB").val();
 			var tmpPSW = tmpPar.find(".PSWTB").val();
-			var QQInfo = $("#associateUserDlg").data("QQInfo");
+			var userInfo = $("#associateUserDlg").data("userInfo");
 			var tmpData = {
 				NTag : false,
 				LoginID : tmpUN,
 				PSW : tmpPSW,
-				UserName : QQInfo.nickname,
-				sex : QQInfo.gender == "男",
-				figureurl_qq_1 : QQInfo.figureurl_qq_1,
-				figureurl_qq_2 : QQInfo.figureurl_qq_2,
-				openId : QQInfo.openId,
-				accessToken : QQInfo.accessToken
+				UserName : userInfo.userName,
+				sex : userInfo.sex,
+				smallHead : userInfo.smallHead,
+				lagerHead : userInfo.lagerHead,
+				openId : userInfo.openId,
+				accessToken : userInfo.accessToken,
+				wbId : userInfo.wbId
 			};
 			$.myAjax({
 	        	historyTag : false,
 	        	loadEle : $("#associateUserDlg"),
-	            url: "/User/QQRelativeUser",
+	            url: "/User/RelativeUser",
 	            data: JSON.stringify(tmpData),
 	            dataType: "json",
 	            type: "POST",
@@ -263,6 +218,91 @@
 	            	}
 	            }
 			});
+		},
+		onROUCloseBtn : function() {
+			var userInfo = $("#associateUserDlg").data("userInfo");
+			var tmpData = {
+				UserName : userInfo.userName,
+				sex : userInfo.sex,
+				smallHead : userInfo.smallHead,
+				lagerHead : userInfo.lagerHead,
+				openId : userInfo.openId,
+				accessToken : userInfo.accessToken,
+				wbId : userInfo.wbId
+			};
+			$.myAjax({
+	        	historyTag : false,
+	        	loadEle : $("#associateUserDlg"),
+	            url: "/User/JustLogin",
+	            data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data,status,options) {
+	            }
+			});
+			$("#associateUserDlg").dialog( "close" );
+	    	$("#loginDiv").remove();
+	        $("#resultDiv").show();
+	        $("#resultDiv .userName").html(QQInfo.nickname);
+	        $("#resultDiv .userPhoto").prop("src",QQInfo.figureurl_qq_1);
+    		LoginPageView.login.OnFiveSecondsTicket();
+		},
+		CreateAssociateDlg : function() {
+			var tmpEle = $("<div id='associateUserDlg' >" +
+					"<div id='auTabs'>" +
+						"<ul>" +
+							"<li><a href='#tabs-nu' >新用户</a></li>" +
+							"<li><a href='#tabs-ou' >已有用户</a></li>" +
+						"</ul>" +
+						"<div id='tabs-nu'>" +
+							"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
+							"<div class='title' >新用户名：</div>" +
+							"<div class='content' >" +
+								"<input class='UserNameTB' type='text' />" +
+							"</div>" +
+							"<div class='title' >登陆密码：</div>" +
+							"<div class='content' >" +
+								"<input class='PSWTB' type='password' />" +
+							"</div>" +
+							"<div class='title' >密码确认：</div>" +
+							"<div class='content' >" +
+								"<input class='EnsurePSWTB' type='password' />" +
+							"</div>" +
+							"<div class='btn'>" +
+								"<input onclick='LoginPageView.login.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+							"</div>" +
+							"<div class='pullupDiv' ></div>" +
+						"</div>" +
+						"<div id='tabs-ou'>" +
+							"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
+							"<div class='title' >老用户名：</div>" +
+							"<div class='content' >" +
+								"<input class='UserNameTB' type='text' />" +
+							"</div>" +
+							"<div class='title' >登陆密码：</div>" +
+							"<div class='content' >" +
+								"<input class='PSWTB' type='password' />" +
+							"</div>" +
+							"<div class='btn'>" +
+								"<input onclick='LoginPageView.login.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+							"</div>" +
+							"<div class='pullupDiv' ></div>" +
+						"</div>" +
+						"<div class='ui-icon ui-icon-closethick closeBtn' onclick='LoginPageView.login.onROUCloseBtn()'></div>" +
+					"</div>" +
+				"</div>");
+			tmpEle.appendTo($(document.body));
+		    $( "#auTabs" ).tabs({
+		      event: "mouseover"
+		    });
+			tmpEle.dialog({
+		  		dialogClass: "justOverlayer",
+				width: 350,
+		  		resizable: false,
+		      	modal: true
+			});
+			tmpEle.data("userInfo",userInfo);
 		}
 	},
 	register : {

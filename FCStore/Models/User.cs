@@ -140,6 +140,12 @@ namespace FCStore.Models
             set;
         }
 
+        public string WBID
+        {
+            get;
+            set;
+        }
+
         public string LastLoginDT
         {
             get;

@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>LoginPage</title>    
+    <title>LoginPage</title>
     @Styles.Render("~/Content/themes/base/css")
     @Styles.Render("~/Content/loginPage")
 </head>
@@ -28,13 +28,13 @@
                         <input id="PSWTB" name="PSWTB" class="enterTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
                         <div class="inBox">密&#12288;码</div>
                     </div>
-                    <div class="content ccDiv">                            
-                    @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1)
-                    {
-                        <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
-                        <div class="inBox">验证码</div>
-                        <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
-                    }
+                    <div class="content ccDiv">
+                        @if (HttpContext.Current.Session["LPTAG"] != null && int.Parse(HttpContext.Current.Session["LPTAG"].ToString()) == -1)
+                        {
+                            <input id="checkCodeTB" name="checkCodeTB" class="enterTB" type="text" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
+                            <div class="inBox">验证码</div>
+                            <img class="inBoxIMG" onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                        }
                     </div>
                     <div class="content">
                         <input id="loginBtn" type="submit" value="登陆" />
@@ -48,7 +48,7 @@
                         <div>
                             等待时间：
                             <label id="waitTime">
-                                @(new TimeSpan(0,0,int.Parse(Session["LOGINLOCK"].ToString())).ToString())
+                                @(new TimeSpan(0, 0, int.Parse(Session["LOGINLOCK"].ToString())).ToString())
                             </label>
                         </div>
                         <div>
@@ -69,8 +69,8 @@
             </div>
         </div>
         <div id="resultDiv" style="@(User.Identity.IsAuthenticated ? "" : "display:none")">
-            <label class="blb">欢迎<img class="userPhoto" onerror="javascript:this.src = '/picture/user/NoPicture_40_40.png';" src="@(ViewBag.myUser != null ? ((MyUser)ViewBag.myUser).SmallUserHead : "/picture/user/none.jpg")" /><a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
-            <label class="blb welcome">Welcome Welcome</label>            
+            <label class="blb">欢迎<img class="userPhoto" onerror="javascript:this.src = '/picture/user/NoPicture_40_40.png';" src="@(ViewBag.myUser != null ? ((MyUser)ViewBag.myUser).SmallUserHead : "/picture/user/NoPicture_40_40.png")" /><a class="userName" href="/User/Details">@(User.Identity.Name)</a>光临Right Go网</label>
+            <label class="blb welcome">Welcome Welcome</label>
             @{
                 string urlStr = string.IsNullOrEmpty(ViewBag.returnUrl) ? "http://" + HttpContext.Current.Request.Url.Authority + "/Home/Index" : ViewBag.returnUrl;
             }
@@ -96,10 +96,9 @@
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
-            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8" ></script>
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
 
-    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
-            type="text/javascript" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])&debug=true" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
         $(function () {
@@ -121,9 +120,7 @@
                     id: "wb_connect_btn",
                     type: '3,2',
                     callback: {
-                        login: function (o) {
-                            alert(o.screen_name)
-                        },
+                        login: LoginPageView.WBLoginSuccess,
                         logout: function () {
                             alert('logout');
                         }

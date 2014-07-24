@@ -429,10 +429,11 @@ var MainLayout = {
 							var QQInfo = {
 								openId : openId,
 								accessToken : accessToken,
-								nickname : QC.String.escHTML(reqData.nickname),
-								gender : reqData.gender,
-								figureurl_qq_1 : reqData.figureurl_qq_1,
-								figureurl_qq_2 : reqData.figureurl_qq_2
+								wbId : "",
+								userName : QC.String.escHTML(reqData.nickname),
+								sex : reqData.gender == "男",
+								smallHead : reqData.figureurl_qq_1,
+								lagerHead : reqData.figureurl_qq_2
 							};
 							tmpEle.data("QQInfo",QQInfo);
 		            	}

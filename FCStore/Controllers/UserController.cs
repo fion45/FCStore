@@ -289,6 +289,24 @@ namespace FCStore.Controllers
                 return View(user);
             }
         }
+        public ActionResult LoginByWB(string wbId)
+        {
+            //判断该微博号是否已有账号关联
+            User user = db.Users.FirstOrDefault(r => r.WBID == wbId);
+            if (user != null)
+            {
+                LoginSuccess(user);
+            }
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(user);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
 
         public ActionResult LoginByQQ(string openID, string accessToken)
         {
@@ -309,7 +327,7 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult QQRelativeUser(bool NTag, string LoginID, string PSW, string UserName, bool sex,string figureurl_qq_1, string figureurl_qq_2, string openId, string accessToken)
+        public ActionResult RelativeUser(bool NTag, string LoginID, string PSW, string UserName, bool sex, string smallHead, string lagerHead, string openId, string accessToken, string wbId)
         {
             User user = null;
             bool gfTag = false;
@@ -326,7 +344,8 @@ namespace FCStore.Controllers
                         UserName = UserName,
                         Sex = sex,
                         QQOpenID = openId,
-                        QQAccessToken = accessToken
+                        QQAccessToken = accessToken,
+                        WBID = wbId
                     };
                     db.Users.Add(user);
 
@@ -349,6 +368,7 @@ namespace FCStore.Controllers
                 {
                     user.QQOpenID = openId;
                     user.QQAccessToken = accessToken;
+                    user.WBID = wbId;
                     user.Sex = sex;
                     user.UserName = UserName;
                     db.SaveChanges();
@@ -357,20 +377,27 @@ namespace FCStore.Controllers
             }
             if(gfTag)
             {
-                //获取用户图片
-                Uri uri = new Uri(figureurl_qq_1);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream resStream = response.GetResponseStream();
-                Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
-                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
+                try
+                {
+                    //获取用户图片
+                    Uri uri = new Uri(smallHead);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    Stream resStream = response.GetResponseStream();
+                    Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
+                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
 
-                uri = new Uri(figureurl_qq_2);
-                request = (HttpWebRequest)WebRequest.Create(uri);
-                response = (HttpWebResponse)request.GetResponse();
-                resStream = response.GetResponseStream();
-                sourcebm = new Bitmap(resStream);
-                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                    uri = new Uri(lagerHead);
+                    request = (HttpWebRequest)WebRequest.Create(uri);
+                    response = (HttpWebResponse)request.GetResponse();
+                    resStream = response.GetResponseStream();
+                    sourcebm = new Bitmap(resStream);
+                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                }
+                catch
+                {
+                    //保存头像失败
+                }
             }
             if (gfTag)
                 LoginSuccess(user);
@@ -385,9 +412,19 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult JustQQLogin(string UserName, bool sex,string figureurl_qq_1, string figureurl_qq_2, string openId, string accessToken)
+        public ActionResult JustLogin(string UserName, bool sex, string smallHead, string lagerHead, string openId, string accessToken,string wbId)
         {
-            User user = db.Users.FirstOrDefault(r => r.QQOpenID == openId);
+            User user = null;
+            if(string.IsNullOrEmpty(wbId))
+            {
+                //QQ登陆
+                user = db.Users.FirstOrDefault(r => r.QQOpenID == openId);
+            }
+            else
+            {
+                //微博登陆
+                user = db.Users.FirstOrDefault(r => r.WBID == wbId);
+            }
             if (user == null)
             {
                 user = new User()
@@ -396,6 +433,7 @@ namespace FCStore.Controllers
                     Sex = sex,
                     QQOpenID = openId,
                     QQAccessToken = accessToken,
+                    WBID = wbId,
                     Gift = 0
                 };
                 db.Users.Add(user);
@@ -408,20 +446,27 @@ namespace FCStore.Controllers
                 }
                 role.Users.Add(user);
                 db.SaveChanges();
-                //获取用户图片
-                Uri uri = new Uri(figureurl_qq_1);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream resStream = response.GetResponseStream();
-                Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
-                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
+                try
+                { 
+                    //获取用户图片
+                    Uri uri = new Uri(smallHead);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    Stream resStream = response.GetResponseStream();
+                    Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
+                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
 
-                uri = new Uri(figureurl_qq_2);
-                request = (HttpWebRequest)WebRequest.Create(uri);
-                response = (HttpWebResponse)request.GetResponse();
-                resStream = response.GetResponseStream();
-                sourcebm = new Bitmap(resStream);
-                sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                    uri = new Uri(lagerHead);
+                    request = (HttpWebRequest)WebRequest.Create(uri);
+                    response = (HttpWebResponse)request.GetResponse();
+                    resStream = response.GetResponseStream();
+                    sourcebm = new Bitmap(resStream);
+                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                }
+                catch
+                {
+                    //获取头像失败
+                }
             }
             LoginSuccess(user);
             if (Request.IsAjaxRequest())
