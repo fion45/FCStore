@@ -251,22 +251,23 @@ var MainLayout = {
 		var tmpPar = $("#tabs-nu"); 
 		var tmpUN = tmpPar.find(".UserNameTB").val();
 		var tmpPSW = tmpPar.find(".PSWTB").val();
-		var QQInfo = $("#associateUserDlg").data("QQInfo");
+		var userInfo = $("#associateUserDlg").data("userInfo");
 		var tmpData = {
 			NTag : true,
 			LoginID : tmpUN,
 			PSW : tmpPSW,
-			UserName : QQInfo.nickname,
-			sex : QQInfo.gender == "男",
-			figureurl_qq_1 : QQInfo.figureurl_qq_1,
-			figureurl_qq_2 : QQInfo.figureurl_qq_2,
-			openId : QQInfo.openId,
-			accessToken : QQInfo.accessToken
+			UserName : userInfo.userName,
+			sex : userInfo.sex,
+			smallHead : userInfo.smallHead,
+			lagerHead : userInfo.lagerHead,
+			openId : userInfo.openId,
+			accessToken : userInfo.accessToken,
+			wbId : userInfo.wbId
 		};
 		$.myAjax({
         	historyTag : false,
         	loadEle : $("#associateUserDlg"),
-            url: "/User/QQRelativeUser",
+            url: "/User/RelativeUser",
             data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
@@ -275,6 +276,10 @@ var MainLayout = {
             	if(data.content != null) {
             		//注册新用户成功
             		$("#associateUserDlg").dialog( "close" );
+            		$("loginDiv").hide();
+            		$("userInfoDiv").show();
+            		$("userInfoDiv .userHead").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
+            		$("userInfoDiv .userName").html($.cookie("UserInfo").UserName);
             	}
             	else {
             		alert("已有同名用户，请重新修改提交。");
@@ -283,24 +288,25 @@ var MainLayout = {
 		});
 	},
 	onROUCloseBtn : function() {
-		var QQInfo = $("#associateUserDlg").data("QQInfo");
+		var userInfo = $("#associateUserDlg").data("userInfo");
 		$("#associateUserDlg").dialog( "close" );
 		$("#loginDiv").hide();
 		$("#userInfoDiv").show();
-		$("#userInfoDiv .userHead").prop("src",QQInfo.figureurl_qq_1);
-		$("#userInfoDiv .userName").html(QQInfo.nickname);
+		$("#userInfoDiv .userHead").prop("src",userInfo.smallHead);
+		$("#userInfoDiv .userName").html(userInfo.userName);
 		var tmpData = {
-			UserName : QQInfo.nickname,
-			sex : QQInfo.gender == "男",
-			figureurl_qq_1 : QQInfo.figureurl_qq_1,
-			figureurl_qq_2 : QQInfo.figureurl_qq_2,
-			openId : QQInfo.openId,
-			accessToken : QQInfo.accessToken
+				UserName : userInfo.userName,
+				sex : userInfo.sex,
+				smallHead : userInfo.smallHead,
+				lagerHead : userInfo.lagerHead,
+				openId : userInfo.openId,
+				accessToken : userInfo.accessToken,
+				wbId : userInfo.wbId
 		};
 		$.myAjax({
         	historyTag : false,
         	loadEle : $("#associateUserDlg"),
-            url: "/User/JustQQLogin",
+            url: "/User/JustLogin",
             data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
@@ -313,22 +319,23 @@ var MainLayout = {
 		var tmpPar = $("#tabs-ou");
 		var tmpUN = tmpPar.find(".UserNameTB").val();
 		var tmpPSW = tmpPar.find(".PSWTB").val();
-		var QQInfo = $("#associateUserDlg").data("QQInfo");
+		var userInfo = $("#associateUserDlg").data("userInfo");
 		var tmpData = {
 			NTag : false,
 			LoginID : tmpUN,
 			PSW : tmpPSW,
-			UserName : QQInfo.nickname,
-			sex : QQInfo.gender == "男",
-			figureurl_qq_1 : QQInfo.figureurl_qq_1,
-			figureurl_qq_2 : QQInfo.figureurl_qq_2,
-			openId : QQInfo.openId,
-			accessToken : QQInfo.accessToken
+			UserName : userInfo.userName,
+			sex : userInfo.sex,
+			smallHead : userInfo.smallHead,
+			lagerHead : userInfo.lagerHead,
+			openId : userInfo.openId,
+			accessToken : userInfo.accessToken,
+			wbId : userInfo.wbId
 		};
 		$.myAjax({
         	historyTag : false,
         	loadEle : $("#associateUserDlg"),
-            url: "/User/QQRelativeUser",
+            url: "/User/RelativeUser",
             data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
@@ -374,48 +381,48 @@ var MainLayout = {
 		            	if(data.content == null) {
 		            		//未关联，要求输入ID和密码
 							var tmpEle = $("<div id='associateUserDlg' >" +
-									"<div id='auTabs'>" +
-										"<ul>" +
-											"<li><a href='#tabs-nu' >新用户</a></li>" +
-											"<li><a href='#tabs-ou' >已有用户</a></li>" +
-										"</ul>" +
-										"<div id='tabs-nu'>" +
-											"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
-											"<div class='title' >新用户名：</div>" +
-											"<div class='content' >" +
-												"<input class='UserNameTB' type='text' />" +
-											"</div>" +
-											"<div class='title' >登陆密码：</div>" +
-											"<div class='content' >" +
-												"<input class='PSWTB' type='password' />" +
-											"</div>" +
-											"<div class='title' >密码确认：</div>" +
-											"<div class='content' >" +
-												"<input class='EnsurePSWTB' type='password' />" +
-											"</div>" +
-											"<div class='btn'>" +
-												"<input onclick='MainLayout.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-											"</div>" +
-											"<div class='pullupDiv' ></div>" +
+								"<div id='auTabs'>" +
+									"<ul>" +
+										"<li><a href='#tabs-nu' >新用户</a></li>" +
+										"<li><a href='#tabs-ou' >已有用户</a></li>" +
+									"</ul>" +
+									"<div id='tabs-nu'>" +
+										"<div class='description'>QQ账号登陆成功,需关联新用户</div>" +
+										"<div class='title' >新用户名：</div>" +
+										"<div class='content' >" +
+											"<input class='UserNameTB' type='text' />" +
 										"</div>" +
-										"<div id='tabs-ou'>" +
-											"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
-											"<div class='title' >老用户名：</div>" +
-											"<div class='content' >" +
-												"<input class='UserNameTB' type='text' />" +
-											"</div>" +
-											"<div class='title' >登陆密码：</div>" +
-											"<div class='content' >" +
-												"<input class='PSWTB' type='password' />" +
-											"</div>" +
-											"<div class='btn'>" +
-												"<input onclick='MainLayout.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
-											"</div>" +
-											"<div class='pullupDiv' ></div>" +
+										"<div class='title' >登陆密码：</div>" +
+										"<div class='content' >" +
+											"<input class='PSWTB' type='password' />" +
 										"</div>" +
-        								"<div class='ui-icon ui-icon-closethick closeBtn' onclick='MainLayout.onROUCloseBtn()'></div>" +
+										"<div class='title' >密码确认：</div>" +
+										"<div class='content' >" +
+											"<input class='EnsurePSWTB' type='password' />" +
+										"</div>" +
+										"<div class='btn'>" +
+											"<input onclick='MainLayout.onRNUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+										"</div>" +
+										"<div class='pullupDiv' ></div>" +
 									"</div>" +
-								"</div>");
+									"<div id='tabs-ou'>" +
+										"<div class='description'>QQ账号登陆成功,需关联老用户</div>" +
+										"<div class='title' >老用户名：</div>" +
+										"<div class='content' >" +
+											"<input class='UserNameTB' type='text' />" +
+										"</div>" +
+										"<div class='title' >登陆密码：</div>" +
+										"<div class='content' >" +
+											"<input class='PSWTB' type='password' />" +
+										"</div>" +
+										"<div class='btn'>" +
+											"<input onclick='MainLayout.onROUOKBtn()' class='sbtn2' type='button' value='确定' />" +
+										"</div>" +
+										"<div class='pullupDiv' ></div>" +
+									"</div>" +
+    								"<div class='ui-icon ui-icon-closethick closeBtn' onclick='MainLayout.onROUCloseBtn()'></div>" +
+								"</div>" +
+							"</div>");
 							tmpEle.appendTo($("#Main"));
 						    $( "#auTabs" ).tabs({
 						      event: "mouseover"

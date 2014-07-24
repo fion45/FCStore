@@ -274,8 +274,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="log\log.txt" />
-    <Content Include="picture\user\NoPicture_100_100.png" />
-    <Content Include="picture\user\NoPicture_40_40.png" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\jquery.ui.bannerize.js" />
@@ -364,6 +362,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="picture\banner\" />
+    <Folder Include="picture\user\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
