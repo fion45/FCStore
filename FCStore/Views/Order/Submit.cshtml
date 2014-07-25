@@ -183,16 +183,17 @@
             <div class="pullupDiv"></div>
             <div class="btnDiv">
                 @{
-        bool tag = order.Packets.Count > 0;
-        <div class="p3">
-        </div>
-                    <div class="p3">
-                        <a href="/Order/Cart"><div class="mbtn3">修改订单</div></a>
-                    </div>
-                    <div class="p3">
-                        <div class="mbtn2 @(tag ? "" : "mbtngray")" onclick="@(tag ? "SubmitPage.onSubmitBtnClick()" : "")">确认订单</div>
-                    </div>
+                    bool tag = order.Packets.Count > 0;
+                    bool editTag = order.Status < (int)Order.EOrderStatus.OS_Order;
                 }
+                <div class="p3">
+                </div>
+                <div class="p3">
+                    <a href="@(editTag ? "/Order/Cart" : "#")"><div class="@(editTag ? "mbtn3" : "mbtngray")">修改订单</div></a>
+                </div>
+                <div class="p3">
+                    <div class="mbtn2 @(tag ? "" : "mbtngray")" onclick="@(tag ? "SubmitPage.onSubmitBtnClick()" : "")">确认订单</div>
+                </div>
             </div>
             <div class="pullupDiv"></div>
         </form>

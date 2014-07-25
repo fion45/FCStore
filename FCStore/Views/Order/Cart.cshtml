@@ -58,7 +58,7 @@
         <div>></div>
         <div>订单页面</div>
     </div>
-    <form id="CartDiv" method="post" action="@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit/" + Model.OrderArr.First().OID : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
+    <form id="CartDiv" method="post" action="@(Model.OrderArr != null && Model.OrderArr.Count > 0 ? "/Order/Submit" : "")" data="@(Model.OrderArr != null && Model.OrderArr.Count() > 0 ? Model.OrderArr.First().OID : -1)">
         <div class="p1 flowDiv">
             <div class="item sel">
                 <div class="line"></div>

@@ -47,6 +47,16 @@ namespace FCStore.Controllers
                         Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
                         if (order != null)
                         {
+                            if (order.Status >= (int)Order.EOrderStatus.OS_Subscription)
+                            {
+                                //已支付，不能修改订单，不能重新支付
+                                return Redirect("/Order/HasPayed/" + OrderID);
+                            }
+                            else if (order.Status == (int)Order.EOrderStatus.OS_Order)
+                            {
+                                //已确认订单，不能修改了，只能整个删除
+                                return Redirect("/Order/Submit");
+                            }
                             order.UID = user.UID;
                             db.SaveChanges();
                             tmpVM.OrderArr.Add(order);
@@ -88,7 +98,7 @@ namespace FCStore.Controllers
         /// 获取支付宝GET过来通知消息，并以“参数名=参数值”的形式组成数组
         /// </summary>
         /// <returns>request回来的信息组成的数组</returns>
-        [HttpPost, ValidateInput(false)]
+        [HttpGet, ValidateInput(false)]
         public ActionResult AlipayCB()
         {
             SortedDictionary<string, string> sPara = GetRequestGet();
@@ -220,7 +230,7 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult Submit(int id)
+        public ActionResult Submit()
         {
             OrderVM tmpVM = new OrderVM();
             //设置订单为其用户的订单
@@ -245,6 +255,10 @@ namespace FCStore.Controllers
                         Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
                         if (order != null)
                         {
+                            if (order.Status >= (int)Order.EOrderStatus.OS_Subscription)
+                            {
+                                return Redirect("/Order/HasPayed/" + OrderID);
+                            }
                             order.UID = user.UID;
                             order.Contacts = tmpVM.Client.DefaultAddress.Contacts;
                             order.TownID = tmpVM.Client.DefaultAddress.TownID;
@@ -259,6 +273,10 @@ namespace FCStore.Controllers
                 }
                 List<Order> tmpOArr = db.Orders.Where(r => (r.OID != OrderID && r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init)).OrderByDescending(r => r.OrderDate).ToList();
                 tmpVM.OrderArr.AddRange(tmpOArr);
+                if (tmpVM.OrderArr.Count == 0)
+                {
+                    return Redirect("/Order/Cart");
+                }
             }
             return View(tmpVM);
         }
@@ -289,6 +307,13 @@ namespace FCStore.Controllers
             }
             else
             {
+                HttpCookie cookie = Request.Cookies["Order"];
+                if (null != cookie)
+                {
+                    //设置OrderCookie超时
+                    cookie.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(cookie);
+                }
                 return View(orderPtr);
             }
         }
