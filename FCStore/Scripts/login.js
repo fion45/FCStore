@@ -7,6 +7,7 @@
 				wbId : o.idstr
 			};
 			$.myAjax({
+			    historyTag : false,
         		refreshTag : true,
     			loadEle : $(window.document.body),
 	            url: "/User/LoginByWB/",
@@ -28,6 +29,14 @@
 						};
 						LoginPageView.login.CreateAssociateDlg(userInfo);
 	            	}
+	            	else {
+	            		//关联了
+				    	$("#loginDiv").remove();
+				        $("#resultDiv").show();
+				        $("#resultDiv .userName").html($.cookie("UserInfo").UserName);
+				        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
+                		LoginPageView.login.OnFiveSecondsTicket();
+	            	}
 	            }
 			});
 		}
@@ -43,6 +52,7 @@
 	    		};
 	    		//openId和accessToken保存到本地
 	    		$.myAjax({
+	    		    historyTag : false,
 	        		refreshTag : true,
 	    			loadEle : $(window.document.body),
 		            url: "/User/LoginByQQ/",
@@ -68,8 +78,8 @@
 		            		//关联了
 					    	$("#loginDiv").remove();
 					        $("#resultDiv").show();
-					        $("#resultDiv .userName").html(QC.String.escHTML(reqData.nickname));
-					        $("#resultDiv .userPhoto").prop("src",reqData.figureurl_qq_1);
+					        $("#resultDiv .userName").html($.cookie("UserInfo").UserName);
+					        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
 	                		LoginPageView.login.OnFiveSecondsTicket();
 		            	}
 		            }
@@ -92,7 +102,8 @@
 		            return;
 	        	}
 	        }
-            $.myAjax({
+	        $.myAjax({
+	            historyTag: false,
             	refreshTag : true,
                 loadEle: $("#loginDiv"),
                 url: "/User/Login",
@@ -168,8 +179,8 @@
 	            		$("#associateUserDlg").dialog( "close" );
 				    	$("#loginDiv").remove();
 				        $("#resultDiv").show();
-				        $("#resultDiv .userName").html(data.content.UserName);
-				        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex(data.content.UID) + "_40_40.jpg");
+				        $("#resultDiv .userName").html($.cookie("UserInfo").UserName);
+				        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
                 		LoginPageView.login.OnFiveSecondsTicket();
 	            	}
 	            	else {
@@ -209,8 +220,8 @@
 	            		$("#associateUserDlg").dialog( "close" );
 				    	$("#loginDiv").remove();
 				        $("#resultDiv").show();
-				        $("#resultDiv .userName").html(data.content.UserName);
-				        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex(data.content.UID) + "_40_40.jpg");
+				        $("#resultDiv .userName").html($.cookie("UserInfo").UserName);
+				        $("#resultDiv .userPhoto").prop("src","/picture/user/" + GetUIDHex($.cookie("UserInfo").UID) + "_40_40.jpg");
                 		LoginPageView.login.OnFiveSecondsTicket();
 	            	}
 	            	else {
@@ -244,11 +255,11 @@
 			$("#associateUserDlg").dialog( "close" );
 	    	$("#loginDiv").remove();
 	        $("#resultDiv").show();
-	        $("#resultDiv .userName").html(QQInfo.nickname);
-	        $("#resultDiv .userPhoto").prop("src",QQInfo.figureurl_qq_1);
+	        $("#resultDiv .userName").html(userInfo.userName);
+	        $("#resultDiv .userPhoto").prop("src",userInfo.smallHead);
     		LoginPageView.login.OnFiveSecondsTicket();
 		},
-		CreateAssociateDlg : function() {
+		CreateAssociateDlg : function(userInfo) {
 			var tmpEle = $("<div id='associateUserDlg' >" +
 					"<div id='auTabs'>" +
 						"<ul>" +
@@ -320,7 +331,8 @@
 	        var hArr = window.location.href.split("/");
 	        var tmpUrlStr = hArr[hArr.length - 1];
 	        tmpUrlStr = tmpUrlStr == "Register" ? "" : tmpUrlStr;
-			$.myAjax({
+	        $.myAjax({
+	            historyTag: false,
             	refreshTag : true,
                 loadEle: $("#regCDiv"),
                 url: "/User/Register",

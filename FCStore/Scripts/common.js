@@ -290,34 +290,35 @@ jQuery.extend({
 	},
 	myAjaxCache : [],
 	myAjax : function(setting) {
-		jQuery.extend({
+		var tmpSetting = {
 			loadEle : null,
-			historyTag : true,
+			historyTag : false,
 			success : null,
 			refreshTag : true,
 			url : "/"
-		},setting);
-		if(setting.refreshTag || typeof($.myAjaxCache[setting.url]) == "undefined") {
-			var loadEle = setting.loadEle;
+		};
+		jQuery.extend(tmpSetting,setting);
+		if(tmpSetting.refreshTag || typeof($.myAjaxCache[tmpSetting.url]) == "undefined") {
+			var loadEle = tmpSetting.loadEle;
 			if(loadEle != null)
 				loadEle.showLoading();
-				var funPtr = setting.success;
-				jQuery.extend(setting,{
+				var funPtr = tmpSetting.success;
+				jQuery.extend(tmpSetting,{
 					success : [
 						funPtr,
 						function(data,status,options){
-							$.myAjaxCache[setting.url] = data;
+							$.myAjaxCache[tmpSetting.url] = data;
 							loadEle.hideLoading();
 						}
 					]
 				});
-			if (setting.historyTag && history && history.pushState) {
-		    	history.pushState(null, document.title, setting.url);
+			if (tmpSetting.historyTag && history && history.pushState) {
+		    	history.pushState(null, document.title, tmpSetting.url);
 		    }
-			$.ajax(setting);
+			$.ajax(tmpSetting);
 		}
 		else {
-			setting.success($.myAjaxCache[setting.url],null,null);
+			tmpSetting.success($.myAjaxCache[tmpSetting.url],null,null);
 		}
 	},
 	selectOne : function(eleStr,className,childCN) {

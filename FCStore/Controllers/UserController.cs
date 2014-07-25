@@ -150,7 +150,10 @@ namespace FCStore.Controllers
         {
             //防止暴力破解
             //设置COOKIE过期
-            Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
+            if (Response.Cookies.AllKeys.Contains(FormsAuthentication.FormsCookieName))
+            {
+                Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.MinValue;
+            }
 
             if (userID == null || PSW == null)
             {
@@ -342,11 +345,17 @@ namespace FCStore.Controllers
                         LoginID = LoginID,
                         LoginPSW = PSW,
                         UserName = UserName,
-                        Sex = sex,
-                        QQOpenID = openId,
-                        QQAccessToken = accessToken,
-                        WBID = wbId
+                        Sex = sex
                     };
+                    if(string.IsNullOrEmpty(wbId))
+                    {
+                        user.WBID = wbId;
+                    }
+                    else
+                    {
+                        user.QQOpenID = openId;
+                        user.QQAccessToken = accessToken;
+                    }
                     db.Users.Add(user);
 
                     //关联角色
@@ -366,11 +375,15 @@ namespace FCStore.Controllers
                 user = db.Users.FirstOrDefault(r => r.LoginID == LoginID && r.LoginPSW == PSW);
                 if (user != null)
                 {
-                    user.QQOpenID = openId;
-                    user.QQAccessToken = accessToken;
-                    user.WBID = wbId;
-                    user.Sex = sex;
-                    user.UserName = UserName;
+                    if (string.IsNullOrEmpty(wbId))
+                    {
+                        user.WBID = wbId;
+                    }
+                    else
+                    {
+                        user.QQOpenID = openId;
+                        user.QQAccessToken = accessToken;
+                    }
                     db.SaveChanges();
                     gfTag = true;
                 }
@@ -385,14 +398,14 @@ namespace FCStore.Controllers
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                     Stream resStream = response.GetResponseStream();
                     Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
-                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
+                    PubFunction.SaveImg(sourcebm, 40, 40, Server.MapPath(user.HeadPictureFilePath_S));
 
                     uri = new Uri(lagerHead);
                     request = (HttpWebRequest)WebRequest.Create(uri);
                     response = (HttpWebResponse)request.GetResponse();
                     resStream = response.GetResponseStream();
                     sourcebm = new Bitmap(resStream);
-                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                    PubFunction.SaveImg(sourcebm, 100, 100, Server.MapPath(user.HeadPictureFilePath));
                 }
                 catch
                 {
@@ -454,14 +467,14 @@ namespace FCStore.Controllers
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                     Stream resStream = response.GetResponseStream();
                     Bitmap sourcebm = new Bitmap(resStream);//初始化Bitmap图片
-                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath_S));
+                    PubFunction.SaveImg(sourcebm, 40, 40, Server.MapPath(user.HeadPictureFilePath_S));
 
                     uri = new Uri(lagerHead);
                     request = (HttpWebRequest)WebRequest.Create(uri);
                     response = (HttpWebResponse)request.GetResponse();
                     resStream = response.GetResponseStream();
                     sourcebm = new Bitmap(resStream);
-                    sourcebm.Save(Server.MapPath(user.HeadPictureFilePath));
+                    PubFunction.SaveImg(sourcebm, 100, 100, Server.MapPath(user.HeadPictureFilePath));
                 }
                 catch
                 {

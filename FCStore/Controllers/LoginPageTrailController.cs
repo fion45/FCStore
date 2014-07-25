@@ -83,19 +83,22 @@ namespace FCStore.Controllers
                 ++tmpLPT.ErrorCount;
                 tmpLPT.LogDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             }
-            if (tmpLPT.ErrorCount == CHECKCODESHOW + 1)
+            if (tmpLPT != null)
             {
-                ((System.Web.Mvc.ContentResult)(context.Result)).Content = ((System.Web.Mvc.ContentResult)(context.Result)).Content.Replace(",\"custom\":0,", ",\"custom\":-1,");
-            }
-            db.SaveChanges();
-            if (tmpLPT.ErrorCount > LOGINLOCK)
-            {
-                ((System.Web.Mvc.ContentResult)(context.Result)).Content = ((System.Web.Mvc.ContentResult)(context.Result)).Content.Replace(",\"custom\":0,", ",\"custom\":-2,");
-                result = -2;
-            }
-            else if (tmpLPT.ErrorCount > CHECKCODESHOW)
-            {
-                result = -1;
+                if (tmpLPT.ErrorCount == CHECKCODESHOW + 1)
+                {
+                    ((System.Web.Mvc.ContentResult)(context.Result)).Content = ((System.Web.Mvc.ContentResult)(context.Result)).Content.Replace(",\"custom\":0,", ",\"custom\":-1,");
+                }
+                db.SaveChanges();
+                if (tmpLPT.ErrorCount > LOGINLOCK)
+                {
+                    ((System.Web.Mvc.ContentResult)(context.Result)).Content = ((System.Web.Mvc.ContentResult)(context.Result)).Content.Replace(",\"custom\":0,", ",\"custom\":-2,");
+                    result = -2;
+                }
+                else if (tmpLPT.ErrorCount > CHECKCODESHOW)
+                {
+                    result = -1;
+                }
             }
             return result;
         }

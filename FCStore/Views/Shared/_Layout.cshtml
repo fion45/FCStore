@@ -164,10 +164,20 @@
             data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
             type="text/javascript" charset="utf-8"></script>
-    @if(!User.Identity.IsAuthenticated)
+    @if (!User.Identity.IsAuthenticated)
     {
+        <div id="wb_connect_btn" style="display:none;"></div>
         <script type="text/javascript" charset="utf-8">
             QC.Login({}, MainLayout.QQLoginSuccess);
+            WB2.anyWhere(function (W) {
+                W.widget.connectButton({
+                    id: "wb_connect_btn",
+                    type: '3,2',
+                    callback: {
+                        login: MainLayout.WBLoginSuccess
+                    }
+                });
+            });
         </script>
     }
     @RenderSection("scripts", required: false)
