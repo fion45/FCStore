@@ -182,6 +182,7 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductTag.cs" />
     <Compile Include="Models\Province.cs" />
+    <Compile Include="Models\RecentView.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SpecialModel.cs" />
     <Compile Include="Models\Town.cs" />
