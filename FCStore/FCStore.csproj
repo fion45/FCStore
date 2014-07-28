@@ -153,11 +153,13 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderPacketController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\RecentViewController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\LoginActionFilterAttribute.cs" />
     <Compile Include="Filters\MyAuthorizeAttribute.cs" />
     <Compile Include="Filters\MyHandleErrorAttribute.cs" />
+    <Compile Include="Filters\ProductViewFilterAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

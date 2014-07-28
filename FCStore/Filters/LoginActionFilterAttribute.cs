@@ -25,10 +25,10 @@ namespace FCStore.Filters
             }
         }
 
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            base.OnActionExecuted(filterContext);
-        }
+        //public override void OnActionExecuted(ActionExecutedContext filterContext)
+        //{
+        //    base.OnActionExecuted(filterContext);
+        //}
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
@@ -40,9 +40,9 @@ namespace FCStore.Filters
             }
         }
 
-        public override void OnResultExecuted(ResultExecutedContext filterContext)
-        {
-            base.OnResultExecuted(filterContext);
-        }
+        //public override void OnResultExecuted(ResultExecutedContext filterContext)
+        //{
+        //    base.OnResultExecuted(filterContext);
+        //}
     }
 }

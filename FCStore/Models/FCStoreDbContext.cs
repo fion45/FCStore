@@ -47,5 +47,7 @@ namespace FCStore.Models
         public DbSet<LoginPageTrail> LoginPageTrails { get; set; }
 
         public DbSet<BannerItem> BannerItems { get; set; }
+
+        public DbSet<RecentView> RecentViews { get; set; }
     }
 }
