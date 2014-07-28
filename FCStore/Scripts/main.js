@@ -292,8 +292,8 @@ var MainLayout = {
 		$("#associateUserDlg").dialog( "close" );
 		$("#loginDiv").hide();
 		$("#userInfoDiv").show();
-		$("#userInfoDiv .userHead").prop("src",userInfo.userName);
-		$("#userInfoDiv .userName").html(userInfo.smallHead);
+		$("#userInfoDiv .userHead").prop("src",userInfo.smallHead);
+		$("#userInfoDiv .userName").html(userInfo.userName);
 		var tmpData = {
 			UserName : userInfo.userName,
 			sex : userInfo.sex,
