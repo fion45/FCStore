@@ -74,10 +74,6 @@ namespace FCStore.Controllers
                 evaluation.DataTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 db.Evaluations.Add(evaluation);
                 db.SaveChanges();
-                //无奈啊，保存了对象，但是没有刷新关联，只能重新析构，构造。
-                //db.Dispose();
-                //db = new FCStoreDbContext();
-                //evaluation = db.Evaluations.FirstOrDefault(r => r.EID == evaluation.EID);
                 evaluation.User = db.Users.FirstOrDefault(r => r.UID == evaluation.UID);
                 evaluation.Order = db.Orders.FirstOrDefault(r => r.OID == evaluation.OID);
                 EvaluationVM tmpEVM = new EvaluationVM(evaluation);

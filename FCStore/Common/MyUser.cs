@@ -104,5 +104,10 @@ namespace FCStore.Common
         {
             return Permission.IndexOf("," + permissionStr + ",") > -1;
         }
+
+        public bool HaveDeny(string controller, string action)
+        {
+            return Permission.IndexOf(",!" + controller + ",") > -1 || Permission.IndexOf(",!" + controller + "." + action + ",") > -1;
+        }
     }
 }

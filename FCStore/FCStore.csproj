@@ -150,6 +150,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KeepController.cs" />
     <Compile Include="Controllers\LoginPageTrailController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderPacketController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -362,6 +363,8 @@
     <Content Include="Views\Order\AlipayCB.cshtml" />
     <Content Include="Views\Order\HasPayed.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\Shared\_ManageLayout.cshtml" />
+    <Content Include="Views\Manager\BannerManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

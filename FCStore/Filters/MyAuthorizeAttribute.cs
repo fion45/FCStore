@@ -80,7 +80,7 @@ namespace FCStore.FilterAttribute
                         httpContext.Response.StatusCode = 401;//登录异常
                         return false;
                     }
-                    if (tmpUser.HavePermission("ALL") || tmpUser.HavePermissionInAction(mControllerName, mActionName))
+                    if ((tmpUser.HavePermission("ALL") || tmpUser.HavePermissionInAction(mControllerName, mActionName)) && !tmpUser.HaveDeny(mControllerName, mActionName))
                     {
                         return true;
                     }

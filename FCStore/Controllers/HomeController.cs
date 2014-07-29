@@ -10,7 +10,6 @@ using System.Drawing;
 using System.IO;
 using FCStore.Filters;
 using FCStore.Common;
-using FCStore.FilterAttribute;
 
 namespace FCStore.Controllers
 {
@@ -130,11 +129,10 @@ namespace FCStore.Controllers
             return stream.ToArray();
 
         }
-
-        [MyAuthorizeAttribute]
-        public ActionResult Manager()
+        protected override void Dispose(bool disposing)
         {
-            return View();
+            db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
