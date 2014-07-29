@@ -30,5 +30,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public virtual List<PushInfo> PushInfos
+        {
+            get;
+            set;
+        }
     }
 }

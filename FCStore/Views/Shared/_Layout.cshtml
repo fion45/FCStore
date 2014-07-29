@@ -26,7 +26,7 @@
                     <a>帮助中心</a>
                 </div>
                 <div id="userInfoDiv" class="userInfo" style="display: @(User.Identity.IsAuthenticated ? "block" : "none")">
-                    <a class="imgA" href="/User/Details"><img onerror="javascript:this.src = '/picture/user/NoPicture_40_40.png';" class="userHead" src="@(User.Identity.IsAuthenticated ? (User as MyUser).SmallUserHead : "/picture/user/none.jpg")" /></a>
+                    <a class="imgA" href="/User/Details"><img onerror="javascript:this.src='/picture/user/NoPicture_40_40.png';" class="userHead" src="@(User.Identity.IsAuthenticated ? (User as MyUser).SmallUserHead : "/picture/user/none.jpg")" /></a>
                     <a class="userName" href="/User/Details">@(User.Identity.IsAuthenticated ? User.Identity.Name : "")</a>
                     <a onclick="MainLayout.onExitBtnClick()">退出</a>
                 </div>

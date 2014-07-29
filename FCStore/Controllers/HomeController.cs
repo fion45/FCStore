@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using FCStore.Filters;
 using FCStore.Common;
+using FCStore.FilterAttribute;
 
 namespace FCStore.Controllers
 {
@@ -128,6 +129,12 @@ namespace FCStore.Controllers
             //输出图片流
             return stream.ToArray();
 
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult Manager()
+        {
+            return View();
         }
     }
 }

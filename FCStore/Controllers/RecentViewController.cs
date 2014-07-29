@@ -12,13 +12,13 @@ namespace FCStore.Controllers
     {
         private FCStoreDbContext db = new FCStoreDbContext();
         
-        public void WriteTrail(HttpRequest request)
+        public void WriteTrail(HttpRequestBase request)
         {
-            if(!User.Identity.IsAuthenticated)
+            if (!request.RequestContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 return;
             }
-            MyUser tmpUser = User as MyUser;
+            MyUser tmpUser = request.RequestContext.HttpContext.User as MyUser;
             if (request.RequestContext.RouteData.Route != null && tmpUser != null)
             {
                 object tmpObj = request.RequestContext.RouteData.Route.GetRouteData(request.RequestContext.HttpContext).Values["controller"];

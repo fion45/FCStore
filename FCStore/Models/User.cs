@@ -151,5 +151,12 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        [JsonIgnore]
+        public virtual List<PushInfo> PushInfos
+        {
+            get;
+            set;
+        }
     }
 }

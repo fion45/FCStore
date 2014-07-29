@@ -24,7 +24,7 @@ namespace FCStore.Models
             set;
         }
 
-        public User User
+        public virtual User User
         {
             get;
             set;
@@ -37,7 +37,7 @@ namespace FCStore.Models
             set;
         }
 
-        public Product Product
+        public virtual Product Product
         {
             get;
             set;

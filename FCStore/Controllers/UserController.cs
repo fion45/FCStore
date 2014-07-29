@@ -502,7 +502,39 @@ namespace FCStore.Controllers
             {
                 user = db.Users.Find(new object[] { tmpUser.UID });
             }
-            return View(user);
+            UserDetailsVM viewModel = new UserDetailsVM();
+            viewModel.User = user;
+            int RecentViewCount = 5;
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["RecentViewCount"].ToString(), out RecentViewCount);
+            viewModel.RecentViewArr = (from RV in db.RecentViews
+                                       where RV.UID == user.UID
+                                       orderby RV.RVID descending
+                                       select RV).Take(RecentViewCount).ToList();
+            int pushCount = 5;
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["PushCount"].ToString(),out pushCount);
+            List<PushInfo> tmpPIArr = viewModel.User.PushInfos;
+            if(pushCount - tmpPIArr.Count > 0)
+            {
+                //根据其最近浏览的品牌和类型提供推送
+                IEnumerable<int> CIDArr = from RV in viewModel.RecentViewArr
+                                            select RV.Product.CID;
+                IEnumerable<int> BIDArr = from RV in viewModel.RecentViewArr
+                                            select RV.Product.BID;
+                List<PushInfo> associatePI = (from PI in db.PushInfos
+                                             where (PI.CID != null && CIDArr.Contains((int)PI.CID)) || (PI.BID != null && BIDArr.Contains((int)PI.BID))
+                                             select PI).ToList();
+                if(pushCount - tmpPIArr.Count > 0)
+                {
+                    associatePI.AddRange((from PI in db.PushInfos
+                                          select PI).Take(pushCount - tmpPIArr.Count).ToList());
+                }
+                tmpPIArr.AddRange(associatePI);
+            }
+            viewModel.PushInfoArr = tmpPIArr;
+            viewModel.OrderArr = (from order in db.Orders
+                                  where order.UID == user.UID
+                                  select order).Take(5).ToList();
+            return View(viewModel);
         }
 
         [MyAuthorizeAttribute]

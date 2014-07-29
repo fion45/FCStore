@@ -17,7 +17,9 @@ namespace FCStore.Filters
                 string path = filterContext.HttpContext.Request.Path;
 
                 // 从web.config中获取host,也可以直接从httpContext中获取
-                string host = System.Configuration.ConfigurationManager.AppSettings["HostName"];
+                //string host = System.Configuration.ConfigurationManager.AppSettings["HostName"];
+
+                string host = filterContext.RequestContext.HttpContext.Request.Url.Host;
 
                 // 从web.config中获取https的端口
                 string port = System.Configuration.ConfigurationManager.AppSettings["HttpsPort"];

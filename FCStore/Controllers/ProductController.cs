@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Web.Security;
 using FCStore.Common;
 using System.Text.RegularExpressions;
+using FCStore.Filters;
 
 namespace FCStore.Controllers
 {
@@ -25,6 +26,7 @@ namespace FCStore.Controllers
 
         private FCStoreDbContext db = new FCStoreDbContext();
 
+        [ProductViewFilterAttribute]
         public ActionResult Detail(int ID)
         {
             ViewBag.KeepTag = false;

@@ -1,4 +1,5 @@
-﻿@model FCStore.Models.User
+﻿@model FCStore.Models.UserDetailsVM
+@using FCStore.Models;
 
 @{
     ViewBag.Title = "Details";
@@ -12,23 +13,23 @@
 </div>
 <div id="userInfo">
     <div class="info">
-        <img class="headImg" />
+        <img class="headImg" src="@(Model.User.HeadPictureFilePath)" onerror="javascript:this.src='/picture/user/NoPicture_40_40.png';" />
         <div class="nameDiv">
             <label class="title">名称：</label>
-            <label class="value">@(Model.UserName)</label>
+            <label class="value">@(Model.User.UserName)</label>
         </div>
         <div class="phoneDiv">
             <label class="title">电话：</label>
-            <label class="value">@(Model.Phone)</label>
+            <label class="value">@(Model.User.Phone)</label>
         </div>
         <div class="emailDiv">
             <label class="title">邮箱：</label>
-            <label class="value">@(Model.Email)</label>
+            <label class="value">@(Model.User.Email)</label>
         </div>
         <div class="roleDiv">
             <label class="title">身份：</label>
             <label class="value">
-                @foreach(FCStore.Models.Role role in Model.Roles)
+                @foreach (Role role in Model.User.Roles)
                 {
                     <img src="/Content/themes/image/@(role.RoleName).png" />
                 }
@@ -36,14 +37,14 @@
         </div>
         <div class="giftDiv">
             <label class="title">积分：</label>
-            <label class="value">@(Model.Gift)</label>
+            <label class="value">@(Model.User.Gift)</label>
         </div>
         <div class="perDiv">
             <label class="title">权利：</label>
             <label class="value">
-                @if (Model.PermissionTag != null && Model.PermissionTag.Length > 0)
+                @if (Model.User.PermissionTag != null && Model.User.PermissionTag.Length > 0)
                 {
-                    foreach (string perStr in Model.PermissionTag)
+                    foreach (string perStr in Model.User.PermissionTag)
                     {
                         <img src="/Content/themes/image/@(perStr).png" />
                     }
@@ -54,7 +55,7 @@
     <div class="rightDiv">
         <div class="title">联系地址：</div>
         <div class="addresses">
-            @foreach(FCStore.Models.Address add in Model.Addresses)
+            @foreach (Address add in Model.User.Addresses)
             {
                 <div class="item">
                     <label class="title">联系电话：</label>
@@ -71,14 +72,50 @@
 <div id="productList">
     <div class="recent">
         <div class="title">最近浏览：</div>
-        <div></div>
+        <div>
+            @foreach (RecentView rv in Model.RecentViewArr)
+            {
+                <div class="item">
+                    <a href="@("Product/Details/" + rv.Product.PID)">
+                        <div class="imgDiv">
+                            <img src="@(rv.Product.ImgPathArr.First())" />
+                        </div>
+                        <div class="titleDiv">
+                            @(rv.Product.Title)
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
     <div class="recommend">
         <div class="title">推荐商品：</div>
-        <div></div>
+        <div>
+            @foreach (PushInfo pi in Model.PushInfoArr)
+            {
+                <div class="item">
+                    <a href="@("Product/Details/" + pi.Product.PID)">
+                        <div class="imgDiv">
+                            <img src="@(pi.Product.ImgPathArr.First())" />
+                        </div>
+                        <div class="titleDiv">
+                            @(pi.Product.Title)
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
     <div class="pullupDiv"></div>
 </div>
 <div id="orderList">
     <div class="title">订单跟踪：</div>
+    <div>
+        @foreach (Order order in Model.OrderArr)
+        {
+            <div class="item">
+
+            </div>
+        }
+    </div>
 </div>

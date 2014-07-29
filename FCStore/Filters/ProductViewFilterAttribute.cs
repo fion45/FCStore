@@ -28,7 +28,7 @@ namespace FCStore.Filters
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             RecentViewController tmpRVCon = new RecentViewController();
-            //tmpRVCon.WriteTrail(filterContext.RequestContext.HttpContext.Request.re);
+            tmpRVCon.WriteTrail(filterContext.RequestContext.HttpContext.Request);
             base.OnResultExecuted(filterContext);
         }
     }

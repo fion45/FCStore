@@ -20,7 +20,6 @@ namespace FCStore.Models
         }
     }
 
-    [Serializable]
     public class ProductListVM
     {
         public List<Product> Products;
@@ -118,4 +117,31 @@ namespace FCStore.Models
             set;
         }
     }
+
+     public class UserDetailsVM
+     {
+         public User User
+         {
+             get;
+             set;
+         }
+
+         public List<RecentView> RecentViewArr
+         {
+             get;
+             set;
+         }
+
+         public List<PushInfo> PushInfoArr
+         {
+             get;
+             set;
+         }
+
+         public List<Order> OrderArr
+         {
+             get;
+             set;
+         }
+     }
 }

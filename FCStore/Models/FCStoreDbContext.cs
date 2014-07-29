@@ -49,5 +49,7 @@ namespace FCStore.Models
         public DbSet<BannerItem> BannerItems { get; set; }
 
         public DbSet<RecentView> RecentViews { get; set; }
+
+        public DbSet<PushInfo> PushInfos { get; set; }
     }
 }
