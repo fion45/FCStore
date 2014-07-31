@@ -70,52 +70,116 @@
     <div class="pullupDiv"></div>
 </div>
 <div id="productList">
-    <div class="recent">
+    <div id="recent" class="bkDiv">
         <div class="title">最近浏览：</div>
-        <div>
-            @foreach (RecentView rv in Model.RecentViewArr)
+        <div class="lst">
+            @if (Model.RecentViewArr.Count > 0)
             {
-                <div class="item">
-                    <a href="@("Product/Details/" + rv.Product.PID)">
-                        <div class="imgDiv">
-                            <img src="@(rv.Product.ImgPathArr.First())" />
-                        </div>
-                        <div class="titleDiv">
-                            @(rv.Product.Title)
-                        </div>
-                    </a>
+                foreach (RecentView rv in Model.RecentViewArr)
+                {
+                    <div class="item">
+                        <a href="@("/Product/Detail/" + rv.Product.PID)">
+                            <div class="imgDiv">
+                                <img src="@(rv.Product.ImgPathArr.First())" />
+                            </div>
+                            <div class="titleDiv">
+                                @(rv.Product.Title)
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="noItem">
+                    亲，你还没有浏览我们的商品
                 </div>
             }
         </div>
     </div>
-    <div class="recommend">
+    <div id="recommend" class="bkDiv">
         <div class="title">推荐商品：</div>
-        <div>
-            @foreach (PushInfo pi in Model.PushInfoArr)
+        <div class="lst">
+            @if (Model.PushInfoArr.Count > 0)
             {
-                <div class="item">
-                    <a href="@("Product/Details/" + pi.Product.PID)">
-                        <div class="imgDiv">
-                            <img src="@(pi.Product.ImgPathArr.First())" />
+                foreach (PushInfo pi in Model.PushInfoArr)
+                {
+                    <div class="item">
+                        <a href="@("/Product/Detail/" + pi.Product.PID)">
+                            <div class="imgDiv">
+                                <img src="@(pi.Product.ImgPathArr.First())" />
+                            </div>
+                            <div class="titleDiv">
+                                @(pi.Product.Title)
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="noItem">
+                    亲，还没有向你推荐的商品
+                </div>
+            }
+        </div>
+    </div>
+    <div id="orderList" class="bkDiv">
+        <div class="title">订单跟踪：</div>
+        <div class="lst">
+            @if (Model.OrderArr.Count > 0)
+            {
+                foreach (Order order in Model.OrderArr)
+                {
+                    <div class="item">
+                        <div class="top">
+                            <div class="orderID">
+                                订单号：@(order.OID + "[" + order.StatusStr + "]")
+                            </div>
+                            <div class="floatRight">
+                                @(order.OrderDate)
+                            </div>
                         </div>
-                        <div class="titleDiv">
-                            @(pi.Product.Title)
+                        <div class="middle">
+                            <div class="content">
+                                @foreach(OrderPacket packet in order.Packets)
+                                {
+                                    <div class="pItem">
+                                        <a href="@("/Product/Detail/" + packet.Product.PID)">
+                                            <div class="imgDiv">
+                                                <img src="@(packet.Product.ImgPathArr.First())" />
+                                            </div>
+                                            <div class="titleDiv">
+                                                @(packet.Product.Title)
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </a>
+                        <div class="bottom">
+                            @foreach(Post post in order.Posts)
+                            {
+                                <div class="PoItem">
+                                    <a href="@(post.PostCompany.HomePage)">
+                                        @(post.PostCompany.CompanyName + "[" + post.PostOrderID + "]")
+                                    </a>
+                                    <div class="floatRight">
+                                        @(post.Status)
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }    
+            }
+            else
+            {
+                <div class="noItem">
+                    亲，还没有订单
                 </div>
             }
         </div>
     </div>
     <div class="pullupDiv"></div>
-</div>
-<div id="orderList">
-    <div class="title">订单跟踪：</div>
-    <div>
-        @foreach (Order order in Model.OrderArr)
-        {
-            <div class="item">
-
-            </div>
-        }
-    </div>
 </div>

@@ -149,7 +149,135 @@ namespace FCStore.Models
             set;
         }
 
+        public string StatusStr
+        {
+            get
+            {
+                string result = "未定义";
+                switch(Status)
+                {
+                    case (int)EOrderStatus.OS_Init :
+                        {
+                            result = "新订单";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_Order:
+                        {
+                            result = "已下单";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_Subscription:
+                        {
+                            result = "已落订";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_Payment:
+                        {
+                            result = "已付款，等待发货";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_InStore:
+                        {
+                            result = "已进货";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_ForeignSending:
+                        {
+                            result = "国外邮递中";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_InDealer:
+                        {
+                            result = "在经销商手上";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_InlandSending:
+                        {
+                            result = "国内邮递中";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_InClient:
+                        {
+                            result = "已收货";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_Complete:
+                        {
+                            result = "成功完成订单";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_Apply:
+                        {
+                            result = "申请退货中";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_AGREE:
+                        {
+                            result = "退款协议等待卖家确认中";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_REFUSE:
+                        {
+                            result = "卖家不同意协议，等待买家修改";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_BUYER_GOODS:
+                        {
+                            result = "退款协议达成，等待买家退货";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_SELLER_GOODS:
+                        {
+                            result = "等待卖家收货";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_InlandSending:
+                        {
+                            result = "退货在国内邮递中";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_InStore:
+                        {
+                            result = "已回仓库";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_SUCCESS:
+                        {
+                            result = "退款成功";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_CLOSED:
+                        {
+                            result = "退款关闭";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_RTN_Complete:
+                        {
+                            result = "退货完成";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_ERR_PAYMENT:
+                        {
+                            result = "支付宝支付信息有异常";
+                            break;
+                        }
+                    case (int)EOrderStatus.OS_ERR_Complete:
+                        {
+                            result = "支付宝交易过程关闭";
+                            break;
+                        }
+                }
+                return result;
+            }
+        }
+
         public int SendType
+        {
+            get;
+            set;
+        }
+
+        public virtual List<Post> Posts
         {
             get;
             set;

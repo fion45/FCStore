@@ -180,6 +180,8 @@
     <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPacket.cs" />
+    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\PostCompany.cs" />
     <Compile Include="Models\ProcurementPacket.cs" />
     <Compile Include="Models\Procurement.cs" />
     <Compile Include="Models\Product.cs" />

@@ -537,12 +537,12 @@ namespace FCStore.Controllers
             return View(viewModel);
         }
 
-        [MyAuthorizeAttribute]
         public ActionResult Exit()
         {
             //退出，设置Cookie超时和User
             HttpCookie authCookie = Response.Cookies[FormsAuthentication.FormsCookieName];
-            authCookie.Expires = DateTime.MinValue;
+            if (authCookie != null)
+                authCookie.Expires = DateTime.MinValue;
 
             return Redirect("/");
         }
