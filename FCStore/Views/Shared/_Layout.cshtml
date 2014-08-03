@@ -76,7 +76,7 @@
         //获得当前用户未处理的订单
         MyUser user = User as MyUser;
         FCStoreDbContext db = new FCStoreDbContext();
-        Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+        Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status < (int)Order.EOrderStatus.OS_Subscription);
         buyCount = (order != null && order.Packets != null) ? order.Packets.Count : 0;
     }
 }

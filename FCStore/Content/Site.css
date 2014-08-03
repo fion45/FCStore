@@ -2227,7 +2227,7 @@ footer {
             #productList .lst .item .titleDiv {
                 width:100%;
                 font-size:8pt;
-                height:32px;
+                height:30px;
                 overflow:hidden;
                 text-overflow:clip;
             }
@@ -2243,17 +2243,64 @@ footer {
         }
 
         #orderList .lst .item {
-            width:100%;
+            width:98%;
+            margin:0px 0px;
+            padding:6px 1px;
         }
 
             #orderList .lst .item .top {
                 width:100%;
-                height:12px;
+                height:19px;
+                font-size:9pt;
             }
+
+                #orderList .lst .item .top .orderID {
+                    float:left;
+                    width:70%;
+                    text-align:left;
+                }
+
+                #orderList .lst .item .top .orderDT {
+                    float:left;
+                    width:30%;
+                    text-align:right;
+                }
 
             #orderList .lst .item .middle {
                 width:100%;
             }
+
+                #orderList .lst .item .middle .content {
+                    width:100%;
+                }
+
+                    #orderList .lst .item .middle .content .pItem {
+                        width:23%;
+                        padding:0px 1%;
+                        position:relative;
+                        float:left;
+                    }
+
+                    #orderList .lst .item .middle .content .pItem .imgDiv {
+                        width:100%;
+                        height:120px;
+                    }
+
+                    #orderList .lst .item .middle .content .pItem .titleDiv {
+                        width:100%;
+                        height:30px;
+                    }
+
+                    #orderList .lst .item .middle .content .pItem .countDiv {
+                        position:absolute;
+                        top:5px;
+                        left:100%;
+                        width:70px;
+                        margin-left:-70px;
+                        font-size:12pt;
+                        font-weight:bold;
+                        color:red;
+                    }
 
             #orderList .lst .item .bottom {
                 width:100%;

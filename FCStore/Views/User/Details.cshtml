@@ -134,9 +134,9 @@
                     <div class="item">
                         <div class="top">
                             <div class="orderID">
-                                订单号：@(order.OID + "[" + order.StatusStr + "]")
+                                订单号：@(order.OIDStr + "[" + order.StatusStr + "]")
                             </div>
-                            <div class="floatRight">
+                            <div class="orderDT">
                                 @(order.OrderDate)
                             </div>
                         </div>
@@ -146,6 +146,7 @@
                                 {
                                     <div class="pItem">
                                         <a href="@("/Product/Detail/" + packet.Product.PID)">
+                                            <div class="countDiv">@("X" + packet.Count)</div>
                                             <div class="imgDiv">
                                                 <img src="@(packet.Product.ImgPathArr.First())" />
                                             </div>
