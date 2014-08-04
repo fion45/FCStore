@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace FCStore.Models
 {
@@ -118,30 +119,111 @@ namespace FCStore.Models
         }
     }
 
-     public class UserDetailsVM
-     {
-         public User User
-         {
-             get;
-             set;
-         }
+    public class UserDetailsVM
+    {
+        public User User
+        {
+            get;
+            set;
+        }
 
-         public List<RecentView> RecentViewArr
-         {
-             get;
-             set;
-         }
+        public List<RecentView> RecentViewArr
+        {
+            get;
+            set;
+        }
 
-         public List<PushInfo> PushInfoArr
-         {
-             get;
-             set;
-         }
+        public List<PushInfo> PushInfoArr
+        {
+            get;
+            set;
+        }
 
-         public List<Order> OrderArr
-         {
-             get;
-             set;
-         }
-     }
+        public List<Order> OrderArr
+        {
+            get;
+            set;
+        }
+    }
+
+    public class ManagerVM<T>
+    {
+        private List<T>     m_data;
+        private Type        m_dtype;
+
+        public ManagerVM(List<T> content, Dictionary<string, TableColumn.Config> cfgDic = null)
+        {
+            m_data = content;
+            m_dtype = typeof(T);
+            //获得所有列名
+            TCArr = new List<TableColumn>();
+            foreach (PropertyInfo pi in m_dtype.GetProperties())
+            {
+                if (cfgDic != null && cfgDic.ContainsKey(pi.Name) && cfgDic[pi.Name].ignore)
+                    continue;
+                TableColumn tmpTC = new TableColumn();
+                tmpTC.Title = pi.Name;
+                if (cfgDic != null && cfgDic.ContainsKey(pi.Name))
+                {
+                    tmpTC.Type = cfgDic[pi.Name].specialType;
+                }
+                else
+                {
+                    tmpTC.Type = TableColumn.TCType.Text;
+                }
+                TCArr.Add(tmpTC);
+            }
+            TIArr = new List<List<TableItem>>();
+            int tmpIndex = 0;
+            foreach(T obj in content)
+            {
+                List<TableItem> tiLST = new List<TableItem>();
+                TIArr.Add(tiLST);
+                foreach(TableColumn tmpTC in TCArr)
+                {
+                    TableItem tmpTI = new TableItem();
+                    tmpTI.Description = m_dtype.InvokeMember(tmpTC.Title, BindingFlags.GetProperty, null, obj, null).ToString();
+                    TIArr[tmpIndex].Add(tmpTI);
+                }
+                ++tmpIndex;
+            }
+        }
+
+        public class TableColumn
+        {
+            public enum TCType
+            {
+                Text,
+                Selection,
+                BoolTag,
+                Img
+            }
+
+            public class Config
+            {
+                public Config()
+                {
+                    specialType = TCType.Text;
+                    assLSTName = "";
+                    ignore = false;
+                }
+
+                public TCType specialType;
+                public string assLSTName;
+                public bool ignore;
+            }
+            public string Title;
+            public TCType Type;
+        }
+
+        public class TableItem
+        {
+            public string Description;
+            public object Key;
+        }
+
+        public List<TableColumn> TCArr;
+
+        public List<List<TableItem>> TIArr;
+    }
 }

@@ -1,0 +1,40 @@
+﻿@model FCStore.Models.ManagerVM<FCStore.Models.BannerItem>
+@using FCStore.Models;
+@using FCStore.Controllers;
+@{
+    ViewBag.Title = "BannerManager";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+<ul>
+    <li class="toolbar">
+
+    </li>
+    <li class="tabelContent">
+        <table>
+            <thead>
+                <tr>
+                    <td><input class="checkAll" type="checkbox" /></td>
+                    @foreach(ManagerVM<BannerItem>.TableColumn column in Model.TCArr)
+                    {
+                        <td>
+                            @(column.Title)
+                        </td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (List<ManagerVM<BannerItem>.TableItem> lst in Model.TIArr)
+                {
+                    HtmlString html = new HtmlString(TabelItemRender<BannerItem>.GetItemHTML(Model.TCArr, lst));
+                    <tr>
+                        <td><input class="checkItem" type="checkbox" /></td>
+                        @html
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </li>
+    <li class="bottom">
+
+    </li>
+</ul>

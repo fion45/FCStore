@@ -146,7 +146,10 @@
                                 {
                                     <div class="pItem">
                                         <a href="@("/Product/Detail/" + packet.Product.PID)">
-                                            <div class="countDiv">@("X" + packet.Count)</div>
+                                            @if(packet.Count > 1)
+                                            {
+                                                <div class="countDiv">@("X" + packet.Count)</div>
+                                            }
                                             <div class="imgDiv">
                                                 <img src="@(packet.Product.ImgPathArr.First())" />
                                             </div>

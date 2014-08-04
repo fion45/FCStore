@@ -38,6 +38,8 @@ namespace FCStore
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
                 "~/Content/qqReport.css"));
 
+            bundles.Add(new StyleBundle("~/Manager/css").Include("~/Content/Manager.css"));
+
             bundles.Add(new StyleBundle("~/Content/loginPage").Include("~/Content/LoginPage.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
@@ -72,6 +74,10 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
                 "~/Scripts/common.js",
                 "~/Scripts/login.js"));
+
+            bundles.Add(new ScriptBundle("~/Manager/js").Include(
+                "~/Scripts/common.js",
+                "~/Scripts/manager.js"));
         }
     }
 }

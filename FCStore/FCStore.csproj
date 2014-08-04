@@ -198,6 +198,7 @@
   <ItemGroup>
     <Content Include="CBPage\qc_callback.html" />
     <Content Include="Content\LoginPage.css" />
+    <Content Include="Content\Manager.css" />
     <Content Include="Content\qqReport.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -284,6 +285,7 @@
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\jquery.ui.bannerize.js" />
+    <Content Include="Scripts\manager.js" />
     <Content Include="Scripts\qqReport.js" />
     <Content Include="Views\Order\Payment.aspx" />
     <Content Include="zone.xml" />
