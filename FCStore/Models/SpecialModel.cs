@@ -166,10 +166,14 @@ namespace FCStore.Models
                 if (cfgDic != null && cfgDic.ContainsKey(pi.Name))
                 {
                     tmpTC.Type = cfgDic[pi.Name].specialType;
+                    tmpTC.ClassName = cfgDic[pi.Name].assLSTName;
+                    tmpTC.Width = cfgDic[pi.Name].width;
                 }
                 else
                 {
                     tmpTC.Type = TableColumn.TCType.Text;
+                    tmpTC.ClassName = "";
+                    tmpTC.Width = 0;
                 }
                 TCArr.Add(tmpTC);
             }
@@ -193,6 +197,7 @@ namespace FCStore.Models
         {
             public enum TCType
             {
+                ID,
                 Text,
                 Selection,
                 BoolTag,
@@ -205,15 +210,19 @@ namespace FCStore.Models
                 {
                     specialType = TCType.Text;
                     assLSTName = "";
+                    width = 0;
                     ignore = false;
                 }
 
                 public TCType specialType;
                 public string assLSTName;
+                public int width;
                 public bool ignore;
             }
             public string Title;
             public TCType Type;
+            public int Width;
+            public string ClassName;
         }
 
         public class TableItem

@@ -7,31 +7,31 @@
 }
 <ul>
     <li class="toolbar">
-        <input type="button" onclick="Manager.OnRefreshBtnClick()" />
-        <input type="button" onclick="Manager.OnDelBtnClick()" />
-        <input type="button" onclick="Manager.OnAddBtnClick()" />
-        <input type="button" onclick="Manager.OnSaveBtnClick()" />
+        <input class="mbtn1" value="刷新" type="button" onclick="Manager.OnRefreshBtnClick()" />
+        <input class="mbtn2" value="删除" type="button" onclick="Manager.OnDelBtnClick()" />
+        <input class="mbtn3" value="增加" type="button" onclick="Manager.OnAddBtnClick()" />
+        <input class="mbtn1" value="保存" type="button" onclick="Manager.OnSaveBtnClick()" />
     </li>
     <li class="tabelContent">
-        <table>
+        <table cellpadding="0" cellspacing="0" id="contentTabel" data-action="SaveBannerManager">
             <thead>
                 <tr>
-                    <td><input class="checkAll" type="checkbox" /></td>
-                    @foreach(ManagerVM<BannerItem>.TableColumn column in Model.TCArr)
-                    {
-                        <td>
-                            @(column.Title)
-                        </td>
+                    <td class="checkTD" style="width:40px;"><input class="checkAll" type="checkbox" /></td>
+                    @{
+                        HtmlString html = new HtmlString(TabelRender<BannerItem>.GetColumnHTML(Model.TCArr));
+                        @html
                     }
+                    <td class="tagTD"></td>
                 </tr>
             </thead>
             <tbody>
                 @foreach (List<ManagerVM<BannerItem>.TableItem> lst in Model.TIArr)
                 {
-                    HtmlString html = new HtmlString(TabelItemRender<BannerItem>.GetItemHTML(Model.TCArr, lst));
+                    html = new HtmlString(TabelRender<BannerItem>.GetItemHTML(Model.TCArr, lst));
                     <tr>
-                        <td><input class="checkItem" type="checkbox" /></td>
+                        <td class="checkTD"><input class="checkItem" type="checkbox" /></td>
                         @html
+                        <td class="tagTD"><div class="icon"></div></td>
                     </tr>
                 }
             </tbody>
