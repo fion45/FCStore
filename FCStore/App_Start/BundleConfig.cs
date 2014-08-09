@@ -57,6 +57,9 @@ namespace FCStore
                         "~/Content/themes/base/jquery.ui.theme.css",
                         "~/Content/themes/base/jquery.ui.bannerize.css"));
 
+            bundles.Add(new ScriptBundle("~/UploadFile/css").Include(
+                        "~/Scripts/uploadify/uploadify.css"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/productDetail").Include(
                         "~/Scripts/productDetail.js",
@@ -78,6 +81,9 @@ namespace FCStore
             bundles.Add(new ScriptBundle("~/Manager/js").Include(
                 "~/Scripts/common.js",
                 "~/Scripts/manager.js"));
+
+            bundles.Add(new ScriptBundle("~/UploadFile/js").Include(
+                "~/Scripts/uploadify/jquery.uploadify.js"));
         }
     }
 }

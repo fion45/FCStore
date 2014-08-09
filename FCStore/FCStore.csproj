@@ -287,6 +287,11 @@
     <Content Include="Scripts\jquery.ui.bannerize.js" />
     <Content Include="Scripts\manager.js" />
     <Content Include="Scripts\qqReport.js" />
+    <Content Include="Scripts\uploadify\jquery.uploadify.js" />
+    <Content Include="Scripts\uploadify\jquery.uploadify.min.js" />
+    <Content Include="Scripts\uploadify\uploadify-cancel.png" />
+    <Content Include="Scripts\uploadify\uploadify.css" />
+    <Content Include="Scripts\uploadify\uploadify.swf" />
     <Content Include="Views\Order\Payment.aspx" />
     <Content Include="zone.xml" />
     <None Include="Properties\PublishProfiles\RGFTP.pubxml" />

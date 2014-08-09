@@ -4,9 +4,7 @@
 		var tmpTR = target.parentsUntil("tbody").last();
 		if(target.data("editTag") === false || tmpTR.hasClass("tr_del"))
 			return;
-		var ele = Manager.CreateEditEle(target,target.text());
-		target.empty();
-		target.append(ele);
+		Manager.CreateEditEle(target,target.text(),target);
 		target.data("editTag",false);
 	});
 	$("#contentTabel .checkAll").checkAll("#contentTabel .checkItem");
@@ -52,7 +50,6 @@ var Manager = {
 			var tdEle;
 			if(i != eles.length - 1) {
 				var par = $(n);
-				ele = Manager.CreateEditEle(par,"");
 				if(par.hasClass("IDTD")) {
 					tdEle = $("<td class=\'IDTD\'></td>");
 				}
@@ -73,12 +70,13 @@ var Manager = {
 								"<input class=\'checkItem\' type=\'checkbox\'>" +
 							"</td>");
 				}
+				Manager.CreateEditEle(par,"",tdEle);
 			}
 			else {
 				ele = $("<div class=\'icon\' ></div>");
 				tdEle = $("<td class=\'tagTD\' ></td>");
+				ele.appendTo(tdEle);
 			}
-			ele.appendTo(tdEle);
 			tdEle.appendTo(trEle);
 		});
 		trEle.addClass("tr_add");
@@ -106,7 +104,7 @@ var Manager = {
 			var tdArr = trEle.children();
 			$.each(PerpertyArr,function(j,m){
 				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.text();
+				obj[m] = tmpTD.data("content");
 			});
 			addArr.push(obj);
 		});
@@ -120,7 +118,7 @@ var Manager = {
 			var tdArr = trEle.children();
 			$.each(PerpertyArr,function(j,m){
 				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.text();
+				obj[m] = tmpTD.data("content");
 			});
 			editArr.push(obj);
 		});
@@ -134,7 +132,7 @@ var Manager = {
 			var tdArr = trEle.children();
 			$.each(PerpertyArr,function(j,m){
 				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.text();
+				obj[m] = tmpTD.data("content");
 			});
 			delArr.push(obj);
 		});
@@ -159,9 +157,10 @@ var Manager = {
             }
 		});
 	},
-	CreateEditEle : function(target,value) {
+	CreateEditEle : function(target,value,par) {
 		var tmpTR = target.parentsUntil("tbody").last();
 		var ele = $("<div></div>");
+		par.empty();
 		if(target.hasClass("IDTD")) {
 			
 		}
@@ -171,23 +170,43 @@ var Manager = {
 				var eleTarget = $(ev1.target);
 				var tdEle = eleTarget.parent();
 				tdEle.html(eleTarget.val());
+				tdEle.data("content",eleTarget.val());
 				tdEle.data("editTag",true);
 				if(!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
 					tmpTR.addClass("tr_edit");
 			});
+			ele.width(target.width() - 6);
+			par.append(ele);
 		}
 		else if(target.hasClass("SelectionTD")) {
 			ele = $("<select></select>");
+			ele.width(target.width() - 6);
+			par.append(ele);
 		}
 		else if(target.hasClass("BoolTagTD")) {
 			ele = $("<input type='checkbox' />");
+			ele.width(target.width() - 6);
+			par.append(ele);
 		}
 		else if(target.hasClass("ImgTD")) {
 			ele = $("<div>" +
+						"<div id='file_upload' name='file_upload'></div>" +
 					"</div>");
-			ele.append(target.children());
+			ele.width(target.width() - 6);
+			par.append(ele);
+			$('#file_upload').uploadify({
+	        	height : 30,
+	        	width : ele.width(),
+                buttonText : '文件上传',
+                auto : false,
+	            swf : '/Scripts/uploadify/uploadify.swf',
+	            uploader : '/Manager/Upload',
+	            fileTypeDesc : 'Image Files',
+	            fileTypeExts : '*.jpg;*.bmp;*.png;*.gif',
+	            onComplete : function(event, queueID, fileObj) {
+	            	
+	            }
+	        });
 		}
-		ele.width(target.width() - 6);
-		return ele;
 	}
 }
