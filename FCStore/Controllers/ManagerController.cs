@@ -18,6 +18,7 @@ namespace FCStore.Controllers
         //
         // GET: /Manager/
 
+        #region BannerManager
         [MyAuthorizeAttribute]
         public ActionResult BannerManager()
         {
@@ -35,6 +36,7 @@ namespace FCStore.Controllers
 
             typeDic["ImgPath"] = new ManagerVM<BannerItem>.TableColumn.Config();
             typeDic["ImgPath"].specialType = ManagerVM<BannerItem>.TableColumn.TCType.Img;
+            typeDic["ImgPath"].htmlStr = "data-toPath='/Uploads/Banner/'";
             typeDic["ImgPath"].width = 100;
 
             typeDic["Index"] = new ManagerVM<BannerItem>.TableColumn.Config();
@@ -48,33 +50,39 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult SaveBannerManager(List<BannerItem> AddArr,List<BannerItem> EditArr,List<BannerItem> DelArr)
+        public ActionResult SaveBannerManager(List<BannerItem> AddArr, List<BannerItem> EditArr, List<BannerItem> DelArr)
         {
             if (AddArr != null)
             {
-                foreach (BannerItem bItem in AddArr)
+                foreach (BannerItem item in AddArr)
                 {
-                    db.BannerItems.Add(bItem);
+                    BannerItem tmpObj = item;
+                    PubFunction.NotNullObj(ref tmpObj);
+                    db.BannerItems.Add(tmpObj);
                 }
             }
             if (EditArr != null)
             {
-                foreach (BannerItem bItem in EditArr)
+                foreach (BannerItem item in EditArr)
                 {
-                    BannerItem tmpItem = db.BannerItems.FirstOrDefault(r => r.BIID == bItem.BIID);
-                    tmpItem.Description = bItem.Description;
-                    tmpItem.HrefPath = bItem.HrefPath;
-                    tmpItem.ImgPath = bItem.ImgPath;
-                    tmpItem.Index = bItem.Index;
-                    tmpItem.Title = bItem.Title;
+                    BannerItem tmpObj = item;
+                    //奇怪，传进来的明明是""但是在后台获取就是null，只能做转换了
+                    PubFunction.NotNullObj(ref tmpObj);
+                    BannerItem tmpItem = db.BannerItems.FirstOrDefault(r => r.BIID == tmpObj.BIID);
+                    //tmpItem.Description = tmpObj.Description;
+                    //tmpItem.HrefPath = tmpObj.HrefPath;
+                    //tmpItem.ImgPath = tmpObj.ImgPath;
+                    //tmpItem.Index = tmpObj.Index;
+                    //tmpItem.Title = tmpObj.Title;
+                    PubFunction.CopyObj(tmpObj, ref tmpItem);
                 }
             }
             if (DelArr != null)
             {
-                foreach (BannerItem bItem in DelArr)
+                foreach (BannerItem item in DelArr)
                 {
-                    BannerItem tmpItem = db.BannerItems.FirstOrDefault(r => r.BIID == bItem.BIID);
-                    if(tmpItem != null)
+                    BannerItem tmpItem = db.BannerItems.FirstOrDefault(r => r.BIID == item.BIID);
+                    if (tmpItem != null)
                         db.BannerItems.Remove(tmpItem);
                 }
             }
@@ -89,12 +97,84 @@ namespace FCStore.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region ColumnManager
         [MyAuthorizeAttribute]
         public ActionResult ColumnManager()
         {
-            return View();
+            Dictionary<string, ManagerVM<Column>.TableColumn.Config> typeDic = new Dictionary<string, ManagerVM<Column>.TableColumn.Config>();
+
+            typeDic["ColumnID"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["ColumnID"].specialType = ManagerVM<Column>.TableColumn.TCType.ID;
+            typeDic["ColumnID"].width = 70;
+
+            typeDic["Describe"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["Describe"].width = 120;
+
+            typeDic["SubDescribe"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["SubDescribe"].width = 120;
+
+            typeDic["TopTitle"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["TopTitle"].width = 320;
+
+            typeDic["Products"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["Products"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
+            typeDic["Products"].parameter = "/Manager/ProductsSelect";
+            typeDic["Products"].width = 60;
+
+            typeDic["Brands"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["Brands"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
+            typeDic["Brands"].parameter = "/Manager/BrandsSelect";
+            typeDic["Brands"].width = 60;
+
+            ManagerVM<Column> tmpVM = new ManagerVM<Column>(db.Columns.ToList(), typeDic);
+            return View(tmpVM);
         }
+
+        [MyAuthorizeAttribute]
+        public ActionResult SaveColumnManager(List<Column> AddArr, List<Column> EditArr, List<Column> DelArr)
+        {
+            if (AddArr != null)
+            {
+                foreach (Column item in AddArr)
+                {
+                    Column tmpObj = item;
+                    PubFunction.NotNullObj(ref tmpObj);
+                    db.Columns.Add(tmpObj);
+                }
+            }
+            if (EditArr != null)
+            {
+                foreach (Column item in EditArr)
+                {
+                    Column tmpObj = item;
+                    PubFunction.NotNullObj(ref tmpObj);
+                    Column tmpItem = db.Columns.FirstOrDefault(r => r.ColumnID == tmpObj.ColumnID);
+                    PubFunction.CopyObj(tmpObj, ref tmpItem);
+                }
+            }
+            if (DelArr != null)
+            {
+                foreach (Column item in DelArr)
+                {
+                    Column tmpItem = db.Columns.FirstOrDefault(r => r.ColumnID == item.ColumnID);
+                    if (tmpItem != null)
+                        db.Columns.Remove(tmpItem);
+                }
+            }
+            db.SaveChanges();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        #endregion
 
         [MyAuthorizeAttribute]
         public ActionResult CategoryManager()
@@ -110,7 +190,12 @@ namespace FCStore.Controllers
                 try
                 {
                     // 文件上传后的保存路径
-                    string filePath = Server.MapPath("~/Uploads/");
+                    string tmpStr = Request.Params["toPath"].ToString();
+                    string filePath = Server.MapPath("/Uploads/");
+                    if(!string.IsNullOrEmpty(tmpStr))
+                    {
+                        filePath = Server.MapPath(tmpStr);
+                    }
                     if (!Directory.Exists(filePath))
                     {
                         Directory.CreateDirectory(filePath);
@@ -121,7 +206,7 @@ namespace FCStore.Controllers
 
                     fileData.SaveAs(filePath + saveName);
 
-                    return Json(new { Success = true, FileName = fileName, SaveName = saveName });
+                    return Json(new { Success = true, FileName = fileName, SaveName = saveName, imgSrc = tmpStr + saveName });
                 }
                 catch (Exception ex)
                 {
@@ -130,7 +215,6 @@ namespace FCStore.Controllers
             }
             else
             {
-
                 return Json(new { Success = false, Message = "请选择要上传的文件！" }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -161,10 +245,16 @@ namespace FCStore.Controllers
                             tmpStr = "<img src=" + ti.Description + " />";
                             break;
                         }
+                    case ManagerVM<T>.TableColumn.TCType.Href:
+                        {
+                            tmpStr = "<a href='" + column.Parameter.ToString() + "' >配置</a>";
+                            break;
+                        }
                 }
                 if (!string.IsNullOrEmpty(column.ClassName))
-                    tmpSB.Append(" column.ClassName");
-                tmpSB.Append("\'>" + tmpStr + "</td>");
+                    tmpSB.Append(" " + column.ClassName);
+
+                tmpSB.Append("\' data-content=\'" + ti.Description + "\' >" + tmpStr + "</td>");
                 ++index;
             }
             return tmpSB.ToString();
@@ -178,6 +268,8 @@ namespace FCStore.Controllers
                 tmpSB.Append("<td class=\'" + className + "\'");
                 if (tc.Width > 0)
                     tmpSB.Append(" style=\'width:" + tc.Width + "px;\'");
+                if (!string.IsNullOrEmpty(tc.HtmlStr))
+                    tmpSB.Append(tc.HtmlStr);
                 tmpSB.Append(" >" + tc.Title + "</td>");
             }
             return tmpSB.ToString();

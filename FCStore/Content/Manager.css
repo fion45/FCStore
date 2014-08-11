@@ -290,7 +290,7 @@ li {
     width:100%;
 }
 
-#contentTabel {
+.contentTabel {
     width:98%;
     margin:8px;
     border:1px solid #EDECFF;
@@ -298,7 +298,7 @@ li {
     table-layout:fixed;
 }
 
-    #contentTabel thead tr {
+    .contentTabel thead tr {
         height:26px;
         line-height:26px;
         font-size:10pt;
@@ -307,59 +307,79 @@ li {
         background:url("/Content/themes/image/table_th_bg.gif");
     }
 
-    #contentTabel tbody tr {
+    .contentTabel tbody tr {
         min-height:30px;
     }
 
-    #contentTabel tbody tr:nth-child(2n) {
+    .contentTabel tbody tr:nth-child(2n) {
         background-color:white;
     }
 
-    #contentTabel tbody tr:nth-child(2n+1) {
+    .contentTabel tbody tr:nth-child(2n+1) {
         background-color:#EAEAEA;
     }
-    #contentTabel tbody .tagTD {
+    .contentTabel tbody .tagTD {
         text-align:center;
     }
 
-    #contentTabel tbody .tagTD .icon {
+    .contentTabel tbody .tagTD .icon {
         width:25px;
         height:25px;
         margin:0px auto;
     }
 
-    #contentTabel tbody .tr_edit .tagTD .icon {
+    .contentTabel tbody .tr_edit .tagTD .icon {
         background-color:red;
     }
 
-    #contentTabel tbody .tr_del {
+    .contentTabel tbody .tr_del {
         text-decoration:line-through;
         color:#cacaca;
     }
 
-    #contentTabel tbody .tr_del .tagTD .icon {
+    .contentTabel tbody .tr_del .tagTD .icon {
         background-color:yellow;
     }
 
-    #contentTabel tbody .tr_add .tagTD .icon {
+    .contentTabel tbody .tr_add .tagTD .icon {
         background-color:blue;
     }
 
-    #contentTabel tbody td {
+    .contentTabel tbody td {
         height:30px;
         overflow:hidden;
         text-overflow:clip;
         white-space:nowrap;
     }
 
-    #contentTabel .checkTD {
+    .contentTabel .checkTD {
         width:30px;
     }
+
+    .contentTabel .uploadify-queue-item .fileName {
+        width:100%;
+        display:block;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+    .contentTabel .uploadify-queue-item .cancel {
+        text-align:left;
+    }
+
+    .contentTabel .uploadify-queue-item .cancel a {
+        float:none;
+    }
+
+#BMTable tbody tr {
+    height:70px;
+    vertical-align:middle;
+}
 
 #ManagerMain .tabelContent img {
     width:70px;
     height:70px;
-    margin:2px auto;
 }
 
 #ManagerMain .right .toolbar {

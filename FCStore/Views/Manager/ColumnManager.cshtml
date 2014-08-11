@@ -1,0 +1,45 @@
+﻿@using FCStore.Models;
+@using FCStore.Controllers;
+
+@model ManagerVM<Column>
+
+@{
+    ViewBag.Title = "ColumnManager";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+<ul>
+    <li class="toolbar">
+        <input class="mbtn1" value="刷新" type="button" onclick="Manager.OnRefreshBtnClick()" />
+        <input class="mbtn2" value="删除" type="button" onclick="Manager.OnDelBtnClick()" />
+        <input class="mbtn3" value="增加" type="button" onclick="Manager.OnAddBtnClick()" />
+        <input class="mbtn1" value="保存" type="button" onclick="Manager.OnSaveBtnClick()" />
+    </li>
+    <li class="tabelContent">
+        <table cellpadding="0" cellspacing="0" id="BMTable" class="contentTabel" data-action="SaveColumnManager">
+            <thead>
+                <tr>
+                    <td class="checkTD" style="width:40px;"><input class="checkAll" type="checkbox" /></td>
+                    @{
+                        HtmlString html = new HtmlString(TabelRender<Column>.GetColumnHTML(Model.TCArr));
+                        @html
+                    }
+                    <td class="tagTD"></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (List<ManagerVM<Column>.TableItem> lst in Model.TIArr)
+                {
+                    html = new HtmlString(TabelRender<Column>.GetItemHTML(Model.TCArr, lst));
+                    <tr>
+                        <td class="checkTD"><input class="checkItem" type="checkbox" /></td>
+                        @html
+                        <td class="tagTD"><div class="icon"></div></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </li>
+    <li class="bottom">
+
+    </li>
+</ul>

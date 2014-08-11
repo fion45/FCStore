@@ -374,6 +374,7 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Shared\_ManageLayout.cshtml" />
     <Content Include="Views\Manager\BannerManager.cshtml" />
+    <Content Include="Views\Manager\ColumnManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

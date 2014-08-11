@@ -1,6 +1,6 @@
-﻿@model FCStore.Models.ManagerVM<FCStore.Models.BannerItem>
-@using FCStore.Models;
+﻿@using FCStore.Models;
 @using FCStore.Controllers;
+@model ManagerVM<BannerItem>
 @{
     ViewBag.Title = "BannerManager";
     Layout = "~/Views/Shared/_ManageLayout.cshtml";
@@ -13,7 +13,7 @@
         <input class="mbtn1" value="保存" type="button" onclick="Manager.OnSaveBtnClick()" />
     </li>
     <li class="tabelContent">
-        <table cellpadding="0" cellspacing="0" id="contentTabel" data-action="SaveBannerManager">
+        <table cellpadding="0" cellspacing="0" id="BMTable" class="contentTabel" data-action="SaveBannerManager">
             <thead>
                 <tr>
                     <td class="checkTD" style="width:40px;"><input class="checkAll" type="checkbox" /></td>

@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Reflection;
 
 namespace FCStore.Common
 {
@@ -49,6 +51,30 @@ namespace FCStore.Common
             else
             {
                 originBmp.Save(saveFP);
+            }
+        }
+
+        public static void NotNullObj<T>(ref T obj)
+        {
+            Type type = typeof(T);
+            foreach (PropertyInfo pi in type.GetProperties())
+            {
+                if (pi.PropertyType == typeof(string))
+                { 
+                    object tmpObj = type.InvokeMember(pi.Name, BindingFlags.GetProperty, null, obj, null);
+                    if (tmpObj == null)
+                        type.InvokeMember(pi.Name,BindingFlags.SetProperty,null, obj, new object[] {""});
+                }
+            }
+        }
+
+        public static void CopyObj<T>(T source,ref T destination)
+        {
+            Type type = typeof(T);
+            foreach (PropertyInfo pi in type.GetProperties())
+            {
+                object tmpObj = type.InvokeMember(pi.Name, BindingFlags.GetProperty, null, source, null);
+                type.InvokeMember(pi.Name, BindingFlags.SetProperty, null, destination, new object[] { tmpObj });
             }
         }
     }
