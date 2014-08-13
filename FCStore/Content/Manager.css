@@ -390,3 +390,114 @@ li {
     background-color:#EBF5FC;
     border-bottom:solid 1px #cacaca;
 }
+
+#ManagerMain .right .toolbar .orderDiv {
+    float:left;
+}
+
+#PSMain {
+    width:100%;
+    height:100%;
+}
+
+    #PSMain .left {
+        float:left;
+        width:10%;
+        height:100%;
+    }
+
+    #PSMain .btnDiv {
+        width:100%;
+        height:10%;
+    }
+
+#selDiv {
+    width:100%;
+    height:90%;
+}
+
+    #PSMain .right {
+        float:left;
+        width:89.8%;
+        height:100%;
+        border-left:solid 1px #676767;
+    }
+
+    #PSMain .right .toolbar {
+        width:100%;
+        height:5%;
+    }
+ 
+#plDiv {
+    border-top:solid 1px #676767;
+    width:100%;
+    height:94.8%;
+    overflow:scroll;
+    background-color:#FFFFFF;
+}
+       
+    #plDiv .item {
+        float:left;
+        width:190px;
+        padding:13px 10px;
+        font-size:10pt;
+        text-align:center;
+        position:relative;
+        border-left:dashed 1px #C5C5C5;
+        border-bottom:dashed 1px #C5C5C5;
+    }
+
+        #plDiv .item img{
+            height:155px;
+            width:146px;
+        }
+
+        #plDiv .item .title{
+            width:180px;
+            height:34px;
+            overflow:hidden;
+            margin:0px auto;
+            text-align:left;
+        }
+
+        #plDiv .item .p60 {
+            float:left;
+            width:60%;
+            overflow:hidden;
+            text-align:left;
+        }
+
+        #plDiv .item .p40 {
+            float:left;
+            width:40%;
+            overflow:hidden;
+            text-align:left;
+        }
+
+        #plDiv .item .marketPrice {
+            margin:0px auto;
+            text-align:left;
+        }
+        
+            #plDiv .item .marketPrice label {
+                text-decoration:line-through;
+            }
+
+        #plDiv .item .price{
+            margin:0px auto;
+            text-align:left;
+        }
+
+            #plDiv .item .price label{
+                color:#cc0000;
+                font-weight:bold;
+            }
+        
+        #plDiv .item .buyIcon {
+            position:absolute;
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
+            width:27px;
+            height:27px;
+            left:163px;
+            top:210px;
+        }

@@ -2,14 +2,19 @@
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure;
+using System.Data.Objects;
 
 namespace FCStore.Models
 {
     public class FCStoreDbContext : DbContext
     {
+        public ObjectContext m_objcontext;
+
         public FCStoreDbContext() 
             //: base("name=FCStore")
         {
+            m_objcontext = ((IObjectContextAdapter)this).ObjectContext;
         }
 
         public DbSet<Brand> Brands { get; set; }

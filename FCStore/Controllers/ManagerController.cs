@@ -182,6 +182,43 @@ namespace FCStore.Controllers
             return View();
         }
 
+        [MyAuthorizeAttribute]
+        public ActionResult ProductsSelect(string saveFunName,int BeginIndex,int GetCount,string OrderStr,string WhereStr)
+        {
+            int totalCount = db.Products.Count();
+            StringBuilder SQLStr = new StringBuilder("SELECT TOP(");
+            SQLStr.Append(GetCount);
+            SQLStr.Append(") * FROM (SELECT TOP(");
+            SQLStr.Append(totalCount - (BeginIndex + GetCount));
+            SQLStr.Append(") * FROM Products");
+            if (!string.IsNullOrEmpty(WhereStr))
+            {
+                SQLStr.Append(" WHERE " + WhereStr);
+            }
+            string tmpOB1 = "",tmpOB2 = "";
+            if (!string.IsNullOrEmpty(OrderStr))
+            {
+                SQLStr.Append(" ORDER BY ");
+                string[] OrderArr = OrderStr.Split(new char[] { ';' });
+                foreach(string itemArr in OrderArr)
+                {
+                    string[] itemStr = itemArr.Split(new char[]{','});
+                    tmpOB1 = itemStr[0] + " " + (itemStr[1].ToUpper().CompareTo("DESC") == 0 ? "ASC" : "DESC");
+                    tmpOB2 = itemStr[0] + " " + itemStr[1].ToUpper();
+                }
+                SQLStr.Append(tmpOB1);
+            }
+            SQLStr.Append(") as TEMPTB");
+
+            if (!string.IsNullOrEmpty(OrderStr))
+            {
+                SQLStr.Append(" ORDER BY ");
+                SQLStr.Append(tmpOB2);
+            }
+            List<Product> result = db.m_objcontext.ExecuteStoreQuery<Product>(SQLStr.ToString(), null).ToList();
+            return View(result);
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Upload(HttpPostedFileBase fileData)
         {

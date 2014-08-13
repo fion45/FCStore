@@ -1,0 +1,91 @@
+﻿@model IEnumerable<FCStore.Models.Product>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProductsSelect</title>    
+    @Styles.Render("~/Manager/css")
+</head>
+<body>
+    <div id="PSMain">
+        <div class="left">
+            <div id="selDiv">
+
+            </div>
+            <div class="btnDiv">
+                <ul>
+                    <li>
+                        <input type="checkbox" value="全选" />
+                    </li>
+                    <li>
+                        <input type="button" value="上移" />
+                    </li>
+                    <li>
+                        <input type="button" value="下移" />
+                    </li>
+                    <li>
+                        <input type="button" value="删除" />
+                    </li>
+                    <li>
+                        <input type="button" value="刷新" />
+                    </li>
+                    <li>
+                        <input type="button" value="保存" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+            <div class="toolbar">
+                <div class="orderDiv">
+                    <label>排序方式：</label>
+                    <a class="orderTag">新品</a>
+                    <a class="orderTag">畅销</a>
+                    <a class="orderTag">价格</a>
+                    <a class="orderTag">折扣</a>
+                    <a class="orderTag">浏览量</a>
+                </div>
+                <div class="whereDiv">
+                    条件：
+                    <input type="text" />
+                </div>
+            </div>
+            <div id="plDiv">
+                @foreach (FCStore.Models.Product item in Model)
+                {
+                    <div class="item">
+                        <a href="/Product/Detail/@(item.PID)">
+                            <div class="img">
+                                <img src="@(item.ImgPathArr[0])" />
+                            </div>
+                            <div class="title" title="@(item.Title)">
+                                @(item.Title)
+                            </div>
+                            <div class="marketPrice p60">
+                                市价：<label>￥@(item.MarketPrice)</label>
+                            </div>
+                            <div class="p40">
+                                 折扣：<label>@(item.Discount)%</label>
+                            </div>
+                            <div class="price p60">
+                                现价：<label>￥@(item.Price)</label>
+                            </div>
+                            <div class="p40">
+                                已售：<label>@(item.Sale)</label>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Manager/js")
+</body>
+</html>
