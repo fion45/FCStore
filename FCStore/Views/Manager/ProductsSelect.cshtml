@@ -11,13 +11,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>ProductsSelect</title>    
     @Styles.Render("~/Manager/css")
+    @Styles.Render("~/ZTree/css")
 </head>
 <body>
     <div id="PSMain">
         <div class="left">
-            <div id="selDiv">
-
-            </div>
             <div class="btnDiv">
                 <ul>
                     <li>
@@ -39,6 +37,9 @@
                         <input type="button" value="保存" />
                     </li>
                 </ul>
+            </div>
+            <div id="selDiv">
+
             </div>
         </div>
         <div class="right">
@@ -84,8 +85,163 @@
                 }
             </div>
         </div>
+        <div class="categoryLST" >
+            <ul id="categoryTree" class="ztree"></ul>
+        </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Manager/js")
+    @Scripts.Render("~/ZTree/js")
+    <script type="text/javascript" charset="utf-8">
+        var selArr = [];
+        var notSelArr = [];
+        var selTag = false;
+        var treeObj = null;
+        function updateArr() {
+            var tmpArr = null;
+            if (selTag) {
+                tmpArr = treeObj.getCheckedNodes(true);
+                notSelArr = [];
+                selArr = [];
+                $.each(tmpArr, function (i, n) {
+                    if (!n.isParent)
+                        selArr.push(n.CID);
+                });
+            }
+            else {
+                tmpArr = treeObj.getCheckedNodes(false);
+                selArr = [];
+                notSelArr = [];
+                $.each(tmpArr, function (i, n) {
+                    if (!n.isParent)
+                        notSelArr.push(n.CID);
+                });
+            }
+        }
+        function updateProductsLST(insertTag) {
+            var pathName = window.location.pathname;
+            var result = pathName.split('/');
+            var href = "";
+            for (var i = 1; i < 3; i++)
+            {
+                href += "/" + result[i];
+            }
+            var tmpData = {
+                saveFunName: result[3],
+                BeginIndex : insertTag ? $("#plDiv")[0].childElementCount : 0,
+                GetCount : 50,
+                OrderStr : getOrderStr(),
+                WhereStr : getWhereStr()
+            };
+            $.myAjax({
+                historyTag: false,
+                loadEle: $("#plDiv"),
+                url: href,
+                data: JSON.stringify(tmpData),
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data, status, options) {
+                    if (!insertTag) {
+                        $("#plDiv").empty();
+                    }
+                    if (data.content != null) {
+                        $.each(data.content, function (i, n) {
+                            BuildProductItem(n);
+                        });
+                    }
+                }
+            });
+        }
+        function BuildProductItem(item) {
+            var htmlStr =
+                "<div class='item'>" +
+                    "<a href='/Product/Detail/{0}'>" +
+                        "<div class='img'>" +
+                            "<img src='{1}' />" +
+                        "</div>" +
+                        "<div class='title' title='{2}'>{2}</div>" +
+                        "<div class='marketPrice p60'>" +
+                            "市价：<label>￥{3}<label>" +
+                        "</div>" +
+                        "<div class='p40'>" +
+                            "折扣：<label>{4}</label>" +
+                        "</div>" +
+                        "<div class='price p60'>" +
+                            "现价：<label>￥{5}</label>" +
+                        "</div>" +
+                        "<div class='p40'>" +
+                            "已售：<label>{6}</label>" +
+                        "</div>" + 
+                    "</a>" +
+                "</div>";
+            htmlStr = $.CreateString(htmlStr, [
+                item.PID,
+                item.ImgPathArr[0],
+                item.Title,
+                item.MarketPrice,
+                item.Discount,
+                item.Price,
+                item.Sale
+            ]);
+            $(htmlStr).appendTo($("#plDiv"));
+        }
+        function getOrderStr() {
+            return "Date,DESC";
+        }
+        function getWhereStr() {
+            if (selTag) {
+                return "CID IN (" + selArr.join(",") + ")";
+            }
+            else {
+                return "CID NOT IN (" + notSelArr.join(",") + ")";
+            }
+        }
+        $(function () {
+            //加载树控件
+            $.myAjax({
+                historyTag: false,
+                loadEle: $("#PSMain .categoryLST"),
+                url: "/Category/GetTreeNodes",
+                data: null,
+                dataType: "json",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                success: function (data, status, options) {
+                    var setting = {
+                        check: {
+                            enable: true
+                        },
+                        data: {
+                            key: {
+                                name: "NameStr"
+                            },
+                            simpleData: {
+                                enable: true,
+                                idKey: "CID",
+                                pIdKey: "ParCID",
+                            }
+                        },
+                        callback: {
+                            onCheck: function (event, treeId, treeNode) {
+                                if (treeNode.level == 1) {
+                                    //父节点
+                                    selTag = !treeNode.checked;
+                                }
+                                updateArr();
+                                updateProductsLST();
+                            }
+                        }
+                    };
+                    if (data.content != null) {
+                        $.fn.zTree.init($("#categoryTree"), setting, data.content);
+                        treeObj = $.fn.zTree.getZTreeObj("categoryTree");
+                        treeObj.expandAll(true);
+                        treeObj.checkAllNodes(true);
+                    }
+                }
+            });
+        });
+</script>
 </body>
 </html>

@@ -341,7 +341,14 @@ jQuery.extend({
 				tmpEle.addClass(className);
 			});
 		}
-	}
+	},
+	CreateString : function(str,replaces){
+        var re = /\{(\d+)\}/g;
+        var temp = str.replace(re,function($0,$1,$2){
+            return replaces[$1];
+        });
+        return temp;
+    }
 });
 
 var BuildPullHeightDiv = function(par) {

@@ -391,10 +391,6 @@ li {
     border-bottom:solid 1px #cacaca;
 }
 
-#ManagerMain .right .toolbar .orderDiv {
-    float:left;
-}
-
 #PSMain {
     width:100%;
     height:100%;
@@ -404,34 +400,61 @@ li {
         float:left;
         width:10%;
         height:100%;
+        position:relative;
     }
 
     #PSMain .btnDiv {
         width:100%;
-        height:10%;
+        height:60px;
     }
 
 #selDiv {
     width:100%;
-    height:90%;
+    position:absolute;
+    top:60px;
+    bottom:0px;
 }
 
     #PSMain .right {
         float:left;
-        width:89.8%;
+        width:74.8%;
         height:100%;
         border-left:solid 1px #676767;
+        position:relative;
     }
 
     #PSMain .right .toolbar {
-        width:100%;
-        height:5%;
+        width:98%;
+        height:20px;
+        padding:16px 1% 4px 1%;
     }
+
+        #PSMain .right .toolbar .orderDiv {
+            float:left;
+        }
+
+        #PSMain .right .toolbar .whereDiv {
+            float:right;
+        }
+
+#PSMain .categoryLST {
+    width:15%;
+    height:100%;
+    float:left;
+    border-left:solid 1px #cacaca;
+    overflow:scroll;
+}
+
+#PSMain .categoryLST .ztree li {
+    width:100%;
+}
  
 #plDiv {
     border-top:solid 1px #676767;
     width:100%;
-    height:94.8%;
+    top:40px;
+    bottom:0px;
+    position:absolute;
     overflow:scroll;
     background-color:#FFFFFF;
 }

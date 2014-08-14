@@ -216,7 +216,15 @@ namespace FCStore.Controllers
                 SQLStr.Append(tmpOB2);
             }
             List<Product> result = db.m_objcontext.ExecuteStoreQuery<Product>(SQLStr.ToString(), null).ToList();
-            return View(result);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(result);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View(result);
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

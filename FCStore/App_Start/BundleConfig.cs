@@ -40,6 +40,8 @@ namespace FCStore
 
             bundles.Add(new StyleBundle("~/Manager/css").Include("~/Content/Manager.css"));
 
+            bundles.Add(new StyleBundle("~/ZTree/css").Include("~/Content/zTreeStyle/zTreeStyle.css"));
+
             bundles.Add(new StyleBundle("~/Content/loginPage").Include("~/Content/LoginPage.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
@@ -84,6 +86,11 @@ namespace FCStore
 
             bundles.Add(new ScriptBundle("~/UploadFile/js").Include(
                 "~/Scripts/uploadify/jquery.uploadify.js"));
+
+            bundles.Add(new ScriptBundle("~/ZTree/js").Include(
+                "~/Scripts/ZTree/jquery.ztree.core-3.5.js",
+                "~/Scripts/ZTree/jquery.ztree.excheck-3.5.js",
+                "~/Scripts/ZTree/jquery.ztree.exedit-3.5.js"));
         }
     }
 }
