@@ -120,7 +120,7 @@ namespace FCStore.Controllers
 
             typeDic["Products"] = new ManagerVM<Column>.TableColumn.Config();
             typeDic["Products"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
-            typeDic["Products"].parameter = "/Manager/ProductsSelect";
+            typeDic["Products"].parameter = "/Manager/ProductsSelect/0/{ColumnID}";
             typeDic["Products"].width = 60;
 
             typeDic["Brands"] = new ManagerVM<Column>.TableColumn.Config();
@@ -183,7 +183,7 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult ProductsSelect(string saveFunName,int BeginIndex,int GetCount,string OrderStr,string WhereStr)
+        public ActionResult ProductsSelect(int Tag, string Par, int BeginIndex, int GetCount, string OrderStr, string WhereStr)
         {
             int totalCount = db.Products.Count();
             StringBuilder SQLStr = new StringBuilder("SELECT TOP(");
@@ -292,7 +292,8 @@ namespace FCStore.Controllers
                         }
                     case ManagerVM<T>.TableColumn.TCType.Href:
                         {
-                            tmpStr = "<a href='" + column.Parameter.ToString() + "' >配置</a>";
+                            string parStr = ManagerVM<T>.ParseParameter(column.Parameter.ToString(), ti);
+                            tmpStr = "<a href='" + parStr + "' >配置</a>";
                             break;
                         }
                 }

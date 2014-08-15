@@ -406,6 +406,20 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult GetSelectProductInColum(int id)
+        {
+            Column tmpColum = db.Columns.FirstOrDefault(r => r.ColumnID == id);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(tmpColum.Products);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

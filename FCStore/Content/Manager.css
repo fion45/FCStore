@@ -398,26 +398,42 @@ li {
 
     #PSMain .left {
         float:left;
-        width:10%;
+        width:230px;
         height:100%;
         position:relative;
     }
 
     #PSMain .btnDiv {
         width:100%;
-        height:60px;
+        height:70px;
     }
+
+        #PSMain .btnDiv .title {
+            width:100%;
+            float:left;
+            text-align:center;
+        }
+
+            #PSMain .btnDiv .title label {
+                float:left;
+                margin-left:10px;
+            }
 
 #selDiv {
     width:100%;
     position:absolute;
-    top:60px;
+    top:70px;
     bottom:0px;
+    overflow:scroll;
+    text-align:center;
 }
 
+    #selDiv .item {
+        margin:0px auto;
+    }
+
     #PSMain .right {
-        float:left;
-        width:74.8%;
+        margin:0px 253px 0px 230px;
         height:100%;
         border-left:solid 1px #676767;
         position:relative;
@@ -425,29 +441,60 @@ li {
 
     #PSMain .right .toolbar {
         width:98%;
-        height:20px;
-        padding:16px 1% 4px 1%;
+        height:24px;
+        line-height:24px;
+        padding:13px 1% 4px 1%;
     }
 
         #PSMain .right .toolbar .orderDiv {
             float:left;
         }
 
+        #PSMain .right .toolbar .orderDiv label {
+            margin-right:5px;
+            color:#676767;
+            font-weight:bold;
+        }
+
+        #PSMain .right .toolbar .orderDiv a {
+            margin-left:5px;
+            padding-left:12px;
+            color:#676767;
+        }
+
+        #PSMain .right .toolbar .orderDiv a:hover {
+            color:#D73E3E;
+        }
+
+        #PSMain .right .toolbar .orderDiv .ASC {
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -37px;
+            color:#85A9DB;
+        }
+
+        #PSMain .right .toolbar .orderDiv .DESC {
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -64px;
+            color:#D73E3E;
+        }
+
         #PSMain .right .toolbar .whereDiv {
             float:right;
         }
 
+#whereInput {
+    width:350px;
+}
+
 #PSMain .categoryLST {
-    width:15%;
+    width:250px;
     height:100%;
-    float:left;
+    float:right;
     border-left:solid 1px #cacaca;
     overflow:scroll;
 }
 
-#PSMain .categoryLST .ztree li {
-    width:100%;
-}
+    #PSMain .categoryLST .ztree li {
+        width:100%;
+    }
  
 #plDiv {
     border-top:solid 1px #676767;
@@ -459,68 +506,93 @@ li {
     background-color:#FFFFFF;
 }
        
-    #plDiv .item {
-        float:left;
-        width:190px;
-        padding:13px 10px;
-        font-size:10pt;
-        text-align:center;
-        position:relative;
-        border-left:dashed 1px #C5C5C5;
-        border-bottom:dashed 1px #C5C5C5;
+#PSMain .item {
+    float:left;
+    width:190px;
+    padding:13px 10px;
+    font-size:10pt;
+    text-align:center;
+    position:relative;
+    border-left:dashed 1px #C5C5C5;
+    border-bottom:dashed 1px #C5C5C5;
+    cursor:pointer;
+}
+       
+    #PSMain .item .productCB {
+        top:8px;
+        left:8px;
+        position:absolute;
     }
 
-        #plDiv .item img{
-            height:155px;
-            width:146px;
-        }
+    #PSMain .item img{
+        width:146px;
+        max-height:150px;
+        min-height:150px;
+    }
 
-        #plDiv .item .title{
-            width:180px;
-            height:34px;
-            overflow:hidden;
-            margin:0px auto;
-            text-align:left;
-        }
+    #PSMain .item .title{
+        width:180px;
+        height:34px;
+        overflow:hidden;
+        margin:0px auto;
+        text-align:left;
+    }
 
-        #plDiv .item .p60 {
-            float:left;
-            width:60%;
-            overflow:hidden;
-            text-align:left;
-        }
+    #PSMain .item .p60 {
+        float:left;
+        width:60%;
+        overflow:hidden;
+        text-align:left;
+    }
 
-        #plDiv .item .p40 {
-            float:left;
-            width:40%;
-            overflow:hidden;
-            text-align:left;
-        }
+    #PSMain .item .p40 {
+        float:left;
+        width:40%;
+        overflow:hidden;
+        text-align:left;
+    }
 
-        #plDiv .item .marketPrice {
-            margin:0px auto;
-            text-align:left;
-        }
+    #PSMain .item .p1 {
+        float:left;
+        width:100%;
+        overflow:hidden;
+        text-align:left;
+    }
+
+    #PSMain .item .marketPrice {
+        margin:0px auto;
+        text-align:left;
+    }
         
-            #plDiv .item .marketPrice label {
-                text-decoration:line-through;
-            }
-
-        #plDiv .item .price{
-            margin:0px auto;
-            text-align:left;
+        #PSMain .item .marketPrice label {
+            text-decoration:line-through;
         }
 
-            #plDiv .item .price label{
-                color:#cc0000;
-                font-weight:bold;
-            }
+    #PSMain .item .price{
+        margin:0px auto;
+        text-align:left;
+    }
+
+    #PSMain .item .price label{
+        color:#cc0000;
+        font-weight:bold;
+    }
         
-        #plDiv .item .buyIcon {
-            position:absolute;
-            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
-            width:27px;
-            height:27px;
-            left:163px;
-            top:210px;
-        }
+     #PSMain .item .buyIcon {
+        position:absolute;
+        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
+        width:27px;
+        height:27px;
+        left:163px;
+        top:210px;
+    }
+
+     #PSMain .item .detailA {
+         float:right;
+         text-decoration:underline;
+         color:#D73E3E;
+     }
+
+     #PSMain .item .detailA:hover {
+         color:#0094ff;
+     }

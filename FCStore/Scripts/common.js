@@ -91,12 +91,22 @@
 	        }
 	    });
 	},
-	checkAll : function(ele) {
+	checkAll : function(ele,childCN) {
 	    var allEle = $(this);
-	    allEle.bind("change",function(ev){
-	    	var checked = allEle.prop("checked");
-	    	$(ele).prop("checked",checked);
-	    });
+	    if(childCN != null) {
+	    	allEle.on("change",function(ev){
+		    	var checked = allEle.prop("checked");
+		    	$(childCN).prop("checked",checked);
+		    	$(childCN).trigger("change");
+		    });
+	    }
+	    else {
+		    allEle.on("change",function(ev){
+		    	var checked = allEle.prop("checked");
+		    	$(ele).prop("checked",checked);
+		    	$(childCN).trigger("change");
+		    });
+	    }
 	},
 	areaSelector : function (config) {
 	    this.config = {
@@ -257,6 +267,31 @@
 			height : tmpH,
 			width : tmpW
 		},"normal",_self.config.endAnimationCB);
+	},
+	myScrollDown : function(config,funName) {
+		if(funName != null) {
+			this.data("MYSCROLLDOWN")[funName]();
+			return;
+		}
+		this.config = {
+	    	downDis : 50,
+	    	doingCB : null,
+	    	doingPar : null
+	    };
+	    $.extend(this.config, config);
+	    var _self = this;
+	    _self.data("MYSCROLLDOWN",this);
+	    _self.Activate = function(ev) {
+	    	if(_self.scrollTop() + _self.config.downDis + _self.height() >= _self.prop("scrollHeight")) {
+	    		_self.off("scroll");
+	    		if(_self.config.doingCB(_self.config.doingPar))
+	    			_self.on("scroll", _self.Activate);
+	    	}
+	    };
+	    _self.Goon = function() {
+	    	_self.on("scroll", _self.Activate);
+	    }
+	    _self.on("scroll", _self.Activate);
 	}
 });
 jQuery.extend({

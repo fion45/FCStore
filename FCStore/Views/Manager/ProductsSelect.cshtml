@@ -19,185 +19,122 @@
             <div class="btnDiv">
                 <ul>
                     <li>
-                        <input type="checkbox" value="全选" />
+                        <input id="upBtn" class="gray sbtngray" type="button" value="上移" />
                     </li>
                     <li>
-                        <input type="button" value="上移" />
+                        <input id="downBtn" class="gray sbtngray" type="button" value="下移" />
                     </li>
                     <li>
-                        <input type="button" value="下移" />
+                        <input id="delBtn" class="gray sbtngray" type="button" value="删除" />
                     </li>
                     <li>
-                        <input type="button" value="删除" />
+                        <input id="refreshBtn" class="sbtn1" type="button" value="刷新" />
                     </li>
                     <li>
-                        <input type="button" value="刷新" />
-                    </li>
-                    <li>
-                        <input type="button" value="保存" />
+                        <input id="saveBtn" class="sbtn2" type="button" value="保存" />
                     </li>
                 </ul>
+                <div class="title"><label><input id="checkAll" type="checkbox" />全选</label>已选商品：</div>
             </div>
             <div id="selDiv">
-
             </div>
+        </div>
+        <div class="categoryLST">
+            <ul id="categoryTree" class="ztree"></ul>
         </div>
         <div class="right">
             <div class="toolbar">
-                <div class="orderDiv">
+                <div class="orderDiv" id="orderDiv">
                     <label>排序方式：</label>
-                    <a class="orderTag">新品</a>
-                    <a class="orderTag">畅销</a>
-                    <a class="orderTag">价格</a>
-                    <a class="orderTag">折扣</a>
-                    <a class="orderTag">浏览量</a>
+                    <a class="orderTag" onclick="ProductSelect.OnOrderTagClick(this)" data-tag="Date">新品</a>
+                    <a class="orderTag" onclick="ProductSelect.OnOrderTagClick(this)" data-tag="Sale">畅销</a>
+                    <a class="orderTag" onclick="ProductSelect.OnOrderTagClick(this)" data-tag="Price">价格</a>
+                    <a class="orderTag" onclick="ProductSelect.OnOrderTagClick(this)" data-tag="Discount">折扣</a>
+                    <a class="orderTag" onclick="ProductSelect.OnOrderTagClick(this)" data-tag="PVCount">浏览量</a>
                 </div>
                 <div class="whereDiv">
                     条件：
-                    <input type="text" />
+                    <input id="whereInput" type="text" />
+                    <input id="refreshBtn" class="sbtn1" type="button" value="刷新" />
                 </div>
             </div>
             <div id="plDiv">
                 @foreach (FCStore.Models.Product item in Model)
                 {
                     <div class="item">
-                        <a href="/Product/Detail/@(item.PID)">
-                            <div class="img">
-                                <img src="@(item.ImgPathArr[0])" />
-                            </div>
-                            <div class="title" title="@(item.Title)">
-                                @(item.Title)
-                            </div>
-                            <div class="marketPrice p60">
-                                市价：<label>￥@(item.MarketPrice)</label>
-                            </div>
-                            <div class="p40">
-                                 折扣：<label>@(item.Discount)%</label>
-                            </div>
-                            <div class="price p60">
-                                现价：<label>￥@(item.Price)</label>
-                            </div>
-                            <div class="p40">
-                                已售：<label>@(item.Sale)</label>
-                            </div>
-                        </a>
+                        <div class="img">
+                            <img src="@(item.ImgPathArr[0])" />
+                        </div>
+                        <div class="title" title="@(item.Title)">
+                            @(item.Title)
+                        </div>
+                        <div class="marketPrice p60">
+                            市价：<label>￥@(item.MarketPrice)</label>
+                        </div>
+                        <div class="p40">
+                            折扣：<label>@(item.Discount)%</label>
+                        </div>
+                        <div class="price p60">
+                            现价：<label>￥@(item.Price)</label>
+                        </div>
+                        <div class="p40">
+                            已售：<label>@(item.Sale)</label>
+                        </div>
+                        <div class="p60">
+                            存货：<label>￥@(item.Stock)</label>
+                        </div>
+                        <div class="p40">
+                            浏览：<label>@(item.PVCount)</label>
+                        </div>
+                        <div class="p1">
+                            创建时间：<label>@(item.Date)</label>
+                            <a class="detailA" href="/Product/Detail/@(item.PID)">详细</a>
+                        </div>
                     </div>
                 }
             </div>
-        </div>
-        <div class="categoryLST" >
-            <ul id="categoryTree" class="ztree"></ul>
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Manager/js")
     @Scripts.Render("~/ZTree/js")
     <script type="text/javascript" charset="utf-8">
-        var selArr = [];
-        var notSelArr = [];
-        var selTag = false;
-        var treeObj = null;
-        function updateArr() {
-            var tmpArr = null;
-            if (selTag) {
-                tmpArr = treeObj.getCheckedNodes(true);
-                notSelArr = [];
-                selArr = [];
-                $.each(tmpArr, function (i, n) {
-                    if (!n.isParent)
-                        selArr.push(n.CID);
-                });
-            }
-            else {
-                tmpArr = treeObj.getCheckedNodes(false);
-                selArr = [];
-                notSelArr = [];
-                $.each(tmpArr, function (i, n) {
-                    if (!n.isParent)
-                        notSelArr.push(n.CID);
-                });
-            }
-        }
-        function updateProductsLST(insertTag) {
+        $(function () {
+            //初始化Order组件
+            var orderStr = "Date,DESC";
             var pathName = window.location.pathname;
-            var result = pathName.split('/');
-            var href = "";
-            for (var i = 1; i < 3; i++)
-            {
-                href += "/" + result[i];
+            var parArr = pathName.split('/');
+            if (parArr.length >= 7) {
+                orderStr = parArr[7];
             }
-            var tmpData = {
-                saveFunName: result[3],
-                BeginIndex : insertTag ? $("#plDiv")[0].childElementCount : 0,
-                GetCount : 50,
-                OrderStr : getOrderStr(),
-                WhereStr : getWhereStr()
-            };
-            $.myAjax({
-                historyTag: false,
-                loadEle: $("#plDiv"),
-                url: href,
-                data: JSON.stringify(tmpData),
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                success: function (data, status, options) {
-                    if (!insertTag) {
-                        $("#plDiv").empty();
+            var orderTagArr = $("#orderDiv .orderTag");
+            var OIArr = orderStr.split(";");
+            $.each(OIArr, function (i, n) {
+                var orderItem = n.split(",");
+                switch (orderItem[0]) {
+                    case "Date": {
+                        $(orderTagArr[0]).addClass(orderItem[1]);
+                        break;
                     }
-                    if (data.content != null) {
-                        $.each(data.content, function (i, n) {
-                            BuildProductItem(n);
-                        });
+                    case "Sale": {
+                        $(orderTagArr[1]).addClass(orderItem[1]);
+                        break;
+                    }
+                    case "Price": {
+                        $(orderTagArr[2]).addClass(orderItem[1]);
+                        break;
+                    }
+                    case "Discount": {
+                        $(orderTagArr[3]).addClass(orderItem[1]);
+                        break;
+                    }
+                    case "PVCount": {
+                        $(orderTagArr[4]).addClass(orderItem[1]);
+                        break;
                     }
                 }
             });
-        }
-        function BuildProductItem(item) {
-            var htmlStr =
-                "<div class='item'>" +
-                    "<a href='/Product/Detail/{0}'>" +
-                        "<div class='img'>" +
-                            "<img src='{1}' />" +
-                        "</div>" +
-                        "<div class='title' title='{2}'>{2}</div>" +
-                        "<div class='marketPrice p60'>" +
-                            "市价：<label>￥{3}<label>" +
-                        "</div>" +
-                        "<div class='p40'>" +
-                            "折扣：<label>{4}</label>" +
-                        "</div>" +
-                        "<div class='price p60'>" +
-                            "现价：<label>￥{5}</label>" +
-                        "</div>" +
-                        "<div class='p40'>" +
-                            "已售：<label>{6}</label>" +
-                        "</div>" + 
-                    "</a>" +
-                "</div>";
-            htmlStr = $.CreateString(htmlStr, [
-                item.PID,
-                item.ImgPathArr[0],
-                item.Title,
-                item.MarketPrice,
-                item.Discount,
-                item.Price,
-                item.Sale
-            ]);
-            $(htmlStr).appendTo($("#plDiv"));
-        }
-        function getOrderStr() {
-            return "Date,DESC";
-        }
-        function getWhereStr() {
-            if (selTag) {
-                return "CID IN (" + selArr.join(",") + ")";
-            }
-            else {
-                return "CID NOT IN (" + notSelArr.join(",") + ")";
-            }
-        }
-        $(function () {
+
             //加载树控件
             $.myAjax({
                 historyTag: false,
@@ -224,23 +161,64 @@
                         },
                         callback: {
                             onCheck: function (event, treeId, treeNode) {
-                                if (treeNode.level == 1) {
+                                if (treeNode.level == 0) {
                                     //父节点
-                                    selTag = !treeNode.checked;
+                                    ProductSelect.selTag = !treeNode.checked;
                                 }
-                                updateArr();
-                                updateProductsLST();
+                                ProductSelect.updateArr();
                             }
                         }
                     };
                     if (data.content != null) {
                         $.fn.zTree.init($("#categoryTree"), setting, data.content);
-                        treeObj = $.fn.zTree.getZTreeObj("categoryTree");
-                        treeObj.expandAll(true);
-                        treeObj.checkAllNodes(true);
+                        ProductSelect.treeObj = $.fn.zTree.getZTreeObj("categoryTree");
+                        ProductSelect.treeObj.expandAll(true);
+                        ProductSelect.treeObj.checkAllNodes(true);
                     }
                 }
             });
+            //增加页面滚动事件
+            $("#plDiv").myScrollDown({
+                downDis: 1000,
+                doingCB: ProductSelect.updateProductsLST,
+                doingPar: true
+            });
+
+            $("#refreshBtn").on("click", function (ev) {
+                ProductSelect.updateProductsLST();
+            });
+            //初始化已选产品列表
+            var tmpTag = parseInt(parArr[3]);
+            var GetProductsUrl;
+            switch (tmpTag) {
+                case 0: {
+                    //select products for column
+                    GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
+                    break;
+                }
+            }
+            $.myAjax({
+                historyTag: false,
+                loadEle: $("#selDiv"),
+                url: GetProductsUrl,
+                data: null,
+                dataType: "json",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                success: function (data, status, options) {
+                    if (data.content != null) {
+                        $.each(data.content, function (i, n) {
+                            ProductSelect.BuildProductItemWithCB(n).appendTo($("#selDiv"));
+                        });
+                        //$("#selDiv .productCB").attr("onpropertychange", "ProductSelect.OnSelItemCBChange()");
+                        //$("#selDiv .productCB").attr("oninput", "ProductSelect.OnSelItemCBChange()");
+                        //$("#selDiv .productCB").on("change", ProductSelect.OnSelItemCBChange);
+                    }
+                }
+            });
+            $("#checkAll").checkAll(null, "#selDiv .item .productCB");
+            $("#selDiv").on("change", ".productCB", ProductSelect.OnSelItemCBChange);
+            $("#selDiv").on("click", ".item", ProductSelect.OnSelItemClick);
         });
 </script>
 </body>

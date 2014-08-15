@@ -262,4 +262,223 @@ var Manager = {
 	        });
 		}
 	}
-}
+};
+
+var ProductSelect = {
+	selArr : [],
+    notSelArr : [],
+    selTag : false,
+    treeObj : null,
+    updateArr : function () {
+        var tmpArr = null;
+        if (ProductSelect.selTag) {
+            tmpArr = ProductSelect.treeObj.getCheckedNodes(true);
+            ProductSelect.notSelArr = [];
+            ProductSelect.selArr = [];
+            $.each(tmpArr, function (i, n) {
+                if (!n.isParent)
+                    ProductSelect.selArr.push(n.CID);
+            });
+        }
+        else {
+            tmpArr = ProductSelect.treeObj.getCheckedNodes(false);
+            ProductSelect.selArr = [];
+            ProductSelect.notSelArr = [];
+            $.each(tmpArr, function (i, n) {
+                if (!n.isParent)
+                    ProductSelect.notSelArr.push(n.CID);
+            });
+        }
+    },
+    updateProductsLST : function (insertTag) {
+        var pathName = window.location.pathname;
+        var result = pathName.split('/');
+        var href = "";
+        for (var i = 1; i < 3; i++)
+        {
+            href += "/" + result[i];
+        }
+        var tmpData = {
+            Tag: result[3],
+            Par: result[4],
+            BeginIndex : insertTag ? $("#plDiv")[0].childElementCount : 0,
+            GetCount : 50,
+            OrderStr : ProductSelect.GetOrderStr(),
+            WhereStr : ProductSelect.GetWhereStr()
+        };
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#plDiv"),
+            url: href,
+            data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (!insertTag) {
+                    $("#plDiv").empty();
+                }
+                if (data.content != null) {
+                    $.each(data.content, function (i, n) {
+                        ProductSelect.BuildProductItem(n).appendTo($("#plDiv"));
+                    });
+                }
+                $("#plDiv").myScrollDown({},"Goon");
+            }
+        });
+        return false;
+    },
+    BuildProductItem : function (item) {
+        var htmlStr =
+            "<div class='item'>" +
+                "<div class='img'>" +
+                    "<img src='{1}' />" +
+                "</div>" +
+                "<div class='title' title='{2}'>{2}</div>" +
+                "<div class='marketPrice p60'>" +
+                    "市价：<label>￥{3}<label>" +
+                "</div>" +
+                "<div class='p40'>" +
+                    "折扣：<label>{4}</label>" +
+                "</div>" +
+                "<div class='price p60'>" +
+                    "现价：<label>￥{5}</label>" +
+                "</div>" +
+                "<div class='p40'>" +
+                    "已售：<label>{6}</label>" +
+                "</div>" + 
+                "<div class='p60'>" +
+                    "存货：<label>{7}</label>" +
+                "</div>" +
+                "<div class='p40'>" +
+                    "浏览：<label>{8}</label>" +
+                "</div>" +
+            	"<div class='p1'>" +
+                    "创建时间：<label>{9}</label>" +
+                	"<a class='detailA' href='/Product/Detail/{0}'>详细</a>" +
+                "</div>" +
+            "</div>";
+        htmlStr = $.CreateString(htmlStr, [
+            item.PID,
+            item.ImgPathArr[0],
+            item.Title,
+            item.MarketPrice,
+            item.Discount,
+            item.Price,
+            item.Sale,
+            item.Stock,
+            item.PVCount,
+            item.Date
+        ]);
+        return $(htmlStr);
+    },
+    BuildProductItemWithCB : function(item) {
+    	var pItem = ProductSelect.BuildProductItem(item);
+        var CBCtrl = $("<input class='productCB' type='checkbox' data-pid='" + item.PID + "' />");
+        pItem.append(CBCtrl);
+//        CBCtrl.attr("onpropertychange", "ProductSelect.OnSelItemCBChange");
+//        CBCtrl.attr("oninput", "ProductSelect.OnSelItemCBChange");
+        return pItem;
+    },
+    GetOrderStr : function () {
+        var result = "";
+        var orderTagArr = $("#orderDiv .orderTag");
+        $.each(orderTagArr,function(i,n){
+        	var item = $(n);
+        	if(item.hasClass("ASC")) {
+        		result += item.attr("data-tag") + ",ASC;";
+        	}
+        	else if(item.hasClass("DESC")) {
+        		result += item.attr("data-tag") + ",DESC;";
+        	}
+        });
+        result = result.substring(0,result.length - 1);
+        return result;
+    },
+    GetWhereStr : function () {
+    	var result = $("#whereInput").val();
+    	var tmpStr = "";
+        if (ProductSelect.selTag) {
+            if (ProductSelect.selArr.length > 0) {
+                tmpStr = "CID IN (" + ProductSelect.selArr.join(",") + ")";
+            }
+            else {
+                tmpStr = "CID == -1";
+            }
+        }
+        else {
+            if (ProductSelect.notSelArr.length > 0) {
+                tmpStr = "CID NOT IN (" + ProductSelect.notSelArr.join(",") + ")";
+            }
+        }
+        if(result == "") {
+    		result = tmpStr;
+        }
+        else if(tmpStr != "") {
+    		result += " AND " + tmpStr;
+        }
+        return result;
+    },
+    OnOrderTagClick : function(obj) {
+    	var orderTag = $(obj);
+    	if(orderTag.hasClass("ASC")) {
+    		orderTag.removeClass("ASC");
+    		orderTag.addClass("DESC");
+    	}
+    	else if(orderTag.hasClass("DESC")) {
+    		orderTag.removeClass("DESC");
+    	}
+    	else {
+    		orderTag.addClass("ASC");
+    	}
+    },
+    OnSelItemCBChange : function(ev) {
+    	var cTag = false;
+    	$.each($("#selDiv .productCB"),function(i,n){
+    		if($(n).prop("checked")){
+    			cTag = true;
+    			return false;
+    		}
+    	});
+    	if (cTag) {
+    		if(!$("#upBtn").hasClass("sbtn1")) {
+	            $("#PSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
+	            $("#upBtn").on("click",ProductSelect.OnUpBtnClick);
+	            $("#downBtn").on("click",ProductSelect.OnDownBtnClick);
+	            $("#delBtn").on("click",ProductSelect.OnDelBtnClick);
+    		}
+        }
+        else {
+            $("#PSMain .btnDiv .gray").removeClass("sbtn1").addClass("sbtngray");
+            $("#upBtn").off("click");
+            $("#downBtn").off("click");
+            $("#delBtn").off("click");
+        }
+    },
+    OnSelItemClick : function(ev) {
+    	var target = $(ev.target);
+        var curTarget = $(ev.currentTarget);
+        var CBCtrl = curTarget.children(".productCB");
+        if(!target.hasClass("productCB")) {
+//	        var tag = CBCtrl.prop("checked");
+//	        CBCtrl.prop("checked", !tag);
+//	        CBCtrl.trigger("change");
+        	CBCtrl.click();
+        }
+    },
+    OnUpBtnClick : function(ev) {
+    	
+    },
+    OnDownBtnClick : function(ev) {
+    	
+    },
+    OnDelBtnClick : function(ev) {
+    	
+    },
+    OnRefreshBtnClick : function(ev) {
+    	
+    },
+    OnSaveBtnClick : function(ev) {
+    	
+    }
+};

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace FCStore.Models
 {
@@ -192,6 +193,8 @@ namespace FCStore.Models
                 {
                     TableItem tmpTI = new TableItem();
                     tmpTI.Description = m_dtype.InvokeMember(tmpTC.Title, BindingFlags.GetProperty, null, obj, null).ToString();
+                    tmpTI.Key = m_dtype.InvokeMember(tmpTC.Title, BindingFlags.GetProperty, null, obj, null).ToString();
+                    tmpTI.Item = obj;
                     TIArr[tmpIndex].Add(tmpTI);
                 }
                 ++tmpIndex;
@@ -240,10 +243,27 @@ namespace FCStore.Models
         {
             public string Description;
             public object Key;
+            public T Item;
         }
 
         public List<TableColumn> TCArr;
 
         public List<List<TableItem>> TIArr;
+
+        private static Regex parRGX = new Regex("\\{(?'Property'.+)\\}");
+        public static string ParseParameter(string par,TableItem item)
+        {
+            string result = par;
+            Match tmpMatch = parRGX.Match(result);
+            Type tmpType = item.Item.GetType();
+            while (!string.IsNullOrEmpty(tmpMatch.Value))
+            {
+                string PropertyStr = tmpMatch.Groups["Property"].ToString();
+                PropertyStr = tmpType.InvokeMember(PropertyStr, BindingFlags.GetProperty, null, item.Item, null).ToString();
+                result = result.Substring(0, tmpMatch.Index) + PropertyStr + result.Substring(tmpMatch.Index + tmpMatch.Length);
+                tmpMatch = parRGX.Match(result);
+            }
+            return result;
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace FCStore
 
             routes.MapRoute(
                 name: "ProductSelect",
-                url: "Manager/ProductsSelect/{saveFunName}/{BeginIndex}/{GetCount}/{OrderStr}/{WhereStr}",
+                url: "Manager/ProductsSelect/{Tag}/{Par}/{BeginIndex}/{GetCount}/{OrderStr}/{WhereStr}",
                 defaults: new { controller = "Manager", action = "ProductsSelect", BeginIndex = 0, GetCount = 50, OrderStr = "PID,DESC", WhereStr = "" }
             );
 

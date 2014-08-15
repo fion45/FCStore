@@ -132,6 +132,7 @@ namespace FCStore.Models
             set;
         }
 
+        [JsonIgnore]
         public virtual List<Column> Columns
         {
             get;
