@@ -4,14 +4,15 @@
 	},
 	showLoading : function(srcStr) {
 		var ele = $(this);
-		if(ele.data["loadingEle"] != null) {
-			var loadingEle = ele.data["loadingEle"];
+		if(ele.data("loadingEle") != null) {
+			var loadingEle = ele.data("loadingEle");
 			if(srcStr != null)
 				loadingEle.children("img").prop("src",srcStr);
 			loadingEle.show();
 		}
 		else {
-			ele.css("position","relative");
+			if(ele.css("position") != "absolute")
+				ele.css("position","relative");
 			if(srcStr == null) {
 				srcStr = "/Content/themes/image/loading.gif"
 			}
@@ -22,13 +23,13 @@
 						"<img src=\"" + srcStr + "\" >" +
 					"</div>");
 			ele.append(loadingEle);
-			ele.data["loadingEle"] = loadingEle;
+			ele.data("loadingEle",loadingEle);
 		}
 	},
 	hideLoading : function() {
 		var ele = $(this);
-		if(ele.data["loadingEle"] != null) {
-			ele.data["loadingEle"].hide();
+		if(ele.data("loadingEle") != null) {
+			ele.data("loadingEle").hide();
 		}
 	},
 	mySpinner : function (config) {
@@ -383,6 +384,13 @@ jQuery.extend({
             return replaces[$1];
         });
         return temp;
+    },
+    ReverseArr : function(arr) {
+    	var result = [];
+    	for(var i = arr.length - 1; i >= 0; i--) {
+    		result.push(arr[i]);
+    	}
+    	return result;
     }
 });
 

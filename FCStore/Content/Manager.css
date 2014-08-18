@@ -525,9 +525,8 @@ li {
     }
 
     #PSMain .item img{
+        height:155px;
         width:146px;
-        max-height:150px;
-        min-height:150px;
     }
 
     #PSMain .item .title{
@@ -596,3 +595,20 @@ li {
      #PSMain .item .detailA:hover {
          color:#0094ff;
      }
+
+     #selDiv .item {
+         width:95px;
+         padding:3px;
+     }
+
+        #selDiv .item img {
+            width:95px;
+            height:95px;
+        }
+
+        #selDiv .item .detailA {
+            position:absolute;
+            top:100%;
+            left:0%;
+            margin-top:-24px;
+        }

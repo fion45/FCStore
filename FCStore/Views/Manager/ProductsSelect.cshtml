@@ -28,7 +28,7 @@
                         <input id="delBtn" class="gray sbtngray" type="button" value="删除" />
                     </li>
                     <li>
-                        <input id="refreshBtn" class="sbtn1" type="button" value="刷新" />
+                        <input id="refreshSelBtn" class="sbtn1" type="button" value="刷新" />
                     </li>
                     <li>
                         <input id="saveBtn" class="sbtn2" type="button" value="保存" />
@@ -187,38 +187,13 @@
             $("#refreshBtn").on("click", function (ev) {
                 ProductSelect.updateProductsLST();
             });
-            //初始化已选产品列表
-            var tmpTag = parseInt(parArr[3]);
-            var GetProductsUrl;
-            switch (tmpTag) {
-                case 0: {
-                    //select products for column
-                    GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
-                    break;
-                }
-            }
-            $.myAjax({
-                historyTag: false,
-                loadEle: $("#selDiv"),
-                url: GetProductsUrl,
-                data: null,
-                dataType: "json",
-                type: "GET",
-                contentType: "application/json;charset=utf-8",
-                success: function (data, status, options) {
-                    if (data.content != null) {
-                        $.each(data.content, function (i, n) {
-                            ProductSelect.BuildProductItemWithCB(n).appendTo($("#selDiv"));
-                        });
-                        //$("#selDiv .productCB").attr("onpropertychange", "ProductSelect.OnSelItemCBChange()");
-                        //$("#selDiv .productCB").attr("oninput", "ProductSelect.OnSelItemCBChange()");
-                        //$("#selDiv .productCB").on("change", ProductSelect.OnSelItemCBChange);
-                    }
-                }
-            });
+            ProductSelect.updateSelProducts();
             $("#checkAll").checkAll(null, "#selDiv .item .productCB");
             $("#selDiv").on("change", ".productCB", ProductSelect.OnSelItemCBChange);
             $("#selDiv").on("click", ".item", ProductSelect.OnSelItemClick);
+
+            $("#refreshSelBtn").on("click", ProductSelect.OnRefreshSelBtnClick);
+            $("#saveBtn").on("click", ProductSelect.OnSaveBtnClick);
         });
 </script>
 </body>

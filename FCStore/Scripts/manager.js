@@ -269,6 +269,71 @@ var ProductSelect = {
     notSelArr : [],
     selTag : false,
     treeObj : null,
+    updateSelProducts : function() {
+    	$("#selDiv .item").remove();
+        //初始化已选产品列表
+        var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = parseInt(parArr[3]);
+        var GetProductsUrl;
+        switch (tmpTag) {
+            case 0: {
+                //select products for column
+                GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
+                break;
+            }
+        }
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#selDiv"),
+            url: GetProductsUrl,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content != null) {
+                    $.each(data.content, function (i, n) {
+                        ProductSelect.BuildProductItemWithCB(n).appendTo($("#selDiv"));
+                    });
+                }
+            }
+        });
+    },
+    saveSelProducts : function() {
+    	//保存已选产品
+    	var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = parseInt(parArr[3]);
+        var SetProductsUrl;
+        switch (tmpTag) {
+            case 0: {
+                //select products for column
+                SetProductsUrl = "/Product/SetSelectProductInColum";
+                break;
+            }
+        }
+        var tmpData = {
+        	id : parArr[4],
+        	PIDArr : []  
+        };
+        $.each($("#selDiv .item"),function(i,n){
+        	tmpData.PIDArr.push($(n).attr("data-pid"));
+        });
+        
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#selDiv"),
+            url: SetProductsUrl,
+            data : JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+            	
+            }
+        });
+    },
     updateArr : function () {
         var tmpArr = null;
         if (ProductSelect.selTag) {
@@ -373,11 +438,28 @@ var ProductSelect = {
         return $(htmlStr);
     },
     BuildProductItemWithCB : function(item) {
-    	var pItem = ProductSelect.BuildProductItem(item);
-        var CBCtrl = $("<input class='productCB' type='checkbox' data-pid='" + item.PID + "' />");
+    	var htmlStr =
+            "<div class='item' title='描述：{2}，市价：{3}，现价：{5}，已售：{6}，折扣：{4}，库存：{7}，浏览：{8}，创建时间：{9}，' data-pid='" + item.PID + "' >" +
+                "<div class='img'>" +
+                    "<img src='{1}' />" +
+                "</div>" +
+            	"<a class='detailA' href='/Product/Detail/{0}'>详细</a>" +
+            "</div>";
+        htmlStr = $.CreateString(htmlStr, [
+            item.PID,
+            item.ImgPathArr[0],
+            item.Title,
+            item.MarketPrice,
+            item.Discount,
+            item.Price,
+            item.Sale,
+            item.Stock,
+            item.PVCount,
+            item.Date
+        ]);
+    	var pItem = $(htmlStr);
+        var CBCtrl = $("<input class='productCB' type='checkbox'/>");
         pItem.append(CBCtrl);
-//        CBCtrl.attr("onpropertychange", "ProductSelect.OnSelItemCBChange");
-//        CBCtrl.attr("oninput", "ProductSelect.OnSelItemCBChange");
         return pItem;
     },
     GetOrderStr : function () {
@@ -460,25 +542,61 @@ var ProductSelect = {
         var curTarget = $(ev.currentTarget);
         var CBCtrl = curTarget.children(".productCB");
         if(!target.hasClass("productCB")) {
-//	        var tag = CBCtrl.prop("checked");
-//	        CBCtrl.prop("checked", !tag);
-//	        CBCtrl.trigger("change");
         	CBCtrl.click();
         }
     },
     OnUpBtnClick : function(ev) {
-    	
+    	var selItems = $("#selDiv .item:has(.productCB:checked)");
+    	var frontItem = null;
+    	var lastItem = null;
+    	var moveItems = [];
+    	$.each(selItems,function(i,n){
+    		var tmpItem = $(n);
+    		if(frontItem == null) {
+	    		var prevItem = tmpItem.prev();
+	    		if(prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
+	    			frontItem = prevItem;
+	    		else
+	    			lastItem = tmpItem;
+    		}
+    		if(frontItem != null) {
+    			moveItems.push(tmpItem);
+    		}
+    	});
+    	if(frontItem != null) {
+    		frontItem.before(moveItems);
+    	}
     },
     OnDownBtnClick : function(ev) {
-    	
+    	var selItems = $.ReverseArr($("#selDiv .item:has(.productCB:checked)"));
+    	var backItem = null;
+    	var lastItem = null;
+    	var moveItems = [];
+    	$.each(selItems,function(i,n){
+    		var tmpItem = $(n);
+    		if(backItem == null) {
+	    		var nextItem = tmpItem.next();
+	    		if(nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
+	    			backItem = nextItem;
+	    		else
+	    			lastItem = tmpItem;
+    		}
+    		if(backItem != null) {
+    			moveItems.unshift(tmpItem);
+    		}
+    	});
+    	if(backItem != null) {
+    		backItem.after(moveItems);
+    	}
     },
     OnDelBtnClick : function(ev) {
-    	
+    	var selItems = $("#selDiv .item:has(.productCB:checked)");
+    	selItems.remove();
     },
-    OnRefreshBtnClick : function(ev) {
-    	
+    OnRefreshSelBtnClick : function(ev) {
+    	ProductSelect.updateSelProducts();
     },
     OnSaveBtnClick : function(ev) {
-    	
+    	ProductSelect.saveSelProducts();
     }
 };

@@ -420,6 +420,24 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult SetSelectProductInColum(int id,List<int> PIDArr)
+        {
+            Column tmpColum = db.Columns.FirstOrDefault(r => r.ColumnID == id);
+            tmpColum.Products.Clear();
+            List<Product> productLST = db.Products.Where(r=>PIDArr.Contains(r.PID)).ToList();
+            tmpColum.Products.AddRange(productLST);
+            db.SaveChanges();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
