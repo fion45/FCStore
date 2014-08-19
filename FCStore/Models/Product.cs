@@ -132,11 +132,26 @@ namespace FCStore.Models
             set;
         }
 
-        [JsonIgnore]
-        public virtual List<Column> Columns
+        public virtual List<ReColumnProduct> REProColLST
         {
             get;
             set;
         }
+
+        [JsonIgnore]
+        public virtual List<Column> Columns
+        {
+            get
+            {
+                List<Column> result = new List<Column>();
+                foreach (ReColumnProduct rcpItem in this.REProColLST)
+                {
+                    result.Add(rcpItem.Column);
+                }
+                return result;
+            }
+        }
+
+
     }
 }

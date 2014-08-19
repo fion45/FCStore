@@ -56,5 +56,7 @@ namespace FCStore.Models
         public DbSet<RecentView> RecentViews { get; set; }
 
         public DbSet<PushInfo> PushInfos { get; set; }
+
+        public DbSet<ReColumnProduct> ReColumnProducts { get; set; }
     }
 }

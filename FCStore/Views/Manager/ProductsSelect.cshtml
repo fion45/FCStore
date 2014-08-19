@@ -9,7 +9,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>ProductsSelect</title>    
+    <title>ProductsSelect</title>     
+    @Styles.Render("~/Content/themes/base/css")   
     @Styles.Render("~/Manager/css")
     @Styles.Render("~/ZTree/css")
 </head>
@@ -96,6 +97,7 @@
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/Manager/js")
     @Scripts.Render("~/ZTree/js")
     <script type="text/javascript" charset="utf-8">

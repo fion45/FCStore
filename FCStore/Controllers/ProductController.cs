@@ -420,12 +420,13 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult SetSelectProductInColum(int id,List<int> PIDArr)
+        public ActionResult SetSelectProductInColum(int id, List<int> PIDArr, List<ReColumnProduct> Par)
         {
-            Column tmpColum = db.Columns.FirstOrDefault(r => r.ColumnID == id);
-            tmpColum.Products.Clear();
-            List<Product> productLST = db.Products.Where(r=>PIDArr.Contains(r.PID)).ToList();
-            tmpColum.Products.AddRange(productLST);
+            db.m_objcontext.ExecuteStoreCommand("DELETE ReColumnProducts WHERE ColumnID = " + id);
+            foreach (ReColumnProduct item in Par)
+            {
+                db.ReColumnProducts.Add(item);
+            }
             db.SaveChanges();
             if (Request.IsAjaxRequest())
             {

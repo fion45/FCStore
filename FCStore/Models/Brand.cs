@@ -3,6 +3,8 @@ using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace FCStore.Models
 {
@@ -44,6 +46,27 @@ namespace FCStore.Models
         {
             get;
             set;
+        }
+
+        [JsonIgnore]
+        public virtual List<ReColumnBrand> REBrandColLST
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public virtual List<Column> Columns
+        {
+            get
+            {
+                List<Column> result = new List<Column>();
+                foreach (ReColumnBrand rcpItem in this.REBrandColLST)
+                {
+                    result.Add(rcpItem.Column);
+                }
+                return result;
+            }
         }
     }
 }

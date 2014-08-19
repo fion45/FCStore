@@ -128,6 +128,12 @@ namespace FCStore.Controllers
             typeDic["Brands"].parameter = "/Manager/BrandsSelect";
             typeDic["Brands"].width = 60;
 
+            typeDic["REColProLST"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["REColProLST"].ignore = true;
+
+            typeDic["REColBrandLST"] = new ManagerVM<Column>.TableColumn.Config();
+            typeDic["REColBrandLST"].ignore = true;
+
             ManagerVM<Column> tmpVM = new ManagerVM<Column>(db.Columns.ToList(), typeDic);
             return View(tmpVM);
         }

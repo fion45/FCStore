@@ -269,6 +269,42 @@ var ProductSelect = {
     notSelArr : [],
     selTag : false,
     treeObj : null,
+    ShowColumSetting : function(ev) {
+    	var target = $(ev.target);
+    	if(!target.hasClass("productCB")) {
+    		var currentTarget = $(ev.currentTarget);
+    		if($("#CSDlg").length > 0) {
+    			$("#CSDlg").dialog("open");
+    		}
+    		else {
+		    	var ele = $(
+		    		"<ul id=CSDlg>" +
+						"<li class='title'>横跨行数：</li>" +
+						"<li class='content'><input id='CRTB' type='text' value='1' /></li>" +
+						"<li class='title'>横跨列数：</li>" +
+						"<li class='content'><input id='CCTB' type='text' value='1' /></li>" +
+						"<li class='title'>显示方式：</li>" +
+						"<li class='content'><input id='RTTB' type='text' value='0' /></li>" +
+					"</ul>");
+				ele.appendTo($(window.document.body));
+				$("#CSDlg").dialog({
+					autoOpen: false,
+			        modal: true,
+					title: '设置',
+			        buttons: {
+			        	"确定" : function() {
+			        		currentTarget.attr({
+			        			"data-cr" : $("#CRTB").val(),
+			        			"data-cc" : $("#CCTB").val(),
+			        			"data-rt" : $("#RTTB").val()
+			        		});
+			        		$(this).dialog("close");
+			        	}
+			        }
+				});
+    		}
+    	}
+    },
     updateSelProducts : function() {
     	$("#selDiv .item").remove();
         //初始化已选产品列表
@@ -280,6 +316,7 @@ var ProductSelect = {
             case 0: {
                 //select products for column
                 GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
+                $("#selDiv").on("dblclick",".item",ProductSelect.ShowColumSetting);
                 break;
             }
         }
@@ -306,16 +343,32 @@ var ProductSelect = {
         var parArr = pathName.split('/');
         var tmpTag = parseInt(parArr[3]);
         var SetProductsUrl;
+        var par = [];
         switch (tmpTag) {
             case 0: {
                 //select products for column
                 SetProductsUrl = "/Product/SetSelectProductInColum";
+                $.each($("#selDiv .item"),function(i,n){
+                	var item = $(n);
+                	var CrossRow = item.attr("data-cr") ? item.attr("data-cr") : 1;
+                	var CrossColum = item.attr("data-cc") ? item.attr("data-cc") : 1;
+                	var RenderType = item.attr("data-rt") ? item.attr("data-rt") : 0;
+                	par.push({
+                		RCPID : 0,
+                		ColumnID : parArr[4],
+                		ProductID : item.attr("data-pid"),
+                		CrossRow : CrossRow,
+                		CrossColum : CrossColum,
+                		RenderType : RenderType
+                	});
+                });
                 break;
             }
         }
         var tmpData = {
         	id : parArr[4],
-        	PIDArr : []  
+        	PIDArr : [],
+        	Par : par
         };
         $.each($("#selDiv .item"),function(i,n){
         	tmpData.PIDArr.push($(n).attr("data-pid"));
@@ -438,8 +491,25 @@ var ProductSelect = {
         return $(htmlStr);
     },
     BuildProductItemWithCB : function(item) {
+    	var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = parseInt(parArr[3]);
+        var tmpData = "";
+        switch (tmpTag) {
+            case 0: {
+            	var columnID = parseInt(parArr[4]);
+            	$.each(item.REProColLST,function(i,n) {
+            		if(n.ColumnID == columnID) {
+            			tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
+            			break;
+            		}
+            	});
+                break;
+            }
+        }
     	var htmlStr =
-            "<div class='item' title='描述：{2}，市价：{3}，现价：{5}，已售：{6}，折扣：{4}，库存：{7}，浏览：{8}，创建时间：{9}，' data-pid='" + item.PID + "' >" +
+            "<div class='item' title='描述：{2}，市价：{3}，现价：{5}，已售：{6}，折扣：{4}，库存：{7}，浏览：{8}，创建时间：{9}，'" + 
+            " data-pid='" + item.PID + "' " + tmpData + ">" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
