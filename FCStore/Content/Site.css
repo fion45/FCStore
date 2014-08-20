@@ -903,6 +903,212 @@ footer {
 /* Main Block
 ----------------------------------------------------------*/
 .MainBlock {
+    position:relative;
+    margin-top:20px;
+    overflow:hidden; 
+    height:100%;
+}
+
+    .MainBlock .left {
+        float:left;
+        width:118px;
+        height:100%;
+        overflow:hidden; 
+        padding-bottom:9999px; 
+        margin-bottom:-9999px; 
+        display:inline;
+    }
+
+        .MainBlock .left .LTConerDiv {
+            height:25px;
+            width:118px;
+            position:relative;
+        }
+
+            .MainBlock .left .LTConerDiv .coner {
+                float:left;
+                width:25px;
+                height:25px;
+                background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px 0px;
+            }
+
+        .MainBlock .left .LBConerDiv {
+            position:absolute;
+            top:100%;
+            left:0px;
+            margin-top:-25px;
+            height:25px;
+            width:118px;
+        }
+
+            .MainBlock .left .LBConerDiv .coner {
+                float:left;
+                width:25px;
+                height:25px;
+                background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px -25px;
+            }
+
+        .MainBlock .left .leftBKDiv {
+            position:absolute;
+            left:25px;
+            right:0px;
+            height:25px;
+            background-color:#B85D7F;
+        }
+
+        .MainBlock .left .LContent {
+            position:absolute;
+            top:25px;
+            bottom:25px;
+            width:118px;
+            background-color:#B85D7F;
+        }
+
+        .MainBlock {
+            color:#B85D7F;
+        }
+
+        .MainBlock .left .subTitle {
+            width: 1em;
+            font-size: 20px;
+            letter-spacing: 20px;
+            line-height:20px;
+            color:#D5AFD1;
+            position:absolute;
+            top:38px;
+            left:20px;
+        }
+
+        .MainBlock .left .title {
+            width: 1em;
+            font-size: 40px;
+            letter-spacing: 40px;
+            line-height:38px;
+            color:white;
+            position:absolute;
+            top:33px;
+            left:50px;
+        }
+
+        .MainBlock .left .LContent .line1 {
+            position:absolute;
+            top:35px;
+            left:42px;
+            width:2px;
+            height:180px;
+            background-color:#B05A7A;
+        }
+
+        .MainBlock .left .LContent .line2 {
+            position:absolute;
+            top:35px;
+            left:44px;
+            width:2px;
+            height:180px;
+            background-color:#C97293;
+        }
+
+    .MainBlock .center {
+        float:right;
+        width:762px;
+        height:auto;
+        background-color:white;
+    }
+
+        .MainBlock .center .brandDiv {
+
+        }
+
+        .MainBlock .center .p4 {
+            width:21%;
+            padding:10px 2%;
+        }
+
+        .MainBlock .center .p2 {
+            width:46%;
+            padding:10px 2%;
+        }
+    
+        .MainBlock .center .p2 .thum {
+            width:200px;
+            height:240px;
+        }
+
+        .MainBlock .center .p2 {
+            width:46%;
+            padding:10px 2%;
+        }
+
+        .MainBlock .center .dashLine {
+            width:100%;
+            border-top:dashed 2px #ffffff;
+        }
+
+        .MainBlock .center .productItem .thum {
+            width:100px;
+            height:120px;
+        }
+
+        .MainBlock .center .productItem .description {
+            text-align:left;
+            max-height:34px;
+            line-height:17px;
+            font-size:10pt;
+            overflow:hidden;
+        }
+
+        .MainBlock .center .productItem .marketPrice {
+            text-align:left;
+            font-size:10pt;
+            color:#999999;
+            margin-top:8px;
+        }
+
+        .MainBlock .center .productItem .price {
+            text-align:left;
+            font-size:16pt;
+            color:#FE2727;
+            margin-left:-3px;
+        }
+
+        .MainBlock .center .productItem .price .buy {
+            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
+            float:right;
+            width:27px;
+            height:27px;
+        }
+
+        .MainBlock .center .remain {
+            padding-top:3px;
+            text-align:left;
+            font-size:10pt;
+        }
+
+            .MainBlock .center .remain .p4 {
+                padding-top:0px;
+            }
+
+        .MainBlock .center .brandDiv {
+            width:100%;
+            height:88px;
+            border-bottom:1px solid #C6C6C6;
+        }
+
+        .MainBlock .center .brandDiv .description {
+            float:left;
+            width:30%;
+            margin-top:20px;
+            font-size:14pt;
+            font-weight:bold;
+        }
+
+        .MainBlock .center .brandDiv .brand {
+            float:left;
+            width:70%;
+        }
+
+
+/*.MainBlock {
     margin-top:20px;
 }
 
@@ -928,7 +1134,7 @@ footer {
     .MainBlock .left .subTitle {
         width: 1em;
         font-size: 20px;
-        letter-spacing: 20px; /* arbitrarily large letter-spacing for safety */
+        letter-spacing: 20px;
         line-height:20px;
         color:#FFFFFF;
         position:absolute;
@@ -939,7 +1145,7 @@ footer {
     .MainBlock .left .title {
         width: 1em;
         font-size: 40px;
-        letter-spacing: 40px; /* arbitrarily large letter-spacing for safety */
+        letter-spacing: 40px;
         line-height:38px;
         color:white;
         position:absolute;
@@ -1133,7 +1339,7 @@ footer {
 
     #groupBuy .center .title {
         color:#85A9DA;
-    }
+    }*/
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {

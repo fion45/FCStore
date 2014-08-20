@@ -14,352 +14,64 @@
         });
     </script>
 }
-@{
-    List<BannerItem> biLst = (List<BannerItem>)ViewBag.BannerItems;
-    if(biLst.Count > 0)
-    {
-        <div id="bannerDiv" class="ui-banner">
-            <ul class="ui-banner-slides">
-                @foreach(BannerItem tmpBI in biLst)
-                {
-                    <li><a href="@(tmpBI.HrefPath)"><img src="@(tmpBI.ImgPath)" alt="" title=""></a></li>
-                }
-            </ul><!--ui-banner-slides end-->
-            <ul class="ui-banner-slogans">
-                @foreach(BannerItem tmpBI in biLst)
-                {
-                    <li>
-                        <div class="title">@(tmpBI.Title)</div>
-                        <div class="description">@(tmpBI.Description)</div>
-                    </li>
-                }
-            </ul><!--ui-banner-slogans end-->
-            <a href="" class="ui-banner-arrow ui-banner-arrow-prev png_bg"></a>
-            <a href="" class="ui-banner-arrow ui-banner-arrow-next png_bg"></a>
-            <div class="ui-banner-overlay png_bg"></div>
-        </div>
-    }
-}
-@{
-    string niStr = "";
-    niStr += ";限时抢购;";
-    var sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("限时抢购") == 0);
-    int bkXPos = 0;
-    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
-    {
-        //包含限时抢购
-        <div class="MainBlock" id="discountInTime">
-            <div class="left">
-                <div class="subTitle">
-                    @(sitem.SubDescribe)                  
-                </div>
-                <div class="title">
-                    @(sitem.Describe)
-                </div>
-            </div>
-            <div class="center">
-                <div class="title">
-                    <div>@(sitem.TopTitle)</div>
-                    <a>更多</a>
-                </div>
-                <ul>
-                    @for(int i=0;i<Math.Min(sitem.Products.Count,4);i++)
-                    {
-                        Product product = sitem.Products[i];
-                        <li class="productItem p4">
-                            <a href="\Product\Detail\@(product.PID)">
-                                <div>
-                                    <img class="thum" src="@(product.ImgPathArr.First())" />
-                                </div>
-                                <div class="description">
-                                    @(product.Title)
-                                </div>
-                                <div>
-                                    <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
-                                    <div class="price">
-                                        @(PubFunction.CHPriceFormat(product.Price))
-                                        <div class="buy">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    }
-                    <li class="dashLine"></li>
-                </ul>
-                <div class="pullupDiv"></div>
-                <div class="remain">
-                    <ul>
-                        @for (int i = 0; i < Math.Min(sitem.Products.Count, 4); i++)
-                        {
-                            Product product = sitem.Products[i];
-                            <li class="p4">
-                                <div class="remainTitle">
-                                    剩余时间
-                                </div>
-                                <div class="remainTimer">
-
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-            <div class="pullupDiv"></div>
-        </div>
-    }
-    niStr += ";新品上市;";
-    sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("新品上市") == 0);
-    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
-    {
-        bkXPos += 128;
-        //包含新品上市
-        <div class="MainBlock bigMainBlock" id="newProduct">
-            <div class="left">
-                <div class="subTitle">
-                    @(sitem.SubDescribe)
-                </div>
-                <div class="title">
-                    @(sitem.Describe)
-                </div>
-            </div>
-            <div class="center">
-                <div class="brandDiv">
-                    <ul>
-                        <li>
-                            <div class="titleItem">把握脉搏</div>
-                            <div class="titleItem">紧跟潮流</div>
-                            <div class="titleItem">走在时代尖端</div>
-                        </li>
-                        <li>
-                            <div class="topLeft">
-                                相关品牌：
-                            </div>
-                            @{
-                                int m = 0;
-                                int MaxC = 3;
-                                for (m = 0; m < Math.Min(sitem.Brands.Count, MaxC); m++)
-                                {
-                                    <div class="brandItem">
-                                        <a href="Product/ListByBrand/@(sitem.Brands[m].BID)">
-                                            <img src="/Brand/@(sitem.Brands[m].Tag).jpg" />
-                                        </a>
-                                    </div>
-                                }
-                                int tmpC = MaxC - m;
-                                List<Brand> brandLst = (from pro in sitem.Products
-                                                        where pro.Brand.NameStr != "其他"
-                                                        select pro.Brand).Distinct().ToList();
-                                for (m = 0; m < Math.Min(brandLst.Count, tmpC); m++)
-                                {
-                                    <div class="brandItem">
-                                        <a href="Product/ListByBrand/@(brandLst[m].BID)">
-                                            <img src="/Brand/@(brandLst[m].Tag).jpg" />
-                                        </a>
-                                    </div>
-                                }
-                            }
-                        </li>
-                        <li class="floatRight">
-                            <div class="imgDiv">
-
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <ul>                    
-                    @{
-                        Product proItem = sitem.Products.First();
-                    }
-                    <li class="productItem p2">
-                        <a href="\Product\Detail\@(proItem.PID)">
-                            <div>
-                                <img class="thum" src="@(proItem.ImgPathArr.First())" />
-                            </div>
-                            <div class="description">
-                                @(proItem.Title)
-                            </div>
-                            <div>
-                                <div class="marketPrice">@(PubFunction.CHPriceFormat(proItem.MarketPrice))</div>
-                                <div class="price">
-                                    @(PubFunction.CHPriceFormat(proItem.Price))
-                                    <div class="buy">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    @{
-                        proItem = sitem.Products.ElementAt(5);
-                    }
-                    @for(int i=1;i<Math.Min(sitem.Products.Count,5);i++)
-                    {
-                        Product product = sitem.Products[i];
-                        <li class="productItem p4">
-                            <a href="\Product\Detail\@(product.PID)">
-                                <div>
-                                    <img class="thum" src="@(product.ImgPathArr.First())" />
-                                </div>
-                                <div class="description">
-                                    @(product.Title)
-                                </div>
-                                <div>
-                                    <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
-                                    <div class="price">
-                                        @(PubFunction.CHPriceFormat(product.Price))
-                                        <div class="buy">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        if (i == 2)
-                        {
-                            <li class="dashLine"></li>
-                        }
-                    }
-                    <li class="productItem p2">
-                        <a href="\Product\Detail\@(proItem.PID)">
-                            <div>
-                                <img class="thum" src="@(proItem.ImgPathArr.First())" />
-                            </div>
-                            <div class="description">
-                                @(proItem.Title)
-                            </div>
-                            <div>
-                                <div class="marketPrice">@(PubFunction.CHPriceFormat(proItem.MarketPrice))</div>
-                                <div class="price">
-                                    @(PubFunction.CHPriceFormat(proItem.Price))
-                                    <div class="buy">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="pullupDiv"></div>
-        </div>
-    }
-    niStr += ";团购优惠;";
-    sitem = Model.FirstOrDefault(r => r.Describe.CompareTo("团购优惠") == 0);
-    if (sitem != null && sitem.Products != null && sitem.Products.Count > 0)
-    {
-        bkXPos += 128;
-        //包含团购优惠
-        <div class="MainBlock" id="groupBuy">
-            <div class="left">
-                <div class="subTitle">
-                    @(sitem.SubDescribe)
-                </div>
-                <div class="title">
-                    @(sitem.Describe)
-                </div>
-            </div>
-            <div class="center">
-                <div class="title">
-                    <div>@(sitem.TopTitle)</div>
-                    <a>更多</a>
-                </div>
-                <ul>
-                    @for(int i=0;i<Math.Min(sitem.Products.Count,4);i++)
-                    {
-                        Product product = sitem.Products[i];
-                        <li class="productItem p4">
-                            <a href="\Product\Detail\@(product.PID)">
-                                <div>
-                                    <img class="thum" src="@(product.ImgPathArr.First())" />
-                                </div>
-                                <div class="description">
-                                    @(product.Title)
-                                </div>
-                                <div>
-                                    <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
-                                    <div class="price">
-                                        @(PubFunction.CHPriceFormat(product.Price))
-                                        <div class="buy">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    }
-                    <li class="dashLine"></li>
-                </ul>
-                <div class="pullupDiv"></div>
-                <div class="remain">
-                    <ul>
-                        @for (int i = 0; i < Math.Min(sitem.Products.Count, 4); i++)
-                        {
-                            Product product = sitem.Products[i];
-                            <li class="p4">
-                                <div class="remainTitle">
-                                    剩余时间
-                                </div>
-                                <div class="remainTimer">
-
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-            <div class="pullupDiv"></div>
-        </div>
-    }
-}
-
 @foreach (var item in Model)
 {
-    if(niStr.IndexOf(";" + item.Describe + ";") == -1 && item.Products != null && item.Products.Count > 0)
-    {
-        bkXPos += 128;
-        <div class="MainBlock">
-            <div class="left" style="background-position-x:@(bkXPos)px">
+    <div class="MainBlock">
+        <div class="left">
+            <div class="LTConerDiv">
+                <div class="coner"></div>
+                <div class="leftBKDiv"></div>
+            </div>
+            <div class="LContent">
                 <div class="subTitle">
                     @(item.SubDescribe)
                 </div>
                 <div class="title">
                     @(item.Describe)
                 </div>
+                <div class="line1">
+
+                </div>
+                <div class="line2">
+
+                </div>
             </div>
-            <div class="center">
-                <div class="brandDiv">
+            <div class="LBConerDiv">
+                <div class="coner"></div>
+                <div class="leftBKDiv"></div>
+            </div>
+        </div>
+        <div class="center">
+            <div class="brandDiv">
+                <div class="description">
                     @(item.TopTitle)
                 </div>
-                <ul>
-                    @for (int i = 0; i < Math.Min(item.Products.Count, 4); i++)
-                    {
-                        Product product = item.Products[i];
-                        <li class="productItem p4">
-                            <a href="\Product\Detail\@(product.PID)">
-                                <div>
-                                    <img class="thum" src="@(product.ImgPathArr.First())" />
-                                </div>
-                                <div class="description">
-                                    @(product.Title)
-                                </div>
-                                <div>
-                                    <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
-                                    <div class="price">
-                                        @(PubFunction.CHPriceFormat(product.Price))
-                                        <div class="buy">
+            </div>
+            <ul>
+                @for (int i = 0; i < item.Products.Count; i++)
+                {
+                    Product product = item.Products[i];
+                    <li class="productItem p4">
+                        <a href="\Product\Detail\@(product.PID)">
+                            <div>
+                                <img class="thum" src="@(product.ImgPathArr.First())" />
+                            </div>
+                            <div class="description">
+                                @(product.Title)
+                            </div>
+                            <div>
+                                <div class="marketPrice">@(PubFunction.CHPriceFormat(product.MarketPrice))</div>
+                                <div class="price">
+                                    @(PubFunction.CHPriceFormat(product.Price))
+                                    <div class="buy">
 
-                                        </div>
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                    }
-                </ul>
-                <div class="pullupDiv"></div>
-            </div>
-            <div class="pullupDiv"></div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
-    }
+    </div>
 }

@@ -269,10 +269,11 @@ var ProductSelect = {
     notSelArr : [],
     selTag : false,
     treeObj : null,
+    forProduct : null,
     ShowColumSetting : function(ev) {
     	var target = $(ev.target);
     	if(!target.hasClass("productCB")) {
-    		var currentTarget = $(ev.currentTarget);
+    		ProductSelect.forProduct = $(ev.currentTarget);
     		if($("#CSDlg").length > 0) {
     			$("#CSDlg").dialog("open");
     		}
@@ -293,7 +294,7 @@ var ProductSelect = {
 					title: '设置',
 			        buttons: {
 			        	"确定" : function() {
-			        		currentTarget.attr({
+			        		ProductSelect.forProduct.attr({
 			        			"data-cr" : $("#CRTB").val(),
 			        			"data-cc" : $("#CCTB").val(),
 			        			"data-rt" : $("#RTTB").val()
@@ -303,6 +304,9 @@ var ProductSelect = {
 			        }
 				});
     		}
+    		$("#CRTB").val(ProductSelect.forProduct.attr("data-cr"));
+    		$("#CCTB").val(ProductSelect.forProduct.attr("data-cc"));
+    		$("#RTTB").val(ProductSelect.forProduct.attr("data-rt"));
     	}
     },
     updateSelProducts : function() {
@@ -501,7 +505,7 @@ var ProductSelect = {
             	$.each(item.REProColLST,function(i,n) {
             		if(n.ColumnID == columnID) {
             			tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
-            			break;
+            			return false;
             		}
             	});
                 break;
