@@ -32,6 +32,12 @@ namespace FCStore
             );
 
             routes.MapRoute(
+                name: "BrandSelect",
+                url: "Manager/BrandsSelect/{Tag}/{Par}",
+                defaults: new { controller = "Manager", action = "BrandsSelect" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

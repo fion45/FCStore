@@ -394,6 +394,7 @@
     <Content Include="Views\Manager\BannerManager.cshtml" />
     <Content Include="Views\Manager\ColumnManager.cshtml" />
     <Content Include="Views\Manager\ProductsSelect.cshtml" />
+    <Content Include="Views\Manager\BrandsSelect.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

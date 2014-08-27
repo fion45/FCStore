@@ -929,7 +929,8 @@ footer {
                 float:left;
                 width:25px;
                 height:25px;
-                background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px 0px;
+                background:url("/Content/themes/image/MainBlockBK.png") no-repeat;
+                background-position-y:-0px;
             }
 
         .MainBlock .left .LBConerDiv {
@@ -945,7 +946,8 @@ footer {
                 float:left;
                 width:25px;
                 height:25px;
-                background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px -25px;
+                background:url("/Content/themes/image/MainBlockBK.png") no-repeat;
+                background-position-y:-25px;
             }
 
         .MainBlock .left .leftBKDiv {
@@ -1014,10 +1016,6 @@ footer {
         height:auto;
         background-color:white;
     }
-
-        .MainBlock .center .brandDiv {
-
-        }
 
         .MainBlock .center .p4 {
             width:21%;
@@ -1097,249 +1095,180 @@ footer {
         .MainBlock .center .brandDiv .description {
             float:left;
             width:30%;
-            margin-top:20px;
-            font-size:14pt;
+            font-size:12pt;
             font-weight:bold;
+            display: table;
+            height:100%;
         }
+            .MainBlock .center .brandDiv .description .middle {
+                display:table-cell;
+                vertical-align: middle;
+            }
+
+            .MainBlock .center .brandDiv .description div {
+                width:100%;
+                text-align:left;
+            }
 
         .MainBlock .center .brandDiv .brand {
             float:left;
             width:70%;
+            height:100%;
         }
 
-
-/*.MainBlock {
-    margin-top:20px;
-}
-
-.MainBlock a {
-    color:#555555;
-}
-
-.MainBlock a:hover {
-    color:#FE2727;
-}
-
-.MainBlock .left,.MainBlock .center,.MainBlock .right {
-    float:left;
-    height:314px;
-}
-
-.MainBlock .left {
-    width:128px;
-    position:relative;
-    background-image:url("/Content/themes/image/MainBlockBK.png");
-}
-
-    .MainBlock .left .subTitle {
-        width: 1em;
-        font-size: 20px;
-        letter-spacing: 20px;
-        line-height:20px;
-        color:#FFFFFF;
-        position:absolute;
-        top:38px;
-        left:20px;
-    }
-
-    .MainBlock .left .title {
-        width: 1em;
-        font-size: 40px;
-        letter-spacing: 40px;
-        line-height:38px;
-        color:white;
-        position:absolute;
-        top:33px;
-        left:50px;
-    }
-
-    .MainBlock .center {
-        width:762px;
-        margin-left:-10px;
-        background-color:#ffffff;
-    }
-
-        .MainBlock .center .title {
-            height:40px;
-            line-height:40px;
-            vertical-align:middle;
-            border-bottom:1px solid #C6C6C6;
-            text-align:left;
-        }
-
-        .MainBlock .center .title div {
-            margin-left:30px;
+        .MainBlock .center .brandDiv .brand div {
             float:left;
+            margin:24px 8px;
         }
 
-        .MainBlock .center .title a {
-            padding-right:15px;
-            text-align:right;
-            float:right;
-            background:url("/Content/themes/image/LeftRightIcon.png") no-repeat 22px -26px;
+        .MainBlock .center .brandDiv .brand img {
+            width:100px;
+            height:40px;
         }
 
-    .bigMainBlock .left,.bigMainBlock .center {
-        height:564px;
+    .MBStyle0 .left .LTConerDiv .coner {
+        background-position:0px 0px;
     }
 
-        .MainBlock .center .brandDiv {
-            width:100%;
-            height:88px;
-            border-bottom:1px solid #C6C6C6;
-        }
-
-            .MainBlock .center .brandDiv li {
-                position:relative;
-            }
-
-            .MainBlock .center .brandDiv .topLeft {
-                position:absolute;
-                left:0px;
-                top:7px;
-            }
-
-            .MainBlock .center .brandDiv .brandItem {
-                float:left;
-                margin-left:15px;
-                margin-top:25px;
-            }
-
-    .MainBlock .center .p4 {
-        width:21%;
-        padding:10px 2%;
+    .MBStyle0 .left .LBConerDiv .coner {
+        background-position:0px -25px;
     }
 
-    .MainBlock .center .p2 {
-        width:46%;
-        padding:10px 2%;
-    }
-    
-    .MainBlock .center .p2 .thum {
-        width:200px;
-        height:240px;
+    .MBStyle0 .left .LContent .line1 {
+        background-color:#B05A7A;
     }
 
-    .MainBlock .center .p2 {
-        width:46%;
-        padding:10px 2%;
+    .MBStyle0 .left .LContent .line2 {
+        background-color:#C97293;
     }
 
-    .MainBlock .center .dashLine {
-        width:100%;
-        border-top:dashed 2px #ffffff;
-    }
-
-    .MainBlock .center .productItem .thum {
-        width:100px;
-        height:120px;
-    }
-
-    .MainBlock .center .productItem .description {
-        text-align:left;
-        max-height:34px;
-        line-height:17px;
-        font-size:10pt;
-        overflow:hidden;
-    }
-
-    .MainBlock .center .productItem .marketPrice {
-        text-align:left;
-        font-size:10pt;
-        color:#999999;
-        margin-top:8px;
-    }
-
-    .MainBlock .center .productItem .price {
-        text-align:left;
-        font-size:16pt;
-        color:#FE2727;
-        margin-left:-3px;
-    }
-
-    .MainBlock .center .productItem .price .buy {
-        background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -1px -1px;
-        float:right;
-        width:27px;
-        height:27px;
-    }
-
-    .MainBlock .center .remain {
-        padding-top:3px;
-        text-align:left;
-        font-size:10pt;
-    }
-
-    .MainBlock .center .remain .p4 {
-        padding-top:0px;
-    }
-
-#discountInTime .left {
-    background:url("/Content/themes/image/MainBlockBK.png") no-repeat 0px 0px;
-}
-
-    #discountInTime .left .subTitle {
+    .MBStyle0 .left .subTitle {
         color:#D5AFD1;
     }
 
-    #discountInTime .center .title {
-        color:#B06AA9;
+    .MBStyle0 .left .LContent,.MBStyle0 .left .leftBKDiv {
+        background-color:#B85D7F;
     }
 
-    #discountInTime .center .dashLine {
-        border-top:dashed 2px #B85D7F;
+    .MBStyle1 .left .LTConerDiv .coner {
+        background-position:-25px 0px;
     }
 
-#newProduct .left {
-    background:url("/Content/themes/image/MainBlockBigBK.png") no-repeat -128px 0px;
-}
+    .MBStyle1 .left .LBConerDiv .coner {
+        background-position:-25px -25px;
+    }
 
-    #newProduct .left .subTitle {
+    .MBStyle1 .left .LContent .line1 {
+        background-color:#658C53;
+    }
+
+    .MBStyle1 .left .LContent .line2 {
+        background-color:#86AA76;
+    }
+
+    .MBStyle1 .left .subTitle {
         color:#C5D5BE;
     }
 
-    #newProduct .center .dashLine {
-        border-top:dashed 2px #769B65;
+    .MBStyle1 .left .LContent,.MBStyle1 .left .leftBKDiv {
+        background-color:#769B65;
     }
 
-    #newProduct .center .brandDiv .titleItem {
-        margin-left:10px;
-        margin-top:7px;
-        line-height:20px;
-        vertical-align:middle;
-        color:#769B65;
-        text-align:left;
+    .MBStyle2 .left .LTConerDiv .coner {
+        background-position:-50px 0px;
     }
 
-    #newProduct .center .brandDiv .titleItem:nth-child(1) {
-        padding-left:15px;
+    .MBStyle2 .left .LBConerDiv .coner {
+        background-position:-50px -25px;
     }
 
-    #newProduct .center .brandDiv .titleItem:nth-child(2) {
-        padding-left:30px;
+    .MBStyle2 .left .LContent .line1 {
+        background-color:#80A2D0;
     }
 
-    #newProduct .center .brandDiv .titleItem:nth-child(3) {
-        padding-left:45px;
-    }
-        
-        #newProduct .center .brandDiv .imgDiv {
-            background:url("/Content/themes/image/OtherIcon.png");
-            width:225px;
-            height:88px;
-        }
-
-#groupBuy .left {
-    background:url("/Content/themes/image/MainBlockBK.png") no-repeat -256px 0px;
-}
-
-    #groupBuy .left .subTitle {
-        color:#cbdef8;
+    .MBStyle2 .left .LContent .line2 {
+        background-color:#9CBAE3;
     }
 
-    #groupBuy .center .title {
-        color:#85A9DA;
-    }*/
+    .MBStyle2 .left .subTitle {
+        color:#CBDEF8;
+    }
+
+    .MBStyle2 .left .LContent,.MBStyle2 .left .leftBKDiv {
+        background-color:#85A9DA;
+    }
+
+    .MBStyle3 .left .LTConerDiv .coner {
+        background-position:-75px 0px;
+    }
+
+    .MBStyle3 .left .LBConerDiv .coner {
+        background-position:-75px -25px;
+    }
+
+    .MBStyle3 .left .LContent .line1 {
+        background-color:#C78072;
+    }
+
+    .MBStyle3 .left .LContent .line2 {
+        background-color:#E8A99C;
+    }
+
+    .MBStyle3 .left .subTitle {
+        color:#f0d0c9;
+    }
+
+    .MBStyle3 .left .LContent,.MBStyle3 .left .leftBKDiv {
+        background-color:#D99284;
+    }
+
+    .MBStyle4 .left .LTConerDiv .coner {
+        background-position:-100px 0px;
+    }
+
+    .MBStyle4 .left .LBConerDiv .coner {
+        background-position:-100px -25px;
+    }
+
+    .MBStyle4 .left .LContent .line1 {
+        background-color:#995691;
+    }
+
+    .MBStyle4 .left .LContent .line2 {
+        background-color:#BB7AB3;
+    }
+
+    .MBStyle4 .left .subTitle {
+        color:#ecc7e8;
+    }
+
+    .MBStyle4 .left .LContent,.MBStyle4 .left .leftBKDiv {
+        background-color:#AB66A4;
+    }
+
+    .MBStyle5 .left .LTConerDiv .coner {
+        background-position:-125px 0px;
+    }
+
+    .MBStyle5 .left .LBConerDiv .coner {
+        background-position:-125px -25px;
+    }
+
+    .MBStyle5 .left .LContent .line1 {
+        background-color:#A88651;
+    }
+
+    .MBStyle5 .left .LContent .line2 {
+        background-color:#C7A570;
+    }
+
+    .MBStyle5 .left .subTitle {
+        color:#e6d4b7;
+    }
+
+    .MBStyle5 .left .LContent,.MBStyle5 .left .leftBKDiv {
+        background-color:#B5925C;
+    }
 /* Product Detail
 ----------------------------------------------------------*/
 #PD_View {
@@ -2146,12 +2075,12 @@ footer {
         border-left:none;
     }
 
-    #plDiv .item:nth-last-child(1),
+    /*#plDiv .item:nth-last-child(1),
     #plDiv .item:nth-last-child(2),
     #plDiv .item:nth-last-child(3),
     #plDiv .item:nth-last-child(4) {
         border-bottom:none;
-    }
+    }*/
 
         #plDiv .item img{
             height:155px;

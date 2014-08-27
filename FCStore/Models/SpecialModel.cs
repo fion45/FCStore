@@ -160,7 +160,7 @@ namespace FCStore.Models
             TCArr = new List<TableColumn>();
             foreach (PropertyInfo pi in m_dtype.GetProperties())
             {
-                if (cfgDic != null && cfgDic.ContainsKey(pi.Name) && cfgDic[pi.Name].ignore)
+                if (cfgDic != null && (!cfgDic.ContainsKey(pi.Name) || cfgDic.ContainsKey(pi.Name) && cfgDic[pi.Name].ignore))
                     continue;
                 TableColumn tmpTC = new TableColumn();
                 tmpTC.Title = pi.Name;

@@ -14,9 +14,12 @@
         });
     </script>
 }
+@{
+    int CIndex = 0;
+}
 @foreach (var item in Model)
 {
-    <div class="MainBlock">
+    <div class="MainBlock MBStyle@(CIndex)">
         <div class="left">
             <div class="LTConerDiv">
                 <div class="coner"></div>
@@ -44,7 +47,45 @@
         <div class="center">
             <div class="brandDiv">
                 <div class="description">
-                    @(item.TopTitle)
+                    <div class="middle">
+                        @{
+                            string tmpSpace = "";
+                            foreach (string tmpStr in item.TopTitleArr)
+                            {
+                                tmpSpace += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                HtmlString html = new HtmlString(tmpSpace);
+                                        <div>@html@(tmpStr)</div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="brand">
+                    @{
+                        int bi=0;
+                        for (bi = 0; bi < item.Brands.Count; bi++)
+                        {
+                            Brand brand = item.Brands[bi];
+                            <div>
+                                <a href="Product/ListByBrand/@(brand.BID)">
+                                    <img src="/Brand/@(brand.Tag).jpg" />
+                                </a>
+                            </div>
+                        }
+                        if (bi < 4)
+                        {
+                            List<Brand> tmpBArr = (from p in item.Products
+                                                   select p.Brand).Take(4 - bi).ToList();
+                            for (int i = 0; i < tmpBArr.Count; i++)
+                            {
+                                Brand brand = tmpBArr[i];
+                                <div>
+                                    <a href="Product/ListByBrand/@(brand.BID)">
+                                        <img src="/Brand/@(brand.Tag).jpg" />
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
                 </div>
             </div>
             <ul>
@@ -74,4 +115,6 @@
             </ul>
         </div>
     </div>
+    ++CIndex;
+    CIndex %= 6; 
 }

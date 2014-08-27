@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FCStore.Models.Brand>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BrandsSelect</title>    
+    @Styles.Render("~/Manager/css")
+</head>
+<body>
+    <div id="BSMain">
+        <div class="left">
+            <div class="btnDiv">
+                <ul>
+                    <li>
+                        <input id="upBtn" class="gray sbtngray" type="button" value="上移" />
+                    </li>
+                    <li>
+                        <input id="downBtn" class="gray sbtngray" type="button" value="下移" />
+                    </li>
+                    <li>
+                        <input id="delBtn" class="gray sbtngray" type="button" value="删除" />
+                    </li>
+                    <li>
+                        <input id="refreshSelBtn" class="sbtn1" type="button" value="刷新" />
+                    </li>
+                    <li>
+                        <input id="saveBtn" class="sbtn2" type="button" value="保存" />
+                    </li>
+                </ul>
+                <div class="title"><label><input id="checkAll" type="checkbox" />全选</label>已选品牌：</div>
+            </div>
+            <div id="selDiv">
+            </div>
+        </div>
+        <div class="right">
+            @{
+                char headChar = ' ';
+                foreach(FCStore.Models.Brand item in Model)
+                {
+                    if(item.NameStr.ToUpper()[0] != headChar)
+                    {
+                        headChar = item.NameStr.ToUpper()[0];
+                        <div class="charDiv">@(headChar.ToString().ToUpper())</div>
+                    }
+                    <div class="brandItem">
+                        <a href="Product/ListByBrand/@(item.BID)">
+                            <img src="/Brand/@(item.Tag).jpg" />
+                            <div class="title">@(item.Name2)</div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>

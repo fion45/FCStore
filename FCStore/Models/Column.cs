@@ -34,6 +34,14 @@ namespace FCStore.Models
             set;
         }
 
+        public string[] TopTitleArr
+        {
+            get
+            {
+                return TopTitle.Split(new char[] { ',' });
+            }
+        }
+
         public virtual List<ReColumnProduct> REColProLST
         {
             get;

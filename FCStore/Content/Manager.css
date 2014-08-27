@@ -403,21 +403,21 @@ li {
         position:relative;
     }
 
-    #PSMain .btnDiv {
-        width:100%;
-        height:70px;
-    }
+.btnDiv {
+    width:100%;
+    height:70px;
+}
 
-        #PSMain .btnDiv .title {
-            width:100%;
-            float:left;
-            text-align:center;
-        }
+.btnDiv .title {
+    width:100%;
+    float:left;
+    text-align:center;
+}
 
-            #PSMain .btnDiv .title label {
-                float:left;
-                margin-left:10px;
-            }
+.btnDiv .title label {
+    float:left;
+    margin-left:10px;
+}
 
 #selDiv {
     width:100%;
@@ -612,3 +612,57 @@ li {
             left:0%;
             margin-top:-24px;
         }
+
+#BSMain {
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+    #BSMain .left {
+        float:left;
+        height:100%;
+        width:230px;
+    }
+
+    #BSMain .right {
+        position:absolute;
+        left:230px;
+        right:0px;
+        height:100%;
+        border-left:solid 1px #676767;
+        overflow:scroll;
+    }
+
+    #BSMain .charDiv {
+        width:50%;
+        padding-left:1%;
+        margin-left:8px;
+        margin-right:48%;
+        margin-top:30px;
+        border-bottom:solid 3px #a7a6a6;
+        font-size:14px;
+        font-weight:bolder;
+        float:left;
+        text-align:left;
+        color:#a7a6a6;
+    }
+
+    #BSMain .brandItem {
+        float:left;
+        margin:8px 12px;
+    }
+
+    #BSMain .brandItem img {
+        width:100px;
+        height:40px;
+    }
+
+    #BSMain .brandItem .title {
+        width:100px;
+        text-overflow:ellipsis;
+        white-space:nowrap; 
+        overflow:hidden;
+        font-size:10pt;
+    }
+

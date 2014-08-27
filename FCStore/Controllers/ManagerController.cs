@@ -125,14 +125,8 @@ namespace FCStore.Controllers
 
             typeDic["Brands"] = new ManagerVM<Column>.TableColumn.Config();
             typeDic["Brands"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
-            typeDic["Brands"].parameter = "/Manager/BrandsSelect";
+            typeDic["Brands"].parameter = "/Manager/BrandsSelect/0/{ColumnID}";
             typeDic["Brands"].width = 60;
-
-            typeDic["REColProLST"] = new ManagerVM<Column>.TableColumn.Config();
-            typeDic["REColProLST"].ignore = true;
-
-            typeDic["REColBrandLST"] = new ManagerVM<Column>.TableColumn.Config();
-            typeDic["REColBrandLST"].ignore = true;
 
             ManagerVM<Column> tmpVM = new ManagerVM<Column>(db.Columns.ToList(), typeDic);
             return View(tmpVM);
@@ -231,6 +225,12 @@ namespace FCStore.Controllers
             {
                 return View(result);
             }
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult BrandsSelect(int Tag, string Par)
+        {
+            return View(db.Brands.OrderBy(r => r.NameStr));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
