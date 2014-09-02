@@ -623,6 +623,28 @@ li {
         float:left;
         height:100%;
         width:230px;
+        position:relative;
+    }
+
+    #BSMain .item .detailA {
+        color:#D73E3E;
+        text-decoration:underline;
+    }
+
+    #BSMain .left #selDiv .item {
+        width:100px;
+        position:relative;
+    }
+
+    #BSMain .left #selDiv .item img {
+        width:100px;
+        height:40px;
+    }
+
+    #BSMain .item .productCB {
+        position:absolute;
+        top:8px;
+        left:8px;
     }
 
     #BSMain .right {

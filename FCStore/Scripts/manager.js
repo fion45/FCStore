@@ -674,3 +674,65 @@ var ProductSelect = {
     	ProductSelect.saveSelProducts();
     }
 };
+
+var BrandSelect = {
+    updateSelBrands : function (insertTag) {
+        $("#selDiv .item").remove();
+        //初始化已选产品列表
+        var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = parseInt(parArr[3]);
+        var GetBrandsUrl;
+        switch (tmpTag) {
+            case 0: {
+                //select brands for column
+                GetBrandsUrl = "/Brand/GetSelectBrandInColum/" + parArr[4];
+                break;
+            }
+        }
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#selDiv"),
+            url: GetBrandsUrl,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content != null) {
+                    $.each(data.content, function (i, n) {
+                        BrandSelect.BuildBrandItemWithCB(n).appendTo($("#selDiv"));
+                    });
+                }
+            }
+        });
+    },
+    BuildBrandItemWithCB : function(item) {
+    	var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = parseInt(parArr[3]);
+        var tmpData = "";
+        switch (tmpTag) {
+            case 0: {
+            	
+                break;
+            }
+        }
+    	var htmlStr =
+            "<div class='item'" + 
+            " data-bid='" + item.BID + "'>" +
+                "<div class='img'>" +
+                    "<img src='/Brand/{1}.jpg' />" +
+                "</div>" +
+            	"<a class='detailA' href='/Product/ListByBrand/{0}'>详细</a>" +
+            "</div>";
+        htmlStr = $.CreateString(htmlStr, [
+            item.BID,
+            item.Tag
+        ]);
+    	var pItem = $(htmlStr);
+        var CBCtrl = $("<input class='productCB' type='checkbox'/>");
+        pItem.append(CBCtrl);
+        return pItem;
+    }
+};

@@ -58,5 +58,15 @@
             }
         </div>
     </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Manager/js")
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            BrandSelect.updateSelBrands();
+            $("#checkAll").checkAll(null, "#selDiv .item .productCB");
+            $("#selDiv").on("change", ".productCB", ProductSelect.OnSelItemCBChange);
+            $("#selDiv").on("click", ".item", ProductSelect.OnSelItemClick);
+        });
+    </script>
 </body>
 </html>
