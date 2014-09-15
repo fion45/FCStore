@@ -64,8 +64,8 @@
         $(function () {
             BrandSelect.updateSelBrands();
             $("#checkAll").checkAll(null, "#selDiv .item .productCB");
-            $("#selDiv").on("change", ".productCB", ProductSelect.OnSelItemCBChange);
-            $("#selDiv").on("click", ".item", ProductSelect.OnSelItemClick);
+            $("#selDiv").on("change", ".productCB", ProductManager.OnSelItemCBChange);
+            $("#selDiv").on("click", ".item", ProductManager.OnSelItemClick);
         });
     </script>
 </body>

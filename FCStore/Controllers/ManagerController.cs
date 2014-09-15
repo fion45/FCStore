@@ -120,7 +120,7 @@ namespace FCStore.Controllers
 
             typeDic["Products"] = new ManagerVM<Column>.TableColumn.Config();
             typeDic["Products"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
-            typeDic["Products"].parameter = "/Manager/ProductsSelect/0/{ColumnID}";
+            typeDic["Products"].parameter = "/Manager/ProductManager/0/{ColumnID}";
             typeDic["Products"].width = 60;
 
             typeDic["Brands"] = new ManagerVM<Column>.TableColumn.Config();
@@ -183,7 +183,7 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult ProductsSelect(int Tag, string Par, int BeginIndex, int GetCount, string OrderStr, string WhereStr)
+        public ActionResult ProductManager(int Tag, string Par, int BeginIndex, int GetCount, string OrderStr, string WhereStr)
         {
             int totalCount = db.Products.Count();
             StringBuilder SQLStr = new StringBuilder("SELECT TOP(");

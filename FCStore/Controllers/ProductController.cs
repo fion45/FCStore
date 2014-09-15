@@ -439,6 +439,29 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult SetSelectProductInfo(Product Product)
+        {
+            Product tmpProduct = db.Products.FirstOrDefault(r => r.PID == Product.PID);
+            tmpProduct.Title = Product.Title;
+            tmpProduct.MarketPrice = Product.MarketPrice;
+            tmpProduct.Price = Product.Price;
+            tmpProduct.Discount = Product.Discount;
+            tmpProduct.Sale = Product.Sale;
+            tmpProduct.Stock = Product.Stock;
+            tmpProduct.PVCount = Product.PVCount;
+            tmpProduct.Date = Product.Date;
+            db.SaveChanges();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

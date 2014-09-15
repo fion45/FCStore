@@ -424,7 +424,7 @@ li {
     position:absolute;
     top:70px;
     bottom:0px;
-    overflow:scroll;
+    overflow:auto;
     text-align:center;
 }
 
@@ -457,7 +457,7 @@ li {
         }
 
         #PSMain .right .toolbar .orderDiv a {
-            margin-left:5px;
+            margin-left:2px;
             padding-left:12px;
             color:#676767;
         }
@@ -481,7 +481,7 @@ li {
         }
 
 #whereInput {
-    width:350px;
+    width:250px;
 }
 
 #PSMain .categoryLST {
@@ -559,17 +559,7 @@ li {
     }
 
     #PSMain .item .marketPrice {
-        margin:0px auto;
-        text-align:left;
-    }
-        
-        #PSMain .item .marketPrice label {
-            text-decoration:line-through;
-        }
-
-    #PSMain .item .price{
-        margin:0px auto;
-        text-align:left;
+        text-decoration:line-through;
     }
 
     #PSMain .item .price label{
@@ -601,12 +591,12 @@ li {
          padding:3px;
      }
 
-        #selDiv .item img {
+        #selDiv img {
             width:95px;
             height:95px;
         }
 
-        #selDiv .item .detailA {
+        #selDiv .detailA {
             position:absolute;
             top:100%;
             left:0%;
@@ -688,3 +678,39 @@ li {
         font-size:10pt;
     }
 
+    #PSMain .left #selDiv .item {
+        width:98%;
+        padding:3px 1%;
+        position:relative;
+    }
+
+    #PSMain .left #selDiv .item img {
+        width:155px;
+        height:146px;
+    }
+
+    #PSMain .left #selDiv .item .title {
+        width:90%;
+
+        height:150px;
+    }
+
+    #PSMain .left #selDiv .item .title textarea {
+        width:100%;
+        height:100%;
+    }
+
+    #PSMain .left #selDiv .item .p60
+    {
+        width:100%;
+    }
+
+    #PSMain .left #selDiv .item .p40
+    {
+        width:100%;
+    }
+
+    #PSMain .left #selDiv .item .detailA
+    {
+        float:right;
+    }

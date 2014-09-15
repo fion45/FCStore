@@ -261,10 +261,18 @@ var Manager = {
 	            }
 	        });
 		}
+	},
+	GetParamTag : function(parIndex){
+    	var pathName = window.location.pathname;
+        var parArr = pathName.split('/');
+        var tmpTag = -1;
+        if(parArr.length >= parIndex + 1)
+        	tmpTag = parseInt(parArr[parIndex]);
+        return tmpTag;
 	}
 };
 
-var ProductSelect = {
+var ProductManager = {
 	selArr : [],
     notSelArr : [],
     selTag : false,
@@ -273,7 +281,7 @@ var ProductSelect = {
     ShowColumSetting : function(ev) {
     	var target = $(ev.target);
     	if(!target.hasClass("productCB")) {
-    		ProductSelect.forProduct = $(ev.currentTarget);
+    		ProductManager.forProduct = $(ev.currentTarget);
     		if($("#CSDlg").length > 0) {
     			$("#CSDlg").dialog("open");
     		}
@@ -294,7 +302,7 @@ var ProductSelect = {
 					title: '设置',
 			        buttons: {
 			        	"确定" : function() {
-			        		ProductSelect.forProduct.attr({
+			        		ProductManager.forProduct.attr({
 			        			"data-cr" : $("#CRTB").val(),
 			        			"data-cc" : $("#CCTB").val(),
 			        			"data-rt" : $("#RTTB").val()
@@ -304,23 +312,21 @@ var ProductSelect = {
 			        }
 				});
     		}
-    		$("#CRTB").val(ProductSelect.forProduct.attr("data-cr"));
-    		$("#CCTB").val(ProductSelect.forProduct.attr("data-cc"));
-    		$("#RTTB").val(ProductSelect.forProduct.attr("data-rt"));
+    		$("#CRTB").val(ProductManager.forProduct.attr("data-cr"));
+    		$("#CCTB").val(ProductManager.forProduct.attr("data-cc"));
+    		$("#RTTB").val(ProductManager.forProduct.attr("data-rt"));
     	}
     },
     updateSelProducts : function() {
     	$("#selDiv .item").remove();
         //初始化已选产品列表
-        var pathName = window.location.pathname;
-        var parArr = pathName.split('/');
-        var tmpTag = parseInt(parArr[3]);
+        var tmpTag = Manager.GetParamTag(3);
         var GetProductsUrl;
         switch (tmpTag) {
             case 0: {
                 //select products for column
                 GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
-                $("#selDiv").on("dblclick",".item",ProductSelect.ShowColumSetting);
+                $("#selDiv").on("dblclick",".item",ProductManager.ShowColumSetting);
                 break;
             }
         }
@@ -335,19 +341,18 @@ var ProductSelect = {
             success: function (data, status, options) {
                 if (data.content != null) {
                     $.each(data.content, function (i, n) {
-                        ProductSelect.BuildProductItemWithCB(n).appendTo($("#selDiv"));
+                        ProductManager.BuildProductItemWithCB(n).appendTo($("#selDiv"));
                     });
                 }
             }
         });
     },
+    
     saveSelProducts : function() {
     	//保存已选产品
-    	var pathName = window.location.pathname;
-        var parArr = pathName.split('/');
-        var tmpTag = parseInt(parArr[3]);
         var SetProductsUrl;
-        var par = [];
+        var tmpData = null;
+        var tmpTag = GetParamTag(3)
         switch (tmpTag) {
             case 0: {
                 //select products for column
@@ -357,6 +362,7 @@ var ProductSelect = {
                 	var CrossRow = item.attr("data-cr") ? item.attr("data-cr") : 1;
                 	var CrossColum = item.attr("data-cc") ? item.attr("data-cc") : 1;
                 	var RenderType = item.attr("data-rt") ? item.attr("data-rt") : 0;
+                	var par = [];
                 	par.push({
                 		RCPID : 0,
                 		ColumnID : parArr[4],
@@ -366,17 +372,17 @@ var ProductSelect = {
                 		RenderType : RenderType
                 	});
                 });
+                tmpData = {
+		        	id : parArr[4],
+		        	PIDArr : [],
+		        	Par : par
+		        }
+		        $.each($("#selDiv .item"),function(i,n){
+		        	tmpData.PIDArr.push($(n).attr("data-pid"));
+		        });
                 break;
             }
         }
-        var tmpData = {
-        	id : parArr[4],
-        	PIDArr : [],
-        	Par : par
-        };
-        $.each($("#selDiv .item"),function(i,n){
-        	tmpData.PIDArr.push($(n).attr("data-pid"));
-        });
         
         $.myAjax({
             historyTag: false,
@@ -393,22 +399,22 @@ var ProductSelect = {
     },
     updateArr : function () {
         var tmpArr = null;
-        if (ProductSelect.selTag) {
-            tmpArr = ProductSelect.treeObj.getCheckedNodes(true);
-            ProductSelect.notSelArr = [];
-            ProductSelect.selArr = [];
+        if (ProductManager.selTag) {
+            tmpArr = ProductManager.treeObj.getCheckedNodes(true);
+            ProductManager.notSelArr = [];
+            ProductManager.selArr = [];
             $.each(tmpArr, function (i, n) {
                 if (!n.isParent)
-                    ProductSelect.selArr.push(n.CID);
+                    ProductManager.selArr.push(n.CID);
             });
         }
         else {
-            tmpArr = ProductSelect.treeObj.getCheckedNodes(false);
-            ProductSelect.selArr = [];
-            ProductSelect.notSelArr = [];
+            tmpArr = ProductManager.treeObj.getCheckedNodes(false);
+            ProductManager.selArr = [];
+            ProductManager.notSelArr = [];
             $.each(tmpArr, function (i, n) {
                 if (!n.isParent)
-                    ProductSelect.notSelArr.push(n.CID);
+                    ProductManager.notSelArr.push(n.CID);
             });
         }
     },
@@ -425,8 +431,8 @@ var ProductSelect = {
             Par: result[4],
             BeginIndex : insertTag ? $("#plDiv")[0].childElementCount : 0,
             GetCount : 50,
-            OrderStr : ProductSelect.GetOrderStr(),
-            WhereStr : ProductSelect.GetWhereStr()
+            OrderStr : ProductManager.GetOrderStr(),
+            WhereStr : ProductManager.GetWhereStr()
         };
         $.myAjax({
             historyTag: false,
@@ -442,7 +448,7 @@ var ProductSelect = {
                 }
                 if (data.content != null) {
                     $.each(data.content, function (i, n) {
-                        ProductSelect.BuildProductItem(n).appendTo($("#plDiv"));
+                        ProductManager.BuildProductItem(n).appendTo($("#plDiv"));
                     });
                 }
                 $("#plDiv").myScrollDown({},"Goon");
@@ -458,25 +464,25 @@ var ProductSelect = {
                 "</div>" +
                 "<div class='title' title='{2}'>{2}</div>" +
                 "<div class='marketPrice p60'>" +
-                    "市价：<label>￥{3}<label>" +
+                    "市价：￥<label class='marketPrice'>{3}<label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "折扣：<label>{4}</label>" +
+                    "折扣：<label class='discount'>{4}</label>" +
                 "</div>" +
-                "<div class='price p60'>" +
-                    "现价：<label>￥{5}</label>" +
+                "<div class='p60'>" +
+                    "现价：￥<label class='price'>{5}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "已售：<label>{6}</label>" +
+                    "已售：<label class='sale'>{6}</label>" +
                 "</div>" + 
                 "<div class='p60'>" +
-                    "存货：<label>{7}</label>" +
+                    "存货：<label class='stock'>{7}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "浏览：<label>{8}</label>" +
+                    "浏览：<label class='pvcount'>{8}</label>" +
                 "</div>" +
             	"<div class='p1'>" +
-                    "创建时间：<label>{9}</label>" +
+                    "创建时间：<label class='date'>{9}</label>" +
                 	"<a class='detailA' href='/Product/Detail/{0}'>详细</a>" +
                 "</div>" +
             "</div>";
@@ -495,9 +501,7 @@ var ProductSelect = {
         return $(htmlStr);
     },
     BuildProductItemWithCB : function(item) {
-    	var pathName = window.location.pathname;
-        var parArr = pathName.split('/');
-        var tmpTag = parseInt(parArr[3]);
+        var tmpTag = Manager.GetParamTag(3);
         var tmpData = "";
         switch (tmpTag) {
             case 0: {
@@ -554,17 +558,17 @@ var ProductSelect = {
     GetWhereStr : function () {
     	var result = $("#whereInput").val();
     	var tmpStr = "";
-        if (ProductSelect.selTag) {
-            if (ProductSelect.selArr.length > 0) {
-                tmpStr = "CID IN (" + ProductSelect.selArr.join(",") + ")";
+        if (ProductManager.selTag) {
+            if (ProductManager.selArr.length > 0) {
+                tmpStr = "CID IN (" + ProductManager.selArr.join(",") + ")";
             }
             else {
                 tmpStr = "CID == -1";
             }
         }
         else {
-            if (ProductSelect.notSelArr.length > 0) {
-                tmpStr = "CID NOT IN (" + ProductSelect.notSelArr.join(",") + ")";
+            if (ProductManager.notSelArr.length > 0) {
+                tmpStr = "CID NOT IN (" + ProductManager.notSelArr.join(",") + ")";
             }
         }
         if(result == "") {
@@ -599,9 +603,9 @@ var ProductSelect = {
     	if (cTag) {
     		if(!$("#upBtn").hasClass("sbtn1")) {
 	            $("#PSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
-	            $("#upBtn").on("click",ProductSelect.OnUpBtnClick);
-	            $("#downBtn").on("click",ProductSelect.OnDownBtnClick);
-	            $("#delBtn").on("click",ProductSelect.OnDelBtnClick);
+	            $("#upBtn").on("click",ProductManager.OnUpBtnClick);
+	            $("#downBtn").on("click",ProductManager.OnDownBtnClick);
+	            $("#delBtn").on("click",ProductManager.OnDelBtnClick);
     		}
         }
         else {
@@ -609,6 +613,78 @@ var ProductSelect = {
             $("#upBtn").off("click");
             $("#downBtn").off("click");
             $("#delBtn").off("click");
+        }
+    },
+    OnProductItemClick : function(ev) {
+        var tmpTag = Manager.GetParamTag(3);
+        switch(tmpTag)
+        {
+        	case -1: {
+		    	var target = $(ev.currentTarget);
+		    	var par = $("#selDiv");
+		    	par.empty();
+		    	target = target.clone();
+		    	target.appendTo(par);
+		    	var tmpC = target.find(".title");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<textarea>" + tmpStr + "</textarea>"));
+		    	tmpC = target.find(".marketPrice");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".discount");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".price");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".sale");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".stock");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".pvcount");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".date");
+		    	var tmpStr = tmpC.text();
+		    	tmpC.empty();
+		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+		    	tmpC = target.find(".img");
+//		    	tmpC.css("position","relative");
+		    	var tmpUploader = $("<div id='file_upload'></div>");
+		    	tmpC.append(tmpUploader);
+		    	var tmpToPath = tmpC.children("img").prop("src");
+		    	var FIndex = tmpToPath.indexOf("//") + 2;
+		    	tmpToPath = tmpToPath.substring(tmpToPath.indexOf("/",FIndex),tmpToPath.lastIndexOf("/") + 1);
+		    	tmpUploader.uploadify({
+		        	height : 30,
+		        	width : 120,
+	                buttonText : '文件上传',
+	                auto : true,
+		            swf : '/Scripts/uploadify/uploadify.swf',
+		            uploader : '/Manager/Upload',
+		            fileTypeDesc : 'Image Files',
+		            fileTypeExts : '*.jpg;*.bmp;*.png;*.gif',
+		            formData : {toPath:tmpToPath},
+		            onUploadSuccess : function(file, data, response) {
+		            	var obj = $.parseJSON(data);
+		            	if(obj.Success)
+		            		tmpC.children("img").prop("src",obj.imgSrc);
+		            }
+		        });
+        		break;
+        	}
+        	case 0: {
+        		break;
+        	}
         }
     },
     OnSelItemClick : function(ev) {
@@ -663,15 +739,64 @@ var ProductSelect = {
     		backItem.after(moveItems);
     	}
     },
-    OnDelBtnClick : function(ev) {
+    OnDelSelBtnClick : function(ev) {
     	var selItems = $("#selDiv .item:has(.productCB:checked)");
     	selItems.remove();
     },
     OnRefreshSelBtnClick : function(ev) {
-    	ProductSelect.updateSelProducts();
+    	ProductManager.updateSelProducts();
+    },
+    OnSaveSelBtnClick : function(ev) {
+    	ProductManager.saveSelProducts();
+    },
+    OnBackBtnClick : function(ev) {
+    	window.location.href = "/Manager/BannerManager/"
     },
     OnSaveBtnClick : function(ev) {
-    	ProductSelect.saveSelProducts();
+        //select products for column
+    	var item = $("#selDiv .item");
+        var tmpData = {
+        	PID : item.attr("data-pid"),
+        	CID : 0,
+        	BID : 0,
+        	ProductTags : [],
+        	Title : item.find(".title").children().val(),
+        	Chose : "",
+        	Price : item.find(".price").children().val(),
+        	MarketPrice : item.find(".marketPrice").children().val(),
+        	Discount : item.find(".discount").children().val(),
+        	Stock : item.find(".stock").children().val(),
+        	Sale : item.find(".sale").children().val(),
+        	ImgPath : "",
+        	PVCount : item.find(".pvcount").children().val(),
+        	Descript : "",
+        	Date : item.find(".date").children().val(),
+        	Tag : 0,
+        	REProColLST : []
+        };
+        
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#selDiv"),
+            url: "/Product/SetSelectProductInfo",
+            data : JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+            	if(data.content == "OK") {
+            		var item = $("#plDiv .item[data-pid=" + tmpData.PID + "]");
+            		item.find(".title").text(tmpData.Title);
+            		item.find(".price").text(tmpData.Price);
+            		item.find(".marketPrice").text(tmpData.MarketPrice);
+            		item.find(".discount").text(tmpData.Discount);
+            		item.find(".stock").text(tmpData.Stock);
+            		item.find(".sale").text(tmpData.Sale);
+            		item.find(".pvcount").text(tmpData.PVCount);
+            		item.find(".date").text(tmpData.Date);
+            	}
+            }
+        });
     }
 };
 
@@ -679,9 +804,7 @@ var BrandSelect = {
     updateSelBrands : function (insertTag) {
         $("#selDiv .item").remove();
         //初始化已选产品列表
-        var pathName = window.location.pathname;
-        var parArr = pathName.split('/');
-        var tmpTag = parseInt(parArr[3]);
+        var tmpTag = Manager.GetParamTag(3);
         var GetBrandsUrl;
         switch (tmpTag) {
             case 0: {
@@ -708,9 +831,7 @@ var BrandSelect = {
         });
     },
     BuildBrandItemWithCB : function(item) {
-    	var pathName = window.location.pathname;
-        var parArr = pathName.split('/');
-        var tmpTag = parseInt(parArr[3]);
+        var tmpTag = Manager.GetParamTag(3);
         var tmpData = "";
         switch (tmpTag) {
             case 0: {
