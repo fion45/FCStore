@@ -714,3 +714,9 @@ li {
     {
         float:right;
     }
+
+    #file_upload
+    {
+        margin:0px auto;
+        position:relative;
+    }

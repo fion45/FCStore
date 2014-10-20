@@ -626,7 +626,7 @@ var ProductManager = {
 		    	target = target.clone();
 		    	target.appendTo(par);
 		    	var tmpC = target.find(".title");
-		    	var tmpStr = tmpC.text();
+		    	var tmpStr = $.trim(tmpC.text());
 		    	tmpC.empty();
 		    	tmpC.append($("<textarea>" + tmpStr + "</textarea>"));
 		    	tmpC = target.find(".marketPrice");

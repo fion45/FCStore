@@ -27,7 +27,7 @@ namespace FCStore.Controllers
         private FCStoreDbContext db = new FCStoreDbContext();
 
         [ProductViewFilterAttribute]
-        public ActionResult Detail(int ID)
+        public ActionResult Detail(int ID, int tag = 0)
         {
             ViewBag.KeepTag = false;
             Product tmpProduct = db.Products.First(r => r.PID == ID);
@@ -43,9 +43,9 @@ namespace FCStore.Controllers
                 if (!string.IsNullOrEmpty(tmpMatch.Value))
                 {
                     Group gi = tmpMatch.Groups["PRODUCTID"];
-                    foreach(Capture cap in gi.Captures)
+                    foreach (Capture cap in gi.Captures)
                     {
-                        if(ID == int.Parse(cap.Value))
+                        if (ID == int.Parse(cap.Value))
                         {
                             ViewBag.KeepTag = true;
                             break;
@@ -55,8 +55,8 @@ namespace FCStore.Controllers
             }
             ViewBag.EvaluationCount = db.Evaluations.Count(r => r.Product.PID == ID);
             ViewBag.SaleCount = (from op in db.OrderPackets
-                                  where op.PID == ID && op.Order.Status > 1
-                                  select op.Count).ToList().Sum();
+                                 where op.PID == ID && op.Order.Status > 1
+                                 select op.Count).ToList().Sum();
             return View(tmpProduct);
         }
 
