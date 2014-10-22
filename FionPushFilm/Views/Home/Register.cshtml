@@ -1,0 +1,177 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>   
+    @Styles.Render("~/Content/loginPage")
+</head>
+<body>
+    <div id="LBDiv"></div>
+    <div id="regCDiv">
+        <form id="register">
+            <div class="ltTitle">用户注册</div>
+            <div class="gif">现在注册可立即获得<font color="#cc0000" size="4">100</font>积分</div>
+            <div class="inputDiv">
+                <div class="value">
+                    <input name="UserNameTB" id="UserNameTB" type="text" data-val="true" data-val-required="必填字段" />
+                    <div class="title">用 户 名</div>
+                    <div class="icon" data-valicon-for="UserNameTB">*</div>
+                </div>
+                <div class="tip" data-valmsg-for="UserNameTB" data-valmsg-replace="true">登陆时使用，少于10位字母或数字</div>
+
+                <div class="value">
+                    <input name="EmailTB" id="EmailTB" type="text" data-val="true" data-val-required="必填字段" data-val-email="请输入正确格式的电子邮件" />
+                    <div class="title">电子邮箱</div>
+                    <div class="icon" data-valicon-for="EmailTB">*</div>
+                </div>
+                <div class="tip" data-valmsg-for="EmailTB" data-valmsg-replace="true">真实的邮箱地址，登陆时也可使用</div>
+
+                <div class="value">
+                    <input name="PSWTB" id="PSWTB" type="password" data-val="true" data-val-required="必填字段" data-val-length="密码为6-16位字母或数字" data-val-length-min="6" data-val-length-max="16" />
+                    <div class="title">登陆密码</div>
+                    <div class="icon" data-valicon-for="PSWTB">*</div>
+                </div>
+                <div class="tip" data-valmsg-for="PSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
+
+                <div class="value">
+                    <input name="EPSWTB" id="EPSWTB" type="password" data-val="true" data-val-required="必填字段" data-val-equalto="与输入的密码不相同" data-val-equalto-other="*.PSWTB" />
+                    <div class="title">确认密码</div>
+                    <div class="icon" data-valicon-for="EPSWTB">*</div>
+                </div>
+                <div class="tip" data-valmsg-for="EPSWTB" data-valmsg-replace="true">密码为6-16位字母或数字</div>
+
+                <div class="value ccDiv">
+                    <input id="checkCodeTB" name="CheckCodeTB" type="text" class="required" data-val="true" data-val-required="必填字段" data-val-length="" data-val-length-min="4" data-val-length-max="4" />
+                    <div class="title">验 证 码</div>
+                    <div class="icon" data-valicon-for="EPSWTB">*</div>
+                    <img onclick="LoginPageView.login.OnCheckCodeImgClick()" id="ccImg" src="/Home/GetValidateCode" />
+                </div>
+                <div class="btnDiv">
+                    <div class="cDiv">
+                        <button type="submit" class="registerBtn">同意以下协议，提交注册</button>
+                        <button type="reset" class="resetBtn">重置</button>
+                    </div>
+                </div>
+                <div class="pullupDiv"></div>
+            </div>
+        </form>
+        @*<div class="rightDiv">
+            <div class="ltTitle">
+                RightGo网会员享受如下服务：
+            </div>
+            <div class="item">第一时间了解美国潮流资讯</div>
+            <div class="item">第一时间获得美国商家打折信息</div>
+            <div class="item">足不出户，轻松购遍美国</div>
+        </div>*@
+        <div class="agreement">
+            <div class="ltTitle">RightGO网用户协议</div>
+            <div class="content">
+                @{
+                    //从文件加载
+                    string tmpFPath = Server.MapPath("~/agreement.txt");
+                    string content = "";
+                    FileInfo tmpFI = new FileInfo(tmpFPath);
+                    if (File.Exists(tmpFPath))
+                    {
+                        FileStream tmpFS = File.OpenRead(tmpFPath);
+                        byte[] tmpBuf = new byte[tmpFS.Length];
+                        tmpFS.Read(tmpBuf, 0, (int)(tmpFS.Length));
+                        content = System.Text.Encoding.Unicode.GetString(tmpBuf);
+                    }
+                }
+                @(content)
+            </div>
+        </div>
+        <div class="otherLogin">
+            <div class="tFont">使用其他账号登录RightGO网：</div>
+            <span id="qqLoginBtn"></span>
+            <span id="wb_connect_btn"></span>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/login")
+
+    <!--Other Login-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
+            type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //控件验证
+            var tmpForm = $("#register");
+            var validator = tmpForm.validate();
+            $.extend(validator.settings, {
+                submitHandler: function () {
+                    LoginPageView.register.OnRegisterBtnClick();
+                },
+                errorPlacement: function (error, inputElement) {
+                    var tmpName = inputElement[0].name.replace(/([!"#$%&'()*+,./:;<=>?@@\[\\\]^`{|}~])/g, "\\$1");
+                    var container = tmpForm.find("[data-valmsg-for='" + tmpName + "']");
+                    var iconDiv = tmpForm.find("[data-valicon-for='" + tmpName + "']");
+                    var replaceAttrValue = container.attr("data-valmsg-replace");
+                    var replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) !== false : null;
+
+                    iconDiv.removeClass("icon-validation-valid").addClass("icon-validation-error");
+                    container.removeClass("field-validation-valid").addClass("field-validation-error");
+                    error.data("unobtrusiveContainer", container);
+                    error.data("icon", iconDiv);
+
+                    container.empty();
+                    iconDiv.empty();
+
+                    error.removeClass("input-validation-error").appendTo(container);
+                },
+                success: function (error) {
+                    var container = error.data("unobtrusiveContainer");
+                    var iconDiv = error.data("icon");
+
+                    var replaceAttrValue = container.attr("data-valmsg-replace");
+                    var replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) : null;
+
+                    if (container) {
+                        container.addClass("field-validation-valid").removeClass("field-validation-error");
+                        iconDiv.addClass("icon-validation-valid").removeClass("icon-validation-error");
+
+                        error.removeData("unobtrusiveContainer");
+                        error.removeData("icon");
+
+                        container.empty();
+                        iconDiv.empty();
+                    }
+                }
+            });
+            //QQ登陆
+            QC.Login({
+                btnId: "qqLoginBtn"	//插入按钮的节点id
+            },
+            function (reqData, opts) {
+
+            });
+            //微博登陆
+            WB2.anyWhere(function (W) {
+                W.widget.connectButton({
+                    id: "wb_connect_btn",
+                    type: '3,2',
+                    callback: {
+                        login: function (o) {
+                            alert(o.screen_name)
+                        },
+                        logout: function () {
+                            alert('logout');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

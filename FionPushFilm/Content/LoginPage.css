@@ -1,0 +1,529 @@
+﻿* {
+    margin:0px;
+    padding:0px;
+}
+
+body,html {
+    width:100%;
+    height:100%;
+}
+
+body {
+    font-size: .85em;
+    font-family:'Microsoft YaHei';
+    background:url("/Content/themes/image/sky.png") no-repeat center top #F8F8F8;
+}
+
+.p2 {
+    width:50%;
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+#centerDiv {
+    position:absolute;
+    left:70%;
+    top:40%;
+    margin-left:-200px;
+    margin-top:-275px;
+    width:400px;
+    height:550px;
+    border:solid 1px #cccccc;
+    border-radius:8px;
+    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+    color:rgb(88, 88, 88);
+    padding:8px 8px 8px 8px;
+    background-color:rgba(255, 255, 255, 0.6)!important;
+    filter:Alpha(opacity=60);
+    color:white;
+}
+
+#loginDiv {
+    width:100%;
+    height:98%;
+    position:relative;
+    color:#666666;
+}
+
+#loginer {
+    margin:3% 3%;
+    width:94%;
+    height:250px;
+}
+
+    #abnormal div {
+        float:left;
+        width:100%;
+    }
+
+    #loginer .ltTitle
+    {
+        font-size:25pt;
+        font-weight:bold;
+        letter-spacing:5px;
+    }
+
+    #loginer div {
+        float:left;
+        vertical-align:middle;
+    }
+
+    #loginer .content {
+        position:relative;
+        width:100%;
+        font-size:14pt;
+    }
+
+        #loginer .content .inBox {
+            position:absolute;
+            top:2px;
+            left:45px;
+            height:40px;
+            line-height:40px;
+            font-weight:bold;
+            letter-spacing:3px;
+            color:#DBD7D9;
+        }
+
+        #loginer .content .inBoxIMG {
+            position:absolute;
+            top:0px;
+            left:100%;
+            height:40px;
+            width:120px;
+            line-height:40px;
+            margin-top:1px;
+            margin-left:-120px;
+        }
+
+    #loginer .UIDDIV {
+        margin-top:20px;
+    }
+
+        #loginer .content .enterTB {
+            height:40px;
+            line-height:40px;
+            border:1px solid #dbdbdb;
+            width:70%;
+            padding-left:30%;
+        }
+
+        #loginer .UIDDIV .enterTB {
+            border-bottom:none;
+        }
+
+#loginer #UIDTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px 0px #FFFFFF;
+}
+
+#loginer #PSWTB {
+    background:url("/Content/themes/image/LoginSource2.png") no-repeat 0px -40px #FFFFFF;
+}
+
+        #loginer .content .input-validation-error {
+            border:solid 1px #f00;
+        }
+
+    #loginer .ccDiv {
+        height:23px;
+        line-height:23px;
+        margin:8px 0px 8px 0px;
+    }
+
+#resultDiv {
+    width:90%;
+    height:90%;
+    padding:14px 5%;
+    color:#666666;
+}
+
+    #resultDiv .blb{
+        float:left;
+        font-size:20pt;
+        width:100%;
+        clear:left;
+    }
+
+    #resultDiv .bottom {
+        float:left;
+        width:100%;
+    }
+
+        #resultDiv .bottom *{
+            float:left;
+        }
+
+    #resultDiv a {
+        color:#666666;
+    }
+
+    #resultDiv a:hover {
+        color:#cc0000;
+    }
+
+    #resultDiv .userName {
+        margin:0px 5px;
+    }
+
+    #resultDiv .welcome {
+        height:185px;
+    }
+
+    #resultDiv .ticket {
+        color:#cc0000;
+    }
+
+#ccImg{
+    margin-left:20px;
+    height:23px;
+    width:44px;
+    cursor:pointer;
+}
+
+#loginBtn {
+    margin-top:20px;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    background-color:#EC0A17;
+    border:none;
+    font-size:23px;
+    letter-spacing:40px;
+    font-weight:bolder;
+    color:#FFFFFF;
+    cursor:pointer;
+}
+
+#loginDiv .other {
+    margin:0px 3%;
+    width:94%;
+    height:30px;
+}
+
+#loginDiv .forgot {
+    margin:0px 3%;
+    width:94%;
+    font-size:18pt;
+    font-weight:bolder;
+}
+
+#loginDiv .registerDiv {
+    margin:0px 3%;
+    width:94%;
+    vertical-align:middle;
+    text-align:center;
+}
+            
+#qqLoginBtn {
+    float:left;
+}
+
+#wb_connect_btn {
+    float:left;
+    margin-left:8px;
+}
+
+#registerBtn {
+    margin-top:70px;
+    height:48px;
+    line-height:48px;
+    vertical-align:middle;
+    width:200px;
+    background:url("/Content/themes/image/LoginSource2.png") repeat-x 0px -80px;
+    border:solid 2px #EC0A17;
+    border-radius:8px;
+    display:inline-block;
+    text-decoration:none;
+    color:#666666;
+    font-weight:bold;
+}
+
+/* loading
+-----------------------------------------------------------*/
+.loadingEle {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    width:100%;
+    background-color:#e3e3e3; 
+    z-index:99; 
+    opacity:0.5;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+}
+
+    .loadingEle img {
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-16px;
+        margin-top:-16px;
+    }
+
+#LBDiv {
+    background:url(/Content/themes/image/LoginSource1.png) no-repeat;
+    width:700px;
+    height:648px;
+    position:absolute;
+    left:0px;
+    top:100%;
+    margin-top:-648px;
+}
+
+
+/* register
+-----------------------------------------------------------*/
+#regCDiv {
+    position:absolute;
+    left:70%;
+    top:40%;
+    margin-left:-200px;
+    margin-top:-300px;
+    padding:3%;
+    width:400px;
+    height:600px;
+    border:solid 1px #cccccc;
+    border-radius:8px;
+    box-shadow:1px 1px 8px 1px rgb(88, 88, 88);
+    color:rgb(88, 88, 88);
+    padding:8px 8px 8px 8px;
+    background-color:rgba(255, 255, 255, 0.6)!important;
+    filter:Alpha(opacity=60);
+    color:#666666;
+}
+
+#register {
+    margin:3% 3%;
+    width:94%;
+    height:auto;
+    color:#666666;
+}
+
+    #register .ltTitle {
+        font-size:25pt;
+        font-weight:bold;
+        letter-spacing:5px;
+    }
+
+    #register .gif {
+        text-align:right;
+        color:#EC0A17;
+    }
+
+    #register .inputDiv {
+        width:100%;
+    }
+
+        #register .inputDiv .value {
+            width:100%;
+            height:34px;
+            line-height:34px;
+            vertical-align:middle;
+            position:relative;
+        }
+
+            #register .inputDiv .value input {
+                padding-left:25%;
+                width:75%;
+                height:30px;
+                line-height:30px;
+                vertical-align:middle;
+            }
+
+            #register .inputDiv .value .title {
+                position:absolute;
+                top:4px;
+                left:7px;
+                height:30px;
+                line-height:30px;
+                vertical-align:middle;
+                font-size:14pt;
+                font-weight:bold;
+                letter-spacing:3px;
+                width:88px;
+                text-align:right;
+                color:#DBD7D9;
+            }
+
+            #register .inputDiv .value .icon {
+                position:absolute;
+                top:8px;
+                left:100%;
+                height:18px;
+                line-height:18px;
+                width:15px;
+                margin-left:-17px;
+                border-left:solid 1px #E2E8EF;
+                color:#EC0A17;
+                padding-left:3px;
+            }
+
+            #register .inputDiv .value .icon-validation-valid {
+                background:url(/Content/themes/image/main.png) -23px -80px no-repeat;
+            }
+
+            #register .inputDiv .value .icon-validation-error {
+                background:url(/Content/themes/image/main.png) -42px -80px no-repeat;
+            }
+
+        #register .inputDiv .tip {
+            text-align:right;
+            font-size:9pt;
+            color:#DBD7D9;
+            height:17px;
+            width:100%;
+            display:inline-block;
+        }
+
+            #register .inputDiv .ccDiv img {
+                position:absolute;
+                top:4px;
+                left:100%;
+                margin-left:-100px;
+                height:30px;
+                width:100px;
+            }
+
+    #register  .btnDiv {
+        margin-top:10px;
+    }
+
+    #register  .btnDiv .registerBtn {
+        width:300px;
+        height:40px;
+        line-height:40px;
+        background-color:#EC0A17;
+        border:none;
+        font-size:19px;
+        font-weight:bolder;
+        color:#FFFFFF;
+    }
+
+    #register  .btnDiv .resetBtn {
+        width:72px;
+        height:40px;
+        line-height:40px;
+        background-color:#EC0A17;
+        border:none;
+        font-size:19px;
+        font-weight:bolder;
+        color:#FFFFFF;
+    }
+
+    #regCDiv .agreement {
+        padding:0px 3%;
+        width:94%;
+    }
+
+    #regCDiv .agreement .ltTitle {
+        font-size:15pt;
+        letter-spacing:1px;
+    }
+
+    #regCDiv .agreement .content {
+        margin-top:5px;
+        border:2px solid #A9A9A9;
+        height:100px;
+        padding:2%;
+        width:96%;
+    }
+
+    #regCDiv .otherLogin {
+        margin-top:8px;
+        width:94%;
+        padding:0px 3%;
+    }
+
+        #regCDiv .otherLogin .tFont {
+            margin-bottom:3px;
+            color:#DBD7D9;
+        }
+
+#register .inputDiv  .field-validation-error {
+    color:#EC0A17;
+}
+
+/* associateUserDlg 
+----------------------------------------------------------*/
+body .justOverlayer {
+    background:none;
+    border:none;
+}
+
+.justOverlayer .ui-dialog-titlebar {
+  display: none;
+}
+
+    #associateUserDlg .description {
+        text-align:left;
+        width:100%;
+        float:left;
+        font-size:large;
+        line-height:35px;
+    }
+
+    #associateUserDlg .title {
+        width:30%;
+        text-align:right;
+        float:left;
+        height:35px;
+        line-height:35px;
+    }
+
+    #associateUserDlg .content {
+        width:70%;
+        text-align:left;
+        float:left;
+        height:35px;
+        line-height:35px;
+    }
+    
+    #associateUserDlg .btn {
+        width:90%;
+        padding:5px 5%;
+        float:left;
+        height:35px;
+        line-height:35px;
+        text-align:center;
+    }
+
+    #associateUserDlg .ui-tabs-panel {
+        height:170px;
+    }
+
+    #associateUserDlg .closeBtn {
+        position:absolute;
+        width:18px;
+        height:18px;
+        left:100%;
+        top:3px;
+        margin-top:10px;
+        margin-left:-30px;
+        cursor:pointer;
+       
+    }

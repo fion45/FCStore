@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/MyJS")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript" name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js#78afd04de3d77d7c56d9270a8a616195"></script>
+    <script type="text/javascript">window.bd && bd._qdc && bd._qdc.init({ app_id: '9ec25c0b8eba5dfd2937c2e9' });</script>
+</body>
+</html>
