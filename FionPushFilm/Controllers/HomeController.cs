@@ -8,6 +8,8 @@ using FionPushFilm.Common;
 using System.Text;
 using System.Drawing;
 using System.IO;
+using FionPushFilm.Models;
+using FionPushFilm.HtmlHelper;
 
 namespace FionPushFilm.Controllers
 {
@@ -16,7 +18,6 @@ namespace FionPushFilm.Controllers
         //
         // GET: /Home/
 
-        [MyAuthorizeAttribute]
         public ActionResult Index()
         {
             return View();
@@ -45,6 +46,15 @@ namespace FionPushFilm.Controllers
             {
                 ViewBag.returnUrl = Encoding.UTF8.GetString(Convert.FromBase64String(id));
             }
+            return View();
+        }
+
+        //[RequireHttps]
+        public ActionResult Error(string id)
+        {
+            int tmpI = 403;
+            int.TryParse(id, out tmpI);
+            ViewBag.ErrCode = tmpI;
             return View();
         }
 
@@ -97,6 +107,43 @@ namespace FionPushFilm.Controllers
             //输出图片流
             return stream.ToArray();
 
+        }
+
+        private static string HOMEPAGEURL = "http://www.torrentkitty.org";
+        private static string SEARCHHTMLFORMAT = HOMEPAGEURL + "/search/{0}/{1}";
+
+        public ActionResult SearchResource(string searchText,int pageIndex)
+        {
+            SearchResult result = new SearchResult();
+            result.PageIndex = pageIndex;
+
+            string htmlStr = HtmlReader.OpenSync(string.Format(SEARCHHTMLFORMAT, searchText, pageIndex));
+
+            HtmlAnalyser analyser = new HtmlAnalyser(htmlStr);
+            HtmlAnalyser.MagnetResult[] tmpMC = analyser.GetResult();
+            result.Items = new List<ResourceItem>();
+            foreach (HtmlAnalyser.MagnetResult item in tmpMC)
+            {
+                ResourceItem resourceItem = new ResourceItem();
+                resourceItem.ResourceName = item.Description;
+                resourceItem.MagnetLink = item.MargnetLink;
+                resourceItem.Date = item.Date;
+                resourceItem.Size = item.Size;
+                resourceItem.SeedLink = item.SeedLink;
+                resourceItem.DetailUrl = HOMEPAGEURL + item.DetailLink;
+                result.Items.Add(resourceItem);
+            }
+            result.PageCount = analyser.GetPageCount();
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(result);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View(result);
+            }
         }
     }
 }

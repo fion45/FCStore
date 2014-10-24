@@ -1,6 +1,7 @@
 ﻿body {
     font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-family: Georgia, SimSun, "宋体";
+    font-family: Arial, "Microsoft YaHei", "微软雅黑";
     color: #232323;
     background-color: #fff;
 }
@@ -44,6 +45,10 @@ a:hover {
 
 .pullupDiv {
     clear:both;
+}
+
+.textaligncenter {
+    text-align:center;
 }
 
 /* Styles for basic forms
@@ -169,3 +174,174 @@ textarea {
 
 /* Styles for Home
 -----------------------------------------------------------*/
+#headerDiv {
+    width:84%;
+    height:50px;
+    padding:20px 8%;
+    background:#0094ff;
+    font-size:220%;
+}
+
+#MainDiv {
+    position:absolute;
+    width:900px;
+    top:90px;
+    bottom:0px;
+    left:50%;
+    margin-left:-450px;
+    border-left:solid 1px #ccc;
+    border-right:solid 1px #ccc;
+    box-shadow : 1px 1px 8px 1px #585858;
+    background-color:rgba(255,255,255,.6)!important;
+}
+
+#SearchDiv {
+    padding:4px;
+}
+
+    #SearchDiv .inputDiv {
+        width:100%;
+        height:28px;
+        line-height:28px;
+        vertical-align:central;
+        padding:10px 10px;
+        font-size:120%;
+    }
+
+#searchTB {
+    width:710px;
+    height:23px;
+}
+
+#searchBtn {
+    width:50px;
+    height:25px;
+}
+
+    #SearchDiv .resultDiv {
+        width:98%;
+        padding:0px 1%;
+    }
+
+#searchResult {
+    width:100%;
+}
+
+.resultTitle {
+    height:30px;
+    font-size:110%;
+    font-weight:bold;
+    background-color:#0094ff;
+    color:white;
+    line-height:30px;
+    vertical-align:central;
+}
+
+    .resultTitle li:nth-child(4n + 1) {
+        width:68%;
+        padding:3px 1%;
+    }
+
+    .resultTitle li:nth-child(4n + 2) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    .resultTitle li:nth-child(4n + 3) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    .resultTitle li:nth-child(4n + 0) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    #searchResult li {
+        height:20px;
+        line-height:20px;
+        vertical-align:central;
+        overflow:hidden;
+    }
+
+    #searchResult li:nth-child(4n + 1) {
+        width:68%;
+        padding:3px 1%;
+    }
+
+    #searchResult li:nth-child(4n + 2) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    #searchResult li:nth-child(4n + 3) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    #searchResult li:nth-child(4n + 0) {
+        width:8%;
+        padding:3px 1%;
+        text-align:center;
+    }
+
+    #searchResult li:nth-child(8n + 5),
+    #searchResult li:nth-child(8n + 6),
+    #searchResult li:nth-child(8n + 7),
+    #searchResult li:nth-child(8n + 0) {
+        background-color:#b6f8f8;
+    }
+
+    #searchResult {
+        height:530px;
+    }
+
+#pageDiv {
+    padding:10px 2%;
+    width:96%;
+    text-align:center;
+}
+
+#pageUl {
+    width:310px;
+    margin:0px auto;
+}
+
+    #pageUl li {
+        height:20px;
+        width:22px;
+        margin:0px 5px;
+        font-size:110%;
+        font-weight:bold;
+        border:solid 1px #ccc;
+        text-align:center;
+        line-height:20px;
+        vertical-align:central;
+    }
+
+    #pageUl .sel {
+        background-color:#0094ff;
+        border:solid 1px #0094ff;
+        color:white;
+    }
+
+    #pageUl .sel a {
+        color:white;
+    }
+
+    #DealwithDiv label {
+        float:left;
+        clear:both;
+    }
+
+    #DealwithDiv img {
+        float:left;
+        height:180px;
+        width:350px;
+        clear:both;
+    }

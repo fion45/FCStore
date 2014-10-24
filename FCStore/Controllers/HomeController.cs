@@ -64,7 +64,9 @@ namespace FCStore.Controllers
         //[RequireHttps]
         public ActionResult Error(string id)
         {
-            ViewBag.ErrCode = id;
+            int tmpI = 403;
+            int.TryParse(id, out tmpI);
+            ViewBag.ErrCode = tmpI;
             return View();
         }
 

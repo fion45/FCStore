@@ -47,6 +47,10 @@ namespace FionPushFilm
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
                 "~/Scripts/common.js",
                 "~/Scripts/login.js"));
+
+            bundles.Add(new ScriptBundle("~/Scripts/MyJS").Include(
+                "~/Scripts/common.js",
+                "~/Scripts/MyJS.js"));
         }
     }
 }

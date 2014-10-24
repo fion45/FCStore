@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RouteDebug">
+      <HintPath>..\packages\RouteDebug\RouteDebug.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -137,10 +140,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelper\HtmlAnalyser.cs" />
+    <Compile Include="HtmlHelper\HtmlReader.cs" />
     <Compile Include="Models\ClientTrail.cs" />
+    <Compile Include="Models\FileItem.cs" />
     <Compile Include="Models\FilmDbContext.cs" />
     <Compile Include="Models\LoginPageTrail.cs" />
+    <Compile Include="Models\ResourceItem.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -202,6 +210,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <None Include="Properties\PublishProfiles\FilmPublisher.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -236,9 +245,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Dealwith\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

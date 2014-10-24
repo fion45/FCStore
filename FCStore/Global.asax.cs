@@ -99,7 +99,7 @@ namespace FCStore
             db.Dispose();
 
             //注册RouteDebug
-            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
+            RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
 
         protected void Application_Error(object s, EventArgs e)

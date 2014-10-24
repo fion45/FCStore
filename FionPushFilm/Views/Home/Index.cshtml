@@ -1,29 +1,74 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
-<div class="MainDiv">
-    <div>
-        <input id="searchTB" type="text" />
-        <input id="searchBtn" type="button" />
-    </div>
-    <div>
-        <ul id="searchResult">
-            <li>
-                名称
-            </li>
-            <li>
-                下载种子
-            </li>
-            <li>
-                播放
-            </li>
-            <!-- 搜索结果 -->
-        </ul>
-        <div>
-            <ul id="pageUl">
-
+@section scripts{
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $('#searchBtn').on("click", IndexJS.ClickSearchBtn);
+        });
+    </script>
+}
+<div id="headerDiv">
+    <label class="name">Fion</label><label class="tip">电影分享网站</label>
+</div>
+<div id="MainDiv">
+    <div id="SearchDiv" class="p1">
+        <div class="inputDiv">
+            电影关键字：
+            <input id="searchTB" type="text" />
+            <input id="searchBtn" type="button" value="搜索" data-PIndex="1" />
+        </div>
+        <div class="resultDiv">
+            <ul class="resultTitle">
+                <li>
+                    名称
+                </li>
+                <li>
+                    磁链
+                </li>
+                <li>
+                    种子
+                </li>
+                <li>
+                    播放
+                </li>
             </ul>
+            <ul id="searchResult">                
+                <!-- 搜索结果 -->
+            </ul>
+            <div id="pageDiv" class="pullupDiv">
+                <ul id="pageUl"></ul>
+            </div>
         </div>
     </div>
+</div>
+<div id="DealwithDiv">
+    <label>
+        在线观看说明：
+    </label>
+    <label>        
+        Step1:注册一个百度云账号(http://yun.baidu.com)
+    </label>
+    <img src="/Dealwith/Step1.png" />
+    <label>
+        Step2:登陆后，选择网盘    </label>
+    <label>
+        <img src="/Dealwith/Step2.png" />
+    </label>
+    <label>
+        Step3:点击离线下载
+        <img src="/Dealwith/Step3.png" />
+    </label>
+    <label>
+        Step4:点击新建链接任务
+        <img src="/Dealwith/Step4.png" />
+    </label>
+    <label>
+        Step5:右键点击右边搜索到的资源里的“磁链”，然后按“复制链接地址”
+        <img src="/Dealwith/Step5.png" />
+    </label>
+    <label>
+        Step6:把复制的磁链地址粘贴到“文件链接”的输入框中即可
+        <img src="/Dealwith/Step6.png" />
+    </label>
 </div>
