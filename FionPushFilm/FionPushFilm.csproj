@@ -208,9 +208,16 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\image\FilmIcon.png" />
+    <Content Include="Content\themes\image\loading.gif" />
+    <Content Include="Content\themes\image\LoginSource1.png" />
+    <Content Include="Content\themes\image\LoginSource11.png" />
+    <Content Include="Content\themes\image\LoginSource2.png" />
+    <Content Include="Content\themes\image\sky.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <None Include="Properties\PublishProfiles\FilmPublisher.pubxml" />
+    <None Include="Properties\PublishProfiles\FilmWebPublisher.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -249,6 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\img\" />
     <Folder Include="Dealwith\" />
   </ItemGroup>
   <ItemGroup>

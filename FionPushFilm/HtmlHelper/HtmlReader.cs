@@ -32,31 +32,38 @@ namespace FionPushFilm.HtmlHelper
 
         public static string OpenSync(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)(WebRequest.Create(url));
-            request.Headers.Add(HttpRequestHeader.CacheControl, "max-age=0");
-            request.Accept = "text/html,application/xhtml+xml;q=0.9,image/webp,*/*;q=0.8";
-            request.UserAgent = "Mozilla/5.0(window NT 6.1) Applewebkit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 safari/537.36";
-            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate,sdch");
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn,zh;q=0.8");
-
-            WebResponse response = request.GetResponse();
-
-            string encodingStr = response.Headers["Content-Encoding"];
-            Stream tmpStream = response.GetResponseStream();
-            //tmpStream.Seek(0, SeekOrigin.Begin);
-            //结束
-            if (encodingStr == "gzip")
+            try
             {
-                tmpStream = new GZipStream(tmpStream, CompressionMode.Decompress);
+                HttpWebRequest request = (HttpWebRequest)(WebRequest.Create(url));
+                request.Headers.Add(HttpRequestHeader.CacheControl, "max-age=0");
+                request.Accept = "text/html,application/xhtml+xml;q=0.9,image/webp,*/*;q=0.8";
+                request.UserAgent = "Mozilla/5.0(window NT 6.1) Applewebkit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 safari/537.36";
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate,sdch");
+                request.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn,zh;q=0.8");
+
+                WebResponse response = request.GetResponse();
+
+                string encodingStr = response.Headers["Content-Encoding"];
+                Stream tmpStream = response.GetResponseStream();
+                //tmpStream.Seek(0, SeekOrigin.Begin);
+                //结束
+                if (encodingStr == "gzip")
+                {
+                    tmpStream = new GZipStream(tmpStream, CompressionMode.Decompress);
+                }
+                else if (encodingStr == "deflate")
+                {
+                    tmpStream = new DeflateStream(tmpStream, CompressionMode.Decompress);
+                }
+                StreamReader reader = new StreamReader(tmpStream);
+                string htmlStr = reader.ReadToEnd();
+                reader.Close();
+                return htmlStr;
             }
-            else if (encodingStr == "deflate")
+            catch
             {
-                tmpStream = new DeflateStream(tmpStream, CompressionMode.Decompress);
+                return "";
             }
-            StreamReader reader = new StreamReader(tmpStream);
-            string htmlStr = reader.ReadToEnd();
-            reader.Close();
-            return htmlStr;
         }
 
         public void Open(string url,DealWithResponse dealwithFun,object dealwithPar )
