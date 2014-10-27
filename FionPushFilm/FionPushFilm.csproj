@@ -148,11 +148,16 @@
     <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\ResourceItem.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SearchLog.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CBPage\baidu_callback.html" />
+    <Content Include="CBPage\qc_callback.html" />
     <Content Include="Content\LoginPage.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -214,6 +219,11 @@
     <Content Include="Content\themes\image\LoginSource11.png" />
     <Content Include="Content\themes\image\LoginSource2.png" />
     <Content Include="Content\themes\image\sky.png" />
+    <Content Include="Dealwith\Step1.png" />
+    <Content Include="Dealwith\Step2.png" />
+    <Content Include="Dealwith\Step3.png" />
+    <Content Include="Dealwith\Step4.png" />
+    <Content Include="Dealwith\Step5.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <None Include="Properties\PublishProfiles\FilmPublisher.pubxml" />
@@ -257,7 +267,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\img\" />
-    <Folder Include="Dealwith\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

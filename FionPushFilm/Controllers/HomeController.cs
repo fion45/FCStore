@@ -15,6 +15,10 @@ namespace FionPushFilm.Controllers
 {
     public class HomeController : Controller
     {
+        private FilmDbContext db = new FilmDbContext();
+
+        private static string HOMEPAGEURL = "http://www.torrentkitty.org";
+        private static string SEARCHHTMLFORMAT = HOMEPAGEURL + "/search/{0}/{1}";
         //
         // GET: /Home/
 
@@ -109,11 +113,18 @@ namespace FionPushFilm.Controllers
 
         }
 
-        private static string HOMEPAGEURL = "http://www.torrentkitty.org";
-        private static string SEARCHHTMLFORMAT = HOMEPAGEURL + "/search/{0}/{1}";
-
         public ActionResult SearchResource(string searchText,int pageIndex)
         {
+            if (pageIndex <= 1)
+            {
+                SearchLog tmpLog = new SearchLog();
+                tmpLog.IPAddress = Request.UserHostAddress;
+                tmpLog.LogDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                tmpLog.SearchStr = searchText;
+                db.SearchLogs.Add(tmpLog);
+                db.SaveChanges();
+            }
+
             SearchResult result = new SearchResult();
             result.PageIndex = pageIndex;
 
@@ -147,6 +158,12 @@ namespace FionPushFilm.Controllers
             {
                 return View(result);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

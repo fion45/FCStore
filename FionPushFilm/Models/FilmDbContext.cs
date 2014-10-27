@@ -23,5 +23,7 @@ namespace FionPushFilm.Models
         public DbSet<LoginPageTrail> LoginPageTrails { get; set; }
 
         public DbSet<ClientTrail> ClientTrails { get; set; }
+
+        public DbSet<SearchLog> SearchLogs { get; set; }
     }
 }

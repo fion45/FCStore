@@ -312,6 +312,7 @@
     <Content Include="Scripts\uploadify\uploadify.swf" />
     <Content Include="Views\Order\Payment.aspx" />
     <Content Include="zone.xml" />
+    <None Include="Properties\PublishProfiles\FCStoreWeb.pubxml" />
     <None Include="Properties\PublishProfiles\RGFTP.pubxml" />
     <None Include="Properties\PublishProfiles\rightgo.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
