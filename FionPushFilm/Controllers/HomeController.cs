@@ -117,12 +117,19 @@ namespace FionPushFilm.Controllers
         {
             if (pageIndex <= 1)
             {
-                SearchLog tmpLog = new SearchLog();
-                tmpLog.IPAddress = Request.UserHostAddress;
-                tmpLog.LogDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                tmpLog.SearchStr = searchText;
-                db.SearchLogs.Add(tmpLog);
-                db.SaveChanges();
+                try
+                {
+                    SearchLog tmpLog = new SearchLog();
+                    tmpLog.IPAddress = Request.UserHostAddress;
+                    tmpLog.LogDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    tmpLog.SearchStr = searchText;
+                    db.SearchLogs.Add(tmpLog);
+                    db.SaveChanges();
+                }
+                catch
+                {
+
+                }
             }
 
             SearchResult result = new SearchResult();
@@ -162,8 +169,15 @@ namespace FionPushFilm.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
-            base.Dispose(disposing);
+            try
+            {
+                db.Dispose();
+                base.Dispose(disposing);
+            }
+            catch
+            {
+
+            }
         }
     }
 }

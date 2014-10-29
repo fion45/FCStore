@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
+using System.IO;
 
 namespace FionPushFilm.Models
 {
@@ -13,7 +14,15 @@ namespace FionPushFilm.Models
 
         public FilmDbContext()
         {
-            m_objcontext = ((IObjectContextAdapter)this).ObjectContext;
+            try
+            {
+                m_objcontext = ((IObjectContextAdapter)this).ObjectContext;
+            }
+            catch(Exception ex)
+            {
+                File.WriteAllText("D:\\FilmWeb\\web\\err.txt", ex.Message + this.Database.Connection.ConnectionString);
+                m_objcontext = null;
+            }
         }
 
         public DbSet<User> Users { get; set; }

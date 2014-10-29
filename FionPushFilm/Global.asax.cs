@@ -26,46 +26,66 @@ namespace FionPushFilm
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            try
+            {
+                AreaRegistration.RegisterAllAreas();
 
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+                WebApiConfig.Register(GlobalConfiguration.Configuration);
+                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                RouteConfig.RegisterRoutes(RouteTable.Routes);
+                BundleConfig.RegisterBundles(BundleTable.Bundles);
+            }
+            catch(Exception ex)
+            {
 
+            }
             //注册RouteDebug
             //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
 
         protected void Application_Error(object s, EventArgs e)
         {
-            Exception ex = Server.GetLastError();
-            if (ex != null && ex.GetType().Name == "HttpException")
+            try
             {
-                HttpException exception = (HttpException)ex;
-                if (exception.GetHttpCode() == 404)
+                Exception ex = Server.GetLastError();
+                if (ex != null && ex.GetType().Name == "HttpException")
                 {
-                    Response.StatusCode = 404;
+                    HttpException exception = (HttpException)ex;
+                    if (exception.GetHttpCode() == 404)
+                    {
+                        Response.StatusCode = 404;
+                    }
                 }
+                Server.ClearError();
             }
-            Server.ClearError();
+            catch (Exception ex)
+            {
+
+            }
         }
 
         protected void Application_OnPostAuthenticateRequest(object sender, EventArgs e)
         {
-            HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null && authCookie.Value != "" && authCookie.Value != null)
+            try
             {
-                //对当前的cookie进行解密   
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                Regex rgx = new Regex("<USERID>(.+)</USERID><USERNAME>(.+)</USERNAME><RIDARR>(.+)</RIDARR><RNARR>(.+)</RNARR><PERMISSION>(.+)</PERMISSION>");
-                Match tmpMatch = rgx.Match(authTicket.UserData);
-
-                if (!string.IsNullOrEmpty(tmpMatch.Value) && HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity is FormsIdentity)
+                HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                if (authCookie != null && authCookie.Value != "" && authCookie.Value != null)
                 {
-                    MyUser myUser = new MyUser(int.Parse(tmpMatch.Groups[1].Value), tmpMatch.Groups[2].Value, tmpMatch.Groups[3].Value, tmpMatch.Groups[4].Value, tmpMatch.Groups[5].Value);
-                    HttpContext.Current.User = myUser;
+                    //对当前的cookie进行解密   
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    Regex rgx = new Regex("<USERID>(.+)</USERID><USERNAME>(.+)</USERNAME><RIDARR>(.+)</RIDARR><RNARR>(.+)</RNARR><PERMISSION>(.+)</PERMISSION>");
+                    Match tmpMatch = rgx.Match(authTicket.UserData);
+
+                    if (!string.IsNullOrEmpty(tmpMatch.Value) && HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity is FormsIdentity)
+                    {
+                        MyUser myUser = new MyUser(int.Parse(tmpMatch.Groups[1].Value), tmpMatch.Groups[2].Value, tmpMatch.Groups[3].Value, tmpMatch.Groups[4].Value, tmpMatch.Groups[5].Value);
+                        HttpContext.Current.User = myUser;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -76,14 +96,21 @@ namespace FionPushFilm
 
         protected void Application_LogRequest(object sender, EventArgs e)
         {
-            bool enableTrail = false;
-            if (System.Configuration.ConfigurationManager.AppSettings["EnableTrail"] != null)
+            try
             {
-                if (bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["EnableTrail"], out enableTrail) && enableTrail)
+                bool enableTrail = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["EnableTrail"] != null)
                 {
-                    ClientTrailController tmpCon = new ClientTrailController();
-                    tmpCon.WriteTrail(this.Request);
+                    if (bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["EnableTrail"], out enableTrail) && enableTrail)
+                    {
+                        ClientTrailController tmpCon = new ClientTrailController();
+                        tmpCon.WriteTrail(this.Request);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
