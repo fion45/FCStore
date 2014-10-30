@@ -204,10 +204,13 @@
                         "<input id='delBtn' class='gray sbtngray' type='button' value='删除' />" +
                     "</li>" +
                     "<li>" +
-                        "<input id='refreshSelBtn' class='sbtn1' type='button' value='刷新' />" +
+                        "<input id='backBtn' class='sbtn1' type='button' value='返回' />" +
                     "</li>" +
                     "<li>" +
                         "<input id='saveBtn' class='sbtn2' type='button' value='保存' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='refreshSelBtn' class='sbtn3' type='button' value='刷新' />" +
                     "</li>" +
                 "</ul>" +
                 "<div class='title'><label><input id='checkAll' type='checkbox' />全选</label>已选商品：</div>")
@@ -218,8 +221,9 @@
                 $("#selDiv").on("change", ".productCB", ProductManager.OnSelItemCBChange);
                 $("#selDiv").on("click", ".item", ProductManager.OnSelItemClick);
 
-                $("#refreshSelBtn").on("click", ProductManager.OnRefreshSelBtnClick);
+                $("#backBtn").on("click", ProductManager.OnBackBtnClick);
                 $("#saveBtn").on("click", ProductManager.OnSaveSelBtnClick);
+                $("#refreshSelBtn").on("click", ProductManager.OnRefreshSelBtnClick);
             }
 
         });

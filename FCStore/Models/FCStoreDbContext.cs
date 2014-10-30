@@ -58,5 +58,7 @@ namespace FCStore.Models
         public DbSet<PushInfo> PushInfos { get; set; }
 
         public DbSet<ReColumnProduct> ReColumnProducts { get; set; }
+
+        public DbSet<ReColumnBrand> ReColumnBrands { get; set; }
     }
 }

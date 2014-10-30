@@ -125,7 +125,7 @@ namespace FCStore.Controllers
 
             typeDic["Brands"] = new ManagerVM<Column>.TableColumn.Config();
             typeDic["Brands"].specialType = ManagerVM<Column>.TableColumn.TCType.Href;
-            typeDic["Brands"].parameter = "/Manager/BrandsSelect/0/{ColumnID}";
+            typeDic["Brands"].parameter = "/Manager/BrandsManager/0/{ColumnID}";
             typeDic["Brands"].width = 60;
 
             ManagerVM<Column> tmpVM = new ManagerVM<Column>(db.Columns.ToList(), typeDic);
@@ -228,7 +228,7 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult BrandsSelect(int Tag, string Par)
+        public ActionResult BrandsManager(int Tag, string Par)
         {
             return View(db.Brands.OrderBy(r => r.NameStr));
         }

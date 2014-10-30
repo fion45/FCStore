@@ -33,8 +33,8 @@ namespace FCStore
 
             routes.MapRoute(
                 name: "BrandSelect",
-                url: "Manager/BrandsSelect/{Tag}/{Par}",
-                defaults: new { controller = "Manager", action = "BrandsSelect" }
+                url: "Manager/BrandsManager/{Tag}/{Par}",
+                defaults: new { controller = "Manager", action = "BrandsManager" }
             );
 
             routes.MapRoute(

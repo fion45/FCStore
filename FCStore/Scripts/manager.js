@@ -325,7 +325,7 @@ var ProductManager = {
         switch (tmpTag) {
             case 0: {
                 //select products for column
-                GetProductsUrl = "/Product/GetSelectProductInColum/" + parArr[4];
+                GetProductsUrl = "/Product/GetSelectProductInColum/" + Manager.GetParamTag(4);
                 $("#selDiv").on("dblclick",".item",ProductManager.ShowColumSetting);
                 break;
             }
@@ -352,20 +352,20 @@ var ProductManager = {
     	//保存已选产品
         var SetProductsUrl;
         var tmpData = null;
-        var tmpTag = GetParamTag(3)
+        var tmpTag = Manager.GetParamTag(3);
         switch (tmpTag) {
             case 0: {
                 //select products for column
                 SetProductsUrl = "/Product/SetSelectProductInColum";
+    			var par = [];
                 $.each($("#selDiv .item"),function(i,n){
                 	var item = $(n);
                 	var CrossRow = item.attr("data-cr") ? item.attr("data-cr") : 1;
                 	var CrossColum = item.attr("data-cc") ? item.attr("data-cc") : 1;
                 	var RenderType = item.attr("data-rt") ? item.attr("data-rt") : 0;
-                	var par = [];
                 	par.push({
                 		RCPID : 0,
-                		ColumnID : parArr[4],
+                		ColumnID : Manager.GetParamTag(4),
                 		ProductID : item.attr("data-pid"),
                 		CrossRow : CrossRow,
                 		CrossColum : CrossColum,
@@ -373,13 +373,9 @@ var ProductManager = {
                 	});
                 });
                 tmpData = {
-		        	id : parArr[4],
-		        	PIDArr : [],
+		        	id : Manager.GetParamTag(4),
 		        	Par : par
 		        }
-		        $.each($("#selDiv .item"),function(i,n){
-		        	tmpData.PIDArr.push($(n).attr("data-pid"));
-		        });
                 break;
             }
         }
@@ -458,7 +454,7 @@ var ProductManager = {
     },
     BuildProductItem : function (item) {
         var htmlStr =
-            "<div class='item'>" +
+            "<div class='item' data-pid='{0}'>" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
@@ -505,7 +501,7 @@ var ProductManager = {
         var tmpData = "";
         switch (tmpTag) {
             case 0: {
-            	var columnID = parseInt(parArr[4]);
+            	var columnID = parseInt(Manager.GetParamTag(4));
             	$.each(item.REProColLST,function(i,n) {
             		if(n.ColumnID == columnID) {
             			tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
@@ -605,7 +601,7 @@ var ProductManager = {
 	            $("#PSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
 	            $("#upBtn").on("click",ProductManager.OnUpBtnClick);
 	            $("#downBtn").on("click",ProductManager.OnDownBtnClick);
-	            $("#delBtn").on("click",ProductManager.OnDelBtnClick);
+	            $("#delBtn").on("click",ProductManager.OnDelSelBtnClick);
     		}
         }
         else {
@@ -683,6 +679,20 @@ var ProductManager = {
         		break;
         	}
         	case 0: {
+        		var target = $(ev.currentTarget);
+        		ProductManager.BuildProductItemWithCB({
+        			PID 		: target.attr('data-pid'),
+        			ImgPathArr 	: [target.find('img').attr('src')],
+        			Title		: $.trim(target.find('.title').text()),
+            		MarketPrice	: target.find('.marketPrice').text(),
+            		Discount	: target.find('.discount').text(),
+            		Price		: target.find('.price').text(),
+            		Sale		: target.find('.sale').text(),
+            		Stock		: target.find('.stock').text(),
+            		PVCount		: target.find('.pvcount').text(),
+            		Date		: target.find('.date').text(),
+            		REProColLST : [{ColumnID:Manager.GetParamTag(4),CrossRow:1,CrossColum:1,RenderType:0}]
+        		}).appendTo($("#selDiv"));
         		break;
         	}
         }
@@ -750,7 +760,8 @@ var ProductManager = {
     	ProductManager.saveSelProducts();
     },
     OnBackBtnClick : function(ev) {
-    	window.location.href = "/Manager/BannerManager/"
+//    	window.location.href = "/Manager/BannerManager/"
+    	window.history.back();
     },
     OnSaveBtnClick : function(ev) {
         //select products for column
@@ -800,8 +811,8 @@ var ProductManager = {
     }
 };
 
-var BrandSelect = {
-    updateSelBrands : function (insertTag) {
+var BrandManager = {
+    updateSelBrands : function () {
         $("#selDiv .item").remove();
         //初始化已选产品列表
         var tmpTag = Manager.GetParamTag(3);
@@ -809,7 +820,7 @@ var BrandSelect = {
         switch (tmpTag) {
             case 0: {
                 //select brands for column
-                GetBrandsUrl = "/Brand/GetSelectBrandInColum/" + parArr[4];
+                GetBrandsUrl = "/Brand/GetSelectBrandInColum/" + Manager.GetParamTag(4);
                 break;
             }
         }
@@ -824,7 +835,25 @@ var BrandSelect = {
             success: function (data, status, options) {
                 if (data.content != null) {
                     $.each(data.content, function (i, n) {
-                        BrandSelect.BuildBrandItemWithCB(n).appendTo($("#selDiv"));
+                        BrandManager.BuildBrandItemWithCB(n).appendTo($("#selDiv"));
+                    });
+                }
+            }
+        });
+    },
+    GetBrandsInColumn : function() {
+    	$.myAjax({
+            historyTag: false,
+            loadEle: $("#BSMain .right"),
+            url: "/Brand/GetBrandsInColumn/" + Manager.GetParamTag(4),
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content != null) {
+                    $.each(data.content, function (i, n) {
+                    	
                     });
                 }
             }
@@ -840,8 +869,7 @@ var BrandSelect = {
             }
         }
     	var htmlStr =
-            "<div class='item'" + 
-            " data-bid='" + item.BID + "'>" +
+            "<div class='item' data-bid='" + item.BID + "'>" +
                 "<div class='img'>" +
                     "<img src='/Brand/{1}.jpg' />" +
                 "</div>" +
@@ -852,8 +880,138 @@ var BrandSelect = {
             item.Tag
         ]);
     	var pItem = $(htmlStr);
-        var CBCtrl = $("<input class='productCB' type='checkbox'/>");
+        var CBCtrl = $("<input class='brandCB' type='checkbox'/>");
         pItem.append(CBCtrl);
         return pItem;
+    },
+    OnBrandItemClick : function(ev) {
+    	
+    },
+    OnBackBtnClick : function(ev) {
+    	window.history.back();
+    },
+    saveSelBrands : function() {
+    	//保存已选品牌
+        var SetBrandsUrl;
+        var tmpData = null;
+        var tmpTag = Manager.GetParamTag(3);
+        switch (tmpTag) {
+            case 0: {
+                //select brands for column
+                SetProductsUrl = "/Brand/SetSelectBrandsInColum";
+    			var par = [];
+                $.each($("#selDiv .item"),function(i,n){
+                	var item = $(n);
+                	par.push({
+                		RCBID : 0,
+                		ColumnID : Manager.GetParamTag(4),
+                		BrandID : item.attr("data-bid")
+                	});
+                });
+                tmpData = {
+		        	id : Manager.GetParamTag(4),
+		        	Par : par
+		        }
+                break;
+            }
+        }
+        
+        $.myAjax({
+            historyTag: false,
+            loadEle: $("#selDiv"),
+            url: SetProductsUrl,
+            data : JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+            	
+            }
+        });
+    },
+    OnSaveSelBtnClick : function(ev) {
+    	BrandManager.saveSelBrands();
+    },
+    OnRefreshSelBtnClick : function(ev) {
+    	BrandManager.updateSelBrands();
+    },
+    OnSelItemCBChange : function(ev) {
+    	var cTag = false;
+    	$.each($("#selDiv .brandCB"),function(i,n){
+    		if($(n).prop("checked")){
+    			cTag = true;
+    			return false;
+    		}
+    	});
+    	if (cTag) {
+    		if(!$("#upBtn").hasClass("sbtn1")) {
+	            $("#BSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
+	            $("#upBtn").on("click",BrandManager.OnUpBtnClick);
+	            $("#downBtn").on("click",BrandManager.OnDownBtnClick);
+	            $("#delBtn").on("click",BrandManager.OnDelBtnClick);
+    		}
+        }
+        else {
+            $("#BSMain .btnDiv .gray").removeClass("sbtn1").addClass("sbtngray");
+            $("#upBtn").off("click");
+            $("#downBtn").off("click");
+            $("#delBtn").off("click");
+        }
+    },
+    OnSelItemClick : function(ev) {
+    	var target = $(ev.target);
+        var curTarget = $(ev.currentTarget);
+        var CBCtrl = curTarget.children(".brandCB");
+        if(!target.hasClass("brandCB")) {
+        	CBCtrl.click();
+        }
+    },
+    OnUpBtnClick : function(ev) {
+    	var selItems = $("#selDiv .item:has(.brandCB:checked)");
+    	var frontItem = null;
+    	var lastItem = null;
+    	var moveItems = [];
+    	$.each(selItems,function(i,n){
+    		var tmpItem = $(n);
+    		if(frontItem == null) {
+	    		var prevItem = tmpItem.prev();
+	    		if(prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
+	    			frontItem = prevItem;
+	    		else
+	    			lastItem = tmpItem;
+    		}
+    		if(frontItem != null) {
+    			moveItems.push(tmpItem);
+    		}
+    	});
+    	if(frontItem != null) {
+    		frontItem.before(moveItems);
+    	}
+    },
+    OnDownBtnClick : function(ev) {
+    	var selItems = $.ReverseArr($("#selDiv .item:has(.brandCB:checked)"));
+    	var backItem = null;
+    	var lastItem = null;
+    	var moveItems = [];
+    	$.each(selItems,function(i,n){
+    		var tmpItem = $(n);
+    		if(backItem == null) {
+	    		var nextItem = tmpItem.next();
+	    		if(nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
+	    			backItem = nextItem;
+	    		else
+	    			lastItem = tmpItem;
+    		}
+    		if(backItem != null) {
+    			moveItems.unshift(tmpItem);
+    		}
+    	});
+    	if(backItem != null) {
+    		backItem.after(moveItems);
+    	}
+    },
+    OnDelBtnClick : function(ev) {
+    	var selItems = $("#selDiv .item:has(.brandCB:checked)");
+    	selItems.remove();
     }
 };

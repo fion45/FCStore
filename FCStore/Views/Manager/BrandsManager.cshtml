@@ -1,0 +1,85 @@
+﻿@model IEnumerable<FCStore.Models.Brand>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BrandsManager</title>    
+    @Styles.Render("~/Manager/css")
+</head>
+<body>
+    <div id="BSMain">
+        <div class="left">
+            <div class="btnDiv">
+                <ul>
+                    <li>
+                        <input id="upBtn" class="gray sbtngray" type="button" value="上移" />
+                    </li>
+                    <li>
+                        <input id="downBtn" class="gray sbtngray" type="button" value="下移" />
+                    </li>
+                    <li>
+                        <input id="delBtn" class="gray sbtngray" type="button" value="删除" />
+                    </li>
+                    <li>
+                        <input id="backBtn" class="sbtn1" type="button" value="返回" />
+                    </li>
+                    <li>
+                        <input id="saveBtn" class="sbtn2" type="button" value="保存" />
+                    </li>
+                    <li>
+                        <input id="refreshSelBtn" class="sbtn3" type="button" value="刷新" />
+                    </li>
+                </ul>
+                <div class="title"><label><input id="checkAll" type="checkbox" />全选</label>已选品牌：</div>
+            </div>
+            <div id="selDiv">
+            </div>
+        </div>
+        <div class="right">
+            @{
+                char headChar = ' ';
+                foreach(FCStore.Models.Brand item in Model)
+                {
+                    if(item.NameStr.ToUpper()[0] != headChar)
+                    {
+                        headChar = item.NameStr.ToUpper()[0];
+                        <div class="charDiv">@(headChar.ToString().ToUpper())</div>
+                    }
+                    <div class="brandItem" data-bid="@(item.BID)">
+                        <img src="/Brand/@(item.Tag).jpg" />
+                        <div class="title">@(item.Name2)</div>
+                        <a href="Product/ListByBrand/@(item.BID)">详情</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Manager/js")
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            var pathName = window.location.pathname;
+            var parArr = pathName.split('/');
+            if (parArr.length >= 4 && parArr[3] == "0") {
+                //获取Colum里所有商品的品牌
+                BrandManager.GetBrandsInColumn(parArr[4]);
+            }
+            BrandManager.updateSelBrands();
+            $("#checkAll").checkAll(null, "#selDiv .item .brandCB");
+            $("#selDiv").on("change", ".brandCB", BrandManager.OnSelItemCBChange);
+            $("#selDiv").on("click", ".item", BrandManager.OnSelItemClick);
+            $("#BSMain .right").on("click", ".brandItem", BrandManager.OnBrandItemClick);
+
+            $("#backBtn").on("click", BrandManager.OnBackBtnClick);
+            $("#saveBtn").on("click", BrandManager.OnSaveSelBtnClick);
+            $("#refreshSelBtn").on("click", BrandManager.OnRefreshSelBtnClick);
+        });
+    </script>
+</body>
+</html>

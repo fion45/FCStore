@@ -663,6 +663,8 @@ li {
     #BSMain .brandItem {
         float:left;
         margin:8px 12px;
+        position:relative;
+        cursor:pointer;
     }
 
     #BSMain .brandItem img {
@@ -676,6 +678,17 @@ li {
         white-space:nowrap; 
         overflow:hidden;
         font-size:10pt;
+    }
+
+    #BSMain .brandItem a {
+        position:absolute;
+        top:0px;
+        left:100%;
+        width:30px;
+        margin-left:-30px;
+        color:#D73E3E;
+        font-size:smaller;
+        background-color:white;
     }
 
     #PSMain .left #selDiv .item {
@@ -700,23 +713,25 @@ li {
         height:100%;
     }
 
-    #PSMain .left #selDiv .item .p60
-    {
+    #PSMain .left #selDiv .item .p60 {
         width:100%;
     }
 
-    #PSMain .left #selDiv .item .p40
-    {
+    #PSMain .left #selDiv .item .p40 {
         width:100%;
     }
 
-    #PSMain .left #selDiv .item .detailA
-    {
+    #PSMain .left #selDiv .item .detailA {
         float:right;
     }
 
-    #file_upload
-    {
+    #file_upload {
         margin:0px auto;
         position:relative;
+    }
+
+    #selDiv .brandCB {
+        position:absolute;
+        top:8px;
+        left:8px;
     }

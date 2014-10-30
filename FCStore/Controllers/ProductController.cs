@@ -420,7 +420,7 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult SetSelectProductInColum(int id, List<int> PIDArr, List<ReColumnProduct> Par)
+        public ActionResult SetSelectProductInColum(int id, List<ReColumnProduct> Par)
         {
             db.m_objcontext.ExecuteStoreCommand("DELETE ReColumnProducts WHERE ColumnID = " + id);
             foreach (ReColumnProduct item in Par)
