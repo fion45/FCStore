@@ -51,7 +51,7 @@
                         headChar = item.NameStr.ToUpper()[0];
                         <div class="charDiv">@(headChar.ToString().ToUpper())</div>
                     }
-                    <div class="brandItem" data-bid="@(item.BID)">
+                    <div class="brandItem" data-bid="@(item.BID)" data-tag="@(item.Tag)">
                         <img src="/Brand/@(item.Tag).jpg" />
                         <div class="title">@(item.Name2)</div>
                         <a href="Product/ListByBrand/@(item.BID)">详情</a>

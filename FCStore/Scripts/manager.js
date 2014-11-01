@@ -1,4 +1,4 @@
-$(function () {
+ï»¿$(function () {
     $(".contentTabel tbody td").live("dblclick", function (ev) {
         var target = $(ev.currentTarget);
         var tmpTR = target.parentsUntil("tbody").last();
@@ -27,7 +27,7 @@ var Manager = {
         window.location.reload();
     },
     OnDelBtnClick: function () {
-        //Ñ¡ÔñµÄĞĞ
+        //é€‰æ‹©çš„è¡Œ
         var checkedCB = $(".contentTabel .checkItem:checked");
         $.each(checkedCB, function (i, n) {
             var ele = $(n);
@@ -111,7 +111,7 @@ var Manager = {
             }
         });
 
-        //»ñµÃaddArr
+        //è·å¾—addArr
         var addArr = [];
         var addTRArr = $(".contentTabel tr[class*='tr_add']");
         $.each(addTRArr, function (i, n) {
@@ -125,7 +125,7 @@ var Manager = {
             addArr.push(obj);
         });
 
-        //»ñµÃeditArr
+        //è·å¾—editArr
         var editArr = [];
         var editTRArr = $(".contentTabel tr[class*='tr_edit']");
         $.each(editTRArr, function (i, n) {
@@ -139,7 +139,7 @@ var Manager = {
             editArr.push(obj);
         });
 
-        //»ñµÃdelArr
+        //è·å¾—delArr
         var delArr = [];
         var delTRArr = $(".contentTabel tr[class*='tr_del']");
         $.each(delTRArr, function (i, n) {
@@ -159,7 +159,7 @@ var Manager = {
             DelArr: delArr
         };
         var ActionName = $(".contentTabel").attr("data-action");
-        //±£´æ
+        //ä¿å­˜
         $.myAjax({
             historyTag: false,
             loadEle: null,
@@ -231,7 +231,7 @@ var Manager = {
             $('#file_upload' + rIndex).uploadify({
                 height: 30,
                 width: ele.width(),
-                buttonText: 'ÎÄ¼şÉÏ´«',
+                buttonText: 'æ–‡ä»¶ä¸Šä¼ ',
                 auto: false,
                 swf: '/Scripts/uploadify/uploadify.swf',
                 uploader: '/Manager/Upload',
@@ -288,20 +288,20 @@ var ProductManager = {
             else {
                 var ele = $(
 		    		"<ul id=CSDlg>" +
-						"<li class='title'>ºá¿çĞĞÊı£º</li>" +
+						"<li class='title'>æ¨ªè·¨è¡Œæ•°ï¼š</li>" +
 						"<li class='content'><input id='CRTB' type='text' value='1' /></li>" +
-						"<li class='title'>ºá¿çÁĞÊı£º</li>" +
+						"<li class='title'>æ¨ªè·¨åˆ—æ•°ï¼š</li>" +
 						"<li class='content'><input id='CCTB' type='text' value='1' /></li>" +
-						"<li class='title'>ÏÔÊ¾·½Ê½£º</li>" +
+						"<li class='title'>æ˜¾ç¤ºæ–¹å¼ï¼š</li>" +
 						"<li class='content'><input id='RTTB' type='text' value='0' /></li>" +
 					"</ul>");
                 ele.appendTo($(window.document.body));
                 $("#CSDlg").dialog({
                     autoOpen: false,
                     modal: true,
-                    title: 'ÉèÖÃ',
+                    title: 'è®¾ç½®',
                     buttons: {
-                        "È·¶¨": function () {
+                        "ç¡®å®š": function () {
                             ProductManager.forProduct.attr({
                                 "data-cr": $("#CRTB").val(),
                                 "data-cc": $("#CCTB").val(),
@@ -319,7 +319,7 @@ var ProductManager = {
     },
     updateSelProducts: function () {
         $("#selDiv .item").remove();
-        //³õÊ¼»¯ÒÑÑ¡²úÆ·ÁĞ±í
+        //åˆå§‹åŒ–å·²é€‰äº§å“åˆ—è¡¨
         var tmpTag = Manager.GetParamTag(3);
         var GetProductsUrl;
         switch (tmpTag) {
@@ -349,7 +349,7 @@ var ProductManager = {
     },
 
     saveSelProducts: function () {
-        //±£´æÒÑÑ¡²úÆ·
+        //ä¿å­˜å·²é€‰äº§å“
         var SetProductsUrl;
         var tmpData = null;
         var tmpTag = Manager.GetParamTag(3);
@@ -459,26 +459,26 @@ var ProductManager = {
                 "</div>" +
                 "<div class='title' title='{2}'>{2}</div>" +
                 "<div class='marketPrice p60'>" +
-                    "ÊĞ¼Û£º£¤<label class='marketPrice'>{3}<label>" +
+                    "å¸‚ä»·ï¼šï¿¥<label class='marketPrice'>{3}<label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "ÕÛ¿Û£º<label class='discount'>{4}</label>" +
+                    "æŠ˜æ‰£ï¼š<label class='discount'>{4}</label>" +
                 "</div>" +
                 "<div class='p60'>" +
-                    "ÏÖ¼Û£º£¤<label class='price'>{5}</label>" +
+                    "ç°ä»·ï¼šï¿¥<label class='price'>{5}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "ÒÑÊÛ£º<label class='sale'>{6}</label>" +
+                    "å·²å”®ï¼š<label class='sale'>{6}</label>" +
                 "</div>" +
                 "<div class='p60'>" +
-                    "´æ»õ£º<label class='stock'>{7}</label>" +
+                    "å­˜è´§ï¼š<label class='stock'>{7}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "ä¯ÀÀ£º<label class='pvcount'>{8}</label>" +
+                    "æµè§ˆï¼š<label class='pvcount'>{8}</label>" +
                 "</div>" +
             	"<div class='p1'>" +
-                    "´´½¨Ê±¼ä£º<label class='date'>{9}</label>" +
-                	"<a class='detailA' href='/Product/Detail/{0}'>ÏêÏ¸</a>" +
+                    "åˆ›å»ºæ—¶é—´ï¼š<label class='date'>{9}</label>" +
+                	"<a class='detailA' href='/Product/Detail/{0}'>è¯¦ç»†</a>" +
                 "</div>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
@@ -511,12 +511,12 @@ var ProductManager = {
             }
         }
         var htmlStr =
-            "<div class='item' title='ÃèÊö£º{2}£¬ÊĞ¼Û£º{3}£¬ÏÖ¼Û£º{5}£¬ÒÑÊÛ£º{6}£¬ÕÛ¿Û£º{4}£¬¿â´æ£º{7}£¬ä¯ÀÀ£º{8}£¬´´½¨Ê±¼ä£º{9}£¬'" +
+            "<div class='item' title='æè¿°ï¼š{2}ï¼Œå¸‚ä»·ï¼š{3}ï¼Œç°ä»·ï¼š{5}ï¼Œå·²å”®ï¼š{6}ï¼ŒæŠ˜æ‰£ï¼š{4}ï¼Œåº“å­˜ï¼š{7}ï¼Œæµè§ˆï¼š{8}ï¼Œåˆ›å»ºæ—¶é—´ï¼š{9}ï¼Œ'" +
             " data-pid='" + item.PID + "' " + tmpData + ">" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
-            	"<a class='detailA' href='/Product/Detail/{0}'>ÏêÏ¸</a>" +
+            	"<a class='detailA' href='/Product/Detail/{0}'>è¯¦ç»†</a>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
             item.PID,
@@ -661,7 +661,7 @@ var ProductManager = {
                 tmpUploader.uploadify({
                     height: 30,
                     width: 120,
-                    buttonText: 'ÎÄ¼şÉÏ´«',
+                    buttonText: 'æ–‡ä»¶ä¸Šä¼ ',
                     auto: true,
                     swf: '/Scripts/uploadify/uploadify.swf',
                     uploader: '/Manager/Upload',
@@ -812,7 +812,7 @@ var ProductManager = {
 var BrandManager = {
     updateSelBrands: function () {
         $("#selDiv .item").remove();
-        //³õÊ¼»¯ÒÑÑ¡²úÆ·ÁĞ±í
+        //åˆå§‹åŒ–å·²é€‰äº§å“åˆ—è¡¨
         var tmpTag = Manager.GetParamTag(3);
         var GetBrandsUrl;
         switch (tmpTag) {
@@ -850,9 +850,16 @@ var BrandManager = {
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
                 if (data.content != null) {
+                	var tmpPar = $("#BSMain .right");
+            		var tmpStr = "<div class='charDiv'>é¡¹ç›®æ‰€å±</div>"
                     $.each(data.content, function (i, n) {
-
+                    	tmpStr += "<div class='brandItem' data-bid='n.BID'>" +
+	                        "<img src='/Brand/" + n.Tag + ".jpg' />" +
+	                        "<div class='title'>" + n.Name2 + "</div>" +
+	                        "<a href='Product/ListByBrand/" + n.BID + "'>è¯¦æƒ…</a>" +
+	                    "</div>";
                     });
+                    $(tmpStr).prependTo(tmpPar);
                 }
             }
         });
@@ -867,11 +874,11 @@ var BrandManager = {
             }
         }
         var htmlStr =
-            "<div class='item' data-bid='" + item.BID + "'>" +
+            "<div class='item' data-bid='" + item.BID + "' data-tag='{1}' >" +
                 "<div class='img'>" +
                     "<img src='/Brand/{1}.jpg' />" +
                 "</div>" +
-            	"<a class='detailA' href='/Product/ListByBrand/{0}'>ÏêÏ¸</a>" +
+            	"<a class='detailA' href='/Product/ListByBrand/{0}'>è¯¦ç»†</a>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
             item.BID,
@@ -883,13 +890,26 @@ var BrandManager = {
         return pItem;
     },
     OnBrandItemClick: function (ev) {
-
+		var tmpTag = Manager.GetParamTag(3);
+        switch (tmpTag) {
+            case -1: {
+                break;
+            }
+            case 0: {
+                var target = $(ev.currentTarget);
+                BrandManager.BuildBrandItemWithCB({
+                	BID : target.attr("data-bid"),
+                	Tag : target.attr("data-tag")
+                }).appendTo($("#selDiv"));
+                break;
+            }
+        }
     },
     OnBackBtnClick: function (ev) {
         window.history.back();
     },
     saveSelBrands: function () {
-        //±£´æÒÑÑ¡Æ·ÅÆ
+        //ä¿å­˜å·²é€‰å“ç‰Œ
         var SetBrandsUrl;
         var tmpData = null;
         var tmpTag = Manager.GetParamTag(3);
