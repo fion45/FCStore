@@ -348,7 +348,6 @@
     <Content Include="Views\Column\Create.cshtml" />
     <Content Include="Views\Column\Edit.cshtml" />
     <Content Include="Views\Column\Delete.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Product\ListByCategory.cshtml" />
     <Content Include="Views\Product\ListByBrand.cshtml" />
@@ -378,6 +377,7 @@
     <Content Include="Views\Manager\ColumnManager.cshtml" />
     <Content Include="Views\Manager\ProductManager.cshtml" />
     <Content Include="Views\Manager\BrandsManager.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

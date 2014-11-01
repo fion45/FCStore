@@ -1,332 +1,332 @@
-Ôªø$(function(){
-	$(".contentTabel tbody td").live("dblclick",function(ev){
-		var target = $(ev.currentTarget);
-		var tmpTR = target.parentsUntil("tbody").last();
-		if(target.data("editTag") === false || tmpTR.hasClass("tr_del"))
-			return;
-		Manager.CreateEditEle(target,target.text(),target);
-		target.data("editTag",false);
-	});
-	$(".contentTabel .checkAll").checkAll(".contentTabel .checkItem");
+$(function () {
+    $(".contentTabel tbody td").live("dblclick", function (ev) {
+        var target = $(ev.currentTarget);
+        var tmpTR = target.parentsUntil("tbody").last();
+        if (target.data("editTag") === false || tmpTR.hasClass("tr_del"))
+            return;
+        Manager.CreateEditEle(target, target.text(), target);
+        target.data("editTag", false);
+    });
+    $(".contentTabel .checkAll").checkAll(".contentTabel .checkItem");
 });
 
 var Manager = {
-	uploadTag : false,
-	EditReturn : function(trEle) {
-		var tdArr = trEle.children("td");
-		$.each(tdArr,function(i,n){
-			var ele = $(n);
-			var childEle = ele.children(); 
-			if(childEle != null) {
-				childEle.focusout();
-			}
-			ele.data("editTag",true);
-		});
-	},
-	OnRefreshBtnClick : function() {
-		window.location.reload();
-	},
-	OnDelBtnClick : function() {
-		//ÈÄâÊã©ÁöÑË°å
-		var checkedCB = $(".contentTabel .checkItem:checked");
-		$.each(checkedCB,function(i,n){
-			var ele = $(n);
-			var checkedTR = ele.parentsUntil("tbody").last();
-			checkedTR.removeClass("tr_edit");
-			if(checkedTR.hasClass("tr_add")) {
-				checkedTR.remove();
-			}
-			else {
-				Manager.EditReturn(checkedTR);
-				checkedTR.addClass("tr_del");
-			}
-		});
-	},
-	OnAddBtnClick : function() {
-		var eles = $(".contentTabel thead td");
-		var tbody = $(".contentTabel tbody");
-		var trEle = $("<tr></tr>");
-		$.each(eles,function(i,n){
-			var ele;
-			var tdEle;
-			if(i != eles.length - 1) {
-				var par = $(n);
-				if(par.hasClass("IDTD")) {
-					tdEle = $("<td class=\'IDTD\'></td>");
-				}
-				else if(par.hasClass("TextTD")) {
-					tdEle = $("<td class=\'TextTD\'></td>");
-				}
-				else if(par.hasClass("MultiTextTD")) {
-					tdEle = $("<td class=\'MultiTextTD\'></td>");
-				}
-				else if(par.hasClass("SelectionTD")) {
-					tdEle = $("<td class=\'SelectionTD\'></td>");
-				}
-				else if(par.hasClass("BoolTagTD")) {
-					tdEle = $("<td class=\'BoolTagTD\'></td>");
-				}
-				else if(par.hasClass("ImgTD")) {
-					tdEle = $("<td class=\'ImgTD\'></td>");
-				}
-				else {
-					tdEle = $("<td clss\'checkTD\'>" +
+    uploadTag: false,
+    EditReturn: function (trEle) {
+        var tdArr = trEle.children("td");
+        $.each(tdArr, function (i, n) {
+            var ele = $(n);
+            var childEle = ele.children();
+            if (childEle != null) {
+                childEle.focusout();
+            }
+            ele.data("editTag", true);
+        });
+    },
+    OnRefreshBtnClick: function () {
+        window.location.reload();
+    },
+    OnDelBtnClick: function () {
+        //—°‘Òµƒ––
+        var checkedCB = $(".contentTabel .checkItem:checked");
+        $.each(checkedCB, function (i, n) {
+            var ele = $(n);
+            var checkedTR = ele.parentsUntil("tbody").last();
+            checkedTR.removeClass("tr_edit");
+            if (checkedTR.hasClass("tr_add")) {
+                checkedTR.remove();
+            }
+            else {
+                Manager.EditReturn(checkedTR);
+                checkedTR.addClass("tr_del");
+            }
+        });
+    },
+    OnAddBtnClick: function () {
+        var eles = $(".contentTabel thead td");
+        var tbody = $(".contentTabel tbody");
+        var trEle = $("<tr></tr>");
+        $.each(eles, function (i, n) {
+            var ele;
+            var tdEle;
+            if (i != eles.length - 1) {
+                var par = $(n);
+                if (par.hasClass("IDTD")) {
+                    tdEle = $("<td class=\'IDTD\'></td>");
+                }
+                else if (par.hasClass("TextTD")) {
+                    tdEle = $("<td class=\'TextTD\'></td>");
+                }
+                else if (par.hasClass("MultiTextTD")) {
+                    tdEle = $("<td class=\'MultiTextTD\'></td>");
+                }
+                else if (par.hasClass("SelectionTD")) {
+                    tdEle = $("<td class=\'SelectionTD\'></td>");
+                }
+                else if (par.hasClass("BoolTagTD")) {
+                    tdEle = $("<td class=\'BoolTagTD\'></td>");
+                }
+                else if (par.hasClass("ImgTD")) {
+                    tdEle = $("<td class=\'ImgTD\'></td>");
+                }
+                else {
+                    tdEle = $("<td clss\'checkTD\'>" +
 								"<input class=\'checkItem\' type=\'checkbox\'>" +
 							"</td>");
-				}
-				Manager.CreateEditEle(par,"",tdEle);
-			}
-			else {
-				ele = $("<div class=\'icon\' ></div>");
-				tdEle = $("<td class=\'tagTD\' ></td>");
-				ele.appendTo(tdEle);
-			}
-			tdEle.appendTo(trEle);
-		});
-		trEle.addClass("tr_add");
-		trEle.appendTo(tbody);
-	},
-	OnSaveBtnClick : function() {
-		Manager.SaveFun();
-	},
-	SaveFun : function() {
-		var ulArr = $(".contentTabel .uploadify");
-		if(ulArr.length > 0) {
-			if(!Manager.uploadTag) {
-				$.each(ulArr,function(i,n){
-					$(n).uploadify("upload","*");
-				});
-			}
-			return;
-		}
-		var trEles = $(".contentTabel tbody tr");
-		$.each(trEles,function(i,n){
-			Manager.EditReturn($(n));
-		});
-		var PerpertyArr = [];
-		var columTDArr = $(".contentTabel thead td");
-		$.each(columTDArr,function(i,n){
-			if(i != 0 && i < columTDArr.length - 1) {
-				PerpertyArr.push($(n).text());
-			}
-		});
-		
-		//Ëé∑ÂæóaddArr
-		var addArr = [];
-		var addTRArr = $(".contentTabel tr[class*='tr_add']");
-		$.each(addTRArr,function(i,n){
-			var trEle = $(n);
-			var obj = {};
-			var tdArr = trEle.children();
-			$.each(PerpertyArr,function(j,m){
-				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.attr("data-content");
-			});
-			addArr.push(obj);
-		});
-		
-		//Ëé∑ÂæóeditArr
-		var editArr = [];
-		var editTRArr = $(".contentTabel tr[class*='tr_edit']");
-		$.each(editTRArr,function(i,n){
-			var trEle = $(n);
-			var obj = {};
-			var tdArr = trEle.children();
-			$.each(PerpertyArr,function(j,m){
-				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.attr("data-content");
-			});
-			editArr.push(obj);
-		});
-		
-		//Ëé∑ÂæódelArr
-		var delArr = [];
-		var delTRArr = $(".contentTabel tr[class*='tr_del']");
-		$.each(delTRArr,function(i,n){
-			var trEle = $(n);
-			var obj = {};
-			var tdArr = trEle.children();
-			$.each(PerpertyArr,function(j,m){
-				var tmpTD = $(tdArr[j + 1]);
-				obj[m] = tmpTD.attr("data-content");
-			});
-			delArr.push(obj);
-		});
-		
-		var tmpData = {
-			AddArr : addArr,
-			EditArr : editArr,
-			DelArr : delArr
-		};
-		var ActionName = $(".contentTabel").attr("data-action");
-		//‰øùÂ≠ò
-		$.myAjax({
-        	historyTag : false,
-        	loadEle : null,
+                }
+                Manager.CreateEditEle(par, "", tdEle);
+            }
+            else {
+                ele = $("<div class=\'icon\' ></div>");
+                tdEle = $("<td class=\'tagTD\' ></td>");
+                ele.appendTo(tdEle);
+            }
+            tdEle.appendTo(trEle);
+        });
+        trEle.addClass("tr_add");
+        trEle.appendTo(tbody);
+    },
+    OnSaveBtnClick: function () {
+        Manager.SaveFun();
+    },
+    SaveFun: function () {
+        var ulArr = $(".contentTabel .uploadify");
+        if (ulArr.length > 0) {
+            if (!Manager.uploadTag) {
+                $.each(ulArr, function (i, n) {
+                    $(n).uploadify("upload", "*");
+                });
+            }
+            return;
+        }
+        var trEles = $(".contentTabel tbody tr");
+        $.each(trEles, function (i, n) {
+            Manager.EditReturn($(n));
+        });
+        var PerpertyArr = [];
+        var columTDArr = $(".contentTabel thead td");
+        $.each(columTDArr, function (i, n) {
+            if (i != 0 && i < columTDArr.length - 1) {
+                PerpertyArr.push($(n).text());
+            }
+        });
+
+        //ªÒµ√addArr
+        var addArr = [];
+        var addTRArr = $(".contentTabel tr[class*='tr_add']");
+        $.each(addTRArr, function (i, n) {
+            var trEle = $(n);
+            var obj = {};
+            var tdArr = trEle.children();
+            $.each(PerpertyArr, function (j, m) {
+                var tmpTD = $(tdArr[j + 1]);
+                obj[m] = tmpTD.attr("data-content");
+            });
+            addArr.push(obj);
+        });
+
+        //ªÒµ√editArr
+        var editArr = [];
+        var editTRArr = $(".contentTabel tr[class*='tr_edit']");
+        $.each(editTRArr, function (i, n) {
+            var trEle = $(n);
+            var obj = {};
+            var tdArr = trEle.children();
+            $.each(PerpertyArr, function (j, m) {
+                var tmpTD = $(tdArr[j + 1]);
+                obj[m] = tmpTD.attr("data-content");
+            });
+            editArr.push(obj);
+        });
+
+        //ªÒµ√delArr
+        var delArr = [];
+        var delTRArr = $(".contentTabel tr[class*='tr_del']");
+        $.each(delTRArr, function (i, n) {
+            var trEle = $(n);
+            var obj = {};
+            var tdArr = trEle.children();
+            $.each(PerpertyArr, function (j, m) {
+                var tmpTD = $(tdArr[j + 1]);
+                obj[m] = tmpTD.attr("data-content");
+            });
+            delArr.push(obj);
+        });
+
+        var tmpData = {
+            AddArr: addArr,
+            EditArr: editArr,
+            DelArr: delArr
+        };
+        var ActionName = $(".contentTabel").attr("data-action");
+        //±£¥Ê
+        $.myAjax({
+            historyTag: false,
+            loadEle: null,
             url: "/Manager/" + ActionName,
             data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
-            success: function (data,status,options) {
-				window.location.reload();
+            success: function (data, status, options) {
+                window.location.reload();
             }
-		});
-	},
-	CreateEditEle : function(target,value,par) {
-		var tmpTR = target.parentsUntil("tbody").last();
-		var ele = $("<div></div>");
-		par.empty();
-		if(target.hasClass("IDTD")) {
-			
-		}
-		else if(target.hasClass("TextTD")) {
-			ele = $("<input type='text' value='" + value + "' />");
-			ele.on("focusout",function(ev1){
-				var eleTarget = $(ev1.target);
-				var tdEle = eleTarget.parent();
-				tdEle.html(eleTarget.val());
-				tdEle.attr("data-content",eleTarget.val());
-				tdEle.data("editTag",true);
-				if(!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
-					tmpTR.addClass("tr_edit");
-			});
-			ele.width(target.width() - 6);
-			par.append(ele);
-		}
-		else if(target.hasClass("MultiTextTD")) {
-			ele = $("<textarea>" + value + "</textarea>");
-			ele.on("focusout",function(ev1){
-				var eleTarget = $(ev1.target);
-				var tdEle = eleTarget.parent();
-				tdEle.html(eleTarget.val());
-				tdEle.attr("data-content",eleTarget.val());
-				tdEle.data("editTag",true);
-				if(!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
-					tmpTR.addClass("tr_edit");
-			});
-			ele.width(target.width() - 6);
-			par.append(ele);
-		}
-		else if(target.hasClass("SelectionTD")) {
-			ele = $("<select></select>");
-			ele.width(target.width() - 6);
-			par.append(ele);
-		}
-		else if(target.hasClass("BoolTagTD")) {
-			ele = $("<input type='checkbox' />");
-			ele.width(target.width() - 6);
-			par.append(ele);
-		}
-		else if(target.hasClass("ImgTD")) {
-			var cellIndex = par[0].cellIndex;
-			var htd = $(".contentTabel thead td:eq(" + cellIndex + ")");
-			var trEle = par.parent();
-			var rIndex = trEle[0].rowIndex;
-			ele = $("<div>" +
+        });
+    },
+    CreateEditEle: function (target, value, par) {
+        var tmpTR = target.parentsUntil("tbody").last();
+        var ele = $("<div></div>");
+        par.empty();
+        if (target.hasClass("IDTD")) {
+
+        }
+        else if (target.hasClass("TextTD")) {
+            ele = $("<input type='text' value='" + value + "' />");
+            ele.on("focusout", function (ev1) {
+                var eleTarget = $(ev1.target);
+                var tdEle = eleTarget.parent();
+                tdEle.html(eleTarget.val());
+                tdEle.attr("data-content", eleTarget.val());
+                tdEle.data("editTag", true);
+                if (!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
+                    tmpTR.addClass("tr_edit");
+            });
+            ele.width(target.width() - 6);
+            par.append(ele);
+        }
+        else if (target.hasClass("MultiTextTD")) {
+            ele = $("<textarea>" + value + "</textarea>");
+            ele.on("focusout", function (ev1) {
+                var eleTarget = $(ev1.target);
+                var tdEle = eleTarget.parent();
+                tdEle.html(eleTarget.val());
+                tdEle.attr("data-content", eleTarget.val());
+                tdEle.data("editTag", true);
+                if (!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
+                    tmpTR.addClass("tr_edit");
+            });
+            ele.width(target.width() - 6);
+            par.append(ele);
+        }
+        else if (target.hasClass("SelectionTD")) {
+            ele = $("<select></select>");
+            ele.width(target.width() - 6);
+            par.append(ele);
+        }
+        else if (target.hasClass("BoolTagTD")) {
+            ele = $("<input type='checkbox' />");
+            ele.width(target.width() - 6);
+            par.append(ele);
+        }
+        else if (target.hasClass("ImgTD")) {
+            var cellIndex = par[0].cellIndex;
+            var htd = $(".contentTabel thead td:eq(" + cellIndex + ")");
+            var trEle = par.parent();
+            var rIndex = trEle[0].rowIndex;
+            ele = $("<div>" +
 						"<div id='file_upload" + rIndex + "' name='file_upload'></div>" +
 					"</div>");
-			ele.width(target.width() - 6);
-			par.append(ele);
-			$('#file_upload' + rIndex).uploadify({
-	        	height : 30,
-	        	width : ele.width(),
-                buttonText : 'Êñá‰ª∂‰∏ä‰º†',
-                auto : false,
-	            swf : '/Scripts/uploadify/uploadify.swf',
-	            uploader : '/Manager/Upload',
-	            fileTypeDesc : 'Image Files',
-	            fileTypeExts : '*.jpg;*.bmp;*.png;*.gif',
-	            formData : {toPath:htd.attr("data-toPath")},
-	            onSelect : function(file) {
-	            	$("#file_upload" + rIndex).css({
-	            		"height" : "0px",
-	            		"overflow" : "hidden"
-	            	});
-					if(!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
-						tmpTR.addClass("tr_edit");
-	            },
-	            onUploadSuccess : function(file, data, response) {
-	            	var obj = $.parseJSON(data);
-	            	par.empty();
-	            	par.attr("data-content",obj.imgSrc);
-	            	par.append($("<img src='" + obj.imgSrc + "' />"));
-					Manager.SaveFun();
-	            },
-	            onCancel : function(file) {
-	            	$("#file_upload" + rIndex).css({
-	            		"height" : "30px",
-	            		"overflow" : "inherit"
-	            	});
-	            }
-	        });
-		}
-	},
-	GetParamTag : function(parIndex){
-    	var pathName = window.location.pathname;
+            ele.width(target.width() - 6);
+            par.append(ele);
+            $('#file_upload' + rIndex).uploadify({
+                height: 30,
+                width: ele.width(),
+                buttonText: 'Œƒº˛…œ¥´',
+                auto: false,
+                swf: '/Scripts/uploadify/uploadify.swf',
+                uploader: '/Manager/Upload',
+                fileTypeDesc: 'Image Files',
+                fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                formData: { toPath: htd.attr("data-toPath") },
+                onSelect: function (file) {
+                    $("#file_upload" + rIndex).css({
+                        "height": "0px",
+                        "overflow": "hidden"
+                    });
+                    if (!tmpTR.hasClass("tr_del") && !tmpTR.hasClass("tr_add"))
+                        tmpTR.addClass("tr_edit");
+                },
+                onUploadSuccess: function (file, data, response) {
+                    var obj = $.parseJSON(data);
+                    par.empty();
+                    par.attr("data-content", obj.imgSrc);
+                    par.append($("<img src='" + obj.imgSrc + "' />"));
+                    Manager.SaveFun();
+                },
+                onCancel: function (file) {
+                    $("#file_upload" + rIndex).css({
+                        "height": "30px",
+                        "overflow": "inherit"
+                    });
+                }
+            });
+        }
+    },
+    GetParamTag: function (parIndex) {
+        var pathName = window.location.pathname;
         var parArr = pathName.split('/');
         var tmpTag = -1;
-        if(parArr.length >= parIndex + 1)
-        	tmpTag = parseInt(parArr[parIndex]);
+        if (parArr.length >= parIndex + 1)
+            tmpTag = parseInt(parArr[parIndex]);
         return tmpTag;
-	}
+    }
 };
 
 var ProductManager = {
-	selArr : [],
-    notSelArr : [],
-    selTag : false,
-    treeObj : null,
-    forProduct : null,
-    ShowColumSetting : function(ev) {
-    	var target = $(ev.target);
-    	if(!target.hasClass("productCB")) {
-    		ProductManager.forProduct = $(ev.currentTarget);
-    		if($("#CSDlg").length > 0) {
-    			$("#CSDlg").dialog("open");
-    		}
-    		else {
-		    	var ele = $(
+    selArr: [],
+    notSelArr: [],
+    selTag: false,
+    treeObj: null,
+    forProduct: null,
+    ShowColumSetting: function (ev) {
+        var target = $(ev.target);
+        if (!target.hasClass("productCB")) {
+            ProductManager.forProduct = $(ev.currentTarget);
+            if ($("#CSDlg").length > 0) {
+                $("#CSDlg").dialog("open");
+            }
+            else {
+                var ele = $(
 		    		"<ul id=CSDlg>" +
-						"<li class='title'>Ê®™Ë∑®Ë°åÊï∞Ôºö</li>" +
+						"<li class='title'>∫·øÁ–– ˝£∫</li>" +
 						"<li class='content'><input id='CRTB' type='text' value='1' /></li>" +
-						"<li class='title'>Ê®™Ë∑®ÂàóÊï∞Ôºö</li>" +
+						"<li class='title'>∫·øÁ¡– ˝£∫</li>" +
 						"<li class='content'><input id='CCTB' type='text' value='1' /></li>" +
-						"<li class='title'>ÊòæÁ§∫ÊñπÂºèÔºö</li>" +
+						"<li class='title'>œ‘ æ∑Ω Ω£∫</li>" +
 						"<li class='content'><input id='RTTB' type='text' value='0' /></li>" +
 					"</ul>");
-				ele.appendTo($(window.document.body));
-				$("#CSDlg").dialog({
-					autoOpen: false,
-			        modal: true,
-					title: 'ËÆæÁΩÆ',
-			        buttons: {
-			        	"Á°ÆÂÆö" : function() {
-			        		ProductManager.forProduct.attr({
-			        			"data-cr" : $("#CRTB").val(),
-			        			"data-cc" : $("#CCTB").val(),
-			        			"data-rt" : $("#RTTB").val()
-			        		});
-			        		$(this).dialog("close");
-			        	}
-			        }
-				});
-    		}
-    		$("#CRTB").val(ProductManager.forProduct.attr("data-cr"));
-    		$("#CCTB").val(ProductManager.forProduct.attr("data-cc"));
-    		$("#RTTB").val(ProductManager.forProduct.attr("data-rt"));
-    	}
+                ele.appendTo($(window.document.body));
+                $("#CSDlg").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    title: '…Ë÷√',
+                    buttons: {
+                        "»∑∂®": function () {
+                            ProductManager.forProduct.attr({
+                                "data-cr": $("#CRTB").val(),
+                                "data-cc": $("#CCTB").val(),
+                                "data-rt": $("#RTTB").val()
+                            });
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+            $("#CRTB").val(ProductManager.forProduct.attr("data-cr"));
+            $("#CCTB").val(ProductManager.forProduct.attr("data-cc"));
+            $("#RTTB").val(ProductManager.forProduct.attr("data-rt"));
+        }
     },
-    updateSelProducts : function() {
-    	$("#selDiv .item").remove();
-        //ÂàùÂßãÂåñÂ∑≤ÈÄâ‰∫ßÂìÅÂàóË°®
+    updateSelProducts: function () {
+        $("#selDiv .item").remove();
+        //≥ı ºªØ“——°≤˙∆∑¡–±Ì
         var tmpTag = Manager.GetParamTag(3);
         var GetProductsUrl;
         switch (tmpTag) {
             case 0: {
                 //select products for column
                 GetProductsUrl = "/Product/GetSelectProductInColum/" + Manager.GetParamTag(4);
-                $("#selDiv").on("dblclick",".item",ProductManager.ShowColumSetting);
+                $("#selDiv").on("dblclick", ".item", ProductManager.ShowColumSetting);
                 break;
             }
         }
@@ -347,9 +347,9 @@ var ProductManager = {
             }
         });
     },
-    
-    saveSelProducts : function() {
-    	//‰øùÂ≠òÂ∑≤ÈÄâ‰∫ßÂìÅ
+
+    saveSelProducts: function () {
+        //±£¥Ê“——°≤˙∆∑
         var SetProductsUrl;
         var tmpData = null;
         var tmpTag = Manager.GetParamTag(3);
@@ -357,43 +357,43 @@ var ProductManager = {
             case 0: {
                 //select products for column
                 SetProductsUrl = "/Product/SetSelectProductInColum";
-    			var par = [];
-                $.each($("#selDiv .item"),function(i,n){
-                	var item = $(n);
-                	var CrossRow = item.attr("data-cr") ? item.attr("data-cr") : 1;
-                	var CrossColum = item.attr("data-cc") ? item.attr("data-cc") : 1;
-                	var RenderType = item.attr("data-rt") ? item.attr("data-rt") : 0;
-                	par.push({
-                		RCPID : 0,
-                		ColumnID : Manager.GetParamTag(4),
-                		ProductID : item.attr("data-pid"),
-                		CrossRow : CrossRow,
-                		CrossColum : CrossColum,
-                		RenderType : RenderType
-                	});
+                var par = [];
+                $.each($("#selDiv .item"), function (i, n) {
+                    var item = $(n);
+                    var CrossRow = item.attr("data-cr") ? item.attr("data-cr") : 1;
+                    var CrossColum = item.attr("data-cc") ? item.attr("data-cc") : 1;
+                    var RenderType = item.attr("data-rt") ? item.attr("data-rt") : 0;
+                    par.push({
+                        RCPID: 0,
+                        ColumnID: Manager.GetParamTag(4),
+                        ProductID: item.attr("data-pid"),
+                        CrossRow: CrossRow,
+                        CrossColum: CrossColum,
+                        RenderType: RenderType
+                    });
                 });
                 tmpData = {
-		        	id : Manager.GetParamTag(4),
-		        	Par : par
-		        }
+                    id: Manager.GetParamTag(4),
+                    Par: par
+                }
                 break;
             }
         }
-        
+
         $.myAjax({
             historyTag: false,
             loadEle: $("#selDiv"),
             url: SetProductsUrl,
-            data : JSON.stringify(tmpData),
+            data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
-            	
+
             }
         });
     },
-    updateArr : function () {
+    updateArr: function () {
         var tmpArr = null;
         if (ProductManager.selTag) {
             tmpArr = ProductManager.treeObj.getCheckedNodes(true);
@@ -414,21 +414,20 @@ var ProductManager = {
             });
         }
     },
-    updateProductsLST : function (insertTag) {
+    updateProductsLST: function (insertTag) {
         var pathName = window.location.pathname;
         var result = pathName.split('/');
         var href = "";
-        for (var i = 1; i < 3; i++)
-        {
+        for (var i = 1; i < 3; i++) {
             href += "/" + result[i];
         }
         var tmpData = {
             Tag: result[3],
             Par: result[4],
-            BeginIndex : insertTag ? $("#plDiv")[0].childElementCount : 0,
-            GetCount : 50,
-            OrderStr : ProductManager.GetOrderStr(),
-            WhereStr : ProductManager.GetWhereStr()
+            BeginIndex: insertTag ? $("#plDiv")[0].childElementCount : 0,
+            GetCount: 50,
+            OrderStr: ProductManager.GetOrderStr(),
+            WhereStr: ProductManager.GetWhereStr()
         };
         $.myAjax({
             historyTag: false,
@@ -447,12 +446,12 @@ var ProductManager = {
                         ProductManager.BuildProductItem(n).appendTo($("#plDiv"));
                     });
                 }
-                $("#plDiv").myScrollDown({},"Goon");
+                $("#plDiv").myScrollDown({}, "Goon");
             }
         });
         return false;
     },
-    BuildProductItem : function (item) {
+    BuildProductItem: function (item) {
         var htmlStr =
             "<div class='item' data-pid='{0}'>" +
                 "<div class='img'>" +
@@ -460,26 +459,26 @@ var ProductManager = {
                 "</div>" +
                 "<div class='title' title='{2}'>{2}</div>" +
                 "<div class='marketPrice p60'>" +
-                    "Â∏Ç‰ª∑ÔºöÔø•<label class='marketPrice'>{3}<label>" +
+                    " –º€£∫£§<label class='marketPrice'>{3}<label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "ÊäòÊâ£Ôºö<label class='discount'>{4}</label>" +
+                    "’€ø€£∫<label class='discount'>{4}</label>" +
                 "</div>" +
                 "<div class='p60'>" +
-                    "Áé∞‰ª∑ÔºöÔø•<label class='price'>{5}</label>" +
+                    "œ÷º€£∫£§<label class='price'>{5}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "Â∑≤ÂîÆÔºö<label class='sale'>{6}</label>" +
-                "</div>" + 
+                    "“— €£∫<label class='sale'>{6}</label>" +
+                "</div>" +
                 "<div class='p60'>" +
-                    "Â≠òË¥ßÔºö<label class='stock'>{7}</label>" +
+                    "¥Êªı£∫<label class='stock'>{7}</label>" +
                 "</div>" +
                 "<div class='p40'>" +
-                    "ÊµèËßàÔºö<label class='pvcount'>{8}</label>" +
+                    "‰Ø¿¿£∫<label class='pvcount'>{8}</label>" +
                 "</div>" +
             	"<div class='p1'>" +
-                    "ÂàõÂª∫Êó∂Èó¥Ôºö<label class='date'>{9}</label>" +
-                	"<a class='detailA' href='/Product/Detail/{0}'>ËØ¶ÁªÜ</a>" +
+                    "¥¥Ω® ±º‰£∫<label class='date'>{9}</label>" +
+                	"<a class='detailA' href='/Product/Detail/{0}'>œÍœ∏</a>" +
                 "</div>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
@@ -496,28 +495,28 @@ var ProductManager = {
         ]);
         return $(htmlStr);
     },
-    BuildProductItemWithCB : function(item) {
+    BuildProductItemWithCB: function (item) {
         var tmpTag = Manager.GetParamTag(3);
         var tmpData = "";
         switch (tmpTag) {
             case 0: {
-            	var columnID = parseInt(Manager.GetParamTag(4));
-            	$.each(item.REProColLST,function(i,n) {
-            		if(n.ColumnID == columnID) {
-            			tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
-            			return false;
-            		}
-            	});
+                var columnID = parseInt(Manager.GetParamTag(4));
+                $.each(item.REProColLST, function (i, n) {
+                    if (n.ColumnID == columnID) {
+                        tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
+                        return false;
+                    }
+                });
                 break;
             }
         }
-    	var htmlStr =
-            "<div class='item' title='ÊèèËø∞Ôºö{2}ÔºåÂ∏Ç‰ª∑Ôºö{3}ÔºåÁé∞‰ª∑Ôºö{5}ÔºåÂ∑≤ÂîÆÔºö{6}ÔºåÊäòÊâ£Ôºö{4}ÔºåÂ∫ìÂ≠òÔºö{7}ÔºåÊµèËßàÔºö{8}ÔºåÂàõÂª∫Êó∂Èó¥Ôºö{9}Ôºå'" + 
+        var htmlStr =
+            "<div class='item' title='√Ë ˆ£∫{2}£¨ –º€£∫{3}£¨œ÷º€£∫{5}£¨“— €£∫{6}£¨’€ø€£∫{4}£¨ø‚¥Ê£∫{7}£¨‰Ø¿¿£∫{8}£¨¥¥Ω® ±º‰£∫{9}£¨'" +
             " data-pid='" + item.PID + "' " + tmpData + ">" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
-            	"<a class='detailA' href='/Product/Detail/{0}'>ËØ¶ÁªÜ</a>" +
+            	"<a class='detailA' href='/Product/Detail/{0}'>œÍœ∏</a>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
             item.PID,
@@ -531,29 +530,29 @@ var ProductManager = {
             item.PVCount,
             item.Date
         ]);
-    	var pItem = $(htmlStr);
+        var pItem = $(htmlStr);
         var CBCtrl = $("<input class='productCB' type='checkbox'/>");
         pItem.append(CBCtrl);
         return pItem;
     },
-    GetOrderStr : function () {
+    GetOrderStr: function () {
         var result = "";
         var orderTagArr = $("#orderDiv .orderTag");
-        $.each(orderTagArr,function(i,n){
-        	var item = $(n);
-        	if(item.hasClass("ASC")) {
-        		result += item.attr("data-tag") + ",ASC;";
-        	}
-        	else if(item.hasClass("DESC")) {
-        		result += item.attr("data-tag") + ",DESC;";
-        	}
+        $.each(orderTagArr, function (i, n) {
+            var item = $(n);
+            if (item.hasClass("ASC")) {
+                result += item.attr("data-tag") + ",ASC;";
+            }
+            else if (item.hasClass("DESC")) {
+                result += item.attr("data-tag") + ",DESC;";
+            }
         });
-        result = result.substring(0,result.length - 1);
+        result = result.substring(0, result.length - 1);
         return result;
     },
-    GetWhereStr : function () {
-    	var result = $("#whereInput").val();
-    	var tmpStr = "";
+    GetWhereStr: function () {
+        var result = $("#whereInput").val();
+        var tmpStr = "";
         if (ProductManager.selTag) {
             if (ProductManager.selArr.length > 0) {
                 tmpStr = "CID IN (" + ProductManager.selArr.join(",") + ")";
@@ -567,42 +566,42 @@ var ProductManager = {
                 tmpStr = "CID NOT IN (" + ProductManager.notSelArr.join(",") + ")";
             }
         }
-        if(result == "") {
-    		result = tmpStr;
+        if (result == "") {
+            result = tmpStr;
         }
-        else if(tmpStr != "") {
-    		result += " AND " + tmpStr;
+        else if (tmpStr != "") {
+            result += " AND " + tmpStr;
         }
         return result;
     },
-    OnOrderTagClick : function(obj) {
-    	var orderTag = $(obj);
-    	if(orderTag.hasClass("ASC")) {
-    		orderTag.removeClass("ASC");
-    		orderTag.addClass("DESC");
-    	}
-    	else if(orderTag.hasClass("DESC")) {
-    		orderTag.removeClass("DESC");
-    	}
-    	else {
-    		orderTag.addClass("ASC");
-    	}
+    OnOrderTagClick: function (obj) {
+        var orderTag = $(obj);
+        if (orderTag.hasClass("ASC")) {
+            orderTag.removeClass("ASC");
+            orderTag.addClass("DESC");
+        }
+        else if (orderTag.hasClass("DESC")) {
+            orderTag.removeClass("DESC");
+        }
+        else {
+            orderTag.addClass("ASC");
+        }
     },
-    OnSelItemCBChange : function(ev) {
-    	var cTag = false;
-    	$.each($("#selDiv .productCB"),function(i,n){
-    		if($(n).prop("checked")){
-    			cTag = true;
-    			return false;
-    		}
-    	});
-    	if (cTag) {
-    		if(!$("#upBtn").hasClass("sbtn1")) {
-	            $("#PSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
-	            $("#upBtn").on("click",ProductManager.OnUpBtnClick);
-	            $("#downBtn").on("click",ProductManager.OnDownBtnClick);
-	            $("#delBtn").on("click",ProductManager.OnDelSelBtnClick);
-    		}
+    OnSelItemCBChange: function (ev) {
+        var cTag = false;
+        $.each($("#selDiv .productCB"), function (i, n) {
+            if ($(n).prop("checked")) {
+                cTag = true;
+                return false;
+            }
+        });
+        if (cTag) {
+            if (!$("#upBtn").hasClass("sbtn1")) {
+                $("#PSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
+                $("#upBtn").on("click", ProductManager.OnUpBtnClick);
+                $("#downBtn").on("click", ProductManager.OnDownBtnClick);
+                $("#delBtn").on("click", ProductManager.OnDelSelBtnClick);
+            }
         }
         else {
             $("#PSMain .btnDiv .gray").removeClass("sbtn1").addClass("sbtngray");
@@ -611,210 +610,209 @@ var ProductManager = {
             $("#delBtn").off("click");
         }
     },
-    OnProductItemClick : function(ev) {
+    OnProductItemClick: function (ev) {
         var tmpTag = Manager.GetParamTag(3);
-        switch(tmpTag)
-        {
-        	case -1: {
-		    	var target = $(ev.currentTarget);
-		    	var par = $("#selDiv");
-		    	par.empty();
-		    	target = target.clone();
-		    	target.appendTo(par);
-		    	var tmpC = target.find(".title");
-		    	var tmpStr = $.trim(tmpC.text());
-		    	tmpC.empty();
-		    	tmpC.append($("<textarea>" + tmpStr + "</textarea>"));
-		    	tmpC = target.find(".marketPrice");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".discount");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".price");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".sale");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".stock");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".pvcount");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".date");
-		    	var tmpStr = tmpC.text();
-		    	tmpC.empty();
-		    	tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
-		    	tmpC = target.find(".img");
-//		    	tmpC.css("position","relative");
-		    	var tmpUploader = $("<div id='file_upload'></div>");
-		    	tmpC.append(tmpUploader);
-		    	var tmpToPath = tmpC.children("img").prop("src");
-		    	var FIndex = tmpToPath.indexOf("//") + 2;
-		    	tmpToPath = tmpToPath.substring(tmpToPath.indexOf("/",FIndex),tmpToPath.lastIndexOf("/") + 1);
-		    	tmpUploader.uploadify({
-		        	height : 30,
-		        	width : 120,
-	                buttonText : 'Êñá‰ª∂‰∏ä‰º†',
-	                auto : true,
-		            swf : '/Scripts/uploadify/uploadify.swf',
-		            uploader : '/Manager/Upload',
-		            fileTypeDesc : 'Image Files',
-		            fileTypeExts : '*.jpg;*.bmp;*.png;*.gif',
-		            formData : {toPath:tmpToPath},
-		            onUploadSuccess : function(file, data, response) {
-		            	var obj = $.parseJSON(data);
-		            	if(obj.Success)
-		            		tmpC.children("img").prop("src",obj.imgSrc);
-		            }
-		        });
-        		break;
-        	}
-        	case 0: {
-        		var target = $(ev.currentTarget);
-        		ProductManager.BuildProductItemWithCB({
-        			PID 		: target.attr('data-pid'),
-        			ImgPathArr 	: [target.find('img').attr('src')],
-        			Title		: $.trim(target.find('.title').text()),
-            		MarketPrice	: target.find('.marketPrice').text(),
-            		Discount	: target.find('.discount').text(),
-            		Price		: target.find('.price').text(),
-            		Sale		: target.find('.sale').text(),
-            		Stock		: target.find('.stock').text(),
-            		PVCount		: target.find('.pvcount').text(),
-            		Date		: target.find('.date').text(),
-            		REProColLST : [{ColumnID:Manager.GetParamTag(4),CrossRow:1,CrossColum:1,RenderType:0}]
-        		}).appendTo($("#selDiv"));
-        		break;
-        	}
+        switch (tmpTag) {
+            case -1: {
+                var target = $(ev.currentTarget);
+                var par = $("#selDiv");
+                par.empty();
+                target = target.clone();
+                target.appendTo(par);
+                var tmpC = target.find(".title");
+                var tmpStr = $.trim(tmpC.text());
+                tmpC.empty();
+                tmpC.append($("<textarea>" + tmpStr + "</textarea>"));
+                tmpC = target.find(".marketPrice");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".discount");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".price");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".sale");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".stock");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".pvcount");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".date");
+                var tmpStr = tmpC.text();
+                tmpC.empty();
+                tmpC.append($("<input type='textbox' value='" + tmpStr + "' />"));
+                tmpC = target.find(".img");
+                //		    	tmpC.css("position","relative");
+                var tmpUploader = $("<div id='file_upload'></div>");
+                tmpC.append(tmpUploader);
+                var tmpToPath = tmpC.children("img").prop("src");
+                var FIndex = tmpToPath.indexOf("//") + 2;
+                tmpToPath = tmpToPath.substring(tmpToPath.indexOf("/", FIndex), tmpToPath.lastIndexOf("/") + 1);
+                tmpUploader.uploadify({
+                    height: 30,
+                    width: 120,
+                    buttonText: 'Œƒº˛…œ¥´',
+                    auto: true,
+                    swf: '/Scripts/uploadify/uploadify.swf',
+                    uploader: '/Manager/Upload',
+                    fileTypeDesc: 'Image Files',
+                    fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                    formData: { toPath: tmpToPath },
+                    onUploadSuccess: function (file, data, response) {
+                        var obj = $.parseJSON(data);
+                        if (obj.Success)
+                            tmpC.children("img").prop("src", obj.imgSrc);
+                    }
+                });
+                break;
+            }
+            case 0: {
+                var target = $(ev.currentTarget);
+                ProductManager.BuildProductItemWithCB({
+                    PID: target.attr('data-pid'),
+                    ImgPathArr: [target.find('img').attr('src')],
+                    Title: $.trim(target.find('.title').text()),
+                    MarketPrice: target.find('.marketPrice').text(),
+                    Discount: target.find('.discount').text(),
+                    Price: target.find('.price').text(),
+                    Sale: target.find('.sale').text(),
+                    Stock: target.find('.stock').text(),
+                    PVCount: target.find('.pvcount').text(),
+                    Date: target.find('.date').text(),
+                    REProColLST: [{ ColumnID: Manager.GetParamTag(4), CrossRow: 1, CrossColum: 1, RenderType: 0 }]
+                }).appendTo($("#selDiv"));
+                break;
+            }
         }
     },
-    OnSelItemClick : function(ev) {
-    	var target = $(ev.target);
+    OnSelItemClick: function (ev) {
+        var target = $(ev.target);
         var curTarget = $(ev.currentTarget);
         var CBCtrl = curTarget.children(".productCB");
-        if(!target.hasClass("productCB")) {
-        	CBCtrl.click();
+        if (!target.hasClass("productCB")) {
+            CBCtrl.click();
         }
     },
-    OnUpBtnClick : function(ev) {
-    	var selItems = $("#selDiv .item:has(.productCB:checked)");
-    	var frontItem = null;
-    	var lastItem = null;
-    	var moveItems = [];
-    	$.each(selItems,function(i,n){
-    		var tmpItem = $(n);
-    		if(frontItem == null) {
-	    		var prevItem = tmpItem.prev();
-	    		if(prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
-	    			frontItem = prevItem;
-	    		else
-	    			lastItem = tmpItem;
-    		}
-    		if(frontItem != null) {
-    			moveItems.push(tmpItem);
-    		}
-    	});
-    	if(frontItem != null) {
-    		frontItem.before(moveItems);
-    	}
+    OnUpBtnClick: function (ev) {
+        var selItems = $("#selDiv .item:has(.productCB:checked)");
+        var frontItem = null;
+        var lastItem = null;
+        var moveItems = [];
+        $.each(selItems, function (i, n) {
+            var tmpItem = $(n);
+            if (frontItem == null) {
+                var prevItem = tmpItem.prev();
+                if (prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
+                    frontItem = prevItem;
+                else
+                    lastItem = tmpItem;
+            }
+            if (frontItem != null) {
+                moveItems.push(tmpItem);
+            }
+        });
+        if (frontItem != null) {
+            frontItem.before(moveItems);
+        }
     },
-    OnDownBtnClick : function(ev) {
-    	var selItems = $.ReverseArr($("#selDiv .item:has(.productCB:checked)"));
-    	var backItem = null;
-    	var lastItem = null;
-    	var moveItems = [];
-    	$.each(selItems,function(i,n){
-    		var tmpItem = $(n);
-    		if(backItem == null) {
-	    		var nextItem = tmpItem.next();
-	    		if(nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
-	    			backItem = nextItem;
-	    		else
-	    			lastItem = tmpItem;
-    		}
-    		if(backItem != null) {
-    			moveItems.unshift(tmpItem);
-    		}
-    	});
-    	if(backItem != null) {
-    		backItem.after(moveItems);
-    	}
+    OnDownBtnClick: function (ev) {
+        var selItems = $.ReverseArr($("#selDiv .item:has(.productCB:checked)"));
+        var backItem = null;
+        var lastItem = null;
+        var moveItems = [];
+        $.each(selItems, function (i, n) {
+            var tmpItem = $(n);
+            if (backItem == null) {
+                var nextItem = tmpItem.next();
+                if (nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
+                    backItem = nextItem;
+                else
+                    lastItem = tmpItem;
+            }
+            if (backItem != null) {
+                moveItems.unshift(tmpItem);
+            }
+        });
+        if (backItem != null) {
+            backItem.after(moveItems);
+        }
     },
-    OnDelSelBtnClick : function(ev) {
-    	var selItems = $("#selDiv .item:has(.productCB:checked)");
-    	selItems.remove();
+    OnDelSelBtnClick: function (ev) {
+        var selItems = $("#selDiv .item:has(.productCB:checked)");
+        selItems.remove();
     },
-    OnRefreshSelBtnClick : function(ev) {
-    	ProductManager.updateSelProducts();
+    OnRefreshSelBtnClick: function (ev) {
+        ProductManager.updateSelProducts();
     },
-    OnSaveSelBtnClick : function(ev) {
-    	ProductManager.saveSelProducts();
+    OnSaveSelBtnClick: function (ev) {
+        ProductManager.saveSelProducts();
     },
-    OnBackBtnClick : function(ev) {
-//    	window.location.href = "/Manager/BannerManager/"
-    	window.history.back();
+    OnBackBtnClick: function (ev) {
+        //    	window.location.href = "/Manager/BannerManager/"
+        window.history.back();
     },
-    OnSaveBtnClick : function(ev) {
+    OnSaveBtnClick: function (ev) {
         //select products for column
-    	var item = $("#selDiv .item");
+        var item = $("#selDiv .item");
         var tmpData = {
-        	PID : item.attr("data-pid"),
-        	CID : 0,
-        	BID : 0,
-        	ProductTags : [],
-        	Title : item.find(".title").children().val(),
-        	Chose : "",
-        	Price : item.find(".price").children().val(),
-        	MarketPrice : item.find(".marketPrice").children().val(),
-        	Discount : item.find(".discount").children().val(),
-        	Stock : item.find(".stock").children().val(),
-        	Sale : item.find(".sale").children().val(),
-        	ImgPath : "",
-        	PVCount : item.find(".pvcount").children().val(),
-        	Descript : "",
-        	Date : item.find(".date").children().val(),
-        	Tag : 0,
-        	REProColLST : []
+            PID: item.attr("data-pid"),
+            CID: 0,
+            BID: 0,
+            ProductTags: [],
+            Title: item.find(".title").children().val(),
+            Chose: "",
+            Price: item.find(".price").children().val(),
+            MarketPrice: item.find(".marketPrice").children().val(),
+            Discount: item.find(".discount").children().val(),
+            Stock: item.find(".stock").children().val(),
+            Sale: item.find(".sale").children().val(),
+            ImgPath: "",
+            PVCount: item.find(".pvcount").children().val(),
+            Descript: "",
+            Date: item.find(".date").children().val(),
+            Tag: 0,
+            REProColLST: []
         };
-        
+
         $.myAjax({
             historyTag: false,
             loadEle: $("#selDiv"),
             url: "/Product/SetSelectProductInfo",
-            data : JSON.stringify(tmpData),
+            data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
-            	if(data.content == "OK") {
-            		var item = $("#plDiv .item[data-pid=" + tmpData.PID + "]");
-            		item.find(".title").text(tmpData.Title);
-            		item.find(".price").text(tmpData.Price);
-            		item.find(".marketPrice").text(tmpData.MarketPrice);
-            		item.find(".discount").text(tmpData.Discount);
-            		item.find(".stock").text(tmpData.Stock);
-            		item.find(".sale").text(tmpData.Sale);
-            		item.find(".pvcount").text(tmpData.PVCount);
-            		item.find(".date").text(tmpData.Date);
-            	}
+                if (data.content == "OK") {
+                    var item = $("#plDiv .item[data-pid=" + tmpData.PID + "]");
+                    item.find(".title").text(tmpData.Title);
+                    item.find(".price").text(tmpData.Price);
+                    item.find(".marketPrice").text(tmpData.MarketPrice);
+                    item.find(".discount").text(tmpData.Discount);
+                    item.find(".stock").text(tmpData.Stock);
+                    item.find(".sale").text(tmpData.Sale);
+                    item.find(".pvcount").text(tmpData.PVCount);
+                    item.find(".date").text(tmpData.Date);
+                }
             }
         });
     }
 };
 
 var BrandManager = {
-    updateSelBrands : function () {
+    updateSelBrands: function () {
         $("#selDiv .item").remove();
-        //ÂàùÂßãÂåñÂ∑≤ÈÄâ‰∫ßÂìÅÂàóË°®
+        //≥ı ºªØ“——°≤˙∆∑¡–±Ì
         var tmpTag = Manager.GetParamTag(3);
         var GetBrandsUrl;
         switch (tmpTag) {
@@ -841,8 +839,8 @@ var BrandManager = {
             }
         });
     },
-    GetBrandsInColumn : function() {
-    	$.myAjax({
+    GetBrandsInColumn: function () {
+        $.myAjax({
             historyTag: false,
             loadEle: $("#BSMain .right"),
             url: "/Brand/GetBrandsInColumn/" + Manager.GetParamTag(4),
@@ -853,45 +851,45 @@ var BrandManager = {
             success: function (data, status, options) {
                 if (data.content != null) {
                     $.each(data.content, function (i, n) {
-                    	
+
                     });
                 }
             }
         });
     },
-    BuildBrandItemWithCB : function(item) {
+    BuildBrandItemWithCB: function (item) {
         var tmpTag = Manager.GetParamTag(3);
         var tmpData = "";
         switch (tmpTag) {
             case 0: {
-            	
+
                 break;
             }
         }
-    	var htmlStr =
+        var htmlStr =
             "<div class='item' data-bid='" + item.BID + "'>" +
                 "<div class='img'>" +
                     "<img src='/Brand/{1}.jpg' />" +
                 "</div>" +
-            	"<a class='detailA' href='/Product/ListByBrand/{0}'>ËØ¶ÁªÜ</a>" +
+            	"<a class='detailA' href='/Product/ListByBrand/{0}'>œÍœ∏</a>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
             item.BID,
             item.Tag
         ]);
-    	var pItem = $(htmlStr);
+        var pItem = $(htmlStr);
         var CBCtrl = $("<input class='brandCB' type='checkbox'/>");
         pItem.append(CBCtrl);
         return pItem;
     },
-    OnBrandItemClick : function(ev) {
-    	
+    OnBrandItemClick: function (ev) {
+
     },
-    OnBackBtnClick : function(ev) {
-    	window.history.back();
+    OnBackBtnClick: function (ev) {
+        window.history.back();
     },
-    saveSelBrands : function() {
-    	//‰øùÂ≠òÂ∑≤ÈÄâÂìÅÁâå
+    saveSelBrands: function () {
+        //±£¥Ê“——°∆∑≈∆
         var SetBrandsUrl;
         var tmpData = null;
         var tmpTag = Manager.GetParamTag(3);
@@ -899,57 +897,57 @@ var BrandManager = {
             case 0: {
                 //select brands for column
                 SetProductsUrl = "/Brand/SetSelectBrandsInColum";
-    			var par = [];
-                $.each($("#selDiv .item"),function(i,n){
-                	var item = $(n);
-                	par.push({
-                		RCBID : 0,
-                		ColumnID : Manager.GetParamTag(4),
-                		BrandID : item.attr("data-bid")
-                	});
+                var par = [];
+                $.each($("#selDiv .item"), function (i, n) {
+                    var item = $(n);
+                    par.push({
+                        RCBID: 0,
+                        ColumnID: Manager.GetParamTag(4),
+                        BrandID: item.attr("data-bid")
+                    });
                 });
                 tmpData = {
-		        	id : Manager.GetParamTag(4),
-		        	Par : par
-		        }
+                    id: Manager.GetParamTag(4),
+                    Par: par
+                }
                 break;
             }
         }
-        
+
         $.myAjax({
             historyTag: false,
             loadEle: $("#selDiv"),
             url: SetProductsUrl,
-            data : JSON.stringify(tmpData),
+            data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
-            	
+
             }
         });
     },
-    OnSaveSelBtnClick : function(ev) {
-    	BrandManager.saveSelBrands();
+    OnSaveSelBtnClick: function (ev) {
+        BrandManager.saveSelBrands();
     },
-    OnRefreshSelBtnClick : function(ev) {
-    	BrandManager.updateSelBrands();
+    OnRefreshSelBtnClick: function (ev) {
+        BrandManager.updateSelBrands();
     },
-    OnSelItemCBChange : function(ev) {
-    	var cTag = false;
-    	$.each($("#selDiv .brandCB"),function(i,n){
-    		if($(n).prop("checked")){
-    			cTag = true;
-    			return false;
-    		}
-    	});
-    	if (cTag) {
-    		if(!$("#upBtn").hasClass("sbtn1")) {
-	            $("#BSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
-	            $("#upBtn").on("click",BrandManager.OnUpBtnClick);
-	            $("#downBtn").on("click",BrandManager.OnDownBtnClick);
-	            $("#delBtn").on("click",BrandManager.OnDelBtnClick);
-    		}
+    OnSelItemCBChange: function (ev) {
+        var cTag = false;
+        $.each($("#selDiv .brandCB"), function (i, n) {
+            if ($(n).prop("checked")) {
+                cTag = true;
+                return false;
+            }
+        });
+        if (cTag) {
+            if (!$("#upBtn").hasClass("sbtn1")) {
+                $("#BSMain .btnDiv .gray").removeClass("sbtngray").addClass("sbtn1");
+                $("#upBtn").on("click", BrandManager.OnUpBtnClick);
+                $("#downBtn").on("click", BrandManager.OnDownBtnClick);
+                $("#delBtn").on("click", BrandManager.OnDelBtnClick);
+            }
         }
         else {
             $("#BSMain .btnDiv .gray").removeClass("sbtn1").addClass("sbtngray");
@@ -958,60 +956,60 @@ var BrandManager = {
             $("#delBtn").off("click");
         }
     },
-    OnSelItemClick : function(ev) {
-    	var target = $(ev.target);
+    OnSelItemClick: function (ev) {
+        var target = $(ev.target);
         var curTarget = $(ev.currentTarget);
         var CBCtrl = curTarget.children(".brandCB");
-        if(!target.hasClass("brandCB")) {
-        	CBCtrl.click();
+        if (!target.hasClass("brandCB")) {
+            CBCtrl.click();
         }
     },
-    OnUpBtnClick : function(ev) {
-    	var selItems = $("#selDiv .item:has(.brandCB:checked)");
-    	var frontItem = null;
-    	var lastItem = null;
-    	var moveItems = [];
-    	$.each(selItems,function(i,n){
-    		var tmpItem = $(n);
-    		if(frontItem == null) {
-	    		var prevItem = tmpItem.prev();
-	    		if(prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
-	    			frontItem = prevItem;
-	    		else
-	    			lastItem = tmpItem;
-    		}
-    		if(frontItem != null) {
-    			moveItems.push(tmpItem);
-    		}
-    	});
-    	if(frontItem != null) {
-    		frontItem.before(moveItems);
-    	}
+    OnUpBtnClick: function (ev) {
+        var selItems = $("#selDiv .item:has(.brandCB:checked)");
+        var frontItem = null;
+        var lastItem = null;
+        var moveItems = [];
+        $.each(selItems, function (i, n) {
+            var tmpItem = $(n);
+            if (frontItem == null) {
+                var prevItem = tmpItem.prev();
+                if (prevItem.length > 0 && (lastItem == null || prevItem.attr("data-pid") != lastItem.attr("data-pid")))
+                    frontItem = prevItem;
+                else
+                    lastItem = tmpItem;
+            }
+            if (frontItem != null) {
+                moveItems.push(tmpItem);
+            }
+        });
+        if (frontItem != null) {
+            frontItem.before(moveItems);
+        }
     },
-    OnDownBtnClick : function(ev) {
-    	var selItems = $.ReverseArr($("#selDiv .item:has(.brandCB:checked)"));
-    	var backItem = null;
-    	var lastItem = null;
-    	var moveItems = [];
-    	$.each(selItems,function(i,n){
-    		var tmpItem = $(n);
-    		if(backItem == null) {
-	    		var nextItem = tmpItem.next();
-	    		if(nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
-	    			backItem = nextItem;
-	    		else
-	    			lastItem = tmpItem;
-    		}
-    		if(backItem != null) {
-    			moveItems.unshift(tmpItem);
-    		}
-    	});
-    	if(backItem != null) {
-    		backItem.after(moveItems);
-    	}
+    OnDownBtnClick: function (ev) {
+        var selItems = $.ReverseArr($("#selDiv .item:has(.brandCB:checked)"));
+        var backItem = null;
+        var lastItem = null;
+        var moveItems = [];
+        $.each(selItems, function (i, n) {
+            var tmpItem = $(n);
+            if (backItem == null) {
+                var nextItem = tmpItem.next();
+                if (nextItem.length > 0 && (lastItem == null || nextItem.attr("data-pid") != lastItem.attr("data-pid")))
+                    backItem = nextItem;
+                else
+                    lastItem = tmpItem;
+            }
+            if (backItem != null) {
+                moveItems.unshift(tmpItem);
+            }
+        });
+        if (backItem != null) {
+            backItem.after(moveItems);
+        }
     },
-    OnDelBtnClick : function(ev) {
-    	var selItems = $("#selDiv .item:has(.brandCB:checked)");
-    	selItems.remove();
+    OnDelBtnClick: function (ev) {
+        var selItems = $("#selDiv .item:has(.brandCB:checked)");
+        selItems.remove();
     }
 };
