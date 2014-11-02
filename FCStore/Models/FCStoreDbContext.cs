@@ -60,5 +60,13 @@ namespace FCStore.Models
         public DbSet<ReColumnProduct> ReColumnProducts { get; set; }
 
         public DbSet<ReColumnBrand> ReColumnBrands { get; set; }
+
+        public DbSet<Store> Stores { get; set; }
+
+        public DbSet<ReStoreUser> ReStoreUsers { get; set; }
+
+        public DbSet<ReStoreProduct> ReStoreProducts { get; set; }
+
+        public DbSet<ShamOrderData> ShamOrderDatas { get; set; }
     }
 }

@@ -191,6 +191,7 @@
     <Compile Include="Models\RecentView.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SpecialModel.cs" />
+    <Compile Include="Models\Store.cs" />
     <Compile Include="Models\Town.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -378,6 +379,7 @@
     <Content Include="Views\Manager\ProductManager.cshtml" />
     <Content Include="Views\Manager\BrandsManager.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Product\EditDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

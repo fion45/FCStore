@@ -462,6 +462,18 @@ namespace FCStore.Controllers
             }
         }
 
+        [MyAuthorizeAttribute]
+        public ActionResult EditDetail(int ID)
+        {
+            //判断是否是自己的商品
+            Product tmpProduct = db.Products.First(r => r.PID == ID);
+            ViewBag.EvaluationCount = db.Evaluations.Count(r => r.Product.PID == ID);
+            ViewBag.SaleCount = (from op in db.OrderPackets
+                                 where op.PID == ID && op.Order.Status > 1
+                                 select op.Count).ToList().Sum();
+            return View(tmpProduct);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

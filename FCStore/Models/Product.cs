@@ -152,6 +152,59 @@ namespace FCStore.Models
             }
         }
 
+        public int EvaluationStarCount                         //虚假数据
+        {
+            get;
+            set;
+        }
+
+        public virtual List<ShamOrderData> SaleCountLST       //虚假数据
+        {
+            get;
+            set;
+        }
+    }
+
+    //虚假订单类
+    public class ShamOrderData
+    {
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int SOID
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey("Product")]
+        public int ProductID
+        {
+            get;
+            set;
+        }
+
+        public virtual Product Product
+        {
+            get;
+            set;
+        }
+
+        public string IDLabel
+        {
+            get;
+            set;
+        }
+
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        public string DateTime
+        {
+            get;
+            set;
+        }
 
     }
 }

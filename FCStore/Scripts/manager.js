@@ -478,7 +478,7 @@ var ProductManager = {
                 "</div>" +
             	"<div class='p1'>" +
                     "创建时间：<label class='date'>{9}</label>" +
-                	"<a class='detailA' href='/Product/Detail/{0}'>详细</a>" +
+                	"<a class='detailA' href='/Product/EditDetail/{0}'>详细</a>" +
                 "</div>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
@@ -516,7 +516,7 @@ var ProductManager = {
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
-            	"<a class='detailA' href='/Product/Detail/{0}'>详细</a>" +
+            	"<a class='detailA' href='/Product/EditDetail/{0}'>详细</a>" +
             "</div>";
         htmlStr = $.CreateString(htmlStr, [
             item.PID,
@@ -853,7 +853,7 @@ var BrandManager = {
                 	var tmpPar = $("#BSMain .right");
             		var tmpStr = "<div class='charDiv'>项目所属</div>"
                     $.each(data.content, function (i, n) {
-                    	tmpStr += "<div class='brandItem' data-bid='n.BID'>" +
+                    	tmpStr += "<div class='brandItem' data-bid='" + n.BID + "' data-tag='" + n.Tag + "'>" +
 	                        "<img src='/Brand/" + n.Tag + ".jpg' />" +
 	                        "<div class='title'>" + n.Name2 + "</div>" +
 	                        "<a href='Product/ListByBrand/" + n.BID + "'>详情</a>" +

@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
 using System.Text.RegularExpressions;
-using FCStore.FilterAttribute;
+using FCStore.Filters;
 using FCStore.Common;
 using System.Collections.Specialized;
 using Com.Alipay;

@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using FCStore.Models;
 using System.Web.Security;
-using FCStore.FilterAttribute;
 using System.Text;
 using System.Text.RegularExpressions;
 using FCStore.Common;

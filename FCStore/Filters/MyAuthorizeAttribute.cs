@@ -10,7 +10,7 @@ using System.Web.Security;
 using System.Text;
 using FCStore.Common;
 
-namespace FCStore.FilterAttribute
+namespace FCStore.Filters
 {
     public class MyAuthorizeAttribute : AuthorizeAttribute
     {
