@@ -17,12 +17,35 @@
             editer.appendTo($("#productTitle"));
             editer.val(tmpStr);
 
+            editer = $("<input type='text' />");
+            tmpStr = $("#productPrice .price").text();
+            tmpStr = tmpStr.substr(1, tmpStr.length - 1);
+            tmpStr = parseFloat(tmpStr);
+            $("#productPrice .price").html("￥");
+            editer.appendTo($("#productPrice .price"));
+            editer.val(tmpStr);
+
+
+            editer = $("<input type='text' />");
+            tmpStr = $("#productPrice .marketPrice").text();
+            tmpStr = tmpStr.substr(1, tmpStr.length - 1);
+            tmpStr = parseFloat(tmpStr);
+            $("#productPrice .marketPrice").html("￥");
+            editer.appendTo($("#productPrice .marketPrice"));
+            editer.val(tmpStr);
+
+            editer = $("<input type='text' />");
+            tmpStr = $("#productPrice .sale").text();
+            tmpStr = parseInt(tmpStr);
+            $("#productPrice .sale").html("");
+            editer.appendTo($("#productPrice .sale"));
+            editer.val(tmpStr);
+
             editer = $("<textarea></textarea>");
             tmpStr = $("#descriptContent").html();
             $("#descriptContent").html("");
             editer.appendTo($("#descriptContent"));
             editer.val(tmpStr);
-
             editer.xheditor({
                 upLinkUrl: "/upload.aspx",
                 upLinkExt: "zip,rar,txt",
@@ -34,7 +57,7 @@
                 upMediaExt: "avi"
             });
 
-            $("#productBrand .brandA").bind("click", ProductDetail.onBrandItemClick);
+            $("#productBrand .evaluate .star").bind("click", ProductDetail.onStarClick);
 
             $("#gobackBtn").bind("click", ProductDetail.onBackBtnClick);
             $("#refreshBtn").bind("click", ProductDetail.onRefreshBtnClick);
@@ -45,6 +68,7 @@
 }
 
 <div id="PD_View">
+    <input type="text" value />
     <div id="categoryNav">
         <div>当前位置：</div>
         @{
@@ -127,7 +151,7 @@
                 <div class="title">市场价：</div>
                 <div class="content marketPrice">￥@(Model.MarketPrice)</div>
                 <div class="title">已售出：</div>
-                <div class="content">@(Model.Sale)</div>
+                <div class="content sale">@(Model.Sale)</div>
                 <div class="pullupDiv"></div>
                 <div class="conner"></div>
             </div>
@@ -161,12 +185,12 @@
                                     <div class="title"> @(item["title"])：</div>
                                     <div class="content">
                                         @{
-                                bool tag = true;
-                                foreach (Newtonsoft.Json.Linq.JObject vItem in (Newtonsoft.Json.Linq.JArray)item["values"])
-                                {
-                                    <span class="choseItem cValue @(tag ? "sel" : "" )">@(vItem["name"])</span>
-                                    tag = false;
-                                }
+                                            bool tag = true;
+                                            foreach (Newtonsoft.Json.Linq.JObject vItem in (Newtonsoft.Json.Linq.JArray)item["values"])
+                                            {
+                                                <span class="choseItem cValue @(tag ? "sel" : "" )">@(vItem["name"])</span>
+                                                tag = false;
+                                            }
                                         }
                                         <div class="pullupDiv"></div>
                                     </div>
@@ -176,6 +200,7 @@
                         catch
                         { }
                     }
+                    <textarea>@(Server.HtmlDecode(Model.Chose.Trim()))</textarea>
                 }
             </div>
             @*<div id="productSaleInput">

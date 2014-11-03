@@ -58,6 +58,26 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult SetProductBrand(int PID,int BID)
+        {
+            Product tmpProduct = db.Products.FirstOrDefault(r => r.PID == PID);
+            if(tmpProduct != null)
+            {
+                tmpProduct.BID = BID;
+                db.SaveChanges();
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         public ActionResult GetBrandsInColumn(int id)
         {
             Column tmpColumn = db.Columns.FirstOrDefault(r => r.ColumnID == id);

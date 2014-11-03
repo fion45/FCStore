@@ -1453,6 +1453,11 @@ footer {
         width:100%;
     }
 
+    #productChoose textarea {
+        width:100%;
+        height:80px;
+    }
+
 #productSaleInput {
     margin-top:15px;
     height:28px;
@@ -1510,6 +1515,7 @@ footer {
             width:35px;
             height:35px;
             margin-right:8px;
+            cursor:pointer;
         }
 
         #productBrand .evaluate .empty {

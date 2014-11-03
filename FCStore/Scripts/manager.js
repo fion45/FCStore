@@ -843,11 +843,11 @@ var BrandManager = {
             }
         });
     },
-    GetBrandsInColumn: function () {
+    GetBrandsInColumn: function (CID) {
         $.myAjax({
             historyTag: false,
             loadEle: $("#BSMain .right"),
-            url: "/Brand/GetBrandsInColumn/" + Manager.GetParamTag(4),
+            url: "/Brand/GetBrandsInColumn/" + CID,
             data: null,
             dataType: "json",
             type: "GET",
@@ -856,6 +856,31 @@ var BrandManager = {
                 if (data.content != null) {
                 	var tmpPar = $("#BSMain .right");
             		var tmpStr = "<div class='charDiv'>项目所属</div>"
+                    $.each(data.content, function (i, n) {
+                    	tmpStr += "<div class='brandItem' data-bid='" + n.BID + "' data-tag='" + n.Tag + "'>" +
+	                        "<img src='/Brand/" + n.Tag + ".jpg' />" +
+	                        "<div class='title'>" + n.Name2 + "</div>" +
+	                        "<a href='Product/ListByBrand/" + n.BID + "'>详情</a>" +
+	                    "</div>";
+                    });
+                    $(tmpStr).prependTo(tmpPar);
+                }
+            }
+        });
+    },
+    GetProductBrand : function(PID) {
+    	$.myAjax({
+            historyTag: false,
+            loadEle: $("#BSMain .right"),
+            url: "/Brand/GetProductBrand/" + PID,
+            data: null,
+            dataType: "json",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content != null) {
+                	var tmpPar = $("#BSMain .right");
+            		var tmpStr = "<div class='charDiv'>旧值</div>"
                     $.each(data.content, function (i, n) {
                     	tmpStr += "<div class='brandItem' data-bid='" + n.BID + "' data-tag='" + n.Tag + "'>" +
 	                        "<img src='/Brand/" + n.Tag + ".jpg' />" +
@@ -907,6 +932,15 @@ var BrandManager = {
                 }).appendTo($("#selDiv"));
                 break;
             }
+            case 1: {
+            	var target = $(ev.currentTarget);
+            	$("#selDiv").empty();
+                BrandManager.BuildBrandItemWithCB({
+                	BID : target.attr("data-bid"),
+                	Tag : target.attr("data-tag")
+                }).appendTo($("#selDiv"));
+            	break;
+            }
         }
     },
     OnBackBtnClick: function (ev) {
@@ -920,7 +954,7 @@ var BrandManager = {
         switch (tmpTag) {
             case 0: {
                 //select brands for column
-                SetProductsUrl = "/Brand/SetSelectBrandsInColum";
+                SetBrandsUrl = "/Brand/SetSelectBrandsInColum";
                 var par = [];
                 $.each($("#selDiv .item"), function (i, n) {
                     var item = $(n);
@@ -936,18 +970,29 @@ var BrandManager = {
                 }
                 break;
             }
+            case 1: {
+            	SetBrandsUrl = "/Brand/SetProductBrand";
+                var par = $("#selDiv .item").first().attr("data-bid");
+                tmpData = {
+                    PID: Manager.GetParamTag(4),
+                    BID: par
+                }
+                break;
+            }
         }
 
         $.myAjax({
             historyTag: false,
             loadEle: $("#selDiv"),
-            url: SetProductsUrl,
+            url: SetBrandsUrl,
             data: JSON.stringify(tmpData),
             dataType: "json",
             type: "POST",
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
-
+				if (data.content == "OK") {
+					
+                }
             }
         });
     },

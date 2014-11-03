@@ -404,5 +404,23 @@ var ProductDetail = {
 	},
 	onPreviewBtnClick : function(ev) {
 		
+	},
+	onStarClick : function(ev) {
+		$("#productBrand .evaluate .star").removeClass("half").removeClass("full");
+		var target = $(ev.currentTarget);
+		var offset = target.offset();
+		var width = target.width();
+		var prevArr = target.prevAll();
+		prevArr.addClass("full");
+		var tmpVal = prevArr.length * 2;
+		
+		if(ev.clientX < offset.left + width / 2) {
+			tmpVal += 1;
+			target.addClass("half");
+		}
+		else {
+			tmpVal += 2;
+			target.addClass("full");
+		}
 	}
 };
