@@ -60,12 +60,14 @@ namespace FCStore
                         "~/Content/themes/base/jquery.ui.bannerize.css"));
 
             bundles.Add(new ScriptBundle("~/UploadFile/css").Include(
-                        "~/Scripts/uploadify/uploadify.css"));
+                "~/Scripts/uploadify/uploadify.css"));
 
+            bundles.Add(new ScriptBundle("~/xheditor/css").Include(
+                "~/xheditor/ui/default/ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/productDetail").Include(
-                        "~/Scripts/productDetail.js",
-                        "~/Scripts/productDetailRollImg.js"));
+                "~/Scripts/productDetail.js",
+                "~/Scripts/productDetailRollImg.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/HighChart").Include(
                 "~/Scripts/highcharts.js"));
@@ -91,6 +93,10 @@ namespace FCStore
                 "~/Scripts/ZTree/jquery.ztree.core-3.5.js",
                 "~/Scripts/ZTree/jquery.ztree.excheck-3.5.js",
                 "~/Scripts/ZTree/jquery.ztree.exedit-3.5.js"));
+
+            bundles.Add(new ScriptBundle("~/xheditor/js").Include(
+                "~/xheditor/script/xheditor-1.1.14-zh-cn.js"));
+
         }
     }
 }

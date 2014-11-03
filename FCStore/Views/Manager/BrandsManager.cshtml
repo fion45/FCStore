@@ -66,9 +66,15 @@
         $(function () {
             var pathName = window.location.pathname;
             var parArr = pathName.split('/');
-            if (parArr.length >= 4 && parArr[3] == "0") {
-                //获取Colum里所有商品的品牌
-                BrandManager.GetBrandsInColumn(parArr[4]);
+            if (parArr.length >= 4) {
+                if(parArr[3] == "0") {
+                    //获取Colum里所有商品的品牌
+                    BrandManager.GetBrandsInColumn(parArr[4]);
+                }
+                else if (parArr[3] == "1") {
+                    //获取商品原来的品牌
+                    //BrandManager.GetBrandsInColumn(parArr[4]);
+                }
             }
             BrandManager.updateSelBrands();
             $("#checkAll").checkAll(null, "#selDiv .item .brandCB");
@@ -83,3 +89,9 @@
     </script>
 </body>
 </html>
+
+@* 参数说明：
+    "~\Manager\BrandsManager\0\CID  :   项目里的品牌管理
+    "~\Manager\BrandsManager\1\CID  :   商品的品牌选择
+
+*@

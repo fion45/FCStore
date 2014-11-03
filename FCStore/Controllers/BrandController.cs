@@ -78,6 +78,20 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult GetProductBrand(int id)
+        {
+            Product tmpProduct = db.Products.FirstOrDefault(r => r.PID == id);
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult(new List<Brand>() { tmpProduct.Brand });
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

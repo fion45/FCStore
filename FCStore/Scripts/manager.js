@@ -821,6 +821,10 @@ var BrandManager = {
                 GetBrandsUrl = "/Brand/GetSelectBrandInColum/" + Manager.GetParamTag(4);
                 break;
             }
+            case 1: {
+            	//select product's brand
+            	GetBrandsUrl = "/Brand/GetProductBrand/" + Manager.GetParamTag(4);
+            }
         }
         $.myAjax({
             historyTag: false,

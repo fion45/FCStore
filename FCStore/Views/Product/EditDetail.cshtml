@@ -1,15 +1,45 @@
 ﻿@model FCStore.Models.Product
+@section css{
+    @Styles.Render("~/xheditor/css")
+}
 
 @section scripts{
     @Scripts.Render("~/bundles/HighChart")
     @Scripts.Render("~/bundles/productDetail")
+    @Scripts.Render("~/xheditor/js")
     
     <script type="text/javascript" >
         $(function () {
             var editer = $("<textarea></textarea>");
+            var tmpStr = $("#productTitle").html();
+            tmpStr = $.trim(tmpStr);
+            $("#productTitle").html("");
+            editer.appendTo($("#productTitle"));
+            editer.val(tmpStr);
+
+            editer = $("<textarea></textarea>");
+            tmpStr = $("#descriptContent").html();
+            $("#descriptContent").html("");
             editer.appendTo($("#descriptContent"));
-            editer.val($("#descriptContent").html());
-            editer.xheditor();
+            editer.val(tmpStr);
+
+            editer.xheditor({
+                upLinkUrl: "/upload.aspx",
+                upLinkExt: "zip,rar,txt",
+                upImgUrl: "/upload.aspx",
+                upImgExt: "jpg,jpeg,gif,png",
+                upFlashUrl: "/upload.aspx",
+                upFlashExt: "swf",
+                upMediaUrl: "/upload.aspx",
+                upMediaExt: "avi"
+            });
+
+            $("#productBrand .brandA").bind("click", ProductDetail.onBrandItemClick);
+
+            $("#gobackBtn").bind("click", ProductDetail.onBackBtnClick);
+            $("#refreshBtn").bind("click", ProductDetail.onRefreshBtnClick);
+            $("#saveBtn").bind("click", ProductDetail.onSaveBtnClick);
+            $("#previewBtn").bind("click", ProductDetail.onPreviewBtnClick);
         });
     </script>
 }
@@ -81,7 +111,7 @@
                         品牌：
                     </div>
                     <div class="content">
-                        <a class="brandA" href="/Product/ListByBrand/@(Model.Brand.BID)">
+                        <a class="brandA" href="~/Manager/BrandsManager/1/@(Model.PID)">
                             <div class="icon">
                                 @*<img src="/Brand/@(Model.Brand.Tag).jpg" alt="@(Model.Brand.Name2)" />*@
                                 @(Model.Brand.NameStr)
@@ -188,6 +218,22 @@
         </div>
         <div id="saleLog">
             <div id="chartDiv"></div>
+        </div>
+        <div id="btnDiv" class="p1 pullupDiv">
+            <ul>
+                <li class="p4">
+                    <input id="gobackBtn" class="sbtn1" type="button" value="返回" />
+                </li>
+                <li class="p4">
+                    <input id="refreshBtn" class="sbtn2" type="button" value="刷新" />
+                </li>
+                <li class="p4">
+                    <input id="saveBtn" class="sbtn3" type="button" value="保存" />
+                </li>
+                <li class="p4">
+                    <input id="previewBtn" class="sbtn1" type="button" value="预览" />
+                </li>
+            </ul>
         </div>
     </div>
 </div>

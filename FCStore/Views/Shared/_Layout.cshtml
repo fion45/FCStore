@@ -14,6 +14,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("css", required: false)
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>

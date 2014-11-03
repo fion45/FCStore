@@ -392,5 +392,17 @@ var ProductDetail = {
             	}
             }
 		});
+	},
+	onBackBtnClick : function(ev) {
+		window.history.back();
+	},
+	onRefreshBtnClick : function(ev) {
+		location.reload();
+	},
+	onSaveBtnClick : function(ev) {
+		
+	},
+	onPreviewBtnClick : function(ev) {
+		
 	}
 };
