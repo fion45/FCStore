@@ -1358,6 +1358,7 @@ footer {
     margin-top:6px;
     width:350px;
     height:85px;
+    position:relative;
 }
 
 #spec-left {
@@ -1382,6 +1383,18 @@ footer {
     border-bottom:solid 1px #999999;
     background-color: #ffffff;
 }
+
+    #spec-list .editBtn {
+        position:absolute;
+        left:100%;
+        top:0px;
+        width:48px;
+        margin-left:-50px;
+        cursor:pointer;
+        border:solid 1px gray;
+        background-color:gray;
+        color:white;
+    }
 
     #spec-list li {
         float:left;
@@ -1409,6 +1422,28 @@ footer {
 #spec-right:hover {
     background:url("/Content/themes/image/main.png") no-repeat -52px -98px #ffffff;
 }
+
+#editImgDiv {
+    width:250px;
+    height:250px;
+    overflow-y:auto;
+}
+
+    #editImgDiv .imgUL li {
+        width:68px;
+        height:66px;
+        margin:4px 4px;
+        position:relative;
+    }
+
+    #editImgDiv .imgUL .addLI {
+        border:solid 1px gray;
+    }
+
+    #editImgDiv .imgUL img {
+        width:68px;
+        height:66px;
+    }
 
 #productInfo {
     float:left;

@@ -422,5 +422,80 @@ var ProductDetail = {
 			tmpVal += 2;
 			target.addClass("full");
 		}
+	},
+	EditImgDlg : null,
+	onImgEditBtnClick : function(ev) {
+		if(ProductDetail.EditImgDlg == null) {
+			//创建一个图片编辑对话框
+			var tmpEle = $( 
+				"<div id='editImgDiv' title='修改图片对话框' >" +
+					"<ul class='imgUL'>" +
+						"<li class='addLI'>添加<div id='addimg_upload' ></div></li>" +
+					"</ul>" +
+				"</div>");
+			tmpEle.appendTo($("#PD_View"));
+			ProductDetail.EditImgDlg = tmpEle.dialog({
+				autoOpen: false,
+		        height: 300,
+		      	width: 350,
+		      	modal: true,
+		      	buttons: {
+			        "刷新" : function() {
+			        	
+			        },
+			        "保存" : function() {
+			        	
+			        },
+			        "取消" : function() {
+			          dialog.dialog( "close" );
+			        }
+		      	}
+		    });
+			$("#addimg_upload").uploadify({
+                height: 27,
+                width: 65,
+                buttonText: '文件上传',
+                auto: false,
+                swf: '~/Scripts/uploadify/uploadify.swf',
+                uploader: '/Manager/Upload',
+                fileTypeDesc: 'Image Files',
+                fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                onSelect: function (file) {
+                	
+                },
+                onUploadSuccess: function (file, data, response) {
+                	
+                },
+                onCancel: function (file) {
+                	
+                }
+            });
+		}
+		var tmpPar = ProductDetail.EditImgDlg.find(".imgUL");
+		tmpPar.remove(".imgLI");
+		$.each($("#spec-list .ILUl img"),function(i,n){
+			var imgEle = $(n);
+			$("<li class='imgLI'><img src='" + imgEle.attr("src") + "' /><div id='img_upload" + i + "' ></div></li>").insertBefore($("#editImgDiv .imgUL .addLI"));
+//			$("#img_upload" + i).uploadify({
+//                height: 27,
+//                width: 65,
+//                buttonText: '文件上传',
+//                auto: false,
+//                swf: '/Scripts/uploadify/uploadify.swf',
+//                uploader: '/Manager/Upload',
+//                fileTypeDesc: 'Image Files',
+//                fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+//                onSelect: function (file) {
+//                	
+//                },
+//                onUploadSuccess: function (file, data, response) {
+//                	
+//                },
+//                onCancel: function (file) {
+//                	
+//                }
+//            });
+		});
+		ProductDetail.EditImgDlg.dialog( "open" );
 	}
 };

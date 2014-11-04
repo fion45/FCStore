@@ -241,7 +241,21 @@ namespace FCStore.Controllers
                 try
                 {
                     // 文件上传后的保存路径
-                    string tmpStr = Request.Params["toPath"].ToString();
+                    string tmpStr = "";
+                    if (Request.Params.AllKeys.Contains("toPath")) 
+                    {
+                        tmpStr = Request.Params["toPath"].ToString();
+                    }
+                    else
+                    {
+                        tmpStr = (DateTime.Now.Year % 100).ToString() + "/";
+                        string numStr = "0" + DateTime.Now.Month.ToString();
+                        numStr = numStr.Substring(numStr.Length - 2, 2);
+                        tmpStr += numStr + "/";
+                        numStr = "0" + DateTime.Now.Day.ToString();
+                        numStr = numStr.Substring(numStr.Length - 2, 2);
+                        tmpStr += numStr + "/";
+                    }
                     string filePath = Server.MapPath("/Uploads/");
                     if(!string.IsNullOrEmpty(tmpStr))
                     {

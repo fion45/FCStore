@@ -1,12 +1,14 @@
 ﻿@model FCStore.Models.Product
 @section css{
     @Styles.Render("~/xheditor/css")
+    @Styles.Render("~/UploadFile/css")
 }
 
 @section scripts{
     @Scripts.Render("~/bundles/HighChart")
     @Scripts.Render("~/bundles/productDetail")
     @Scripts.Render("~/xheditor/js")
+    @Scripts.Render("~/UploadFile/js")
     
     <script type="text/javascript" >
         $(function () {
@@ -41,6 +43,28 @@
             editer.appendTo($("#productPrice .sale"));
             editer.val(tmpStr);
 
+            $("#spec-list .editBtn").bind("click", ProductDetail.onImgEditBtnClick);
+
+            $("#productPrice").uploadify({
+                height: 27,
+                width: 65,
+                buttonText: '文件上传',
+                auto: false,
+                swf: '~/Scripts/uploadify/uploadify.swf',
+                uploader: '/Manager/Upload',
+                fileTypeDesc: 'Image Files',
+                fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                onSelect: function (file) {
+
+                },
+                onUploadSuccess: function (file, data, response) {
+
+                },
+                onCancel: function (file) {
+
+                }
+            });
+
             editer = $("<textarea></textarea>");
             tmpStr = $("#descriptContent").html();
             $("#descriptContent").html("");
@@ -68,7 +92,6 @@
 }
 
 <div id="PD_View">
-    <input type="text" value />
     <div id="categoryNav">
         <div>当前位置：</div>
         @{
@@ -109,6 +132,7 @@
                             }
                         </ul>
                     </div>
+                    <div class="editBtn">编辑</div>
                 </div>
                 <div class="control" id="spec-right"></div>
             </div>
@@ -146,14 +170,14 @@
                 <div class="pullupDiv"></div>
             </div>
             <div id="productPrice">
-                <div class="title">代购价：</div>
+                @*<div class="title">代购价：</div>
                 <div class="content price">￥@(Model.Price)</div>
                 <div class="title">市场价：</div>
                 <div class="content marketPrice">￥@(Model.MarketPrice)</div>
                 <div class="title">已售出：</div>
                 <div class="content sale">@(Model.Sale)</div>
                 <div class="pullupDiv"></div>
-                <div class="conner"></div>
+                <div class="conner"></div>*@
             </div>
             @*<div id="productSaleType">
                     <div class="title">
@@ -201,6 +225,7 @@
                         { }
                     }
                     <textarea>@(Server.HtmlDecode(Model.Chose.Trim()))</textarea>
+                    <label>语法提示：[{"title":"容量", "values":[{"name":"200ml"}]}]</label>
                 }
             </div>
             @*<div id="productSaleInput">
