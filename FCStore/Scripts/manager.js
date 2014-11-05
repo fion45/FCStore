@@ -854,6 +854,29 @@ var ProductManager = {
     		$("#evaluation").data("reduce",arrResult);
     	}
     	target.attr("class","sbtngray");
+    },
+    onDelEvaluationBtnClick : function(ev) {
+    	alert(1);
+    },
+    onEditEvaluationBtnClick : function(ev) {
+    	var target = $(ev.currentTarget);
+    	var itemEle = target.parentsUntil(".item").parent();
+    	var desEle = itemEle.find(".description");
+    	if(target.attr("value") == "编辑") {
+	    	var text = desEle.text();
+	    	desEle.empty();
+	    	desEle.append($("<textarea>" + text + "</textarea>"));
+	    	target.attr("value","保存").attr("class","editBtn sbtn3");
+    	}
+    	else {
+    		if(target.attr("data-id")) {
+    			
+    		}
+    		else {
+	    		desEle.html(desEle.children("textarea").val());
+		    	target.attr("value","编辑").attr("class","editBtn sbtn1");
+    		}
+    	}
     }
 };
 

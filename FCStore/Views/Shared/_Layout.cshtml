@@ -149,7 +149,7 @@
             <label>Copyright  2004-2014  RightGO网  All Rights Reserved <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">粤ICP备14045853号-1</a></label>
         </div>
     </footer>
-    @{Html.RenderAction("_CategoryList", "Category");}
+    @{Html.RenderAction("_CategoryList", "Category");}    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/jqueryui")
@@ -159,7 +159,8 @@
     <script type="text/javascript" charset="utf-8" src="~/Scripts/common.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/sidebar-follow-jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="~/Scripts/qqReport.js"></script>
-    <script type="text/javascript" charset="utf-8" src="~/Scripts/main.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/main.js"></script>    
+    @RenderSection("scripts", required: false)
     <!--Other Login-->
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
             data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
@@ -182,6 +183,5 @@
             });
         </script>
     }
-    @RenderSection("scripts", required: false)
 </body>
 </html>

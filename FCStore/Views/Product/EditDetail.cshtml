@@ -108,7 +108,10 @@
                 $("#buildBtn").attr("class", "sbtn1");
             });
 
-            $("#buildBtn").on("click",ProductManager.onBuildEvaluationBtnClick);
+            $("#buildBtn").on("click", ProductManager.onBuildEvaluationBtnClick);
+
+            $("#overflowDiv").on("click", ".item .editDiv .delBtn",null, ProductManager.onDelEvaluationBtnClick);
+            $("#overflowDiv").on("click", ".item .editDiv .editBtn",null, ProductManager.onEditEvaluationBtnClick);
         });
     </script>
 }
@@ -259,35 +262,37 @@
         <ul>
             <li><a href="#evaluation">客户评价(@(ViewBag.EvaluationCount))</a></li>
         </ul>
-        <div id="buildDiv">
-        </div>
-        <div id="evaluation">
-            @foreach (EvaluationVM evaluation in Model.EvaluationLST)
-            {
-                <div class="item" data-issham="@(evaluation.IsSham ? 1 : 0)" >
-				    <div class="headDiv"><img class="headImg" /></div>
-				    <div class="starDiv">
-					    <div class="unDiv">@(evaluation.IDLabel)：</div>
-                        <div class="starArea"></div>
+        <div id="overflowDiv">
+            <div id="buildDiv">
+            </div>
+            <div id="evaluation">
+                @foreach (EvaluationVM evaluation in Model.EvaluationLST)
+                {
+                    <div class="item" data-id="@(evaluation.EID)" data-issham="@(evaluation.IsSham ? 1 : 0)">
+                        <div class="headDiv"><img class="headImg" /></div>
+                        <div class="starDiv">
+                            <div class="unDiv">@(evaluation.IDLabel)：</div>
+                            <div class="starArea"></div>
+                        </div>
+                        <div class="lbDiv">
+                            <div class="description">@(evaluation.Description)</div>
+                        </div>
+                        <div class="dataDiv">@(evaluation.DataTime)</div>
+                        <div class="pullupDiv"></div>
+                        <div class="editDiv">
+                            @if (evaluation.IsSham)
+                            {
+                                <input class="delBtn sbtn2" type="button" value="删除" />
+                            }
+                            else
+                            {
+                                <label><input disabled="disabled" class="showCB" type="checkbox" checked="@(evaluation.IsShow ? "true" : "false")" />是否显示</label>
+                            }
+                            <input class="editBtn sbtn1" type="button" value="编辑" />
+                        </div>
                     </div>
-                    <div class="lbDiv">
-				        <div class="description">@(evaluation.Description)</div>
-                    </div>
-                    <div class="dataDiv">@(evaluation.DataTime)</div>
-                    <div class="pullupDiv"></div>
-                    <div class="editDiv">
-                        @if (evaluation.IsSham)
-                        {
-                            <input class="delBtn sbtn2" type="button" value="删除" />
-                        }
-                        else
-                        {
-                            <label><input class="showCB" type="checkbox" checked="@(evaluation.IsShow ? "true" : "false")" />是否显示</label>
-                        }
-                        <input class="editBtn sbtn1" type="button" value="编辑" />
-                    </div>
-			    </div>
-            }
+                }
+            </div>
         </div>
         <div id="btnDiv" class="p1 pullupDiv">
             <ul>
