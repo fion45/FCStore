@@ -14,7 +14,7 @@
     	tmpName += nameStr.substring(nameStr.length - tmpL);
     }
     else {
-    	tmpName = nameStr.substring(0,1) + *;
+    	tmpName = nameStr.substring(0,1) + "*";
     }
     result.IDLabel = tmpName;
     result.DataTime = tmpDT;
