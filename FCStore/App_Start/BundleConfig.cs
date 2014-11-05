@@ -84,7 +84,8 @@ namespace FCStore
 
             bundles.Add(new ScriptBundle("~/Manager/js").Include(
                 "~/Scripts/common.js",
-                "~/Scripts/manager.js"));
+                "~/Scripts/manager.js",
+                "~/Scripts/EvaluationGenerator.js"));
 
             bundles.Add(new ScriptBundle("~/UploadFile/js").Include(
                 "~/Scripts/uploadify/jquery.uploadify.js"));

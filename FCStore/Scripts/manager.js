@@ -806,6 +806,54 @@ var ProductManager = {
                 }
             }
         });
+    },
+    onBuildEvaluationBtnClick : function(ev) {
+    	var target = $(ev.currentTarget);
+    	if(!target.hasClass("sbtngray")) {
+    		$("#buildDiv").empty();
+    		var arrResult = [];
+    		//模拟生成评价
+    		$.each($("#saleLog .content"),function(i,n){
+    			var ele = $(n);
+    			var inputEle = ele.children("input");
+    			var oldVal = parseInt(inputEle.attr("data-val"));
+    			var newVal = parseInt(inputEle.val());
+    			arrResult.push(0);
+				if(newVal > oldVal) {
+					//增加评价
+					var tmpBDT = ele.attr("data-bdt");
+					var tmpEDT = ele.attr("data-edt");
+				    var time1 = Date.parse(tmpBDT);
+				    var time2 = Date.parse(tmpEDT);
+				    var secondCount = (Math.abs(time2 - time1)) / 1000;  
+					for(var i=0;i<newVal - oldVal;i++) {
+						var item = GenerateEvaluation(tmpBDT,secondCount);
+						$("<div class='item' data-issham='1' >" + 
+						    "<div class='headDiv'><img class='headImg' /></div>" +
+						    "<div class='starDiv'>" +
+							    "<div class='unDiv'>" + item.IDLabel + "：</div>" +
+		                        "<div class='starArea'></div>" +
+		                    "</div>" +
+		                    "<div class='lbDiv'>" +
+						        "<div class='description'>" + item.Description + "</div>" +
+		                    "</div>" +
+		                    "<div class='dataDiv'>" + item.DataTime + "</div>" +
+		                    "<div class='pullupDiv'></div>" +
+		                    "<div class='editDiv'>" +
+	                            "<input class='delBtn sbtn2' type='button' value='删除'' />" +
+	                        	"<input class='editBtn sbtn1' type='button' value='编辑' />" +
+                    		"</div>" +
+					    "</div>") .appendTo($("#buildDiv"));
+					}
+				}
+				else if(newVal <= oldVal) {
+					//减少虚假的评价
+					arrResult[i] = oldVal - newVal;
+				}
+    		});
+    		$("#evaluation").data("reduce",arrResult);
+    	}
+    	target.attr("class","sbtngray");
     }
 };
 
@@ -1077,8 +1125,38 @@ var BrandManager = {
             backItem.after(moveItems);
         }
     },
-    OnDelBtnClick: function (ev) {
+    OnDetailDelBtnClick: function (ev) {
         var selItems = $("#selDiv .item:has(.brandCB:checked)");
         selItems.remove();
-    }
+    },
+	onDetailBackBtnClick : function(ev) {
+		window.history.back();
+	},
+	onDetailRefreshBtnClick : function(ev) {
+		location.reload();
+	},
+	onDetailSaveBtnClick : function(ev) {
+		
+	},
+	onDetailPreviewBtnClick : function(ev) {
+		
+	},
+	onDetailStarClick : function(ev) {
+		$("#productBrand .evaluate .star").removeClass("half").removeClass("full");
+		var target = $(ev.currentTarget);
+		var offset = target.offset();
+		var width = target.width();
+		var prevArr = target.prevAll();
+		prevArr.addClass("full");
+		var tmpVal = prevArr.length * 2;
+		
+		if(ev.clientX < offset.left + width / 2) {
+			tmpVal += 1;
+			target.addClass("half");
+		}
+		else {
+			tmpVal += 2;
+			target.addClass("full");
+		}
+	}
 };

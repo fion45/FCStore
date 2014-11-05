@@ -66,12 +66,33 @@ namespace FCStore.Models
         {
             this.EID = eval.EID;
             int tmpLen = eval.User.UserName.Length;
-            int tmpI = tmpLen / 3;
-            string tmpStr = eval.User.UserName.Substring(0, tmpI) + new string('*', tmpLen - 2 * tmpI) + eval.User.UserName.Substring(tmpLen - tmpI);
+            string tmpStr = "";
+            if (tmpLen >= 3)
+            {
+                int tmpI = tmpLen / 3;
+                tmpStr = eval.User.UserName.Substring(0, tmpI) + new string('*', tmpLen - 2 * tmpI) + eval.User.UserName.Substring(tmpLen - tmpI);
+            }
+            else
+            {
+                tmpStr = eval.User.UserName.Substring(0, 1) + "*";
+            }
             this.IDLabel = string.Format("{0}({1})", tmpStr, eval.Order.BelongTown.FullName);
             this.Description = eval.Description;
             this.StarCount = eval.StarCount;
             this.DataTime = eval.DataTime;
+            this.IsSham = false;
+            this.IsShow = eval.IsShow;
+        }
+
+        public EvaluationVM(ShamOrderData shamOrder)
+        {
+            this.EID = shamOrder.SOID;
+            this.IDLabel = shamOrder.IDLabel;
+            this.Description = shamOrder.Description;
+            this.DataTime = shamOrder.DateTime;
+            this.StarCount = shamOrder.StarCount;
+            this.IsSham = true;
+            this.IsShow = true;
         }
 
         public int EID
@@ -103,6 +124,18 @@ namespace FCStore.Models
             set;
             get;
         }
+
+        public bool IsSham
+        {
+            get;
+            set;
+        }
+
+        public bool IsShow
+        {
+            get;
+            set;
+        }
     }
 
     public class SaleLogVM
@@ -113,7 +146,25 @@ namespace FCStore.Models
             set;
         }
 
+        public List<string> BDTStrArr
+        {
+            get;
+            set;
+        }
+
+        public List<string> EDTStrArr
+        {
+            get;
+            set;
+        }
+
         public List<string> DTStrArr
+        {
+            get;
+            set;
+        }
+
+        public List<int> ShamCountArr
         {
             get;
             set;
@@ -265,5 +316,14 @@ namespace FCStore.Models
             }
             return result;
         }
+    }
+
+    public class ProductEditDetailVM
+    {
+        public Product Product;
+
+        public List<EvaluationVM> EvaluationLST;
+
+        public SaleLogVM SaleLog;
     }
 }

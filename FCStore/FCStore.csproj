@@ -283,6 +283,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="log\log.txt" />
+    <Content Include="Scripts\EvaluationGenerator.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery.lazyload.js" />
     <Content Include="Scripts\jquery.ui.bannerize.js" />

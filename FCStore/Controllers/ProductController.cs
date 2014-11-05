@@ -465,13 +465,66 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult EditDetail(int ID)
         {
-            //判断是否是自己的商品
+            ProductEditDetailVM vmModel = new ProductEditDetailVM();
+
+            //TODO:判断是否是自己的商品
             Product tmpProduct = db.Products.First(r => r.PID == ID);
             ViewBag.EvaluationCount = db.Evaluations.Count(r => r.Product.PID == ID);
             ViewBag.SaleCount = (from op in db.OrderPackets
                                  where op.PID == ID && op.Order.Status > 1
                                  select op.Count).ToList().Sum();
-            return View(tmpProduct);
+            vmModel.Product = tmpProduct;
+            
+            //获得评论
+            int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
+            List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status)).ToList();
+            List<int> tmpOIDArr = (from opl in tmpOPLST
+                                   select opl.Order.OID).Distinct().ToList();
+            //只取前20条
+            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).Take(20).ToList();
+            vmModel.EvaluationLST = new List<EvaluationVM>();
+            foreach(Evaluation eva in tmpELST)
+            {
+                EvaluationVM tmpEva = new EvaluationVM(eva);
+                vmModel.EvaluationLST.Add(tmpEva);
+            }
+
+            //获得销售记录
+            string DTFormat = "yyyy-MM-dd hh:mm:ss";
+            string DTF = "M月d日";
+            string DTStr = DateTime.Now.AddMonths(-1).ToString(DTFormat);
+            tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status) && r.Order.OrderDate.CompareTo(DTStr) > 0).ToList();
+            DateTime tmpDT = DateTime.Now;
+            string EDTStr = tmpDT.ToString(DTF);
+            string BDTStr;
+            string BDT, EDT = tmpDT.ToString(DTFormat);
+            SaleLogVM tmpSLVM = new SaleLogVM();
+            tmpSLVM.BDTStrArr = new List<string>();
+            tmpSLVM.EDTStrArr = new List<string>(); 
+            tmpSLVM.DTStrArr = new List<string>();
+            tmpSLVM.CountArr = new List<int>();
+            tmpSLVM.ShamCountArr = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                tmpDT = tmpDT.AddDays(-7);
+                BDT = tmpDT.ToString(DTFormat);
+                BDTStr = tmpDT.ToString(DTF);
+                var opArr = from op in tmpOPLST
+                            where op.Order.OrderDate.CompareTo(BDT) > 0 && op.Order.OrderDate.CompareTo(EDT) <= 0
+                            select op;
+                int shamCount = db.ShamOrderDatas.Count(r => r.Product.PID == ID && r.DateTime.CompareTo(BDT) > 0 && r.DateTime.CompareTo(EDT) <= 0);
+                tmpSLVM.BDTStrArr.Insert(0, BDT);
+                tmpSLVM.EDTStrArr.Insert(0, EDT);
+                string tmpDTStr = string.Format("\"{0}\" 至 \"{1}\"", BDTStr, EDTStr);
+                tmpSLVM.DTStrArr.Insert(0, tmpDTStr);
+                tmpSLVM.CountArr.Insert(0, opArr.Sum(r => r.Count));
+                tmpSLVM.ShamCountArr.Insert(0, shamCount);
+                EDT = BDT;
+                EDTStr = BDTStr;
+            }
+            vmModel.SaleLog = tmpSLVM;
+
+            return View(vmModel);
         }
 
         protected override void Dispose(bool disposing)

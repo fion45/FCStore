@@ -444,19 +444,26 @@ namespace FCStore.Controllers
             DateTime tmpDT = DateTime.Now;
             string EDTStr = tmpDT.ToString(DTF);
             string BDTStr;
+            string BDT, EDT = tmpDT.ToString(DTFormat);
             SaleLogVM tmpSLVM = new SaleLogVM();
             tmpSLVM.DTStrArr = new List<string>();
             tmpSLVM.CountArr = new List<int>();
             for(int i=0;i<4;i++)
             {
                 tmpDT = tmpDT.AddDays(-7);
+                BDT = tmpDT.ToString(DTFormat);
                 BDTStr = tmpDT.ToString(DTF);
                 var opArr = from op in tmpOPLST
-                                          where op.Order.OrderDate.CompareTo(BDTStr) > 0 && op.Order.OrderDate.CompareTo(EDTStr) <= 0
-                                          select op;
+                            where op.Order.OrderDate.CompareTo(BDT) > 0 && op.Order.OrderDate.CompareTo(EDT) <= 0
+                                            select op;
+                int shamCount = db.ShamOrderDatas.Count(r => r.Product.PID == ID && r.DateTime.CompareTo(BDT) > 0 && r.DateTime.CompareTo(EDT) <= 0);
+                tmpSLVM.BDTStrArr.Insert(0, BDT);
+                tmpSLVM.EDTStrArr.Insert(0, EDT);
                 string tmpDTStr = string.Format("\"{0}\" 至 \"{1}\"",BDTStr,EDTStr);
                 tmpSLVM.DTStrArr.Insert(0,tmpDTStr);
-                tmpSLVM.CountArr.Add(opArr.Sum(r => r.Count));
+                tmpSLVM.CountArr.Insert(0, opArr.Sum(r => r.Count));
+                tmpSLVM.ShamCountArr.Insert(0, shamCount);
+                EDT = BDT;
                 EDTStr = BDTStr;
             }
             if (Request.IsAjaxRequest())

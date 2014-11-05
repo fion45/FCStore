@@ -551,6 +551,20 @@ var AddSeconds = function(temp,addSeconds) {
     return tempY+'-'+tempMM+'-'+tempD+' '+tempH+':'+tempM+':'+tempS;
 }
 
+function SplitDateTimeStr(DTStr) {
+	var result = [];
+	var tmpArr = DTStr.split(' ');
+	var dArr = tmpArr[0].split('-');
+	$.each(dArr,function(i,n){
+		result.push(n);
+	});
+	var dArr = tmpArr[1].split(':');
+	$.each(dArr,function(i,n){
+		result.push(n);
+	});
+	return result;
+}
+
 function GetUIDHex(num) {
 	var tmpStr = '00000000' + num.toString(16);
 	return tmpStr.substring(tmpStr.length - 8,tmpStr.length);

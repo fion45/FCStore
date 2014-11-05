@@ -200,6 +200,12 @@ namespace FCStore.Models
             set;
         }
 
+        public int StarCount
+        {
+            get;
+            set;
+        }
+
         public string DateTime
         {
             get;
