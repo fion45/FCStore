@@ -527,6 +527,75 @@ namespace FCStore.Controllers
             return View(vmModel);
         }
 
+        public ActionResult SaveEditDetail(Product product, List<ShamOrderData> ShamOrderDataArr)
+        {
+            Product tmpProduct = db.Products.FirstOrDefault(r => r.PID == product.PID);
+            tmpProduct.Title = product.Title;
+            tmpProduct.EvaluationStarCount = product.EvaluationStarCount;
+            tmpProduct.Price = product.Price;
+            tmpProduct.MarketPrice = product.MarketPrice;
+            tmpProduct.Sale = product.Sale;
+            tmpProduct.Chose = product.Chose;
+            tmpProduct.Descript = product.Descript;
+            tmpProduct.ImgPath = tmpProduct.ImgPath;
+
+            foreach(ShamOrderData item in ShamOrderDataArr)
+            {
+                db.ShamOrderDatas.Add(item);
+            }
+            db.SaveChanges();
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult DelShamEvaluation(int EID)
+        {
+            db.ShamOrderDatas.Remove(db.ShamOrderDatas.FirstOrDefault(r => r.SOID == EID));
+            db.SaveChanges();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult EditEvaluation(EvaluationVM evaluation)
+        {
+            if(evaluation.IsSham)
+            {
+                ShamOrderData tmpSOD = db.ShamOrderDatas.FirstOrDefault(r => r.SOID == evaluation.EID);
+                tmpSOD.Description = evaluation.Description;
+            }
+            else
+            {
+                Evaluation tmpEva = db.Evaluations.FirstOrDefault(r=>r.EID == evaluation.EID);
+                tmpEva.Description = evaluation.Description;
+                tmpEva.IsShow = evaluation.IsShow;
+            }
+            db.SaveChanges();
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

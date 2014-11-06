@@ -53,7 +53,7 @@
             $("#descriptContent").html("");
             editer.appendTo($("#descriptContent"));
             editer.val(tmpStr);
-            editer.xheditor({
+            var xheEle = editer.xheditor({
                 upLinkUrl: "/upload.aspx",
                 upLinkExt: "zip,rar,txt",
                 upImgUrl: "/upload.aspx",
@@ -63,8 +63,58 @@
                 upMediaUrl: "/upload.aspx",
                 upMediaExt: "avi"
             });
+            editer.data("xhe", xheEle);
 
-            $("#addimg_upload").uploadify({
+            var successTagArr = {};
+            var AIndex = 0;
+            var AddFileAfter = function (ele) {
+                var indexStr = ele.attr("id");
+                var par = ele.parent();
+                ele.after($("<div class='delBtn'>X</div>"));
+                successTagArr[indexStr] = false;
+                ++AIndex;
+                var LiEle = $(
+                    "<li class='listLi'>" +
+                        "<img />" +
+                        "<div id='addimg_upload" + AIndex + "'></div>" +
+                    "</li>");
+                par.after(LiEle);
+                $("#addimg_upload" + AIndex).uploadify({
+                    height: 17,
+                    width: 40,
+                    buttonText: '添加',
+                    auto: false,
+                    swf: '/Scripts/uploadify/uploadify.swf',
+                    uploader: '/Manager/Upload',
+                    fileTypeDesc: 'Image Files',
+                    fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                    onUploadSuccess: function (file, data, response) {
+                        var result = $.parseJSON(data);
+                        if (result.Success) {
+                            var indexStr = this.original.attr("id");
+                            var imgEle = $("#" + indexStr).prev();
+                            imgEle.attr("src", result.imgSrc);
+                        }
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onUploadError: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onSelect: function (file) {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = false;
+                        AddFileAfter($("#" + indexStr));
+                    },
+                    onCancel: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
+                    }
+                });
+            }
+            $("#addimg_upload" + AIndex).uploadify({
                 height: 17,
                 width: 40,
                 buttonText: '添加',
@@ -74,17 +124,36 @@
                 fileTypeDesc: 'Image Files',
                 fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
                 onUploadSuccess: function (file, data, response) {
-                    var obj = $.parseJSON(data);
-                    if (obj.Success) {
-                        $("#spec-list .ILUl")
+                    var result = $.parseJSON(data);
+                    if (result.Success) {
+                        var indexStr = this.original.attr("id");
+                        var imgEle = $("#" + indexStr).prev();
+                        imgEle.attr("src", result.imgSrc);
                     }
+                    successTagArr[indexStr] = true;
+                    UploadComplete();
+                },
+                onUploadError: function () {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = true;
+                    UploadComplete();
+                },
+                onSelect: function (file) {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = false;
+                    AddFileAfter($("#" + indexStr));
+                },
+                onCancel: function () {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = true;
                 }
             });
-
             $.each($("#preview img"), function (i, n) {
+                $(n).parent().attr("data-tagindex", "U" + i);
                 $("#img_upload" + i).uploadify({
                     height: 17,
                     width: 40,
+                    multi: false,
                     buttonText: '替换',
                     auto: false,
                     swf: '/Scripts/uploadify/uploadify.swf',
@@ -92,17 +161,46 @@
                     fileTypeDesc: 'Image Files',
                     fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
                     onUploadSuccess: function (file, data, response) {
-
+                        var result = $.parseJSON(data);
+                        if (result.Success) {
+                            var indexStr = this.original.attr("id");
+                            var imgEle = $("#" + indexStr).prev();
+                            imgEle.attr("src", result.imgSrc);
+                        }
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onUploadError: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onSelect: function (file) {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = false;
+                    },
+                    onCancel: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
                     }
                 });
             });
+            var UploadComplete = function () {
+                var completeTag = true;
+                $.each(successTagArr, function (i, n) {
+                    if (!n)
+                        completeTag = false;
+                });
+                if(completeTag)
+                    ProductManager.onUploadFileComplete();
+            };
 
-            $("#productBrand .evaluate .star").bind("click", ProductManager.onStarClick);
+            $("#productBrand .evaluate .star").bind("click", ProductManager.onDetailStarClick);
 
-            $("#gobackBtn").bind("click", ProductManager.onDetailBackBtnClick);
-            $("#refreshBtn").bind("click", ProductManager.onDetailRefreshBtnClick);
-            $("#saveBtn").bind("click", ProductManager.onDetailSaveBtnClick);
-            $("#previewBtn").bind("click", ProductManager.onDetailPreviewBtnClick);
+            $("#preview").on("click", ".delBtn", function (ev) {
+                var target = $(ev.currentTarget);
+                target.parent().remove();
+            });
 
             $("#saleLog input").bind("change", function (ev) {
                 $("#buildBtn").attr("class", "sbtn1");
@@ -110,8 +208,30 @@
 
             $("#buildBtn").on("click", ProductManager.onBuildEvaluationBtnClick);
 
-            $("#overflowDiv").on("click", ".item .editDiv .delBtn",null, ProductManager.onDelEvaluationBtnClick);
-            $("#overflowDiv").on("click", ".item .editDiv .editBtn",null, ProductManager.onEditEvaluationBtnClick);
+            $("#overflowDiv").on("click", ".item .editDiv .delBtn", null, ProductManager.onDelEvaluationBtnClick);
+            $("#overflowDiv").on("click", ".item .editDiv .editBtn", null, ProductManager.onEditEvaluationBtnClick);
+
+            $("#gobackBtn").bind("click", ProductManager.onDetailBackBtnClick);
+            $("#refreshBtn").bind("click", ProductManager.onDetailRefreshBtnClick);
+            $("#saveBtn").bind("click", function (ev) {
+                var completeTag = true;
+                $.each(successTagArr, function (i, n) {
+                    if (!n)
+                        completeTag = false;
+                });
+                if(completeTag) {
+                    ProductManager.onUploadFileComplete();
+                }
+                else {
+                    //上传文件
+                    $.each(successTagArr, function (i, n) {
+                        if (!n)
+                            $("#" + i).uploadify("upload", "*");
+                    });
+                }
+
+            });
+            $("#previewBtn").bind("click", ProductManager.onDetailPreviewBtnClick);
         });
     </script>
 }
@@ -150,7 +270,7 @@
                 }
                 <li class="listLi">
                     <img />
-                    <div id="addimg_upload"></div>
+                    <div id="addimg_upload0"></div>
                 </li>
             </ul>
         </div>
@@ -165,10 +285,10 @@
                     </div>
                     <div class="content" id="PIDLB">@(Model.Product.PID)</div>
                 </div>
-                <div class="evaluate">
+                <div class="evaluate" data-val="@(Model.Product.EvaluationStarCount)">
                     @for (int i = 0; i < 5; i++)
                     {
-                        <div class="star empty"></div>
+                        <div class="star empty @(Model.Product.EvaluationStarCount >= (i + 1) * 2 ? "full" : (Model.Product.EvaluationStarCount >= i * 2 + 1 ? "half" : ""))"></div>
                     }
                 </div>
                 <div class="brandDiv">

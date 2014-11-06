@@ -856,28 +856,154 @@ var ProductManager = {
     	target.attr("class","sbtngray");
     },
     onDelEvaluationBtnClick : function(ev) {
-    	alert(1);
+    	var target = $(ev.currentTarget);
+    	var itemEle = target.parentsUntil(".item").parent();
+    	if(target.attr("data-id")) {
+    		$.myAjax({
+	            historyTag: false,
+	            loadEle: itemEle,
+	            url: "/Product/DelShamEvaluation/" + target.attr("data-id"),
+	            dataType: "json",
+	            type: "GET",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+    					itemEle.remove();
+	                }
+	            }
+	        });
+		}
+		else {
+    		itemEle.remove();
+		}
     },
     onEditEvaluationBtnClick : function(ev) {
     	var target = $(ev.currentTarget);
     	var itemEle = target.parentsUntil(".item").parent();
     	var desEle = itemEle.find(".description");
+    	var cbEle = itemEle.find(".showCB");
     	if(target.attr("value") == "编辑") {
 	    	var text = desEle.text();
 	    	desEle.empty();
 	    	desEle.append($("<textarea>" + text + "</textarea>"));
 	    	target.attr("value","保存").attr("class","editBtn sbtn3");
+	    	cbEle.attr("disabled","");
     	}
     	else {
     		if(target.attr("data-id")) {
-    			
+    			var tmpData = {};
+    			tmpData.EID = target.attr("data-id");
+    			tmpData.IsSham = parseBool(target.attr("data-issham"));
+    			tmpData.Description = tmpData.IsSham ? "" : desEle.find("textarea").val();
+    			tmpData.IsShow = tmpData.IsSham ? true : target.find(".showCB").attr("checked");
+	    		$.myAjax({
+		            historyTag: false,
+		            loadEle: itemEle,
+		            url: "/Product/EditEvaluation/",
+            		data: JSON.stringify(tmpData),
+		            dataType: "json",
+		            type: "POST",
+		            contentType: "application/json;charset=utf-8",
+		            success: function (data, status, options) {
+		                if (data.content == "OK") {
+	    					itemEle.remove();
+		                }
+		            }
+		        });
     		}
     		else {
 	    		desEle.html(desEle.children("textarea").val());
 		    	target.attr("value","编辑").attr("class","editBtn sbtn1");
     		}
     	}
-    }
+    },
+    OnDetailDelBtnClick: function (ev) {
+        var selItems = $("#selDiv .item:has(.brandCB:checked)");
+        selItems.remove();
+    },
+	onDetailBackBtnClick : function(ev) {
+		window.history.back();
+	},
+	onDetailRefreshBtnClick : function(ev) {
+		location.reload();
+	},
+	onUploadFileComplete : function() {
+		var Product = {};
+		Product.PID = Manager.GetParamTag(3);
+		Product.Title = $("#productTitle textarea").val();
+		Product.EvaluationStarCount = $("#productBrand .evaluate").attr("data-val");
+		Product.Price = $("#productPrice .price input").val();
+		Product.MarketPrice = $("#productPrice .marketPrice input").val();
+		Product.Sale = $("#productPrice .sale input").val();
+		Product.Chose = $("#productChoose textarea").val();
+		Product.Descript = $("#descriptContent textarea").data("xhe").getSource();
+		var tmpStr = "";
+		$.each($("#preview img"),function(i,n){
+			var img = $(n);
+			if(img.attr("src")) {
+				tmpStr += img.attr("src") + ";";
+			}
+		});
+		Product.ImgPath = tmpStr.substring(0,tmpStr.length - 1);
+		
+		var ShamOrderDataArr = [];
+		var ShamOrderData = {};
+		$.each($("#buildDiv .item"),function(i,n){
+			var item = $(n);
+			ShamOrderData.ProductID = Product.PID;
+			ShamOrderData.IDLabel = item.find(".unDiv").text();
+			ShamOrderData.IDLabel = ShamOrderData.IDLabel.substring(0,ShamOrderData.IDLabel.length - 1);
+			if(item.find(".description text").length > 0) {
+				ShamOrderData.Description = item.find(".description text").val();
+			}
+			else {
+				ShamOrderData.Description = item.find(".description").text();
+			}
+			ShamOrderData.DateTime = item.find(".dataDiv").text();
+			ShamOrderDataArr.push(ShamOrderData);
+		});
+		var tmpData = {
+			Product : Product,
+			ShamOrderDataArr : ShamOrderDataArr
+		};
+		$.myAjax({
+            historyTag: false,
+            loadEle: $("#PD_View"),
+            url: "/Product/SaveEditDetail/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+					location.reload();
+                }
+            }
+        });
+		
+	},
+	onDetailPreviewBtnClick : function(ev) {
+		
+	},
+	onDetailStarClick : function(ev) {
+		$("#productBrand .evaluate .star").removeClass("half").removeClass("full");
+		var target = $(ev.currentTarget);
+		var offset = target.offset();
+		var width = target.width();
+		var prevArr = target.prevAll();
+		prevArr.addClass("full");
+		var tmpVal = 0;
+		
+		if(ev.clientX < offset.left + width / 2) {
+			tmpVal += 1;
+			target.addClass("half");
+		}
+		else {
+			tmpVal += 2;
+			target.addClass("full");
+		}
+		$("#productBrand .evaluate").attr("data-val",tmpVal);
+	}
 };
 
 var BrandManager = {
@@ -1147,39 +1273,5 @@ var BrandManager = {
         if (backItem != null) {
             backItem.after(moveItems);
         }
-    },
-    OnDetailDelBtnClick: function (ev) {
-        var selItems = $("#selDiv .item:has(.brandCB:checked)");
-        selItems.remove();
-    },
-	onDetailBackBtnClick : function(ev) {
-		window.history.back();
-	},
-	onDetailRefreshBtnClick : function(ev) {
-		location.reload();
-	},
-	onDetailSaveBtnClick : function(ev) {
-		
-	},
-	onDetailPreviewBtnClick : function(ev) {
-		
-	},
-	onDetailStarClick : function(ev) {
-		$("#productBrand .evaluate .star").removeClass("half").removeClass("full");
-		var target = $(ev.currentTarget);
-		var offset = target.offset();
-		var width = target.width();
-		var prevArr = target.prevAll();
-		prevArr.addClass("full");
-		var tmpVal = prevArr.length * 2;
-		
-		if(ev.clientX < offset.left + width / 2) {
-			tmpVal += 1;
-			target.addClass("half");
-		}
-		else {
-			tmpVal += 2;
-			target.addClass("full");
-		}
-	}
+    }
 };

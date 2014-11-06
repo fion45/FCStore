@@ -248,7 +248,7 @@ namespace FCStore.Controllers
                     }
                     else
                     {
-                        tmpStr = (DateTime.Now.Year % 100).ToString() + "/";
+                        tmpStr = "~/Uploads/" + (DateTime.Now.Year % 100).ToString() + "/";
                         string numStr = "0" + DateTime.Now.Month.ToString();
                         numStr = numStr.Substring(numStr.Length - 2, 2);
                         tmpStr += numStr + "/";
@@ -270,7 +270,7 @@ namespace FCStore.Controllers
                     string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
 
                     fileData.SaveAs(filePath + saveName);
-
+                    tmpStr = tmpStr.TrimStart(new char[] { '~' });
                     return Json(new { Success = true, FileName = fileName, SaveName = saveName, imgSrc = tmpStr + saveName });
                 }
                 catch (Exception ex)
