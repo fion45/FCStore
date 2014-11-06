@@ -537,12 +537,15 @@ namespace FCStore.Controllers
             tmpProduct.Sale = product.Sale;
             tmpProduct.Chose = product.Chose;
             tmpProduct.Descript = product.Descript;
-            tmpProduct.ImgPath = tmpProduct.ImgPath;
+            tmpProduct.ImgPath = product.ImgPath;
 
-            foreach(ShamOrderData item in ShamOrderDataArr)
-            {
-                db.ShamOrderDatas.Add(item);
-            }
+            //if(ShamOrderDataArr != null)
+            //{
+            //    foreach (ShamOrderData item in ShamOrderDataArr)
+            //    {
+            //        db.ShamOrderDatas.Add(item);
+            //    }
+            //}
             db.SaveChanges();
 
             if (Request.IsAjaxRequest())

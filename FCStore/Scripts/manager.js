@@ -992,7 +992,7 @@ var ProductManager = {
 		var width = target.width();
 		var prevArr = target.prevAll();
 		prevArr.addClass("full");
-		var tmpVal = 0;
+		var tmpVal = prevArr.length * 2;
 		
 		if(ev.clientX < offset.left + width / 2) {
 			tmpVal += 1;
