@@ -49,6 +49,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual List<ReColumnBrand> REBrandColLST
         {
             get;
@@ -56,6 +57,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual List<Column> Columns
         {
             get

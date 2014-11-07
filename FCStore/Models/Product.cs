@@ -132,6 +132,7 @@ namespace FCStore.Models
             set;
         }
 
+        [NotMapped]
         public virtual List<ReColumnProduct> REProColLST
         {
             get;
@@ -139,6 +140,7 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual List<Column> Columns
         {
             get

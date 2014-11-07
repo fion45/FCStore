@@ -448,6 +448,9 @@ namespace FCStore.Controllers
             SaleLogVM tmpSLVM = new SaleLogVM();
             tmpSLVM.DTStrArr = new List<string>();
             tmpSLVM.CountArr = new List<int>();
+            tmpSLVM.BDTStrArr = new List<string>();
+            tmpSLVM.EDTStrArr = new List<string>();
+            tmpSLVM.ShamCountArr = new List<int>();
             for(int i=0;i<4;i++)
             {
                 tmpDT = tmpDT.AddDays(-7);

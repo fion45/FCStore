@@ -54,6 +54,12 @@ namespace FCStore.Controllers
                 {
                     tmpEVM.Add(new EvaluationVM(tmpE));
                 }
+                List<ShamOrderData> shamLST = db.ShamOrderDatas.Where(r => r.ProductID == ID).Take(20).ToList();
+                foreach (ShamOrderData sham in shamLST)
+                {
+                    tmpEVM.Add(new EvaluationVM(sham));
+                }
+                tmpEVM.Sort((a, b) => b.DataTime.CompareTo(a.DataTime));
                 string jsonStr = PubFunction.BuildResult(tmpEVM, customStr);
                 return Content(jsonStr);
             }

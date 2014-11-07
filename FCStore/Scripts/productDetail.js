@@ -228,12 +228,12 @@ var ProductDetail = {
             success: function (data,status,options) {
             	var chart = $('#chartDiv').highcharts();
             	if(chart) {
-            		chart.series[0].setData(data.content.CountArr);
+            		chart.series[0].setData(data.content.ShamAddRealCountArr);
             	}
             	else {
 					var minY = 0;
 					var maxY = 10;
-					$.each(data.content.CountArr,function(i,n){
+					$.each(data.content.ShamAddRealCountArr,function(i,n){
 						maxY = Math.max(maxY,n);
 					});
 					maxY += Math.ceil(maxY / 10) * 10;
@@ -255,7 +255,7 @@ var ProductDetail = {
 				    	},
 				    	yAxis: yAxis,
 				        series: [{
-				        	data: data.content.CountArr
+				        	data: data.content.ShamAddRealCountArr
 				        }],
 				        legend: {
 				            enabled : false

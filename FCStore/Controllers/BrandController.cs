@@ -21,15 +21,17 @@ namespace FCStore.Controllers
 
         public ActionResult GetSelectBrandInColum(int id)
         {
-            Column tmpColum = db.Columns.FirstOrDefault(r => r.ColumnID == id);
+            List<Brand> brands = (from recb in db.ReColumnBrands
+                                  where recb.ColumnID == id
+                                  select recb.Brand).ToList();
+            if (brands.Count == 0)
+            {
+                brands.AddRange((from recp in db.ReColumnProducts
+                                 where recp.ColumnID == id
+                                 select recp.Product.Brand).Distinct().Take(5 - brands.Count));
+            }
             if (Request.IsAjaxRequest())
             {
-                List<Brand> brands = tmpColum.Brands;
-                if(brands.Count == 0)
-                {
-                    brands.AddRange((from p in tmpColum.Products
-                                        select p.Brand).Distinct().Take(5 - brands.Count));
-                }
                 string jsonStr = PubFunction.BuildResult(brands);
                 return Content(jsonStr);
             }
@@ -80,13 +82,15 @@ namespace FCStore.Controllers
 
         public ActionResult GetBrandsInColumn(int id)
         {
-            Column tmpColumn = db.Columns.FirstOrDefault(r => r.ColumnID == id);
-            List<Brand> brands = new List<Brand>();
-            if(tmpColumn != null)
-            {
-                brands = (from product in tmpColumn.Products
-                          select product.Brand).ToList();
-            }
+            List<Brand> brands = (from recb in db.ReColumnBrands
+                          where recb.ColumnID == id
+                          select recb.Brand).ToList();
+            //if (brands.Count == 0)
+            //{
+            //    brands.AddRange((from recp in db.ReColumnProducts
+            //                     where recp.ColumnID == id
+            //                     select recp.Product.Brand).Distinct().Take(5 - brands.Count));
+            //}
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(brands);

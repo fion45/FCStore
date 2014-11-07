@@ -42,7 +42,17 @@ namespace FCStore.Controllers
                 ViewBag.IsAdmin = true;
             }
             ViewBag.BannerItems = db.BannerItems.OrderBy(r=>r.Index).ToList();
-            return View(db.Columns.ToList());
+            List<Column> result = db.Columns.ToList();
+            foreach(Column item in result)
+            {
+                item.REColBrandLST = (from recb in db.ReColumnBrands
+                                      where recb.ColumnID == item.ColumnID
+                                      select recb).ToList();
+                item.REColProLST = (from recp in db.ReColumnProducts
+                                    where recp.ColumnID == item.ColumnID
+                                    select recp).ToList();
+            }
+            return View(result);
         }
 
         [LoginActionFilterAttribute(beforeTag = -1)]

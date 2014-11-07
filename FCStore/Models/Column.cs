@@ -42,12 +42,15 @@ namespace FCStore.Models
             }
         }
 
+        [NotMapped]
         public virtual List<ReColumnProduct> REColProLST
         {
             get;
             set;
         }
 
+        [NotMapped]
+        [JsonIgnore]
         public virtual List<Product> Products
         {
             get
@@ -60,12 +63,16 @@ namespace FCStore.Models
                 return result;
             }
         }
+
+        [NotMapped]
         public virtual List<ReColumnBrand> REColBrandLST
         {
             get;
             set;
         }
 
+        [NotMapped]
+        [JsonIgnore]
         public virtual List<Brand> Brands
         {
             get
@@ -153,6 +160,7 @@ namespace FCStore.Models
             set;
         }
 
+        [JsonIgnore]
         public virtual Column Column
         {
             get;
@@ -166,6 +174,7 @@ namespace FCStore.Models
             set;
         }
 
+        [JsonIgnore]
         public virtual Brand Brand
         {
             get;

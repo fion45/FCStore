@@ -169,6 +169,19 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public List<int> ShamAddRealCountArr
+        {
+            get
+            {
+                List<int> resultLST = new List<int>();
+                for(int i=0;i<ShamCountArr.Count;i++)
+                {
+                    resultLST.Add(ShamCountArr[i] + CountArr[i]);
+                }
+                return resultLST;
+            }
+        }
     }
 
     public class UserDetailsVM

@@ -57,6 +57,10 @@ namespace FCStore.Controllers
             ViewBag.SaleCount = (from op in db.OrderPackets
                                  where op.PID == ID && op.Order.Status > 1
                                  select op.Count).ToList().Sum();
+            int shamCount = db.ShamOrderDatas.Count(r => r.ProductID == ID);
+            ViewBag.EvaluationCount += shamCount;
+            ViewBag.SaleCount += shamCount;
+
             return View(tmpProduct);
         }
 
@@ -408,10 +412,11 @@ namespace FCStore.Controllers
 
         public ActionResult GetSelectProductInColum(int id)
         {
-            Column tmpColum = db.Columns.FirstOrDefault(r => r.ColumnID == id);
+            List<Product> productLST = (from recp in db.ReColumnProducts
+                                        select recp.Product).ToList();
             if (Request.IsAjaxRequest())
             {
-                string jsonStr = PubFunction.BuildResult(tmpColum.Products);
+                string jsonStr = PubFunction.BuildResult(productLST);
                 return Content(jsonStr);
             }
             else
@@ -481,13 +486,20 @@ namespace FCStore.Controllers
             List<int> tmpOIDArr = (from opl in tmpOPLST
                                    select opl.Order.OID).Distinct().ToList();
             //只取前20条
-            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).Take(20).ToList();
+            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).OrderByDescending(r=>r.DataTime).Take(20).ToList();
             vmModel.EvaluationLST = new List<EvaluationVM>();
             foreach(Evaluation eva in tmpELST)
             {
                 EvaluationVM tmpEva = new EvaluationVM(eva);
                 vmModel.EvaluationLST.Add(tmpEva);
             }
+             List<ShamOrderData> tmpSODLST = db.ShamOrderDatas.Where(r => r.ProductID == ID).OrderByDescending(r => r.DateTime).Take(20).ToList();
+             foreach (ShamOrderData sham in tmpSODLST)
+            {
+                EvaluationVM tmpEva = new EvaluationVM(sham);
+                vmModel.EvaluationLST.Add(tmpEva);
+            }
+             vmModel.EvaluationLST.Sort((a, b) => b.DataTime.CompareTo(a.DataTime));
 
             //获得销售记录
             string DTFormat = "yyyy-MM-dd hh:mm:ss";
@@ -539,13 +551,13 @@ namespace FCStore.Controllers
             tmpProduct.Descript = product.Descript;
             tmpProduct.ImgPath = product.ImgPath;
 
-            //if(ShamOrderDataArr != null)
-            //{
-            //    foreach (ShamOrderData item in ShamOrderDataArr)
-            //    {
-            //        db.ShamOrderDatas.Add(item);
-            //    }
-            //}
+            if(ShamOrderDataArr != null)
+            {
+                foreach (ShamOrderData item in ShamOrderDataArr)
+                {
+                    db.ShamOrderDatas.Add(item);
+                }
+            }
             db.SaveChanges();
 
             if (Request.IsAjaxRequest())

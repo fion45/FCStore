@@ -947,9 +947,9 @@ var ProductManager = {
 		Product.ImgPath = tmpStr.substring(0,tmpStr.length - 1);
 		
 		var ShamOrderDataArr = [];
-		var ShamOrderData = {};
 		$.each($("#buildDiv .item"),function(i,n){
 			var item = $(n);
+			var ShamOrderData = {};
 			ShamOrderData.ProductID = Product.PID;
 			ShamOrderData.IDLabel = item.find(".unDiv").text();
 			ShamOrderData.IDLabel = ShamOrderData.IDLabel.substring(0,ShamOrderData.IDLabel.length - 1);

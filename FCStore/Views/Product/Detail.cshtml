@@ -64,7 +64,7 @@
                 <div class="evaluate">
                     @for (int i = 0; i < 5; i++)
                     { 
-                        <div class="star empty"></div>
+                        <div class="star empty @(Model.EvaluationStarCount >= (i + 1) * 2 ? "full" : (Model.EvaluationStarCount >= i * 2 + 1 ? "half" : ""))"></div>
                     }
                 </div>
                 <div class="brandDiv">
