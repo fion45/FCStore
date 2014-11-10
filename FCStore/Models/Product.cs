@@ -146,9 +146,12 @@ namespace FCStore.Models
             get
             {
                 List<Column> result = new List<Column>();
-                foreach (ReColumnProduct rcpItem in this.REProColLST)
+                if (REProColLST != null)
                 {
-                    result.Add(rcpItem.Column);
+                    foreach (ReColumnProduct rcpItem in this.REProColLST)
+                    {
+                        result.Add(rcpItem.Column);
+                    }
                 }
                 return result;
             }
@@ -184,6 +187,7 @@ namespace FCStore.Models
             set;
         }
 
+        [JsonIgnore]
         public virtual Product Product
         {
             get;

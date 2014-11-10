@@ -501,12 +501,14 @@ var ProductManager = {
         switch (tmpTag) {
             case 0: {
                 var columnID = parseInt(Manager.GetParamTag(4));
-                $.each(item.REProColLST, function (i, n) {
-                    if (n.ColumnID == columnID) {
-                        tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
-                        return false;
-                    }
-                });
+                if (item.REProColLST != null) {
+                    $.each(item.REProColLST, function (i, n) {
+                        if (n.ColumnID == columnID) {
+                            tmpData = "data-cr='" + n.CrossRow + "' data-cc='" + n.CrossColum + "' data-rt='" + n.RenderType + "' ";
+                            return false;
+                        }
+                    });
+                }
                 break;
             }
         }

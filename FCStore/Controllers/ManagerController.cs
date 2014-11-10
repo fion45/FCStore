@@ -128,7 +128,18 @@ namespace FCStore.Controllers
             typeDic["Brands"].parameter = "/Manager/BrandsManager/0/{ColumnID}";
             typeDic["Brands"].width = 60;
 
-            ManagerVM<Column> tmpVM = new ManagerVM<Column>(db.Columns.ToList(), typeDic);
+            List<Column> ColumnLST = db.Columns.ToList();
+            foreach(Column colum in ColumnLST)
+            {
+                colum.REColBrandLST = (from rcb in db.ReColumnBrands
+                                       where rcb.ColumnID == colum.ColumnID
+                                      select rcb).ToList();
+                colum.REColProLST = (from rcp in db.ReColumnProducts
+                                       where rcp.ColumnID == colum.ColumnID
+                                      select rcp).ToList();
+            }
+
+            ManagerVM<Column> tmpVM = new ManagerVM<Column>(ColumnLST, typeDic);
             return View(tmpVM);
         }
 
@@ -216,6 +227,12 @@ namespace FCStore.Controllers
                 SQLStr.Append(tmpOB2);
             }
             List<Product> result = db.m_objcontext.ExecuteStoreQuery<Product>(SQLStr.ToString(), null).ToList();
+            foreach(Product item in result)
+            {
+                item.REProColLST = (from rcp in db.ReColumnProducts
+                                    where rcp.ProductID == item.PID
+                                    select rcp).ToList();
+            }
             if (Request.IsAjaxRequest())
             {
                 string jsonStr = PubFunction.BuildResult(result);
