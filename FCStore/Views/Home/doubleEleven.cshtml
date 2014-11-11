@@ -1,0 +1,34 @@
+﻿@model IEnumerable<FCStore.Models.Product>
+@using FCStore.Models;
+@{
+    ViewBag.Title = "doubleEleven";
+    Layout = "~/Views/Shared/_FullControllLayout.cshtml";
+}
+
+<div id="FullDiv">
+    <div class="CenterDiv">
+        @foreach(Product product in Model)
+        {
+            <div class="itemDiv">
+                <a href="/Product/Detail/@(product.PID)">
+                    <ul>
+                        <li>
+                            <img src="@(product.ImgPathArr.First())" />
+                        </li>
+                        <li class="markpriceLI">
+                            <label>专柜价￥@(product.MarketPrice)</label>
+                            <div>立即抢购</div>
+                        </li>
+                    </ul>
+                    <div class="miaoDiv">
+
+                    </div>
+                    <div class="priceDiv">
+                        <label class="lb1">秒杀</label>
+                        <label class="lb2">￥<label class="bold">@(product.Price)</label></label>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

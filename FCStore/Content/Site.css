@@ -1049,7 +1049,7 @@ footer {
 
         .MainBlock .center .productItem .description {
             text-align:left;
-            max-height:34px;
+            max-height:17px;
             line-height:17px;
             font-size:10pt;
             overflow:hidden;
@@ -3339,3 +3339,97 @@ body .li1 {
         vertical-align:middle;
         text-align:center;
     }
+
+/********************************    DoubleEleven    *****************************/
+#FullDiv{
+    width:100%;
+    min-height:1000px;
+    text-align:center;
+    background:url("/Content/themes/image/temp/DoubleElevenBK.jpg") no-repeat top center;
+}
+
+#FullDiv .CenterDiv{
+    width:1020px;
+    margin:0 auto;
+}
+
+#FullDiv .CenterDiv .itemDiv{
+    float:left;
+    width:231px;
+    margin-top:20px;
+    position:relative;
+    font-family:"Î¢ÈíÑÅºÚ";
+    margin-left:21px;
+}
+
+#FullDiv .CenterDiv .itemDiv:first-child{
+    margin-left:15px;
+}
+
+#FullDiv .itemDiv img{
+    width:230px;
+    height:300px;
+}
+
+#FullDiv .itemDiv .markpriceLI {
+    background-color:#761658;
+    height:30px;
+    width:100%;
+    color:white;
+}
+
+#FullDiv .itemDiv .markpriceLI label {
+    text-decoration:line-through;
+    float:left;
+    line-height:30px;
+    height:30px;
+    vertical-align:central;
+}
+
+#FullDiv .itemDiv .markpriceLI div {
+    float:right;
+    line-height:30px;
+    height:30px;
+    vertical-align:central;
+}
+
+#FullDiv .itemDiv .miaoDiv{
+    position:absolute;
+    width:55px;
+    height:65px;
+    left:100%;
+    margin-left:-55px;
+    top:0px;
+    background:url("/Content/themes/image/temp/miao.png") no-repeat top center;
+}
+
+#FullDiv .itemDiv .priceDiv {
+    position:absolute;
+    width:85px;
+    height:65px;
+    left:0px;
+    top:240px;
+    background:url("/Content/themes/image/temp/priceBK.png") no-repeat top center;
+}
+
+#FullDiv .itemDiv .priceDiv .lb1 {
+    color:#FDFF9E;
+    font-size:16px;
+    float:left;
+    margin-top:10px;
+    margin-left:10px;
+}
+
+    #FullDiv .itemDiv .priceDiv .lb2 {
+        float:left;
+        color:white;
+        margin-left:10px;
+    }
+    
+    #FullDiv .itemDiv .priceDiv .lb2 .bold {
+        font-size:30px;
+        font-weight:bold;
+    }
+
+
+

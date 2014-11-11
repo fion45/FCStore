@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using FCStore.Filters;
 using FCStore.Common;
+using System.Xml;
 
 namespace FCStore.Controllers
 {
@@ -47,9 +48,11 @@ namespace FCStore.Controllers
             {
                 item.REColBrandLST = (from recb in db.ReColumnBrands
                                       where recb.ColumnID == item.ColumnID
-                                      select recb).ToList();
+                                      orderby recb.RCBID
+                                      select recb).Distinct().Take(4).ToList();
                 item.REColProLST = (from recp in db.ReColumnProducts
                                     where recp.ColumnID == item.ColumnID
+                                    orderby recp.RCPID
                                     select recp).ToList();
             }
             return View(result);
@@ -140,6 +143,25 @@ namespace FCStore.Controllers
             //输出图片流
             return stream.ToArray();
 
+        }
+
+        public ActionResult doubleEleven()
+        {
+            //双11活动页面
+            XmlDocument document = new XmlDocument();
+            string FilePath = Server.MapPath("~/temp.xml");
+            document.Load(FilePath);
+            XmlNodeList tmpXNL = document.GetElementsByTagName("ID");
+            List<int> PIDLST = new List<int>();
+            foreach (XmlNode xn in tmpXNL)
+            {
+                int PID = int.Parse(xn.InnerText);
+                PIDLST.Add(PID);
+            }
+            List<Product> ProductLST = (from product in db.Products
+                                        where PIDLST.Contains(product.PID)
+                                        select product).ToList();
+            return View(ProductLST);
         }
         protected override void Dispose(bool disposing)
         {

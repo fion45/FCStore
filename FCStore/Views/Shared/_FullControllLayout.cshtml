@@ -1,0 +1,184 @@
+﻿@using System.Text;
+@using System.Text.RegularExpressions;
+@using FCStore.Common;
+@using FCStore.Models;
+@using FCStore.Controllers;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta property="qc:admins" content="025473637762170477636" />       <!--qq登陆接口认证-->
+    <meta property="wb:webmaster" content="a0b16827b5ccd126" />         <!--微博登陆接口认证-->
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div id="toolbar">
+            <div class="centerDiv">
+                <div class="help">
+                    <a onclick="MainLayout.onSetHomeBtnClick(this);">设为首页</a>|
+                    <a onclick="MainLayout.onAddFavoriteBtnClick()">收藏我们</a>|
+                    <a>帮助中心</a>
+                </div>
+                <div id="userInfoDiv" class="userInfo" style="display: @(User.Identity.IsAuthenticated ? "block" : "none")">
+                    <a class="imgA" href="/User/Details"><img onerror="javascript:this.src='/picture/user/NoPicture_40_40.png';" class="userHead" src="@(User.Identity.IsAuthenticated ? (User as MyUser).SmallUserHead : "/picture/user/none.jpg")" /></a>
+                    <a class="userName" href="/User/Details">@(User.Identity.IsAuthenticated ? User.Identity.Name : "")</a>
+                    <a onclick="MainLayout.onExitBtnClick()">退出</a>
+                </div>
+                <div id="loginDiv" class="loginArea" style="display: @(User.Identity.IsAuthenticated ? "none" : "block")">
+                    <a href="/Home/Login">登陆商城</a>|
+                    <a href="/Home/Register">免费注册</a>
+                </div>
+            </div>
+        </div>
+        <div id="iconDiv">
+            <div class="centerDiv">
+
+            </div>
+        </div>
+        <div id="navigatorDiv">
+            <div class="centerDiv">
+                <ul id="navigator">
+                    <li class="item sel">
+                        <a href="/Home/Index">首页</a>
+                    </li>
+                    <li class="item">
+                        <a>母婴专栏</a>
+                    </li>
+                    <li class="item">
+                        <a>汽车专栏</a>
+                    </li>
+                    <li class="item">
+                        <a>美容保养</a>
+                    </li>
+                    <li class="item myCart">
+                        @{
+                            //获得cookie
+                            int buyCount = 0;
+                            bool sTag = Request.Cookies.AllKeys.Contains("Order");
+                            if (sTag)
+                            {
+                                Regex cookieRgx = new Regex(FCStore.Controllers.ProductController.ORDERCOOKIERGX);
+                                Match tmpMatch = cookieRgx.Match(Server.UrlDecode(Request.Cookies["Order"].Value));
+                                sTag = !string.IsNullOrEmpty(tmpMatch.Value);
+                                if (sTag)
+                                {
+                                    buyCount = tmpMatch.Groups["TITLE"].Captures.Count;
+                                }
+                            }
+                            if (!sTag && User.Identity.IsAuthenticated)
+                            {
+                                //获得当前用户未处理的订单
+                                MyUser user = User as MyUser;
+                                FCStoreDbContext db = new FCStoreDbContext();
+                                Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status < (int)Order.EOrderStatus.OS_Subscription);
+                                buyCount = (order != null && order.Packets != null) ? order.Packets.Count : 0;
+                            }
+                        }
+                        <a href="/Order/Cart">我的购物车(<label id="buyCountLB">@(buyCount)</label>)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="searchDiv">
+            <div class="centerDiv">
+                <ul>
+                    <li>
+                        <input id="searchTB" type="text" />
+                    </li>
+                    <li>
+                        <input id="searchBTN" class="sbtn2" type="button" value="搜索" />
+                    </li>
+                    <li class="hotLi">
+                        <label>热门：</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div id="Main">        
+        @RenderBody()
+    </div>
+    <div id="TopBtn" onclick="MainLayout.onTopBtnClick(this);">
+        <div class="title">回顶部</div>
+    </div>
+    <footer>
+        <div class="centerDiv">
+            <ul>
+                <li>
+                    <div class="newerGuide">新手指南</div>
+                    <div>如何购买商品</div>
+                    <div>会员积分兑换</div>
+                    <div>VIP尊享政策</div>
+                </li>
+                <li>
+                    <div class="payType">支付方式</div>
+                    <div>货到付款及说明</div>
+                    <div>账户预存款使用</div>
+                    <div>支持哪些支付方式</div>
+                </li>
+                <li>
+                    <div class="sendType">送货方式</div>
+                    <div>送货方式、费用和时间</div>
+                    <div>自提方式</div>
+                    <div>合作伙伴及加盟</div>
+                </li>
+                <li>
+                    <div class="saleServer">售后服务</div>
+                    <div>在线客服咨询</div>
+                    <div>如何办理退换货</div>
+                    <div>商品质量保证</div>
+                </li>
+                <li>
+                    <div class="helpCenter">帮助中心</div>
+                    <div>常见问题解答</div>
+                    <div>咨询、评论和投诉</div>
+                    <div>商品包装说明</div>
+                </li>
+            </ul>
+            <label>Copyright  2004-2014  RightGO网  All Rights Reserved <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">粤ICP备14045853号-1</a></label>
+        </div>
+    </footer>
+    @{Html.RenderAction("_CategoryList", "Category");}
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquerycookie")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jquerylazyload")
+    @Scripts.Render("~/bundles/jqueryuibannerize")
+    @*@Scripts.Render("~/bundles/main")*@
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/sidebar-follow-jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/qqReport.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/main.js"></script>
+    @RenderSection("scripts", required: false)
+    <!--Other Login-->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+            data-appid="@(System.Configuration.ConfigurationManager.AppSettings["QQAPPID"])"
+            data-redirecturi="@(System.Configuration.ConfigurationManager.AppSettings["QQREDIRECTURI"])" charset="utf-8"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=@(System.Configuration.ConfigurationManager.AppSettings["WEIBOAPPKEY"])"
+            type="text/javascript" charset="utf-8"></script>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div id="wb_connect_btn" style="display:none;"></div>
+        <script type="text/javascript" charset="utf-8">
+            QC.Login({}, MainLayout.QQLoginSuccess);
+            WB2.anyWhere(function (W) {
+                W.widget.connectButton({
+                    id: "wb_connect_btn",
+                    type: '3,2',
+                    callback: {
+                        login: MainLayout.WBLoginSuccess
+                    }
+                });
+            });
+        </script>
+    }
+</body>
+</html>

@@ -263,6 +263,7 @@
     <Content Include="Content\themes\image\chinabank.jpg" />
     <Content Include="Content\themes\image\ColumBlank.jpg" />
     <Content Include="Content\themes\image\FooterIcon.png" />
+    <Content Include="Content\themes\image\head_bg.gif" />
     <Content Include="Content\themes\image\LeftRightIcon.png" />
     <Content Include="Content\themes\image\loading.gif" />
     <Content Include="Content\themes\image\LoginSource1.png" />
@@ -274,12 +275,33 @@
     <Content Include="Content\themes\image\MyShopCart.png" />
     <Content Include="Content\themes\image\NavigaterBK.png" />
     <Content Include="Content\themes\image\NavigaterSelItem.png" />
+    <Content Include="Content\themes\image\navsub_bg.gif" />
     <Content Include="Content\themes\image\OtherIcon.png" />
     <Content Include="Content\themes\image\priceBK.png" />
     <Content Include="Content\themes\image\SearchBK.png" />
     <Content Include="Content\themes\image\sky.png" />
     <Content Include="Content\themes\image\Superiority.png" />
+    <Content Include="Content\themes\image\table_th_bg.gif" />
+    <Content Include="Content\themes\image\temp\DoubleElevenBK.jpg" />
+    <Content Include="Content\themes\image\temp\DoubleElevenBK1.jpg" />
+    <Content Include="Content\themes\image\temp\miao.png" />
+    <Content Include="Content\themes\image\temp\priceBK.png" />
     <Content Include="Content\themes\image\topBK.png" />
+    <Content Include="Content\zTreeStyle\img\diy\1_close.png" />
+    <Content Include="Content\zTreeStyle\img\diy\1_open.png" />
+    <Content Include="Content\zTreeStyle\img\diy\2.png" />
+    <Content Include="Content\zTreeStyle\img\diy\3.png" />
+    <Content Include="Content\zTreeStyle\img\diy\4.png" />
+    <Content Include="Content\zTreeStyle\img\diy\5.png" />
+    <Content Include="Content\zTreeStyle\img\diy\6.png" />
+    <Content Include="Content\zTreeStyle\img\diy\7.png" />
+    <Content Include="Content\zTreeStyle\img\diy\8.png" />
+    <Content Include="Content\zTreeStyle\img\diy\9.png" />
+    <Content Include="Content\zTreeStyle\img\line_conn.gif" />
+    <Content Include="Content\zTreeStyle\img\loading.gif" />
+    <Content Include="Content\zTreeStyle\img\zTreeStandard.gif" />
+    <Content Include="Content\zTreeStyle\img\zTreeStandard.png" />
+    <Content Include="Content\zTreeStyle\zTreeStyle.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="log\log.txt" />
@@ -294,6 +316,10 @@
     <Content Include="Scripts\uploadify\uploadify-cancel.png" />
     <Content Include="Scripts\uploadify\uploadify.css" />
     <Content Include="Scripts\uploadify\uploadify.swf" />
+    <Content Include="Scripts\ZTree\jquery.ztree.core-3.5.js" />
+    <Content Include="Scripts\ZTree\jquery.ztree.excheck-3.5.js" />
+    <Content Include="temp.xml" />
+    <Content Include="upload.aspx" />
     <Content Include="Views\Order\Payment.aspx" />
     <Content Include="xheditor\script\xheditor-1.1.14-zh-cn.js" />
     <Content Include="xheditor\script\xheditor-1.1.14-zh-cn.min.js" />
@@ -413,6 +439,7 @@
     <Content Include="xheditor\ui\vista\img\wordimg.gif" />
     <Content Include="xheditor\ui\vista\ui.css" />
     <Content Include="zone.xml" />
+    <None Include="Properties\PublishProfiles\FCStore.pubxml" />
     <None Include="Properties\PublishProfiles\FCStoreWeb.pubxml" />
     <None Include="Properties\PublishProfiles\RGFTP.pubxml" />
     <None Include="Properties\PublishProfiles\rightgo.pubxml" />
@@ -498,6 +525,9 @@
     <Content Include="Views\Manager\BrandsManager.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Product\EditDetail.cshtml" />
+    <Content Include="Views\Shared\_FullControllLayout.cshtml" />
+    <Content Include="Views\Home\doubleEleven.cshtml" />
+    <Content Include="Views\Shared\_ContactList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

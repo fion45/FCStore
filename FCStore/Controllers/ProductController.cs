@@ -413,6 +413,7 @@ namespace FCStore.Controllers
         public ActionResult GetSelectProductInColum(int id)
         {
             List<Product> productLST = (from recp in db.ReColumnProducts
+                                        where recp.ColumnID == id
                                         select recp.Product).ToList();
             if (Request.IsAjaxRequest())
             {

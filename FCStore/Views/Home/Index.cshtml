@@ -98,7 +98,7 @@
                         if (bi < 4)
                         {
                             List<Brand> tmpBArr = (from p in item.Products
-                                                   select p.Brand).Take(4 - bi).ToList();
+                                                   select p.Brand).Distinct().Take(4 - bi).ToList();
                             for (int i = 0; i < tmpBArr.Count; i++)
                             {
                                 Brand brand = tmpBArr[i];
