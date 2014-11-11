@@ -162,7 +162,7 @@ var Manager = {
         //保存
         $.myAjax({
             historyTag: false,
-            loadEle: null,
+            loadEle: $("#ManagerMain .right"),
             url: "/Manager/" + ActionName,
             data: JSON.stringify(tmpData),
             dataType: "json",
@@ -458,7 +458,7 @@ var ProductManager = {
                     "<img src='{1}' />" +
                 "</div>" +
                 "<div class='title' title='{2}'>{2}</div>" +
-                "<div class='marketPrice p60'>" +
+                "<div class='p60'>" +
                     "市价：￥<label class='marketPrice'>{3}<label>" +
                 "</div>" +
                 "<div class='p40'>" +
@@ -611,6 +611,13 @@ var ProductManager = {
             $("#downBtn").off("click");
             $("#delBtn").off("click");
         }
+    },
+    AutoCalculateDiscount : function(ev) {
+    	var target = $(ev.currentTarget);
+    	var parent = target.parentsUntil("#selDiv").last();
+    	var price = parseFloat(parent.find(".price input").val());
+    	var marketPrice = parseFloat(parent.find(".marketPrice input").val());
+    	parent.find(".discount input").val(parseInt(price / marketPrice * 100));
     },
     OnProductItemClick: function (ev) {
         var tmpTag = Manager.GetParamTag(3);
@@ -1005,6 +1012,19 @@ var ProductManager = {
 			target.addClass("full");
 		}
 		$("#productBrand .evaluate").attr("data-val",tmpVal);
+	},
+	clickchktag : false,
+	onCategoryChkClick : function(ev) {
+		if(!ProductManager.clickchktag) {
+			ProductManager.clickchktag = true;
+			$(".categoryLST").on("mouseleave",ProductManager.onCategoryMouseLeave);
+		}
+	},
+	onCategoryMouseLeave : function(ev) {
+		$("#plDiv").empty();
+		ProductManager.updateProductsLST(false);
+		$(".categoryLST").off("mouseleave",ProductManager.onCategoryMouseLeave);
+		ProductManager.clickchktag = false;
 	}
 };
 

@@ -175,7 +175,8 @@
             });
 
             $("#plDiv").on("click", ".item", ProductManager.OnProductItemClick);
-            
+            $(".categoryLST").on("click", ".chk", ProductManager.onCategoryChkClick);
+
             if (parArr.length < 5 || parArr[3] == "-1") {
                 $("<ul>" +
                     "<li>" +
@@ -191,6 +192,8 @@
                 $("#backBtn").on("click", ProductManager.OnBackBtnClick);
                 $("#saveBtn").on("click", ProductManager.OnSaveBtnClick);
                 $("#refreshBtn").on("click", ProductManager.OnRefreshBtnClick);
+                $("#selDiv").on("change", ".price input", ProductManager.AutoCalculateDiscount);
+                $("#selDiv").on("change", ".marketPrice input", ProductManager.AutoCalculateDiscount);
             }
             else if (parArr[3] == "0") {
                 $("<ul>" +

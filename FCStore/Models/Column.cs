@@ -56,9 +56,12 @@ namespace FCStore.Models
             get
             {
                 List<Product> result = new List<Product>();
-                foreach(ReColumnProduct rcpItem in this.REColProLST)
+                if (REColProLST != null)
                 {
-                    result.Add(rcpItem.Product);
+                    foreach (ReColumnProduct rcpItem in this.REColProLST)
+                    {
+                        result.Add(rcpItem.Product);
+                    }
                 }
                 return result;
             }
@@ -78,9 +81,12 @@ namespace FCStore.Models
             get
             {
                 List<Brand> result = new List<Brand>();
-                foreach (ReColumnBrand rcbItem in this.REColBrandLST)
+                if(REColBrandLST != null)
                 {
-                    result.Add(rcbItem.Brand);
+                    foreach (ReColumnBrand rcbItem in this.REColBrandLST)
+                    {
+                        result.Add(rcbItem.Brand);
+                    }
                 }
                 return result;
             }
