@@ -646,6 +646,50 @@ body .justOverlayer {
     border:none;
 }
 
+/* contact
+----------------------------------------------------------*/
+#Contacts {
+    position:absolute;
+    width:80px;
+    height:auto;
+    left:100%;
+    margin-left:-80px;
+    top:195px;
+    z-index:999;
+}
+
+#Contacts label {
+    font-size:large;
+    font-weight:bolder;
+}
+
+#ServiceLST {
+    background:url("/Content/themes/image/kefu1.png") no-repeat 0px 0px;
+    height:405px;
+    width:80px;
+}
+
+#ServiceLST ul li a {
+    width:80px;
+    height:80px;
+    display:block;
+    margin-bottom:1px;
+    background:#EEE;
+    -moz-opacity:0.4;
+    filter:alpha(opacity=40);
+    opacity:0.4;
+}
+
+#ServiceLST ul li a:hover{
+    -moz-opacity:0;
+    filter:alpha(opacity=0);
+    opacity:0;
+    transition:all 0.5s linear;
+    -webkit-transition:all 0.5s linear;
+    -moz-transition:all 0.5s linear;
+    -o-transition:all 0.5s linear;
+}
+
 /* footer 
 ----------------------------------------------------------*/
 footer {
@@ -661,10 +705,9 @@ footer {
 #cnzzcal {
     position:absolute;
     top:100%;
-    left:100%;
+    left:0px;
     width:75px;
     height:98px;
-    margin-left:-75px;
     margin-top:-98px;
     font-size:x-small;
     color:#DDDDDD;
@@ -856,9 +899,10 @@ footer {
     height:41px;
     left:100%;
     margin-left:-60px;
-    top:94%;
+    top:90%;
     background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
     cursor:pointer;
+    z-index:1000;
 }
 
 #TopBtn:hover {

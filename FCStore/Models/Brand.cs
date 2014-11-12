@@ -30,6 +30,12 @@ namespace FCStore.Models
             set;
         }
 
+        public string Img
+        {
+            get;
+            set;
+        }
+
         public int CountryCode
         {
             get;

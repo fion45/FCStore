@@ -36,7 +36,7 @@
     //顶层滚动
     (new SidebarFollow()).init({
         element: $('#TopBtn'),
-        distanceToTop: "94%",
+        distanceToTop: "90%",
         afterFollowCB : function(ele) {
         	if(!MainLayout.topBtnTag && $(document).scrollTop() != 0)
         		ele.show();
@@ -46,6 +46,19 @@
         		ele.hide();
         }
     });
+    (new SidebarFollow()).init({
+        element: $('#Contacts'),
+        distanceToTop: 10
+    });
+    
+    $("#haiiskefu .kfleft").click(function(){
+		var i=$("#haiiskefu").css("right");
+		if (i=='0px'){
+			$('#haiiskefu').animate({right:-80}, 200);
+		} else {
+			$('#haiiskefu').animate({right:0}, 200);
+		}
+	});
 });
 
 var MainLayout = {

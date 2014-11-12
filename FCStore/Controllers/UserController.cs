@@ -21,6 +21,12 @@ namespace FCStore.Controllers
     {
         private FCStoreDbContext db = new FCStoreDbContext();
 
+        public PartialViewResult _ContactList()
+        {
+
+            return PartialView(db.Users);
+        }
+
         public void LoginSuccess(User user)
         {
             StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");

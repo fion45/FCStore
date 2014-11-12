@@ -128,6 +128,18 @@ namespace FCStore.Models
             }
         }
 
+        public string QQNum
+        {
+            get;
+            set;
+        }
+
+        public string WangWangNum
+        {
+            get;
+            set;
+        }
+
         public string QQOpenID
         {
             get;
@@ -141,6 +153,12 @@ namespace FCStore.Models
         }
 
         public string WBID
+        {
+            get;
+            set;
+        }
+
+        public string UserID
         {
             get;
             set;

@@ -156,7 +156,9 @@
             </script>
         </div>
     </footer>
-    @{Html.RenderAction("_CategoryList", "Category");}    
+    @{Html.RenderAction("_CategoryList", "Category");}       
+    @{Html.RenderAction("_ContactList", "User");}
+     
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerycookie")
     @Scripts.Render("~/bundles/jqueryui")
