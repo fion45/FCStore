@@ -197,6 +197,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="agreement.txt" />
     <Content Include="CBPage\qc_callback.html" />
     <Content Include="Content\LoginPage.css" />
     <Content Include="Content\Manager.css" />

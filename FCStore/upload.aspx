@@ -31,8 +31,8 @@ protected void Page_Load(object sender, EventArgs e)
 
 	// 初始化一大堆变量
 	string inputname = "filedata";//表单文件域name
-    string attachdir = "/upload";     // 上传文件保存路径，结尾不要带/
-    int dirtype = 1;                 // 1:按天存入目录 2:按月存入目录 3:按扩展名存目录  建议使用按天存
+    string attachdir = "/uploads";     // 上传文件保存路径，结尾不要带/
+    int dirtype = 4;                 // 1:按天存入目录 2:按月存入目录 3:按扩展名存目录  建议使用按天存 4:标准上传路径保存路径 ~/Uploads/yy/MM/dd/
     int maxattachsize = 2097152;     // 最大上传大小，默认是2M
     string upext = "txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid";    // 上传扩展名
     int msgtype = 2;                 //返回上传参数的格式：1，只返回url，2，返回参数数组
@@ -84,6 +84,9 @@ protected void Page_Load(object sender, EventArgs e)
             {
                 switch (dirtype)
                 {
+                    case 1:
+                        attach_subdir = "day_" + DateTime.Now.ToString("yyMMdd");
+                        break;
                     case 2:
                         attach_subdir = "month_" + DateTime.Now.ToString("yyMM");
                         break;
@@ -91,15 +94,22 @@ protected void Page_Load(object sender, EventArgs e)
                         attach_subdir = "ext_" + extension;
                         break;
                     default:
-                        attach_subdir = "day_" + DateTime.Now.ToString("yyMMdd");
+                        //按照标准上传路径
+                        attach_subdir = (DateTime.Now.Year % 100).ToString() + "/";
+                        string numStr = "0" + DateTime.Now.Month.ToString();
+                        numStr = numStr.Substring(numStr.Length - 2, 2);
+                        attach_subdir += numStr + "/";
+                        numStr = "0" + DateTime.Now.Day.ToString();
+                        numStr = numStr.Substring(numStr.Length - 2, 2);
+                        attach_subdir += numStr;
                         break;
                 }
                 attach_dir = attachdir + "/" + attach_subdir + "/";
 
                 // 生成随机文件名
-                Random random = new Random(DateTime.Now.Millisecond);
-                filename = DateTime.Now.ToString("yyyyMMddhhmmss") + random.Next(10000) + "." + extension;
-
+                //Random random = new Random(DateTime.Now.Millisecond);
+                //filename = DateTime.Now.ToString("yyyyMMddhhmmss") + random.Next(10000) + "." + extension;
+                filename = Guid.NewGuid().ToString() + "." + extension; // 保存文件名称
                 target = attach_dir + filename;
                 try
                 {
