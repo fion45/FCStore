@@ -655,7 +655,28 @@ footer {
     padding-top:10px;
     border-top:1px solid #C6C6C6;
     background-color:#FFFFFF;
+    position:relative;
 }
+
+#cnzzcal {
+    position:absolute;
+    top:100%;
+    left:100%;
+    width:75px;
+    height:98px;
+    margin-left:-75px;
+    margin-top:-98px;
+    font-size:x-small;
+    color:#DDDDDD;
+}
+
+    #cnzzcal a {
+        color:#FFFFFF;
+    } 
+
+    #cnzzcal a:hover {
+        color:#676767;
+    } 
 
     footer .centerDiv {
         width:1140px;
@@ -835,7 +856,7 @@ footer {
     height:41px;
     left:100%;
     margin-left:-60px;
-    top:700px;
+    top:94%;
     background:url("/Content/themes/image/main.png") no-repeat -1px -1px;
     cursor:pointer;
 }

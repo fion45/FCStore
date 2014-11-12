@@ -36,7 +36,7 @@
     //顶层滚动
     (new SidebarFollow()).init({
         element: $('#TopBtn'),
-        distanceToTop: 700,
+        distanceToTop: "94%",
         afterFollowCB : function(ele) {
         	if(!MainLayout.topBtnTag && $(document).scrollTop() != 0)
         		ele.show();

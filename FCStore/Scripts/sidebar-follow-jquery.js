@@ -86,6 +86,10 @@ SidebarFollow.prototype = {
 		
 		// 获得到顶部的距离
 		var toTop = _self.config.distanceToTop;
+		var tmpPer = _self.config.distanceToTop + "";
+		if(tmpPer.indexOf("%") > 0) {
+			toTop = document.documentElement.clientHeight * parseInt(tmpPer) / 100;
+		}
 
 		// 如果 body 有 top 属性, 消除这些位移
 		if(_self.cache.parTopTag) {
@@ -111,7 +115,7 @@ SidebarFollow.prototype = {
 //		}
 
 		// 当节点进入跟随区域, 跟随滚动
-		if(jQuery(document).scrollTop() > _self.cache.elementToTop) {
+		if(jQuery(document).scrollTop() - _self.cache.elementToTop >= 1) {
 			// 添加占位节点
 			var elementHeight = element.outerHeight();
 			// 记录原位置
