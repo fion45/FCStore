@@ -38,7 +38,9 @@ namespace FCStore.Models
             set;
         }
 
-        public virtual List<Role> Roles
+
+        [JsonIgnore]
+        public List<ReUserRole> ReUserRoleLST
         {
             get;
             set;
@@ -160,12 +162,6 @@ namespace FCStore.Models
 
         [JsonIgnore]
         public virtual List<PushInfo> PushInfos
-        {
-            get;
-            set;
-        }
-
-        public string Reserve
         {
             get;
             set;

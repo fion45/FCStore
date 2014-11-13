@@ -52,7 +52,49 @@ namespace FCStore.Models
         }
 
         [JsonIgnore]
-        public List<User> Users
+        public List<ReUserRole> ReUserRoleLST
+        {
+            get;
+            set;
+        }
+    }
+
+    public class ReUserRole
+    {
+
+        public int RURID
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey("User")]
+        public int UID
+        {
+            get;
+            set;
+        }
+
+        public virtual User User
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey("Role")]
+        public int RID
+        {
+            get;
+            set;
+        }
+
+        public virtual Role Role
+        {
+            get;
+            set;
+        }
+
+        public string Reserve
         {
             get;
             set;

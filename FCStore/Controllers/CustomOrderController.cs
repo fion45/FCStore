@@ -20,10 +20,11 @@ namespace FCStore.Controllers
             if (GlobalTemp.ForeignSupplyCountryHS == null)
             {
                 GlobalTemp.ForeignSupplyCountryHS = new HashSet<string>();
-                List<string> strLST =
-                    (from user in db.Users.Where(r => r.Roles.FindIndex(t => t.RID == (int)Role.RoleTypeID.RT_FOREIGNSUPPLIER) > -1)
-                     select user.Reserve).ToList();
-                foreach(string tmpStr in strLST)
+                List<string> ReLST = (from re in db.ReUserRoles
+                                    where re.RID == (int)Role.RoleTypeID.RT_FOREIGNSUPPLIER
+                                    select re.Reserve).ToList();
+
+                foreach (string tmpStr in ReLST)
                 {
                     try
                     {

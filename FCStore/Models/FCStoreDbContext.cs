@@ -39,6 +39,8 @@ namespace FCStore.Models
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<ReUserRole> ReUserRoles { get; set; }
+
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderPacket> OrderPackets { get; set; }

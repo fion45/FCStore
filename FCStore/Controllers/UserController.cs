@@ -32,9 +32,10 @@ namespace FCStore.Controllers
             StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
             StringBuilder tmpRIDStr = new StringBuilder(",");
             StringBuilder tmpRNStr = new StringBuilder(",");
-            foreach (Role role in user.Roles)
+            foreach (ReUserRole reur in user.ReUserRoleLST)
             {
-                tmpRIDStr.Append(role.RID + ",");
+
+                tmpRIDStr.Append(reur. + ",");
                 tmpRNStr.Append(role.RoleName + ",");
                 tmpRPStr.Append(role.Permission + ",");
             }
