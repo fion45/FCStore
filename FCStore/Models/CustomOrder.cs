@@ -1,39 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace FCStore.Models
 {
     [Serializable]
-    public class Role
+    public class CustomOrder
     {
-        public enum RoleTypeID
-        {
-            RT_ADMIN = 1,
-            RT_FOREIGNSUPPLIER = 2,
-            RT_SUPPLIER = 3,
-            RT_SALE = 4,
-            RT_CLIENT = 5,
-        }
-
         [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int RID
+        public int COID
         {
             get;
             set;
         }
 
-        public string RoleName
+        public string CountryName
         {
             get;
             set;
         }
 
-        public int Level
+        public string BrandName
+        {
+            get;
+            set;
+        }
+
+        public string ProductName
         {
             get;
             set;
@@ -45,14 +42,19 @@ namespace FCStore.Models
             set;
         }
 
-        public string Permission
+        public decimal MinPrice
         {
             get;
             set;
         }
 
-        [JsonIgnore]
-        public List<User> Users
+        public decimal MaxPrice
+        {
+            get;
+            set;
+        }
+
+        public string Remark
         {
             get;
             set;

@@ -128,18 +128,6 @@ namespace FCStore.Models
             }
         }
 
-        public string QQNum
-        {
-            get;
-            set;
-        }
-
-        public string WangWangNum
-        {
-            get;
-            set;
-        }
-
         public string QQOpenID
         {
             get;
@@ -172,6 +160,12 @@ namespace FCStore.Models
 
         [JsonIgnore]
         public virtual List<PushInfo> PushInfos
+        {
+            get;
+            set;
+        }
+
+        public string Reserve
         {
             get;
             set;

@@ -146,6 +146,7 @@
     <Compile Include="Controllers\ClientTrailController.cs" />
     <Compile Include="Controllers\ColumnController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\CustomOrderController.cs" />
     <Compile Include="Controllers\EvaluationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KeepController.cs" />
@@ -172,10 +173,12 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\ClientTrail.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\CustomOrder.cs" />
     <Compile Include="Models\Evaluation.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\FCStoreDbContext.cs" />
+    <Compile Include="Models\GlobalTemp.cs" />
     <Compile Include="Models\Keep.cs" />
     <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\Order.cs" />

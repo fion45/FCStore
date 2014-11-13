@@ -59,6 +59,9 @@
 			$('#haiiskefu').animate({right:0}, 200);
 		}
 	});
+	
+	$("#orderBtn").on("click",MainLayout.onOrderBtnClick);
+	$("#onlineBtn").on("click",MainLayout.onOnlineBtnClick);
 });
 
 var MainLayout = {
@@ -520,6 +523,74 @@ var MainLayout = {
 	      	modal: true
 		});
 		tmpEle.data("userInfo",userInfo);
+	},
+	OrderDlg : null,
+	createOrderPage : function() {
+		if(MainLayout.OrderDlg == null) {
+			var ele = $(
+				"<div id='orderPage'>" +
+					"<ul>" +
+						"<li class='title'>国家:</li>" +
+						"<li class='content'>" +
+							"<select id='OPCountrySel'>" +
+								"<option disabled selected>可以多个国家如：美国，英国（可填）</option>" +
+							"</select>" +
+						"</li>" +
+						"<li class='title'>商品品牌：</li>" +
+						"<li class='content'><input id='OPBrandTB' placeholder='精确商品品牌（可填）' type='text' /></li>" +
+						"<li class='title'>商品名字：</li>" +
+						"<li class='content'><input id='OPNameTB' placeholder='详细商品名字（可填）' type='text' /></li>" +
+						"<li class='title'>商品描述：</li>" +
+						"<li class='content clearLeft'><textarea id='OPDescriptionTB' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求（可填）等'></textarea></li>" +
+						"<li class='title p1'>可接受的价格范围(人民币￥)</li>" +
+						"<li class='minPriceRange priceRange'><input id='OPMinTB' placeholder='最低阶（可填）' type='text' /></li>" +
+						"<li class='line'>-</li>" +
+						"<li class='priceRange'><input id='OPMaxTB' placeholder='最高价（可填）' type='text' /></li>" +
+						"<li class='title'>备注：</li>" +
+						"<li class='content clearLeft'><textarea id='OPRemarkTB' placeholder='例如需求是否急切，需求量等（可填）'></textarea></li>" +
+					"</ul>" +
+				"</div>");
+			ele.appendTo($("body:first"));
+			MainLayout.OrderDlg = ele.dialog({
+	      		autoOpen: true,
+		      	width: 600,
+		      	height: 530,
+	     	 	modal: true,
+	  			buttons: {
+	    			"下单": function() {
+	  					MainLayout.OrderDlg.dialog( "close" );
+	  					
+	    			}
+	  			}
+		    });
+		    $("#OPCountrySel").on("select",function(ev){
+		    	$("#OPCountrySel").css("color","black");
+		    }).on("click",function(ev) {
+		    	//动态加载可代购的国家
+		    	$.myAjax({
+		        	historyTag : false,
+		        	loadEle : $("#Center"),
+		            url: "/CustomOrder/GetEnableCountry/",
+		            data: null,
+		            dataType: "json",
+		            type: "GET",
+		            contentType: "application/json;charset=utf-8",
+		            success: function (data,status,options) {
+		            	//更新产品列表,代购国家
+		            	
+		            }
+		        });
+		    });
+		}
+		else {
+			MainLayout.OrderDlg.dialog( "open" );
+		}
+	},
+	onOrderBtnClick : function(ev) {
+		MainLayout.createOrderPage();
+	},
+	onOnlineBtnClick : function(ev) {
+		
 	}
 };
 

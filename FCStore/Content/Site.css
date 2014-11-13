@@ -669,7 +669,7 @@ body .justOverlayer {
     width:80px;
 }
 
-#ServiceLST ul li a {
+#ServiceLST ul li .item {
     width:80px;
     height:80px;
     display:block;
@@ -678,9 +678,10 @@ body .justOverlayer {
     -moz-opacity:0.4;
     filter:alpha(opacity=40);
     opacity:0.4;
+    cursor:pointer;
 }
 
-#ServiceLST ul li a:hover{
+#ServiceLST ul li .item:hover{
     -moz-opacity:0;
     filter:alpha(opacity=0);
     opacity:0;
@@ -766,6 +767,72 @@ footer {
         footer .centerDiv li {
 
         }
+        
+/* OrderPage
+----------------------------------------------------------*/
+#orderPage {
+    width:600px;
+    height:530px;
+}
+
+    #orderPage .title {
+        width:18%;
+        text-align:left;
+        margin-right:1%;
+        margin-left:6%;
+        margin-top:10px;
+        clear:left;
+    }
+
+    #orderPage .p1 {
+        text-align:left;
+        margin-left:6%;
+        margin-right:6%;
+        width:88%;
+    }
+
+    #orderPage .content {
+        width:69%;
+        text-align:left;
+        margin-right:6%;
+        margin-top:10px;
+    }
+
+    #orderPage .clearLeft {
+        clear:left;
+        margin-left:6%;
+        margin-right:6%;
+        width:88%;
+    }
+
+    #orderPage .content * {
+        width:98%;
+    }
+
+    #orderPage .minPriceRange {
+        margin-top:10px;
+        margin-left:6%;
+        width:20%;
+    }
+
+    #orderPage .line {
+        margin-top:10px;
+        width:3%;
+        text-align:center;
+    }
+
+    #orderPage .priceRange {
+        margin-top:10px;
+        width:20%;
+    }
+
+    #orderPage .priceRange * {
+        width:98%;
+    }
+
+    #OPCountrySel {
+        color:#A9A9A9;
+    }
 
 /* Category List
 ----------------------------------------------------------*/

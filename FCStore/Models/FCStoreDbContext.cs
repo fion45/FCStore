@@ -68,5 +68,7 @@ namespace FCStore.Models
         public DbSet<ReStoreProduct> ReStoreProducts { get; set; }
 
         public DbSet<ShamOrderData> ShamOrderDatas { get; set; }
+
+        public DbSet<CustomOrder> CustomOrders { get; set; }
     }
 }
