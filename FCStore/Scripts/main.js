@@ -576,7 +576,7 @@ var MainLayout = {
 		            type: "GET",
 		            contentType: "application/json;charset=utf-8",
 		            success: function (data,status,options) {
-		            	//更新产品列表,代购国家
+		            	//更新国家列表,代购国家
 		            	
 		            }
 		        });
