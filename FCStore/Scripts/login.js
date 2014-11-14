@@ -393,3 +393,154 @@
 	}
 }
 
+var AjaxLogin = {
+	loginDlg : null,
+	loginSuccessCB : null,
+	OnThreeSecondsTicket : function() {
+		//关闭当前Ajax登陆框
+	    var tmpI = parseInt($("#resultDiv .ticket").text());
+	    if (tmpI == 0) {
+			AjaxLogin.loginDlg.hide();
+	    }
+	    else {
+	        setTimeout(AjaxLogin.OnThreeSecondsTicket, 1000);
+	        $("#resultDiv .ticket").text(tmpI - 1);
+	    }
+	},
+	OnLoginBtnClick : function(ev) {
+		//ajax登陆
+		var obj = {};
+        obj.userID = $("#UIDTB").val();
+        obj.PSW = $("#PSWTB").val();
+        obj.checkCode = '';
+        if($("#checkCodeTB").length != 0) {
+        	obj.checkCode = $("#checkCodeTB").val();
+        	if (obj.checkCode.length != 4) {
+        		alert("验证码错误！");
+                //重新输入验证码
+	            $("#checkCodeTB").val("");
+	            return;
+        	}
+        }
+        $.myAjax({
+            historyTag: false,
+        	refreshTag : true,
+            loadEle: $("#loginDiv"),
+            url: "/User/Login",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                var tmpForm = $("#loginer");
+                if (!data.successTag) {
+                	if(data.errCode == -3) {
+                		//多次登陆异常,登陆异常
+	                    tmpForm.empty();
+		        		var errEle = $("<div id='abnormal'>" +
+	                        "<div>登陆异常，错误次数过多，请等待一段时间重试。</div>" +
+	                        "<div>" +
+	                            "等待时间：" +
+	                            "<label id='waitTime'>" +
+	                                data.LOCK +
+	                            "</label>" +
+	                        "</div>" +
+	                        "<div class='bottom'><label>在<span class='ticket'>3</span>秒后自动</label>" +
+	                        "<a id=returnBtn href='#'>返回</a>" +
+	                    "</div>");
+	                    errEle.appendTo(tmpForm);
+	                    AjaxLogin.OnThreeSecondsTicket();
+	                	errEle.find("#returnBtn").on("click",function(ev){
+	                		AjaxLogin.loginDlg.hide();
+	            		});
+                	}
+                	else {
+                		if(data.errCode == -2) {
+                			alert("验证码错误，请重新输入");
+	                	}
+	                	else {
+	                		alert("密码或者用户名错误，请重新输入！");
+	                		$("#UIDTB").val("");
+	                		$("#PSWTB").val("");
+	                	}
+		        		$("#UIDTB").val("");
+        				$("#PSWTB").val("");
+	                	if(data.custom == -1){
+			        		LoginPageView.register.OnRefreshCCode();	//刷新验证码
+//		        			$.validator.unobtrusive.parse($("#loginer"));	//没效
+	                	}
+                	}
+                }
+                else {
+                	//登陆成功，自动返回
+                	tmpForm.empty();
+                	var successEle = $("<div id='resultDiv'>" +
+	                		"<label class='blb'>欢迎<img class='userPhoto' onerror='javascript:this.src = '/picture/user/NoPicture_40_40.png';' src='/picture/user/" + GetUIDHex(data.content.UID) + "_40_40.jpg')' /><a class='userName' href='/User/Details'>" + data.content.UserName + "</a>光临Right Go网</label>" +
+	            			"<label class='blb welcome'>Welcome Welcome</label>" +
+	            			"<div class='bottom'><label>在<span class='ticket'>30</span>秒后自动</label>" +
+	            			"<a id=returnBtn href='#'>返回</a>" +
+				        "</div>");
+	                successEle.appendTo(tmpForm);
+                	AjaxLogin.OnThreeSecondsTicket();
+                	successEle.find("#returnBtn").on("click",function(ev){
+                		AjaxLogin.loginDlg.hide();
+            		});
+                }
+            }
+        });
+	},
+	ShowAjaxLoginDlg : function(LoginSuccessCB) {
+		AjaxLogin.loginSuccessCB = LoginSuccessCB;
+		if(AjaxLogin.loginDlg == null) {
+			AjaxLogin.loginDlg = $(
+				"<div id='loginOverlayout'>" +
+					"<div id='centerDiv'>" +
+						"<div id='ajaxloginDiv'>" +
+				            "<form id='loginer' class='ele'>" +
+				                "<div class='ltTitle'>用户登陆</div>" +
+				                "<div class='content UIDDIV'>" +
+				                    "<input id='UIDTB' name='UIDTB' class='enterTB' type='text' data-val='true' data-val-required='必填字段' />" +
+				                    "<div class='inBox'>用户名</div>" +
+				                "</div>" +
+				                "<div class='content'>" +
+				                    "<input id='PSWTB' name='PSWTB' class='enterTB' type='password' data-val='true' data-val-required='必填字段' data-val-length='密码为6-16位字母或数字' data-val-length-min='6' data-val-length-max='16' />" +
+				                    "<div class='inBox'>密&#12288;码</div>" +
+				                "</div>" +
+				                "<div class='content ccDiv'>" +
+//			                        "<input id='checkCodeTB' name='checkCodeTB' class='enterTB' type='text' data-val='true' data-val-required='必填字段' data-val-length='' data-val-length-min='4' data-val-length-max='4' />" +
+//			                        "<div class='inBox'>验证码</div>" +
+//			                        "<img class='inBoxIMG' onclick='LoginPageView.login.OnCheckCodeImgClick()' id='ccImg' src='/Home/GetValidateCode' />" +
+				                "</div>" +
+				                "<div class='content'>" +
+				                    "<input id='loginBtn' type='submit' value='登陆' />" +
+				                "</div>" +
+				                "<div class='pullupDiv'></div>" +
+				            "</form>" +
+				            "<div class='other'>" +
+				                "<span id='qqLoginBtn'></span>" +
+				                "<span id='wb_connect_btn'></span>" +
+				            "</div>" +
+				            "<div class='forgot'>" +
+				                "<a>忘记密码</a>" +
+				            "</div>" +
+				            "<div class='registerDiv'>" +
+				                "<a id='registerBtn' href='/Home/Register'>立即注册账号</a>" +
+				            "</div>" +
+				        "</div>" +
+			        "</div>" +
+		        "</div>");
+	        AjaxLogin.loginDlg.appendTo($("body"));
+		 	var tmpForm = $("#loginer");
+	        $.validator.unobtrusive.parse(tmpForm);
+		    var validator = tmpForm.validate();
+		    $.extend(validator.settings, {
+		        submitHandler: function () {
+		            AjaxLogin.OnLoginBtnClick();
+		        }
+		    });
+		}
+		else {
+			AjaxLogin.loginDlg.show();
+		}
+	}
+};

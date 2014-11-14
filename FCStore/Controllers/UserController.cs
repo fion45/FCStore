@@ -32,12 +32,12 @@ namespace FCStore.Controllers
             StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
             StringBuilder tmpRIDStr = new StringBuilder(",");
             StringBuilder tmpRNStr = new StringBuilder(",");
+            user.ReUserRoleLST = db.ReUserRoles.Where(r => r.UID == user.UID).ToList();
             foreach (ReUserRole reur in user.ReUserRoleLST)
             {
-
-                tmpRIDStr.Append(reur. + ",");
-                tmpRNStr.Append(role.RoleName + ",");
-                tmpRPStr.Append(role.Permission + ",");
+                tmpRIDStr.Append(reur.Role.RID + ",");
+                tmpRNStr.Append(reur.Role.RoleName + ",");
+                tmpRPStr.Append(reur.Role.Permission + ",");
             }
             string tmpStr = string.Format("<USERID>{0}</USERID><USERNAME>{1}</USERNAME><RIDARR>{2}</RIDARR><RNARR>{3}</RNARR><PERMISSION>{4}</PERMISSION>", user.UID, user.UserName, tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
 
@@ -176,7 +176,8 @@ namespace FCStore.Controllers
             else if (Session["LPTAG"] != null && int.Parse(Session["LPTAG"].ToString()) == -2)
             {
                 //ViewBag.LoginFail = -3;
-                string jsonStr = PubFunction.BuildResult(user, Session["LPTAG"].ToString(), false, -3, "登陆异常");
+                string tmpLOCK = new TimeSpan(0, 0, int.Parse(Session["LOGINLOCK"].ToString())).ToString();
+                string jsonStr = PubFunction.BuildResult(user, Session["LPTAG"].ToString() + ",\"LOCK\":\"" + tmpLOCK + "\"", false, -3, "登陆异常");
                 return Content(jsonStr);
             }
             else
@@ -249,19 +250,29 @@ namespace FCStore.Controllers
                         Gift = 100      //100积分
                     };
                     user = db.Users.Add(user);
+                    //db.SaveChanges();
                     //关联角色
-                    Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
-                    if (role.Users == null)
-                    {
-                        role.Users = new List<User>();
-                    }
-                    role.Users.Add(user);
+                    //Role role = db.Roles.First(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                    //if (role.Users == null)
+                    //{
+                    //    role.Users = new List<User>();
+                    //}
+                    //role.Users.Add(user);
+                    ReUserRole tmpRUR = new ReUserRole();
+                    tmpRUR.RID = (int)Role.RoleTypeID.RT_CLIENT;
+                    tmpRUR.User = user;
+                    //tmpRUR.UID = user.UID;
+                    tmpRUR.Reserve = "";
+                    db.ReUserRoles.Add(tmpRUR);
                     db.SaveChanges();
                     //设置cookie
                     StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
                     StringBuilder tmpRIDStr = new StringBuilder(",");
                     StringBuilder tmpRNStr = new StringBuilder(",");
-                    foreach (Role tmpRole in user.Roles)
+                    List<Role> Roles = (from rur in db.ReUserRoles
+                                        where rur.UID == user.UID
+                                        select rur.Role).ToList();
+                    foreach (Role tmpRole in Roles)
                     {
                         tmpRIDStr.Append(tmpRole.RID + ",");
                         tmpRNStr.Append(tmpRole.RoleName + ",");
@@ -365,12 +376,13 @@ namespace FCStore.Controllers
                     db.Users.Add(user);
 
                     //关联角色
-                    Role role = db.Roles.FirstOrDefault(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
-                    if (role.Users == null)
-                    {
-                        role.Users = new List<User>();
-                    }
-                    role.Users.Add(user);
+                    ReUserRole tmpRUR = new ReUserRole();
+                    tmpRUR.RID = (int)Role.RoleTypeID.RT_CLIENT;
+                    tmpRUR.User = user;
+                    //tmpRUR.UID = user.UID;
+                    tmpRUR.Reserve = "";
+                    db.ReUserRoles.Add(tmpRUR);
+
                     db.SaveChanges();
                     gfTag = true;
                 }
@@ -458,12 +470,20 @@ namespace FCStore.Controllers
                 db.Users.Add(user);
 
                 //关联角色
-                Role role = db.Roles.FirstOrDefault(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
-                if (role.Users == null)
-                {
-                    role.Users = new List<User>();
-                }
-                role.Users.Add(user);
+                //Role role = db.Roles.FirstOrDefault(r => r.RID == (int)Role.RoleTypeID.RT_CLIENT);
+                //if (role.Users == null)
+                //{
+                //    role.Users = new List<User>();
+                //}
+                //role.Users.Add(user);
+
+                ReUserRole tmpRUR = new ReUserRole();
+                tmpRUR.RID = (int)Role.RoleTypeID.RT_CLIENT;
+                tmpRUR.User = user;
+                //tmpRUR.UID = user.UID;
+                tmpRUR.Reserve = "";
+                db.ReUserRoles.Add(tmpRUR);
+
                 db.SaveChanges();
                 try
                 { 

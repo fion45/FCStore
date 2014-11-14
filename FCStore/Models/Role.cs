@@ -61,7 +61,7 @@ namespace FCStore.Models
 
     public class ReUserRole
     {
-
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int RURID
         {
             get;

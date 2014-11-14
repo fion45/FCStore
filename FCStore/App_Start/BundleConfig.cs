@@ -76,7 +76,8 @@ namespace FCStore
                 "~/Scripts/common.js",
                 "~/Scripts/sidebar-follow-jquery.js",
                 "~/Scripts/qqReport.js",
-                "~/Scripts/main.js"));
+                "~/Scripts/main.js",
+                "~/Scripts/login.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/login").Include(
                 "~/Scripts/common.js",

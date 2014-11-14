@@ -532,22 +532,20 @@ var MainLayout = {
 					"<ul>" +
 						"<li class='title'>国家:</li>" +
 						"<li class='content'>" +
-							"<select id='OPCountrySel'>" +
-								"<option disabled selected>可以多个国家如：美国，英国（可填）</option>" +
-							"</select>" +
+							"<div id='OPCountrySel' class='input'></div>" +
 						"</li>" +
 						"<li class='title'>商品品牌：</li>" +
-						"<li class='content'><input id='OPBrandTB' placeholder='精确商品品牌（可填）' type='text' /></li>" +
+						"<li class='content'><input id='OPBrandTB' class='input' placeholder='精确商品品牌（可填）' type='text' /></li>" +
 						"<li class='title'>商品名字：</li>" +
-						"<li class='content'><input id='OPNameTB' placeholder='详细商品名字（可填）' type='text' /></li>" +
+						"<li class='content'><input id='OPNameTB' class='input' placeholder='详细商品名字（可填）' type='text' /></li>" +
 						"<li class='title'>商品描述：</li>" +
-						"<li class='content clearLeft'><textarea id='OPDescriptionTB' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求（可填）等'></textarea></li>" +
+						"<li class='content clearLeft'><textarea id='OPDescriptionTB' class='input' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求（可填）等'></textarea></li>" +
 						"<li class='title p1'>可接受的价格范围(人民币￥)</li>" +
 						"<li class='minPriceRange priceRange'><input id='OPMinTB' placeholder='最低阶（可填）' type='text' /></li>" +
 						"<li class='line'>-</li>" +
 						"<li class='priceRange'><input id='OPMaxTB' placeholder='最高价（可填）' type='text' /></li>" +
 						"<li class='title'>备注：</li>" +
-						"<li class='content clearLeft'><textarea id='OPRemarkTB' placeholder='例如需求是否急切，需求量等（可填）'></textarea></li>" +
+						"<li class='content clearLeft'><textarea id='OPRemarkTB' class='input' placeholder='例如需求是否急切，需求量等（可填）'></textarea></li>" +
 					"</ul>" +
 				"</div>");
 			ele.appendTo($("body:first"));
@@ -558,28 +556,51 @@ var MainLayout = {
 	     	 	modal: true,
 	  			buttons: {
 	    			"下单": function() {
-	  					MainLayout.OrderDlg.dialog( "close" );
-	  					
+	    				var SaveCustomOrder = function() {
+	    					tmpData.UID = $.cookie("UserInfo").UID;
+		    				$.myAjax({
+					        	historyTag : false,
+					        	loadEle : ele.parent(),
+					            url: "/CustomOrder/Save/",
+					            data: JSON.stringify(tmpData),
+					            dataType: "json",
+					            type: "POST",
+					            contentType: "application/json;charset=utf-8",
+					            success: function (data,status,options) {
+					            	if(data.content) {
+					            		ele.find("input").val("");
+					            		ele.find("textarea").val("");
+					            	}
+					            }
+		    				});
+		    				alert("下单成功，请等待联系。");
+		    				MainLayout.OrderDlg.dialog("close");
+	    				};
+	    				var tmpData = {
+	    					CountryName : ele.find("#OPCountrySel input").val(),
+	    					BrandName : ele.find("#OPBrandTB").val(),
+	    					ProductName : ele.find("#OPNameTB").val(),
+	    					Description : ele.find("#OPDescriptionTB").val(),
+	    					MinPrice : ele.find("#OPMinTB").val(),
+	    					MaxPrice : ele.find("#OPMaxTB").val(),
+	    					Remark : ele.find("#OPRemarkTB").val()
+	    				};
+	    				//判断是否注册
+	    				if(typeof $.cookie("UserInfo") == 'undefined') {
+	    					//未登陆
+	    					alert("请先登陆");
+	    					//Ajax登陆
+	    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
+	    				}
+	    				else {
+	    					SaveCustomOrder();
+	    				}
 	    			}
 	  			}
 		    });
-		    $("#OPCountrySel").on("select",function(ev){
-		    	$("#OPCountrySel").css("color","black");
-		    }).on("click",function(ev) {
-		    	//动态加载可代购的国家
-		    	$.myAjax({
-		        	historyTag : false,
-		        	loadEle : $("#Center"),
-		            url: "/CustomOrder/GetEnableCountry/",
-		            data: null,
-		            dataType: "json",
-		            type: "GET",
-		            contentType: "application/json;charset=utf-8",
-		            success: function (data,status,options) {
-		            	//更新国家列表,代购国家
-		            	
-		            }
-		        });
+		    $("#OPCountrySel").myCombobox({
+				placeholder : "可以多个国家如：美国，英国（可填）",
+				loadUrl : "/CustomOrder/GetEnableCountry/"
 		    });
 		}
 		else {

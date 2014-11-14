@@ -18,6 +18,19 @@ namespace FCStore.Models
             set;
         }
 
+        [ForeignKey("User")]
+        public int UID
+        {
+            get;
+            set;
+        }
+
+        public User User
+        {
+            get;
+            set;
+        }
+
         public string CountryName
         {
             get;

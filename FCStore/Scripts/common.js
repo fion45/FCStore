@@ -293,6 +293,87 @@
 	    	_self.on("scroll", _self.Activate);
 	    }
 	    _self.on("scroll", _self.Activate);
+	},
+	myCombobox : function(config) {
+		this.config = {
+			placeholder : "",
+			loadFun : null,
+			loadUrl : "",
+			refreshTag : false
+	    };
+	    $.extend(this.config, config);
+	    var _self = this;
+	    _self.addClass('myCombobox');
+	    _self.sdInput = $("<input class='sdInput' type='text' />").appendTo(_self);
+	    _self.sdBtn = $("<div class='sdBtn'></div>").appendTo(_self);
+	    _self.sdDiv = $("<div class='sdDiv'><ul></ul></div>").appendTo(_self);
+	    _self.sdUl = _self.sdDiv.children("ul"); 
+	    _self.loadTag = false;
+	    _self.sdInput.val(_self.config.placeholder);
+	    _self.sdBtn.on("click",function(ev){
+	    	var target = $(ev.currentTarget);
+	    	if(typeof target.attr("data-tag") != 'undefined' || target.attr("data-tag") == "false") {
+	    		//显示
+		    	if(!_self.loadTag) {
+		    		if(!_self.config.refreshTag)
+		    			_self.loadTag = true;
+	    			_self.sdUl.empty();
+	    			if(_self.config.loadFun != null) {
+	    				_self.config.loadFun();
+	    			}
+	    			else if(_self.config.loadUrl != "") {
+				    	$.myAjax({
+				        	historyTag : false,
+				        	loadEle : _self.sdDiv,
+				            url: _self.config.loadUrl,
+				            data: null,
+				            dataType: "json",
+				            type: "GET",
+				            contentType: "application/json;charset=utf-8",
+				            success: function (data,status,options) {
+				            	$.each(data.content,function(i,n){
+				            		_self.sdUl.append($("<li class=option>" + n + "</li>"));
+				            	})
+				            }
+				        });
+	    			}
+		    	}
+		    	_self.Show();
+	    	}
+	    	else {
+	    		_self.Hide();
+	    	}
+	    });
+	    _self.Hide = function() {
+    		//隐藏
+	    	$("body").off("click",_self.Hide);
+	    	_self.sdInput.css("borderTop","");
+	    	_self.sdInput.css("borderLeft","");
+	    	_self.sdInput.css("borderRight","");
+	    	_self.sdBtn.attr("data-tag","false");
+	    	_self.sdDiv.slideUp("fast");
+	    };
+	    _self.Show = function() {
+    		//显示
+	    	_self.sdInput.css("borderTop","2px solid #A5C7FE");
+	    	_self.sdInput.css("borderLeft","2px solid #A5C7FE");
+	    	_self.sdInput.css("borderRight","2px solid #A5C7FE");
+	    	_self.sdBtn.attr("data-tag","true");
+	    	_self.sdDiv.show();
+	    	_self.sdDiv.slideDown("slow",function() {
+	    		$("body").on("click",function(ev) {
+	    			var target = $(ev.target);
+	    			if(!target.hasClass("sdBtn"))
+	    				_self.Hide();
+    			});
+	    	});
+	    };
+	    _self.sdDiv.on("click","li",function(ev) {
+	    	var target = $(ev.currentTarget);
+	    	_self.sdInput.val(target.text());
+	    	_self.sdInput.css("color","#222222");
+    		_self.Hide();
+	    });
 	}
 });
 jQuery.extend({
