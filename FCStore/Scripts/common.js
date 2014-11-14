@@ -304,12 +304,22 @@
 	    $.extend(this.config, config);
 	    var _self = this;
 	    _self.addClass('myCombobox');
-	    _self.sdInput = $("<input class='sdInput' type='text' />").appendTo(_self);
+	    _self.sdInput = $("<input class='sdInput' type='text' data-index='-1' />").appendTo(_self);
 	    _self.sdBtn = $("<div class='sdBtn'></div>").appendTo(_self);
 	    _self.sdDiv = $("<div class='sdDiv'><ul></ul></div>").appendTo(_self);
 	    _self.sdUl = _self.sdDiv.children("ul"); 
 	    _self.loadTag = false;
 	    _self.sdInput.val(_self.config.placeholder);
+	    _self.sdInput.on("click",function(ev){
+	    	if(parseInt(_self.sdInput.attr("data-index")) == -1)
+	    		_self.sdInput.val("");
+	    	_self.sdInput.on("focusout",function(ev){
+	    		if(parseInt(_self.sdInput.attr("data-index")) == -1) {
+	    			_self.sdInput.val(_self.config.placeholder);
+	    		}
+	    		_self.sdInput.off("focusout");
+	    	});
+	    });
 	    _self.sdBtn.on("click",function(ev){
 	    	var target = $(ev.currentTarget);
 	    	if(typeof target.attr("data-tag") != 'undefined' || target.attr("data-tag") == "false") {
@@ -332,7 +342,7 @@
 				            contentType: "application/json;charset=utf-8",
 				            success: function (data,status,options) {
 				            	$.each(data.content,function(i,n){
-				            		_self.sdUl.append($("<li class=option>" + n + "</li>"));
+				            		_self.sdUl.append($("<li class='option' data-val='" + i +"'>" + n + "</li>"));
 				            	})
 				            }
 				        });
@@ -372,6 +382,7 @@
 	    	var target = $(ev.currentTarget);
 	    	_self.sdInput.val(target.text());
 	    	_self.sdInput.css("color","#222222");
+	    	_self.sdInput.attr("data-index",target.attr("data-val"));
     		_self.Hide();
 	    });
 	}

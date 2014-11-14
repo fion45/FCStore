@@ -396,11 +396,13 @@
 var AjaxLogin = {
 	loginDlg : null,
 	loginSuccessCB : null,
-	OnThreeSecondsTicket : function() {
+	OnThreeSecondsTicket : function(successTag) {
 		//关闭当前Ajax登陆框
 	    var tmpI = parseInt($("#resultDiv .ticket").text());
 	    if (tmpI == 0) {
 			AjaxLogin.loginDlg.hide();
+			if(successTag)
+				AjaxLogin.loginSuccessCB();
 	    }
 	    else {
 	        setTimeout(AjaxLogin.OnThreeSecondsTicket, 1000);
@@ -449,7 +451,7 @@ var AjaxLogin = {
 	                        "<a id=returnBtn href='#'>返回</a>" +
 	                    "</div>");
 	                    errEle.appendTo(tmpForm);
-	                    AjaxLogin.OnThreeSecondsTicket();
+	                    AjaxLogin.OnThreeSecondsTicket(false);
 	                	errEle.find("#returnBtn").on("click",function(ev){
 	                		AjaxLogin.loginDlg.hide();
 	            		});
@@ -481,9 +483,10 @@ var AjaxLogin = {
 	            			"<a id=returnBtn href='#'>返回</a>" +
 				        "</div>");
 	                successEle.appendTo(tmpForm);
-                	AjaxLogin.OnThreeSecondsTicket();
+                	AjaxLogin.OnThreeSecondsTicket(true);
                 	successEle.find("#returnBtn").on("click",function(ev){
                 		AjaxLogin.loginDlg.hide();
+						AjaxLogin.loginSuccessCB();
             		});
                 }
             }

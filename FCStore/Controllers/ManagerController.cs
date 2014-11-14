@@ -197,6 +197,7 @@ namespace FCStore.Controllers
         public ActionResult ProductManager(int Tag, string Par, int BeginIndex, int GetCount, string OrderStr, string WhereStr)
         {
             int totalCount = db.Products.Count();
+            GetCount = Math.Min(totalCount - BeginIndex, GetCount);
             StringBuilder SQLStr = new StringBuilder("SELECT TOP(");
             SQLStr.Append(GetCount);
             SQLStr.Append(") * FROM (SELECT TOP(");

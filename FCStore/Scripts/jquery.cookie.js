@@ -87,9 +87,11 @@ jQuery.cookie = function(name, value, options) {
                     var result = {};
                     for(var m=0; m<valArr.length; m++) {
                     	var tmpArr = valArr[m].split('=');
-                    	result[tmpArr[0]] = tmpArr[1];
+                    	if(tmpArr.length == 2) {
+                    		result[tmpArr[0]] = tmpArr[1];
+                    	}
                     }
-                    return result;
+                    return $.isEmptyObject(result) ? null : result;
 //                    break;
                 }
             }

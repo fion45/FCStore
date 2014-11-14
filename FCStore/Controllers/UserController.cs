@@ -569,7 +569,6 @@ namespace FCStore.Controllers
             HttpCookie authCookie = Response.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null)
                 authCookie.Expires = DateTime.MinValue;
-
             return Redirect("/");
         }
 

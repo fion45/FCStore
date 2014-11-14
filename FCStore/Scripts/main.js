@@ -539,7 +539,7 @@ var MainLayout = {
 						"<li class='title'>商品名字：</li>" +
 						"<li class='content'><input id='OPNameTB' class='input' placeholder='详细商品名字（可填）' type='text' /></li>" +
 						"<li class='title'>商品描述：</li>" +
-						"<li class='content clearLeft'><textarea id='OPDescriptionTB' class='input' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求（可填）等'></textarea></li>" +
+						"<li class='content clearLeft'><textarea id='OPDescriptionTB' class='input' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求等（必填）'></textarea></li>" +
 						"<li class='title p1'>可接受的价格范围(人民币￥)</li>" +
 						"<li class='minPriceRange priceRange'><input id='OPMinTB' placeholder='最低阶（可填）' type='text' /></li>" +
 						"<li class='line'>-</li>" +
@@ -577,7 +577,7 @@ var MainLayout = {
 		    				MainLayout.OrderDlg.dialog("close");
 	    				};
 	    				var tmpData = {
-	    					CountryName : ele.find("#OPCountrySel input").val(),
+	    					CountryName : parseInt(ele.find("#OPCountrySel input").attr("data-index")) != -1 ? ele.find("#OPCountrySel input").val() : "",
 	    					BrandName : ele.find("#OPBrandTB").val(),
 	    					ProductName : ele.find("#OPNameTB").val(),
 	    					Description : ele.find("#OPDescriptionTB").val(),
@@ -585,15 +585,18 @@ var MainLayout = {
 	    					MaxPrice : ele.find("#OPMaxTB").val(),
 	    					Remark : ele.find("#OPRemarkTB").val()
 	    				};
-	    				//判断是否注册
-	    				if(typeof $.cookie("UserInfo") == 'undefined') {
-	    					//未登陆
-	    					alert("请先登陆");
-	    					//Ajax登陆
-	    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
-	    				}
-	    				else {
-	    					SaveCustomOrder();
+	    				//至少需要填写Description
+	    				if(tmpData.Description != "") {
+		    				//判断是否注册
+		    				if($.cookie(".ASPXFORMSAUTH") == null) {
+		    					//未登陆
+		    					alert("请先登陆");
+		    					//Ajax登陆
+		    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
+		    				}
+		    				else {
+		    					SaveCustomOrder();
+		    				}
 	    				}
 	    			}
 	  			}
