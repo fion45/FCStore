@@ -385,6 +385,23 @@
 	    	_self.sdInput.attr("data-index",target.attr("data-val"));
     		_self.Hide();
 	    });
+	},
+	myValidate : function(config,par) {
+		var ele = $(this);
+		var myValidator = ele.data("myValidator");
+		if($.type(config) == "string" && myValidator) {
+			//执行函数
+			myValidator[config](par);
+		}
+		else {
+			if($.type(config) == "string") {
+				myValidator = new $.myValidator({}, ele);
+				myValidator[config](par);
+			}
+			else
+				myValidator = new $.myValidator(config, ele);
+			ele.data("myValidator",myValidator);
+		}
 	}
 });
 jQuery.extend({
@@ -414,6 +431,86 @@ jQuery.extend({
 				input : jQuery.EMEInput.text,
 				buildInputCB : null
 			}
+		}
+	},
+	myValidator : function(config, ele) {
+		this.config = {};
+	    $.extend(this.config, config);
+	    var _self = this;
+		var _selfEle = ele;
+		var checkType = {
+			CT_EMPTY : 1
+		};
+	    _self.init = function() {
+	    	_self.CEArr = [];
+			$.each(_selfEle.find("[data-notempty]"),function(i,n){
+				var VStruct = {ce : n, ct : checkType.CT_EMPTY};
+				$(n).data("VStruct",VStruct)
+	 			_self.CEArr.push(VStruct);
+		    });
+		};
+		var Trigger = function(ev) {
+			var target = $(ev.currentTarget);
+			_self.checkOne(target.data("VStruct"));
+		};
+		_self.check = function() {
+			var result = true;
+			$.each(_self.CEArr,function(i,n) {
+				_self.checkOne(n);
+			});
+			return result;
+		};
+		_self.checkOne = function(VStruct) {
+			var ele = $(VStruct.ce);
+			var ct = VStruct.ct;
+			var tag = true;
+			switch(ct) {
+				case checkType.CT_EMPTY : {
+					tag = ele.val() != "";
+				}
+			}
+			if(tag) {
+				//正确
+				_self.resetErr(VStruct);
+				ele.off("keyup",Trigger);
+				ele.off("focusout",Trigger);
+				ele.removeClass("myValidator_err");
+				ele.attr("data-checkerr","0");
+			}
+			else {
+				//错误
+				_self.setErr(VStruct);
+				if(typeof ele.attr("data-checkerr") == "undefined" || ele.attr("data-checkerr") == "0") {
+					ele.on("keyup",Trigger);
+					ele.on("focusout",Trigger);	
+				}
+				ele.attr("data-checkerr","1");
+			}
+		};
+		_self.setErr = function(VStruct) {
+			ele = $(VStruct.ce);
+			if(!ele.data("myValidator_errtip")) {
+				ele.addClass("myValidator_err");
+				var pos = ele.position();
+				var tmpErrTip = ele.attr("data-errtip");
+				if(typeof tmpErrTip == "undefined") {
+					tmpErrTip = "不能为空";
+				}
+				var errEle = $("<div class=myValidator_errtip>" + tmpErrTip + "</div>");
+				errEle.appendTo(ele.parent());
+				errEle.css({
+					left : pos.left + ele.width() - errEle.outerWidth(),
+					top : pos.top + ele.height() - errEle.outerHeight()
+				});
+				ele.data("myValidator_errtip",errEle);
+			}
+			else {
+				ele.data("myValidator_errtip").show();
+			}
+		};
+		_self.resetErr = function(VStruct) {
+			ele = $(VStruct.ce);
+			ele.data("myValidator_errtip").hide();
 		}
 	},
 	myAjaxCache : [],

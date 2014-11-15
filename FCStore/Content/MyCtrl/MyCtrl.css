@@ -1,0 +1,12 @@
+﻿.myValidator_err {
+    border:solid 1px Red;
+}
+
+.myValidator_errtip {
+    position:absolute;
+    color:red;
+    font-size:90%;
+    font-weight:bold;
+    background-color:#FEED75;
+    padding:3px;
+}

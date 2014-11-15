@@ -539,7 +539,7 @@ var MainLayout = {
 						"<li class='title'>商品名字：</li>" +
 						"<li class='content'><input id='OPNameTB' class='input' placeholder='详细商品名字（可填）' type='text' /></li>" +
 						"<li class='title'>商品描述：</li>" +
-						"<li class='content clearLeft'><textarea id='OPDescriptionTB' class='input' placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求等（必填）'></textarea></li>" +
+						"<li class='content clearLeft'><textarea id='OPDescriptionTB' class='input' data-notempty placeholder='介绍商品颜色，商品尺寸，商品形状，商品用途。越详细越提供更符合客人的需求等（必填）'></textarea></li>" +
 						"<li class='title p1'>可接受的价格范围(人民币￥)</li>" +
 						"<li class='minPriceRange priceRange'><input id='OPMinTB' placeholder='最低阶（可填）' type='text' /></li>" +
 						"<li class='line'>-</li>" +
@@ -556,46 +556,52 @@ var MainLayout = {
 	     	 	modal: true,
 	  			buttons: {
 	    			"下单": function() {
-	    				var SaveCustomOrder = function() {
-	    					tmpData.UID = $.cookie("UserInfo").UID;
-		    				$.myAjax({
-					        	historyTag : false,
-					        	loadEle : ele.parent(),
-					            url: "/CustomOrder/Save/",
-					            data: JSON.stringify(tmpData),
-					            dataType: "json",
-					            type: "POST",
-					            contentType: "application/json;charset=utf-8",
-					            success: function (data,status,options) {
-					            	if(data.content) {
-					            		ele.find("input").val("");
-					            		ele.find("textarea").val("");
-					            	}
-					            }
-		    				});
-		    				alert("下单成功，请等待联系。");
-		    				MainLayout.OrderDlg.dialog("close");
-	    				};
-	    				var tmpData = {
-	    					CountryName : parseInt(ele.find("#OPCountrySel input").attr("data-index")) != -1 ? ele.find("#OPCountrySel input").val() : "",
-	    					BrandName : ele.find("#OPBrandTB").val(),
-	    					ProductName : ele.find("#OPNameTB").val(),
-	    					Description : ele.find("#OPDescriptionTB").val(),
-	    					MinPrice : ele.find("#OPMinTB").val(),
-	    					MaxPrice : ele.find("#OPMaxTB").val(),
-	    					Remark : ele.find("#OPRemarkTB").val()
-	    				};
-	    				//至少需要填写Description
-	    				if(tmpData.Description != "") {
-		    				//判断是否注册
-		    				if($.cookie(".ASPXFORMSAUTH") == null) {
-		    					//未登陆
-		    					alert("请先登陆");
-		    					//Ajax登陆
-		    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
+	    				ele.myValidate("init");
+	    				if(ele.myValidate("check")) {
+	    					var SaveCustomOrder = function() {
+	    						tmpData.UID = $.cookie("UserInfo").UID;
+			    				$.myAjax({
+						        	historyTag : false,
+						        	loadEle : ele.parent(),
+						            url: "/CustomOrder/Save/",
+						            data: JSON.stringify(tmpData),
+						            dataType: "json",
+						            type: "POST",
+						            contentType: "application/json;charset=utf-8",
+						            success: function (data,status,options) {
+						            	if(data.content) {
+						            		ele.find("input").val("");
+						            		ele.find("textarea").val("");
+						            	}
+						            }
+			    				});
+			    				alert("下单成功，请等待联系。");
+			    				MainLayout.OrderDlg.dialog("close");
+		    				};
+		    				var tmpData = {
+		    					CountryName : parseInt(ele.find("#OPCountrySel input").attr("data-index")) != -1 ? ele.find("#OPCountrySel input").val() : "",
+		    					BrandName : ele.find("#OPBrandTB").val(),
+		    					ProductName : ele.find("#OPNameTB").val(),
+		    					Description : ele.find("#OPDescriptionTB").val(),
+		    					MinPrice : ele.find("#OPMinTB").val(),
+		    					MaxPrice : ele.find("#OPMaxTB").val(),
+		    					Remark : ele.find("#OPRemarkTB").val()
+		    				};
+		    				//至少需要填写Description
+		    				if(tmpData.Description != "") {
+			    				//判断是否注册
+			    				if($.cookie(".ASPXFORMSAUTH") == null) {
+			    					//未登陆
+			    					alert("请先登陆");
+			    					//Ajax登陆
+			    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
+			    				}
+			    				else {
+			    					SaveCustomOrder();
+			    				}
 		    				}
 		    				else {
-		    					SaveCustomOrder();
+		    					
 		    				}
 	    				}
 	    			}

@@ -59,6 +59,9 @@ namespace FCStore
                         "~/Content/themes/base/jquery.ui.theme.css",
                         "~/Content/themes/base/jquery.ui.bannerize.css"));
 
+            bundles.Add(new StyleBundle("~/Content/MyCtrl/css").Include(
+                        "~/Content/MyCtrl/MyCtrl.css"));
+
             bundles.Add(new ScriptBundle("~/UploadFile/css").Include(
                 "~/Scripts/uploadify/uploadify.css"));
 
