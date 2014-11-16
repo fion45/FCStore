@@ -587,21 +587,15 @@ var MainLayout = {
 		    					MaxPrice : ele.find("#OPMaxTB").val(),
 		    					Remark : ele.find("#OPRemarkTB").val()
 		    				};
-		    				//至少需要填写Description
-		    				if(tmpData.Description != "") {
-			    				//判断是否注册
-			    				if($.cookie(".ASPXFORMSAUTH") == null) {
-			    					//未登陆
-			    					alert("请先登陆");
-			    					//Ajax登陆
-			    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
-			    				}
-			    				else {
-			    					SaveCustomOrder();
-			    				}
+		    				//判断是否注册  .ASPXFORMSAUTH
+		    				if($.cookie(".ASPXFORMSAUTH") == null) {
+		    					//未登陆
+		    					alert("请先登陆");
+		    					//Ajax登陆
+		    					AjaxLogin.ShowAjaxLoginDlg(SaveCustomOrder);
 		    				}
 		    				else {
-		    					
+		    					SaveCustomOrder();
 		    				}
 	    				}
 	    			}

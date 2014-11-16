@@ -448,7 +448,7 @@ var AjaxLogin = {
 	                            "</label>" +
 	                        "</div>" +
 	                        "<div class='bottom'><label>在<span class='ticket'>3</span>秒后自动</label>" +
-	                        "<a id=returnBtn href='#'>返回</a>" +
+	                        "<a id=returnBtn href=''>返回</a>" +
 	                    "</div>");
 	                    errEle.appendTo(tmpForm);
 	                    AjaxLogin.OnThreeSecondsTicket(false);
@@ -479,8 +479,8 @@ var AjaxLogin = {
                 	var successEle = $("<div id='resultDiv'>" +
 	                		"<label class='blb'>欢迎<img class='userPhoto' onerror='javascript:this.src = '/picture/user/NoPicture_40_40.png';' src='/picture/user/" + GetUIDHex(data.content.UID) + "_40_40.jpg')' /><a class='userName' href='/User/Details'>" + data.content.UserName + "</a>光临Right Go网</label>" +
 	            			"<label class='blb welcome'>Welcome Welcome</label>" +
-	            			"<div class='bottom'><label>在<span class='ticket'>30</span>秒后自动</label>" +
-	            			"<a id=returnBtn href='#'>返回</a>" +
+	            			"<div class='bottom'><label>在<span class='ticket'>3</span>秒后自动</label>" +
+	            			"<a id=returnBtn href=''>返回</a>" +
 				        "</div>");
 	                successEle.appendTo(tmpForm);
                 	AjaxLogin.OnThreeSecondsTicket(true);

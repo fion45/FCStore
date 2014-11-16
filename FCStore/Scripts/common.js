@@ -391,7 +391,7 @@
 		var myValidator = ele.data("myValidator");
 		if($.type(config) == "string" && myValidator) {
 			//执行函数
-			myValidator[config](par);
+			return myValidator[config](par);
 		}
 		else {
 			if($.type(config) == "string") {
@@ -456,7 +456,7 @@ jQuery.extend({
 		_self.check = function() {
 			var result = true;
 			$.each(_self.CEArr,function(i,n) {
-				_self.checkOne(n);
+				result &= _self.checkOne(n);
 			});
 			return result;
 		};
@@ -486,6 +486,7 @@ jQuery.extend({
 				}
 				ele.attr("data-checkerr","1");
 			}
+			return tag;
 		};
 		_self.setErr = function(VStruct) {
 			ele = $(VStruct.ce);
@@ -510,7 +511,10 @@ jQuery.extend({
 		};
 		_self.resetErr = function(VStruct) {
 			ele = $(VStruct.ce);
-			ele.data("myValidator_errtip").hide();
+			var errTip = ele.data("myValidator_errtip");
+			if(typeof errTip != "undefined") {
+				ele.data("myValidator_errtip").hide();
+			}
 		}
 	},
 	myAjaxCache : [],

@@ -90,8 +90,11 @@ jQuery.cookie = function(name, value, options) {
                     	if(tmpArr.length == 2) {
                     		result[tmpArr[0]] = tmpArr[1];
                     	}
+                    	else {
+                    		return tmpArr[0]; 
+                    	}
                     }
-                    return $.isEmptyObject(result) ? null : result;
+                    return result;	
 //                    break;
                 }
             }
