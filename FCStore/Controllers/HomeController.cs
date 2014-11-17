@@ -163,6 +163,12 @@ namespace FCStore.Controllers
                                         select product).ToList();
             return View(ProductLST);
         }
+        public ActionResult OnlineContact()
+        {
+
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

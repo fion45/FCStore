@@ -533,6 +533,7 @@
     <Content Include="Views\Shared\_FullControllLayout.cshtml" />
     <Content Include="Views\Home\doubleEleven.cshtml" />
     <Content Include="Views\Shared\_ContactList.cshtml" />
+    <Content Include="Views\Home\OnlineContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

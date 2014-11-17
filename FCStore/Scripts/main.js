@@ -612,9 +612,6 @@ var MainLayout = {
 	},
 	onOrderBtnClick : function(ev) {
 		MainLayout.createOrderPage();
-	},
-	onOnlineBtnClick : function(ev) {
-		
 	}
 };
 

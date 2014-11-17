@@ -189,6 +189,18 @@
                     "<li>" +
                         "<input id='refreshBtn' class='sbtn3' type='button' value='刷新' />" +
                     "</li>" +
+                    "<li>" +
+                        "<input id='addProductBtn' class='sbtn2' type='button' value='增加' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='delProductBtn' class='sbtn3' type='button' value='删除' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='importProductBtn' class='sbtn1' type='button' value='导入Excel' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='exportProductBtn' class='sbtn3' type='button' value='导出Excel' />" +
+                    "</li>" +
                 "</ul>").appendTo($("#PSMain .btnDiv"));
                 $("#backBtn").on("click", ProductManager.OnBackBtnClick);
                 $("#saveBtn").on("click", ProductManager.OnSaveBtnClick);
@@ -196,17 +208,9 @@
                 $("#selDiv").on("change", ".price input", ProductManager.AutoCalculateDiscount);
                 $("#selDiv").on("change", ".marketPrice input", ProductManager.AutoCalculateDiscount);
 
-                $("<div class='operateDiv'>" +
-                    "<ul>" +
-                        "<li><input id='addProductBtn' class='sbtn1' type='button' value='增加' /></li>" +
-                        "<li><input id='delProductBtn' class='sbtngray' type='button' value='删除' /></li>" +
-                        "<li><input id='importProductBtn' class='sbtn1' type='button' value='导入Excel' /></li>" +
-                        "<li><input id='exportProductBtn' class='sbtngray' type='button' value='导出Excel' /></li>" +
-                    "</ul>" +
-                "</div>").appendTo($("#PSMain .toolbar"));
                 $("#addProductBtn").on("click", ProductManager.OnAddProductBtnClick);
-                $("#importProductBtn").on("click", ProductManager.OnImportProductBtnClick);
                 $("#delProductBtn").on("click", ProductManager.OnDelProductBtnClick);
+                $("#importProductBtn").on("click", ProductManager.OnImportProductBtnClick);
                 $("#exportProductBtn").on("click", ProductManager.OnExportProductBtnClick);
             }
             else if (parArr[3] == "0") {

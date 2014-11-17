@@ -1,0 +1,214 @@
+﻿@using FCStore.Common;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Online Contact</title>
+    <style type="text/css">
+        * {
+            margin:0px;
+            padding:0px;
+        }
+
+        html {
+            width:100%;
+        }
+
+        body {
+            width:100%;
+        }
+
+        #mainDiv {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -400px;
+            margin-top: -250px;
+            width: 800px;
+            height: 500px;
+            border: solid 1px Red;
+        }
+
+            #mainDiv .left {
+                float:left;
+                width:20%;
+                height:100%;
+                background-color: yellow;
+            }
+
+            #mainDiv .right {
+                float: left;
+                width: 80%;
+                height: 100%;
+                background-color: #C7A35E;
+            }
+
+        #dialogDiv {
+            width: 90%;
+            margin: 10px 5%;
+            height: 300px;
+            background-color: #EAEAEA;
+        }
+
+        #dialogTA {
+            width:98%;
+            height:100%;
+            padding:0px 1%;
+        }
+
+        #faceDiv {
+            width: 90%;
+            margin: 3px 5% 0px 5%;
+            height: 28px;
+            border-bottom: solid 2px #A0A0A0;
+            background-color: #D6D6D6;
+        }
+
+        #inputDiv {
+            width: 90%;
+            margin: 0px 5%;
+            height: 110px;
+            background-color: cadetblue;
+        }
+
+        #inputTA {
+            width: 98%;
+            height: 100%;
+            padding:0px 1%;
+            border: none;
+            background-color: #EAEAEA;
+        }
+        
+        #btnDiv {
+            width: 90%;
+            margin: 0px 5%;
+            height: 32px;
+        }
+
+            #btnDiv span {
+                float:right;
+                margin:6px 5px;
+            }
+
+        .sbtn1 {
+            width: 70px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle;
+            background: url("/Content/themes/image/BtnSource.png") no-repeat 0 -85px;
+            border: none;
+            color: white;
+            font-size: 10pt;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .sbtn1:hover {
+                background: url("/Content/themes/image/BtnSource.png") no-repeat -71px -85px;
+            }
+
+        .sbtn2 {
+            width: 70px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle;
+            background: url("/Content/themes/image/BtnSource.png") no-repeat -142px -85px;
+            border: none;
+            color: white;
+            font-size: 10pt;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .sbtn2:hover {
+                background: url("/Content/themes/image/BtnSource.png") no-repeat -213px -85px;
+            }
+
+        .sbtn3 {
+            width: 70px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle;
+            background: url("/Content/themes/image/BtnSource.png") no-repeat -284px -85px;
+            border: none;
+            color: white;
+            font-size: 10pt;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .sbtn3:hover {
+                background: url("/Content/themes/image/BtnSource.png") no-repeat -355px -85px;
+            }
+
+
+    </style>
+
+</head>
+<body>
+    <div id="mainDiv" class="centerDiv">
+        <div class="left">
+
+        </div>
+        <div class="right">
+            <div id="dialogDiv">
+                <textarea id="dialogTA" readonly="readonly" ></textarea>
+            </div>
+            <div id="faceDiv">
+
+            </div>
+            <div id="inputDiv">
+                <textarea id="inputTA" placeholder="请输入对话内容"></textarea>
+            </div>
+            <div id="btnDiv">
+                <span><input id="sendBtn" value="发送" class="sbtn3" type="button" /></span>
+                <span><input id="closeBtn" value="关闭" class="sbtn2" type="button" /></span>
+            </div>
+        </div>
+    </div>    
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+        var InitializeSocket = function () {
+            if (!"WebSocket" in window) {
+                alert("你的服务器不支持WebSocket技术！请下载一个支持的浏览器，如chrome")
+            }
+            else {
+                var host = 'ws://127.0.0.1:8080/';
+                var socket = new WebSocket(host);
+                socket.onopen = function (event) {
+                    ShowMessage("打开Socket成功");
+                };
+                // 监听消息
+                socket.onmessage = function (event) {
+                    ShowMessage(event.data);
+                };
+                // 监听Socket的关闭
+                socket.onclose = function (event) {
+                    ShowMessage("关闭Socket");
+
+                };
+            }
+
+        };
+
+        var Send = function () {
+
+        };
+
+        var ShowMessage = function (msg) {
+
+        };
+
+        $(function () {
+            InitializeSocket();
+            $("#sendBtn").on("click", function () {
+                //发送按钮
+            })
+        });
+    </script>
+</body>
+</html>
