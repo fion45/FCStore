@@ -619,6 +619,7 @@ var ProductManager = {
     	var marketPrice = parseFloat(parent.find(".marketPrice input").val());
     	parent.find(".discount input").val(parseInt(price / marketPrice * 100));
     },
+    PM_UploadTag : false,
     OnProductItemClick: function (ev) {
         var tmpTag = Manager.GetParamTag(3);
         switch (tmpTag) {
@@ -668,10 +669,10 @@ var ProductManager = {
                 var FIndex = tmpToPath.indexOf("//") + 2;
                 tmpToPath = tmpToPath.substring(tmpToPath.indexOf("/", FIndex), tmpToPath.lastIndexOf("/") + 1);
                 tmpUploader.uploadify({
-                    height: 30,
-                    width: 120,
-                    buttonText: '文件上传',
-                    auto: true,
+                    height: 25,
+                    width: 70,
+                    buttonText: '替换',
+                    auto: false,
                     swf: '/Scripts/uploadify/uploadify.swf',
                     uploader: '/Manager/Upload',
                     fileTypeDesc: 'Image Files',
@@ -681,7 +682,14 @@ var ProductManager = {
                         var obj = $.parseJSON(data);
                         if (obj.Success)
                             tmpC.children("img").prop("src", obj.imgSrc);
-                    }
+                        ProductManager.SaveProductInfo(obj.imgSrc);
+                    },
+	                onSelect: function (file) {
+	                	ProductManager.PM_UploadTag = true;
+	                },
+	                onCancel: function (file) {
+	                	ProductManager.PM_UploadTag = false;
+	                }
                 });
                 break;
             }
@@ -770,29 +778,30 @@ var ProductManager = {
         //    	window.location.href = "/Manager/BannerManager/"
         window.history.back();
     },
-    OnSaveBtnClick: function (ev) {
-        //select products for column
-        var item = $("#selDiv .item");
+    SaveProductInfo : function(imgUrl) {
+    	var item = $("#selDiv .item");
         var tmpData = {
-            PID: item.attr("data-pid"),
-            CID: 0,
-            BID: 0,
-            ProductTags: [],
-            Title: item.find(".title").children().val(),
-            Chose: "",
-            Price: item.find(".price").children().val(),
-            MarketPrice: item.find(".marketPrice").children().val(),
-            Discount: item.find(".discount").children().val(),
-            Stock: item.find(".stock").children().val(),
-            Sale: item.find(".sale").children().val(),
-            ImgPath: "",
-            PVCount: item.find(".pvcount").children().val(),
-            Descript: "",
-            Date: item.find(".date").children().val(),
-            Tag: 0,
-            REProColLST: []
+        	Product : {
+	            PID: item.attr("data-pid"),
+	            CID: 0,
+	            BID: 0,
+	            ProductTags: [],
+	            Title: item.find(".title").children().val(),
+	            Chose: "",
+	            Price: item.find(".price").children().val(),
+	            MarketPrice: item.find(".marketPrice").children().val(),
+	            Discount: item.find(".discount").children().val(),
+	            Stock: item.find(".stock").children().val(),
+	            Sale: item.find(".sale").children().val(),
+	            ImgPath: "",
+	            PVCount: item.find(".pvcount").children().val(),
+	            Descript: "",
+	            Date: item.find(".date").children().val(),
+	            Tag: 0,
+	            REProColLST: []
+        	},
+        	ImgPath : imgUrl
         };
-
         $.myAjax({
             historyTag: false,
             loadEle: $("#selDiv"),
@@ -815,6 +824,15 @@ var ProductManager = {
                 }
             }
         });
+    },
+    OnSaveBtnClick: function (ev) {
+        //select products for column
+        if(ProductManager.PM_UploadTag) {
+        	$("#file_upload").uploadify("upload", "*");
+        }
+        else {
+        	ProductManager.SaveProductInfo("");
+        }
     },
     onBuildEvaluationBtnClick : function(ev) {
     	var target = $(ev.currentTarget);
@@ -1025,6 +1043,18 @@ var ProductManager = {
 		ProductManager.updateProductsLST(false);
 		$(".categoryLST").off("mouseleave",ProductManager.onCategoryMouseLeave);
 		ProductManager.clickchktag = false;
+	},
+	OnAddProductBtnClick : function(ev) {
+		
+	},
+	OnDelProductBtnClick : function(ev) {
+		
+	},
+	OnImportProductBtnClick : function(ev) {
+		
+	},
+	OnExportProductBtnClick : function(ev) {
+		
 	}
 };
 

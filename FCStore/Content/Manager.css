@@ -402,6 +402,11 @@ li {
         height:100%;
         position:relative;
     }
+    
+
+    #PSMain .left .btnDiv li{
+        margin-left:3px;
+    }
 
 .btnDiv {
     width:100%;
@@ -475,6 +480,15 @@ li {
             background:url("/Content/themes/image/LeftRightIcon.png") no-repeat -38px -64px;
             color:#D73E3E;
         }
+
+        #PSMain .right .toolbar .operateDiv {
+            float:left;
+            margin-left:30px;
+        }
+
+            #PSMain .right .toolbar .operateDiv li {
+                margin-right:3px;
+            }
 
         #PSMain .right .toolbar .whereDiv {
             float:right;
@@ -727,7 +741,9 @@ li {
 
     #file_upload {
         margin:0px auto;
-        position:relative;
+        position:absolute;
+        top:0px;
+        left:0px;
     }
 
     #selDiv .brandCB {

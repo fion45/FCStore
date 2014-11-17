@@ -445,7 +445,7 @@ namespace FCStore.Controllers
             }
         }
 
-        public ActionResult SetSelectProductInfo(Product Product)
+        public ActionResult SetSelectProductInfo(Product Product,string ImgPath)
         {
             Product tmpProduct = db.Products.FirstOrDefault(r => r.PID == Product.PID);
             tmpProduct.Title = Product.Title;
@@ -456,6 +456,15 @@ namespace FCStore.Controllers
             tmpProduct.Stock = Product.Stock;
             tmpProduct.PVCount = Product.PVCount;
             tmpProduct.Date = Product.Date;
+            if (!string.IsNullOrEmpty(ImgPath))
+            {
+                string[] tmpArr = tmpProduct.ImgPathArr;
+                tmpProduct.ImgPath = ImgPath + ";";
+                for(int i=1;i<tmpArr.Length;i++)
+                {
+                    tmpProduct.ImgPath += tmpArr[i] + ";";
+                }
+            }
             db.SaveChanges();
             if (Request.IsAjaxRequest())
             {
