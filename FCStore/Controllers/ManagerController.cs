@@ -201,7 +201,7 @@ namespace FCStore.Controllers
             StringBuilder SQLStr = new StringBuilder("SELECT TOP(");
             SQLStr.Append(GetCount);
             SQLStr.Append(") * FROM (SELECT TOP(");
-            SQLStr.Append(totalCount - (BeginIndex + GetCount));
+            SQLStr.Append(totalCount - (BeginIndex + GetCount - 1));
             SQLStr.Append(") * FROM Products");
             if (!string.IsNullOrEmpty(WhereStr))
             {

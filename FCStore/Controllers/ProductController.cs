@@ -26,11 +26,27 @@ namespace FCStore.Controllers
 
         private FCStoreDbContext db = new FCStoreDbContext();
 
+        public Category GetSerialCategory(int CID)
+        {
+            Category aCategory = db.Categorys.FirstOrDefault(r => r.CID == CID);
+            Category result = aCategory;
+            int PCID = aCategory.ParCID;
+            while(PCID > 0) 
+            {
+                Category tmpCategory = db.Categorys.FirstOrDefault(r => r.CID == PCID);
+                aCategory.Parent = tmpCategory;
+                aCategory = tmpCategory;
+                PCID = aCategory.ParCID;
+            }
+            return result;
+        }
+
         [ProductViewFilterAttribute]
         public ActionResult Detail(int ID, int tag = 0)
         {
             ViewBag.KeepTag = false;
             Product tmpProduct = db.Products.First(r => r.PID == ID);
+            tmpProduct.Category = GetSerialCategory(tmpProduct.CID);
             bool hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
             HttpCookie cookie = null;
             string tmpStr = "";
@@ -487,6 +503,7 @@ namespace FCStore.Controllers
             ViewBag.SaleCount = (from op in db.OrderPackets
                                     where op.PID == ID && op.Order.Status > 1
                                     select op.Count).ToList().Sum();
+            tmpProduct.Category = GetSerialCategory(tmpProduct.CID);
             vmModel.Product = tmpProduct;
 
             //获得评论
@@ -584,7 +601,60 @@ namespace FCStore.Controllers
 
         public ActionResult SaveAddDetail(Product product, List<ShamOrderData> ShamOrderDataArr)
         {
+            Product tmpProduct = new Product();
+            tmpProduct.Title = product.Title;
+            tmpProduct.EvaluationStarCount = product.EvaluationStarCount;
+            tmpProduct.Price = product.Price;
+            tmpProduct.MarketPrice = product.MarketPrice;
+            tmpProduct.Sale = product.Sale;
+            tmpProduct.Chose = product.Chose;
+            tmpProduct.Descript = product.Descript;
+            tmpProduct.ImgPath = product.ImgPath;
+            //设置为其他
+            Brand tmpBrand = db.Brands.FirstOrDefault(r => r.NameStr == "未知");
+            if(tmpBrand == null)
+            {
+                tmpBrand = new Brand();
+                tmpBrand.CountryCode = 0;
+                tmpBrand.Img = "";
+                tmpBrand.Important = 0;
+                tmpBrand.Name2 = "未知";
+                tmpBrand.NameStr = "未知";
+                tmpBrand.Tag = 999;
+                db.Brands.Add(tmpBrand);
+            }
+            tmpProduct.Brand = tmpBrand;
+            //设置为首页
+            Category tmpCategory = db.Categorys.FirstOrDefault(r => r.NameStr == "未知");
+            if (tmpCategory == null)
+            {
+                tmpCategory = new Category();
+                tmpCategory.NameStr = "未知";
+                tmpCategory.Parent = tmpCategory;
+                tmpCategory.Tag = 999;
+                db.Categorys.Add(tmpCategory);
+            }
+            tmpProduct.Category = tmpCategory;
+            db.Products.Add(tmpProduct);
 
+            if (ShamOrderDataArr != null)
+            {
+                foreach (ShamOrderData item in ShamOrderDataArr)
+                {
+                    db.ShamOrderDatas.Add(item);
+                }
+            }
+            db.SaveChanges();
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult SaveEditDetail(Product product, List<ShamOrderData> ShamOrderDataArr)

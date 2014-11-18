@@ -17,13 +17,13 @@ namespace FCStore.Models
             set;
         }
 
-        [ForeignKey("Parent")]
         public int ParCID
         {
             get;
             set;
         }
 
+        [NotMapped]
         [JsonIgnore]
         public virtual Category Parent
         {
