@@ -205,13 +205,14 @@
                 $("#backBtn").on("click", ProductManager.OnBackBtnClick);
                 $("#saveBtn").on("click", ProductManager.OnSaveBtnClick);
                 $("#refreshBtn").on("click", ProductManager.OnRefreshBtnClick);
-                $("#selDiv").on("change", ".price input", ProductManager.AutoCalculateDiscount);
-                $("#selDiv").on("change", ".marketPrice input", ProductManager.AutoCalculateDiscount);
 
                 $("#addProductBtn").on("click", ProductManager.OnAddProductBtnClick);
                 $("#delProductBtn").on("click", ProductManager.OnDelProductBtnClick);
                 $("#importProductBtn").on("click", ProductManager.OnImportProductBtnClick);
                 $("#exportProductBtn").on("click", ProductManager.OnExportProductBtnClick);
+
+                $("#selDiv").on("change", ".price input", ProductManager.AutoCalculateDiscount);
+                $("#selDiv").on("change", ".marketPrice input", ProductManager.AutoCalculateDiscount);
             }
             else if (parArr[3] == "0") {
                 $("<ul>" +

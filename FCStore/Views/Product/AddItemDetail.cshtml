@@ -1,0 +1,280 @@
+﻿@section css{
+    @Styles.Render("~/xheditor/css")
+    @Styles.Render("~/UploadFile/css")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/HighChart")
+    @*@Scripts.Render("~/bundles/productDetail")*@
+    @Scripts.Render("~/xheditor/js")
+    @Scripts.Render("~/UploadFile/js")
+    @Scripts.Render("~/Manager/js")
+
+    <script type="text/javascript">
+        $(function () {
+            var editer = $("#descriptContent textarea");
+            var xheEle = editer.xheditor({
+                upLinkUrl: "/upload.aspx",
+                upLinkExt: "zip,rar,txt",
+                upImgUrl: "/upload.aspx",
+                upImgExt: "jpg,jpeg,gif,png",
+                upFlashUrl: "/upload.aspx",
+                upFlashExt: "swf",
+                upMediaUrl: "/upload.aspx",
+                upMediaExt: "avi"
+            });
+            editer.data("xhe", xheEle);
+
+            var successTagArr = {};
+            var AIndex = 0;
+            var AddFileAfter = function (ele) {
+                var indexStr = ele.attr("id");
+                var par = ele.parent();
+                ele.after($("<div class='delBtn'>X</div>"));
+                successTagArr[indexStr] = false;
+                ++AIndex;
+                var LiEle = $(
+                    "<li class='listLi'>" +
+                        "<img />" +
+                        "<div id='addimg_upload" + AIndex + "'></div>" +
+                    "</li>");
+                par.after(LiEle);
+                $("#addimg_upload" + AIndex).uploadify({
+                    height: 17,
+                    width: 40,
+                    buttonText: '添加',
+                    auto: false,
+                    swf: '/Scripts/uploadify/uploadify.swf',
+                    uploader: '/Manager/Upload',
+                    fileTypeDesc: 'Image Files',
+                    fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                    onUploadSuccess: function (file, data, response) {
+                        var result = $.parseJSON(data);
+                        if (result.Success) {
+                            var indexStr = this.original.attr("id");
+                            var imgEle = $("#" + indexStr).prev();
+                            imgEle.attr("src", result.imgSrc);
+                        }
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onUploadError: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
+                        UploadComplete();
+                    },
+                    onSelect: function (file) {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = false;
+                        AddFileAfter($("#" + indexStr));
+                    },
+                    onCancel: function () {
+                        var indexStr = this.original.attr("id");
+                        successTagArr[indexStr] = true;
+                    }
+                });
+            }
+            $("#addimg_upload" + AIndex).uploadify({
+                height: 17,
+                width: 40,
+                buttonText: '添加',
+                auto: false,
+                swf: '/Scripts/uploadify/uploadify.swf',
+                uploader: '/Manager/Upload',
+                fileTypeDesc: 'Image Files',
+                fileTypeExts: '*.jpg;*.bmp;*.png;*.gif',
+                onUploadSuccess: function (file, data, response) {
+                    var result = $.parseJSON(data);
+                    if (result.Success) {
+                        var indexStr = this.original.attr("id");
+                        var imgEle = $("#" + indexStr).prev();
+                        imgEle.attr("src", result.imgSrc);
+                    }
+                    successTagArr[indexStr] = true;
+                    UploadComplete();
+                },
+                onUploadError: function () {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = true;
+                    UploadComplete();
+                },
+                onSelect: function (file) {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = false;
+                    AddFileAfter($("#" + indexStr));
+                },
+                onCancel: function () {
+                    var indexStr = this.original.attr("id");
+                    successTagArr[indexStr] = true;
+                }
+            });
+            var UploadComplete = function () {
+                var completeTag = true;
+                $.each(successTagArr, function (i, n) {
+                    if (!n)
+                        completeTag = false;
+                });
+                if (completeTag)
+                    ProductManager.onUploadFileCompleteForAddItem();
+            };
+
+            $("#productBrand .evaluate .star").bind("click", ProductManager.onDetailStarClick);
+
+            $("#preview").on("click", ".delBtn", function (ev) {
+                var target = $(ev.currentTarget);
+                target.parent().remove();
+            });
+
+            $("#saleLog input").bind("change", function (ev) {
+                $("#buildBtn").attr("class", "sbtn1");
+            });
+
+            $("#buildBtn").on("click", ProductManager.onBuildEvaluationBtnClick);
+
+            $("#overflowDiv").on("click", ".item .editDiv .delBtn", null, ProductManager.onDelEvaluationBtnClick);
+            $("#overflowDiv").on("click", ".item .editDiv .editBtn", null, ProductManager.onEditEvaluationBtnClick);
+
+            $("#gobackBtn").bind("click", ProductManager.onDetailBackBtnClick);
+            $("#refreshBtn").bind("click", ProductManager.onDetailRefreshBtnClick);
+            $("#saveBtn").bind("click", function (ev) {
+                var completeTag = true;
+                $.each(successTagArr, function (i, n) {
+                    if (!n)
+                        completeTag = false;
+                });
+                if (completeTag) {
+                    ProductManager.onUploadFileCompleteForAddItem();
+                }
+                else {
+                    //上传文件
+                    $.each(successTagArr, function (i, n) {
+                        if (!n)
+                            $("#" + i).uploadify("upload", "*");
+                    });
+                }
+            });
+            $("#previewBtn").bind("click", ProductManager.onDetailPreviewBtnClick);
+        });
+    </script>
+}
+
+<div id="PD_View">
+    <div id="categoryNav">
+        <div>当前位置：</div>
+        <div>未确定</div>
+    </div>
+    <div class="top">
+        <div id="preview">
+            <div class="p1">
+                <ul>
+                    <li>商品类型：</li>
+                    <li><a>未确定</a></li>
+                </ul>
+            </div>
+            <ul class="ILUl">
+                <li class="listLi">
+                    <img />
+                    <div id="addimg_upload0"></div>
+                </li>
+            </ul>
+        </div>
+        <div id="productInfo">
+            <div id="productTitle">
+                <textarea placeholder="请输入标题"></textarea>
+            </div>
+            <div id="productBrand">
+                <div>
+                    <div class="title">
+                        编号：
+                    </div>
+                    <div class="content" id="PIDLB">未确定</div>
+                </div>
+                <div class="evaluate" data-val="10">
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        <div class="star empty full" ></div>
+                    }
+                </div>
+                <div class="brandDiv">
+                    <div class="title">
+                        品牌：
+                    </div>
+                    <div class="content">
+                        <a class="brandA">
+                            <div class="icon">
+                                未确定
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="pullupDiv"></div>
+            </div>
+            <div id="productPrice">
+                <div class="title">代购价：</div>
+                <div class="content price">￥<input type="text" /></div>
+                <div class="title">市场价：</div>
+                <div class="content marketPrice">￥<input type="text" /></div>
+                <div class="title">已售出：</div>
+                <div class="content sale"><input type="text" /></div>
+                <div class="pullupDiv"></div>
+                <div class="conner"></div>
+            </div>
+            <div id="productChoose">
+                <textarea placeholder="请按照以下语法提示输入"></textarea>
+                <label>语法提示：[{"title":"容量", "values":[{"name":"200ml"}]}]</label>
+            </div>
+            <div class="pullupDiv"></div>
+        </div>
+        <div class="pullupDiv"></div>
+    </div>
+    <div id="productTabs" style="background-color:white;">
+        <ul>
+            <li><a href="#descriptContent">商品详情</a></li>
+        </ul>
+        <div id="descriptContent">
+            <textarea></textarea>
+        </div>
+        <ul>
+            <li><a href="#saleLog">销售记录(0)</a></li>
+        </ul>
+        <div id="saleLog">
+            <ul>
+                @for (int i = 0; i < Model.SaleLog.CountArr.Count; i++)
+                {
+                    <li class="title">@(Model.SaleLog.DTStrArr[i])</li>
+                    <li class="content" data-bdt="@(Model.SaleLog.BDTStrArr[i])" data-edt="@(Model.SaleLog.EDTStrArr[i])">
+                        <input type="text" data-val="@(Model.SaleLog.CountArr[i] + Model.SaleLog.ShamCountArr[i])" value="@(Model.SaleLog.CountArr[i] + Model.SaleLog.ShamCountArr[i])" />
+                    </li>
+                }
+            </ul>
+            <div class="btnDiv">
+                <input id="buildBtn" class="sbtngray" type="button" value="生成" />
+            </div>
+        </div>
+        <ul>
+            <li><a href="#evaluation">客户评价(0)</a></li>
+        </ul>
+        <div id="overflowDiv">
+            <div id="buildDiv">
+            </div>
+            <div id="evaluation">
+            </div>
+        </div>
+        <div id="btnDiv" class="p1 pullupDiv">
+            <ul>
+                <li class="p4">
+                    <input id="gobackBtn" class="sbtn1" type="button" value="返回" />
+                </li>
+                <li class="p4">
+                    <input id="refreshBtn" class="sbtn2" type="button" value="刷新" />
+                </li>
+                <li class="p4">
+                    <input id="saveBtn" class="sbtn3" type="button" value="保存" />
+                </li>
+                <li class="p4">
+                    <input id="previewBtn" class="sbtn1" type="button" value="预览" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

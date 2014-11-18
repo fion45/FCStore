@@ -481,35 +481,34 @@ namespace FCStore.Controllers
         public ActionResult EditDetail(int ID)
         {
             ProductEditDetailVM vmModel = new ProductEditDetailVM();
-
             //TODO:判断是否是自己的商品
             Product tmpProduct = db.Products.First(r => r.PID == ID);
             ViewBag.EvaluationCount = db.Evaluations.Count(r => r.Product.PID == ID);
             ViewBag.SaleCount = (from op in db.OrderPackets
-                                 where op.PID == ID && op.Order.Status > 1
-                                 select op.Count).ToList().Sum();
+                                    where op.PID == ID && op.Order.Status > 1
+                                    select op.Count).ToList().Sum();
             vmModel.Product = tmpProduct;
-            
+
             //获得评论
             int[] NCStatus = new int[] { (int)Order.EOrderStatus.OS_Init };
             List<OrderPacket> tmpOPLST = db.OrderPackets.Where(r => r.PID == ID && !NCStatus.Contains(r.Order.Status)).ToList();
             List<int> tmpOIDArr = (from opl in tmpOPLST
-                                   select opl.Order.OID).Distinct().ToList();
+                                    select opl.Order.OID).Distinct().ToList();
             //只取前20条
-            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).OrderByDescending(r=>r.DataTime).Take(20).ToList();
+            List<Evaluation> tmpELST = db.Evaluations.Where(r => tmpOIDArr.Contains(r.OID)).OrderByDescending(r => r.DataTime).Take(20).ToList();
             vmModel.EvaluationLST = new List<EvaluationVM>();
-            foreach(Evaluation eva in tmpELST)
+            foreach (Evaluation eva in tmpELST)
             {
                 EvaluationVM tmpEva = new EvaluationVM(eva);
                 vmModel.EvaluationLST.Add(tmpEva);
             }
-             List<ShamOrderData> tmpSODLST = db.ShamOrderDatas.Where(r => r.ProductID == ID).OrderByDescending(r => r.DateTime).Take(20).ToList();
-             foreach (ShamOrderData sham in tmpSODLST)
+            List<ShamOrderData> tmpSODLST = db.ShamOrderDatas.Where(r => r.ProductID == ID).OrderByDescending(r => r.DateTime).Take(20).ToList();
+            foreach (ShamOrderData sham in tmpSODLST)
             {
                 EvaluationVM tmpEva = new EvaluationVM(sham);
                 vmModel.EvaluationLST.Add(tmpEva);
             }
-             vmModel.EvaluationLST.Sort((a, b) => b.DataTime.CompareTo(a.DataTime));
+            vmModel.EvaluationLST.Sort((a, b) => b.DataTime.CompareTo(a.DataTime));
 
             //获得销售记录
             string DTFormat = "yyyy-MM-dd hh:mm:ss";
@@ -522,7 +521,7 @@ namespace FCStore.Controllers
             string BDT, EDT = tmpDT.ToString(DTFormat);
             SaleLogVM tmpSLVM = new SaleLogVM();
             tmpSLVM.BDTStrArr = new List<string>();
-            tmpSLVM.EDTStrArr = new List<string>(); 
+            tmpSLVM.EDTStrArr = new List<string>();
             tmpSLVM.DTStrArr = new List<string>();
             tmpSLVM.CountArr = new List<int>();
             tmpSLVM.ShamCountArr = new List<int>();
@@ -545,8 +544,47 @@ namespace FCStore.Controllers
                 EDTStr = BDTStr;
             }
             vmModel.SaleLog = tmpSLVM;
-
             return View(vmModel);
+        }
+
+        public ActionResult AddItemDetail()
+        {
+            ProductEditDetailVM vmModel = new ProductEditDetailVM();
+            //获得销售记录
+            string DTFormat = "yyyy-MM-dd hh:mm:ss";
+            string DTF = "M月d日";
+            string DTStr = DateTime.Now.AddMonths(-1).ToString(DTFormat);
+            DateTime tmpDT = DateTime.Now;
+            string EDTStr = tmpDT.ToString(DTF);
+            string BDTStr;
+            string BDT, EDT = tmpDT.ToString(DTFormat);
+            SaleLogVM tmpSLVM = new SaleLogVM();
+            tmpSLVM.BDTStrArr = new List<string>();
+            tmpSLVM.EDTStrArr = new List<string>();
+            tmpSLVM.DTStrArr = new List<string>();
+            tmpSLVM.CountArr = new List<int>();
+            tmpSLVM.ShamCountArr = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                tmpDT = tmpDT.AddDays(-7);
+                BDT = tmpDT.ToString(DTFormat);
+                BDTStr = tmpDT.ToString(DTF);
+                tmpSLVM.BDTStrArr.Insert(0, BDT);
+                tmpSLVM.EDTStrArr.Insert(0, EDT);
+                string tmpDTStr = string.Format("\"{0}\" 至 \"{1}\"", BDTStr, EDTStr);
+                tmpSLVM.DTStrArr.Insert(0, tmpDTStr);
+                tmpSLVM.CountArr.Insert(0, 0);
+                tmpSLVM.ShamCountArr.Insert(0, 0);
+                EDT = BDT;
+                EDTStr = BDTStr;
+            }
+            vmModel.SaleLog = tmpSLVM;
+            return View(vmModel);
+        }
+
+        public ActionResult SaveAddDetail(Product product, List<ShamOrderData> ShamOrderDataArr)
+        {
+
         }
 
         public ActionResult SaveEditDetail(Product product, List<ShamOrderData> ShamOrderDataArr)

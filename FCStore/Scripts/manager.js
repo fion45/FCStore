@@ -954,6 +954,60 @@ var ProductManager = {
 	onDetailRefreshBtnClick : function(ev) {
 		location.reload();
 	},
+	onUploadFileCompleteForAddItem : function() {
+		var Product = {};
+		Product.PID = 0;
+		Product.Title = $("#productTitle textarea").val();
+		Product.EvaluationStarCount = $("#productBrand .evaluate").attr("data-val");
+		Product.Price = $("#productPrice .price input").val();
+		Product.MarketPrice = $("#productPrice .marketPrice input").val();
+		Product.Sale = $("#productPrice .sale input").val();
+		Product.Chose = $("#productChoose textarea").val();
+		Product.Descript = $("#descriptContent textarea").data("xhe").getSource();
+		var tmpStr = "";
+		$.each($("#preview img"),function(i,n){
+			var img = $(n);
+			if(img.attr("src")) {
+				tmpStr += img.attr("src") + ";";
+			}
+		});
+		Product.ImgPath = tmpStr.substring(0,tmpStr.length - 1);
+		
+		var ShamOrderDataArr = [];
+		$.each($("#buildDiv .item"),function(i,n){
+			var item = $(n);
+			var ShamOrderData = {};
+			ShamOrderData.ProductID = Product.PID;
+			ShamOrderData.IDLabel = item.find(".unDiv").text();
+			ShamOrderData.IDLabel = ShamOrderData.IDLabel.substring(0,ShamOrderData.IDLabel.length - 1);
+			if(item.find(".description text").length > 0) {
+				ShamOrderData.Description = item.find(".description text").val();
+			}
+			else {
+				ShamOrderData.Description = item.find(".description").text();
+			}
+			ShamOrderData.DateTime = item.find(".dataDiv").text();
+			ShamOrderDataArr.push(ShamOrderData);
+		});
+		var tmpData = {
+			Product : Product,
+			ShamOrderDataArr : ShamOrderDataArr
+		};
+		$.myAjax({
+            historyTag: false,
+            loadEle: $("#PD_View"),
+            url: "/Product/SaveAddDetail/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+					location.reload();
+                }
+            }
+        });
+	},
 	onUploadFileComplete : function() {
 		var Product = {};
 		Product.PID = Manager.GetParamTag(3);
@@ -1007,7 +1061,6 @@ var ProductManager = {
                 }
             }
         });
-		
 	},
 	onDetailPreviewBtnClick : function(ev) {
 		
@@ -1045,7 +1098,7 @@ var ProductManager = {
 		ProductManager.clickchktag = false;
 	},
 	OnAddProductBtnClick : function(ev) {
-		
+		window.location = "/Product/AddItemDetail/";
 	},
 	OnDelProductBtnClick : function(ev) {
 		

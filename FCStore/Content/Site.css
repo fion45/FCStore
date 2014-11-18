@@ -1471,6 +1471,11 @@ footer {
     padding:5px;
 }
 
+    #preview .p1 {
+        width:100%;
+        float:left;
+    }
+
     #preview .zoomdiv {
         top:1px;
         left:0px;

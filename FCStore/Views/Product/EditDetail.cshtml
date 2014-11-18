@@ -113,7 +113,7 @@
                         successTagArr[indexStr] = true;
                     }
                 });
-            }
+            };
             $("#addimg_upload" + AIndex).uploadify({
                 height: 17,
                 width: 40,
@@ -256,6 +256,12 @@
     </div>
     <div class="top">
         <div id="preview">
+            <div class="p1">
+                <ul>
+                    <li>商品类型：</li>
+                    <li><a href="/Manager/CategoryManager/1/@(Model.Product.PID)">@(Model.Product.Category.NameStr)</a></li>
+                </ul>
+            </div>
             <ul class="ILUl">
                 @{
                     int imgIndex = 0;
