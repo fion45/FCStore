@@ -532,6 +532,11 @@ li {
     cursor:pointer;
 }
        
+#PSMain .Sel {
+    border:solid 2px Blue;
+    padding:11px 8px;
+}
+       
     #PSMain .item .productCB {
         top:8px;
         left:8px;

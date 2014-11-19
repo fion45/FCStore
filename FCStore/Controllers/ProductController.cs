@@ -729,6 +729,26 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult DelProductsByPIDArr(int[] PIDArr)
+        {
+            string PIDArrStr = "";
+            foreach(int tmpI in PIDArr)
+            {
+                PIDArrStr += tmpI.ToString() + ",";
+            }
+            PIDArrStr = PIDArrStr.TrimEnd(new char[] { ',' });
+            db.m_objcontext.ExecuteStoreCommand("DELETE Products WHERE PID IN (" + PIDArrStr + ")");
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

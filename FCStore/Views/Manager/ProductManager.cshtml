@@ -196,7 +196,13 @@
                         "<input id='delProductBtn' class='sbtn3' type='button' value='删除' />" +
                     "</li>" +
                     "<li>" +
-                        "<input id='importProductBtn' class='sbtn1' type='button' value='导入Excel' />" +
+                        "<input id='showProductBtn' class='sbtn1' type='button' value='显示' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='hideProductBtn' class='sbtn3' type='button' value='隐藏' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='importProductBtn' class='sbtn2' type='button' value='导入Excel' />" +
                     "</li>" +
                     "<li>" +
                         "<input id='exportProductBtn' class='sbtn3' type='button' value='导出Excel' />" +
@@ -208,6 +214,8 @@
 
                 $("#addProductBtn").on("click", ProductManager.OnAddProductBtnClick);
                 $("#delProductBtn").on("click", ProductManager.OnDelProductBtnClick);
+                $("#showProductBtn").on("click", ProductManager.OnShowProductBtnClick);
+                $("#hideProductBtn").on("click", ProductManager.OnHideProductBtnClick);
                 $("#importProductBtn").on("click", ProductManager.OnImportProductBtnClick);
                 $("#exportProductBtn").on("click", ProductManager.OnExportProductBtnClick);
 

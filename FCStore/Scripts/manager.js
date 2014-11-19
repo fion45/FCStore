@@ -625,9 +625,11 @@ var ProductManager = {
         switch (tmpTag) {
             case -1: {
                 var target = $(ev.currentTarget);
+                target.toggleClass("Sel");
                 var par = $("#selDiv");
                 par.empty();
                 target = target.clone();
+                target.removeClass("Sel");
                 target.appendTo(par);
                 var tmpC = target.find(".title");
                 var tmpStr = $.trim(tmpC.text());
@@ -1101,6 +1103,30 @@ var ProductManager = {
 		window.location = "/Product/AddItemDetail/";
 	},
 	OnDelProductBtnClick : function(ev) {
+		var tmpData = {PIDArr:[]};
+		$.each($("#plDiv .Sel"),function(i,n){
+			tmpData.PIDArr.push($(n).attr("data-pid"));
+		});
+		
+		$.myAjax({
+            historyTag: false,
+            loadEle: $("#plDiv"),
+            url: "/Product/DelProductsByPIDArr/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+                	
+                }
+            }
+        });
+	},
+	OnShowProductBtnClick : function(ev) {
+		
+	},
+	OnHideProductBtnClick : function(ev) {
 		
 	},
 	OnImportProductBtnClick : function(ev) {
