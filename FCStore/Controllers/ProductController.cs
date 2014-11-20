@@ -11,6 +11,7 @@ using System.Web.Security;
 using FCStore.Common;
 using System.Text.RegularExpressions;
 using FCStore.Filters;
+using System.IO;
 
 namespace FCStore.Controllers
 {
@@ -728,6 +729,85 @@ namespace FCStore.Controllers
                 return View();
             }
         }
+
+        public ActionResult DelProductsByPIDArr(int[] PIDArr)
+        {
+            string PIDArrStr = "";
+            foreach(int PID in PIDArr)
+            {
+                PIDArrStr += PID + ",";
+            }
+            PIDArrStr = PIDArrStr.TrimEnd(new char[] { ',' });
+            db.m_objcontext.ExecuteStoreCommand("DELETE Products WHERE PID IN (" + PIDArrStr + ")");
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult ShowProductsByPIDArr(int[] PIDArr,int ShowTag)
+        {
+            string PIDArrStr = "";
+            foreach (int PID in PIDArr)
+            {
+                PIDArrStr += PID + ",";
+            }
+            PIDArrStr = PIDArrStr.TrimEnd(new char[] { ',' });
+            db.m_objcontext.ExecuteStoreCommand("UPDATE Products SET ShowTag = " + ShowTag + " WHERE PID IN (" + PIDArrStr + ")");
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [MyAuthorizeAttribute]
+        public ActionResult BuildProductsXML(int[] PIDArr)
+        {
+            MyUser tmpUser = HttpContext.User as MyUser;
+            if (tmpUser == null)
+            {
+                string jsonStr = PubFunction.BuildResult("", null, false, -1);
+                return Content(jsonStr);
+            }
+            string PIDArrStr = "";
+            foreach (int PID in PIDArr)
+            {
+                PIDArrStr += PID + ",";
+            }
+            PIDArrStr = PIDArrStr.TrimEnd(new char[] { ',' });
+            Product[] productArr = (from product in db.Products
+                                   where PIDArr.Contains(product.PID)
+                                   select product).ToArray();
+            //生成所需的商品XML数据
+            string FileName = "Product_" + Guid.NewGuid().ToString() + "xml";
+            string serverFP = PubFunction.GetUploadFilePathUsingDate() + FileName;
+            string localFP = Server.MapPath(serverFP) + FileName;
+            if(!PubFunction.ObjectArrSaveToXMLFile(productArr, localFP))
+            {
+                string jsonStr = PubFunction.BuildResult("", null, false, -2, "");
+                return Content(jsonStr);
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK", "XMLFilePath:" + serverFP);
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        } 
 
         protected override void Dispose(bool disposing)
         {

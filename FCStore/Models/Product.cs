@@ -132,6 +132,12 @@ namespace FCStore.Models
             set;
         }
 
+        public bool ShowTag
+        {
+            get;
+            set;
+        }
+
         [NotMapped]
         public virtual List<ReColumnProduct> REProColLST
         {

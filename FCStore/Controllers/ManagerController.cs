@@ -266,13 +266,7 @@ namespace FCStore.Controllers
                     }
                     else
                     {
-                        tmpStr = "~/Uploads/" + (DateTime.Now.Year % 100).ToString() + "/";
-                        string numStr = "0" + DateTime.Now.Month.ToString();
-                        numStr = numStr.Substring(numStr.Length - 2, 2);
-                        tmpStr += numStr + "/";
-                        numStr = "0" + DateTime.Now.Day.ToString();
-                        numStr = numStr.Substring(numStr.Length - 2, 2);
-                        tmpStr += numStr + "/";
+                        tmpStr = PubFunction.GetUploadFilePathUsingDate();
                     }
                     string filePath = Server.MapPath("/Uploads/");
                     if(!string.IsNullOrEmpty(tmpStr))

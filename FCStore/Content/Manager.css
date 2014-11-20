@@ -240,6 +240,40 @@ li {
     background:url("/Content/themes/image/head_bg.gif");
 }
 
+/* loading
+-----------------------------------------------------------*/
+.loadingEle {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    width:100%;
+    background-color:#e3e3e3; 
+    z-index:99; 
+    opacity:0.5;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+}
+
+    .loadingEle img {
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-16px;
+        margin-top:-16px;
+    }
+
+#LBDiv {
+    background:url(/Content/themes/image/LoginSource1.png) no-repeat;
+    width:700px;
+    height:648px;
+    position:absolute;
+    left:0px;
+    top:100%;
+    margin-top:-648px;
+}
+
 #ManagerMain {
     width:1000px;
     margin:0px auto;
@@ -520,17 +554,34 @@ li {
     background-color:#FFFFFF;
 }
        
-#PSMain .item {
-    float:left;
-    width:190px;
-    padding:13px 10px;
-    font-size:10pt;
-    text-align:center;
-    position:relative;
-    border-left:dashed 1px #C5C5C5;
-    border-bottom:dashed 1px #C5C5C5;
-    cursor:pointer;
-}
+    #PSMain .item {
+        float:left;
+        width:190px;
+        padding:13px 10px;
+        font-size:10pt;
+        text-align:center;
+        position:relative;
+        border-left:dashed 1px #C5C5C5;
+        border-bottom:dashed 1px #C5C5C5;
+        cursor:pointer;
+    }
+
+        #plDiv .sel .hookIcon {
+            position:absolute;
+            top:3px;
+            left:3px;
+            width:85px;
+            height:84px;
+            background:url("/Content/themes/image/hook.png") no-repeat;
+        }
+
+    #plDiv .hide {
+        text-decoration:line-through;
+        color:#DDDDDD;
+    }
+
+        #plDiv .hide .title {
+        }
        
     #PSMain .item .productCB {
         top:8px;
@@ -604,6 +655,14 @@ li {
          width:95px;
          padding:3px;
      }
+
+        #selDiv .item #DelItemBtn {
+            display:none;
+        }
+
+        #selDiv .item #ShowItemBtn {
+            display:none;
+        }
 
         #selDiv img {
             width:95px;
@@ -751,3 +810,29 @@ li {
         top:8px;
         left:8px;
     }
+
+#DelItemBtn {
+    width:30px;
+    height:30px;
+    line-height:30px;
+    vertical-align:central;
+    position:absolute;
+    margin-left:-33px;
+    top:3px;
+    left:100%;
+    color:#D73E3E;
+    background-color:gray;
+}
+
+#ShowItemBtn {
+    width:30px;
+    height:30px;
+    line-height:30px;
+    vertical-align:central;
+    position:absolute;
+    margin-left:-66px;
+    top:3px;
+    left:100%;
+    color:black;
+    background-color:gray;
+}

@@ -45,38 +45,41 @@
             </div>
             <div id="plDiv">
                 @foreach (FCStore.Models.Product item in Model)
-                {
-                    <div class="item" data-pid="@(item.PID)">
-                        <div class="img">
-                            <img src="@(item.ImgPathArr[0])" />
-                        </div>
-                        <div class="title" title="@(item.Title)">
-                            @(item.Title)
-                        </div>
-                        <div class="p60">
-                            市价：￥<label class="marketPrice">@(item.MarketPrice)</label>
-                        </div>
-                        <div class="p40">
-                            折扣：<label class="discount">@(item.Discount)</label>%
-                        </div>
-                        <div class="p60">
-                            现价：￥<label class="price">@(item.Price)</label>
-                        </div>
-                        <div class="p40">
-                            已售：<label class="sale">@(item.Sale)</label>
-                        </div>
-                        <div class="p60">
-                            存货：<label class="stock">@(item.Stock)</label>
-                        </div>
-                        <div class="p40">
-                            浏览：<label class="pvcount">@(item.PVCount)</label>
-                        </div>
-                        <div class="p1">
-                            创建时间：<label class="date">@(item.Date)</label>
-                            <a class="detailA" href="/Product/EditDetail/@(item.PID)">详细</a>
-                        </div>
-                    </div>
-                }
+{
+    <div class="item @(item.ShowTag ? "" : "hide")" data-pid="@(item.PID)">
+        <div id="DelItemBtn">删除</div>
+        <div id="ShowItemBtn">@(item.ShowTag ? "隐藏" : "显示")</div>
+        <div class="hookIcon"></div>
+        <div class="img">
+            <img src="@(item.ImgPathArr[0])" />
+        </div>
+        <div class="title" title="@(item.Title)">
+            @(item.Title)
+        </div>
+        <div class="p60">
+            市价：￥<label class="marketPrice">@(item.MarketPrice)</label>
+        </div>
+        <div class="p40">
+            折扣：<label class="discount">@(item.Discount)</label>%
+        </div>
+        <div class="p60">
+            现价：￥<label class="price">@(item.Price)</label>
+        </div>
+        <div class="p40">
+            已售：<label class="sale">@(item.Sale)</label>
+        </div>
+        <div class="p60">
+            存货：<label class="stock">@(item.Stock)</label>
+        </div>
+        <div class="p40">
+            浏览：<label class="pvcount">@(item.PVCount)</label>
+        </div>
+        <div class="p1">
+            创建时间：<label class="date">@(item.Date)</label>
+            <a class="detailA" href="/Product/EditDetail/@(item.PID)">详细</a>
+        </div>
+    </div>
+}
             </div>
         </div>
     </div>
@@ -196,7 +199,13 @@
                         "<input id='delProductBtn' class='sbtn3' type='button' value='删除' />" +
                     "</li>" +
                     "<li>" +
-                        "<input id='importProductBtn' class='sbtn1' type='button' value='导入Excel' />" +
+                        "<input id='showProductBtn' class='sbtn1' type='button' value='显示' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='hideProductBtn' class='sbtn3' type='button' value='隐藏' />" +
+                    "</li>" +
+                    "<li>" +
+                        "<input id='importProductBtn' class='sbtn2' type='button' value='导入Excel' />" +
                     "</li>" +
                     "<li>" +
                         "<input id='exportProductBtn' class='sbtn3' type='button' value='导出Excel' />" +
@@ -208,11 +217,16 @@
 
                 $("#addProductBtn").on("click", ProductManager.OnAddProductBtnClick);
                 $("#delProductBtn").on("click", ProductManager.OnDelProductBtnClick);
+                $("#showProductBtn").on("click", ProductManager.OnShowProductBtnClick);
+                $("#hideProductBtn").on("click", ProductManager.OnHideProductBtnClick);
                 $("#importProductBtn").on("click", ProductManager.OnImportProductBtnClick);
                 $("#exportProductBtn").on("click", ProductManager.OnExportProductBtnClick);
 
                 $("#selDiv").on("change", ".price input", ProductManager.AutoCalculateDiscount);
                 $("#selDiv").on("change", ".marketPrice input", ProductManager.AutoCalculateDiscount);
+
+                $("#plDiv").on("click", "#DelItemBtn", ProductManager.OnDelProductItemBtnClick);
+                $("#plDiv").on("click", "#ShowItemBtn", ProductManager.OnShowProductItemBtnClick);
             }
             else if (parArr[3] == "0") {
                 $("<ul>" +

@@ -4,6 +4,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace FCStore.Common
 {
@@ -75,6 +79,81 @@ namespace FCStore.Common
             {
                 object tmpObj = type.InvokeMember(pi.Name, BindingFlags.GetProperty, null, source, null);
                 type.InvokeMember(pi.Name, BindingFlags.SetProperty, null, destination, new object[] { tmpObj });
+            }
+        }
+
+        public static string GetUploadFilePathUsingDate()
+        {
+            string serverFP = "";
+            serverFP = "~/Uploads/" + (DateTime.Now.Year % 100).ToString() + "/";
+            string numStr = "0" + DateTime.Now.Month.ToString();
+            numStr = numStr.Substring(numStr.Length - 2, 2);
+            serverFP += numStr + "/";
+            numStr = "0" + DateTime.Now.Day.ToString();
+            numStr = numStr.Substring(numStr.Length - 2, 2);
+            serverFP += numStr + "/";
+            return serverFP;
+        }
+
+        
+        public static bool ObjectArrSaveToXMLFile<T>(T[] objArr,string XMLFP)
+        {
+            try
+            {
+                StringBuilder resultStr = new StringBuilder("<table style='background-color:#0066CC;'><tr style='background-color:Black;color:white;'>");
+                Type objType = typeof(T);
+                MemberInfo[] miArray = objType.GetMembers();
+                List<MemberInfo> miLST = new List<MemberInfo>();
+                foreach (MemberInfo mi in miArray)
+                {
+                    if (mi.MemberType == MemberTypes.Property)
+                    {
+                        bool RecordTag = true;
+                        ReadOnlyCollection<CustomAttributeData> CACollection = mi.CustomAttributes as ReadOnlyCollection<CustomAttributeData>;
+                        if (CACollection != null)
+                        {
+                            foreach(CustomAttributeData attr in CACollection)
+                            {
+                                if (attr.AttributeType.FullName.IndexOf(".NotMappedAttribute") > -1 || attr.AttributeType.FullName.IndexOf(".JsonIgnoreAttribute") > -1)
+                                {
+                                    RecordTag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (RecordTag)
+                        {
+                            resultStr.Append("<th>" + mi.Name + "</th>");
+                            miLST.Add(mi);
+                        }
+                    }
+                }
+                foreach (T obj in objArr)
+                {
+                    resultStr.Append("<tr>");
+                    foreach (MemberInfo mi in miLST)
+                    {
+                        try
+                        {
+                            resultStr.Append("<td>" + resultStr.Append(objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null).ToString()) + "</td>");
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                    resultStr.Append("</tr>");
+                }
+                resultStr.Append("</table>");
+                byte[] tmpBuffer = UnicodeEncoding.Unicode.GetBytes(resultStr.ToString());
+                FileStream tmpFS = new FileStream(XMLFP, FileMode.CreateNew);
+                tmpFS.Write(tmpBuffer, 0, tmpBuffer.Length);
+                tmpFS.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
