@@ -119,7 +119,7 @@
                     <li class="productItem p4">
                         <a href="\Product\Detail\@(product.PID)">
                             <div>
-                                <img class="thum" src="@(product.ImgPathArr.First())" />
+                                <img class="thum" src="@(product.ImgPathArr.Length > 0 ? product.ImgPathArr.First() : "")" />
                             </div>
                             <div class="description">
                                 @(product.Title)

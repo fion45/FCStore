@@ -453,7 +453,9 @@ var ProductManager = {
     },
     BuildProductItem: function (item) {
         var htmlStr =
-            "<div class='item' data-pid='{0}'>" +
+            "<div class='item {10}' data-pid='{0}'>" +
+        		"<div id='DelItemBtn'>删除</div>" +
+        		"<div id='ShowItemBtn'>{11}</div>" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
@@ -491,7 +493,9 @@ var ProductManager = {
             item.Sale,
             item.Stock,
             item.PVCount,
-            item.Date
+            item.Date,
+            item.ShowTag ? "show" : "hide",
+            item.ShowTag ? "隐藏" : "显示"
         ]);
         return $(htmlStr);
     },
@@ -625,11 +629,10 @@ var ProductManager = {
         switch (tmpTag) {
             case -1: {
                 var target = $(ev.currentTarget);
-                target.toggleClass("Sel");
+                target.toggleClass("sel");
                 var par = $("#selDiv");
                 par.empty();
                 target = target.clone();
-                target.removeClass("Sel");
                 target.appendTo(par);
                 var tmpC = target.find(".title");
                 var tmpStr = $.trim(tmpC.text());
@@ -1102,12 +1105,114 @@ var ProductManager = {
 	OnAddProductBtnClick : function(ev) {
 		window.location = "/Product/AddItemDetail/";
 	},
-	OnDelProductBtnClick : function(ev) {
-		var tmpData = {PIDArr:[]};
-		$.each($("#plDiv .Sel"),function(i,n){
+	OnShowProductBtnClick : function(ev) {
+		var tmpData = {
+			PIDArr : [],
+			ShowTag : 1
+		};
+		$.each($("#plDiv .sel"),function(i,n){
 			tmpData.PIDArr.push($(n).attr("data-pid"));
 		});
-		
+		$.myAjax({
+            historyTag: false,
+            loadEle: $("#plDiv"),
+            url: "/Product/ShowProductsByPIDArr/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+                	$("#plDiv .sel").removeClass("hide");
+                	$("#plDiv .sel #ShowItemBtn").text("隐藏");
+                }
+            }
+        });
+	},
+	OnHideProductBtnClick : function(ev) {
+		var tmpData = {
+			PIDArr : [],
+			ShowTag : 0
+		};
+		$.each($("#plDiv .sel"),function(i,n){
+			tmpData.PIDArr.push($(n).attr("data-pid"));
+		});
+		$.myAjax({
+            historyTag: false,
+            loadEle: $("#plDiv"),
+            url: "/Product/ShowProductsByPIDArr/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+                	$("#plDiv .sel").addClass("hide");
+                	$("#plDiv .sel #ShowItemBtn").text("显示");
+                }
+            }
+        });
+	},
+	OnShowProductItemBtnClick : function(ev) {
+		var target = $(ev.currentTarget);
+		var par = target.parent();
+		var ShowTag = target.text() == "隐藏" ? 0 : 1;
+		var tmpData = {
+			PIDArr : [par.attr("data-pid")],
+			ShowTag : ShowTag
+		};
+		$.myAjax({
+            historyTag: false,
+            loadEle: par,
+            url: "/Product/ShowProductsByPIDArr/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+                	if(ShowTag == 1) {
+                		par.removeClass("hide");
+                		target.text("隐藏");
+                	}
+                	else {
+                		par.addClass("hide");
+                		target.text("显示");
+                	}
+                }
+            }
+        });
+        return false;
+	},
+	OnDelProductItemBtnClick : function(ev) {
+		var target = $(ev.currentTarget);
+		var par = target.parent();
+		var tmpData = {
+			PIDArr : [par.attr("data-pid")]
+		};
+		$.myAjax({
+            historyTag: false,
+            loadEle: par,
+            url: "/Product/DelProductsByPIDArr/",
+    		data: JSON.stringify(tmpData),
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            success: function (data, status, options) {
+                if (data.content == "OK") {
+                	$("#plDiv .sel").remove();
+                }
+            }
+        });
+        return false;
+	},
+	OnDelProductBtnClick : function(ev) {
+		var tmpData = {
+			PIDArr : []
+		};
+		$.each($("#plDiv .sel"),function(i,n){
+			tmpData.PIDArr.push($(n).attr("data-pid"));
+		});
 		$.myAjax({
             historyTag: false,
             loadEle: $("#plDiv"),
@@ -1118,22 +1223,21 @@ var ProductManager = {
             contentType: "application/json;charset=utf-8",
             success: function (data, status, options) {
                 if (data.content == "OK") {
-                	
+                	$("#plDiv .sel").remove();
                 }
             }
         });
-	},
-	OnShowProductBtnClick : function(ev) {
-		
-	},
-	OnHideProductBtnClick : function(ev) {
-		
 	},
 	OnImportProductBtnClick : function(ev) {
 		
 	},
 	OnExportProductBtnClick : function(ev) {
-		
+		var PIDArrStr = "";
+		$.each($("#plDiv .sel"),function(i,n){
+			PIDArrStr += $(n).attr("data-pid") + ",";
+		});
+		PIDArrStr = PIDArrStr.substring(0,PIDArrStr.length - 1);
+		OpenWindowWithPost("/Product/BuildProductsXML/","ProductXML",["PIDArrStr"],[PIDArrStr]);
 	}
 };
 

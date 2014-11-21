@@ -4,6 +4,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Data.OleDb;
 
 namespace FCStore.Common
 {
@@ -76,6 +81,57 @@ namespace FCStore.Common
                 object tmpObj = type.InvokeMember(pi.Name, BindingFlags.GetProperty, null, source, null);
                 type.InvokeMember(pi.Name, BindingFlags.SetProperty, null, destination, new object[] { tmpObj });
             }
+        }
+
+        public static string GetUploadFilePathUsingDate()
+        {
+            string serverFP = "";
+            serverFP = "~/Uploads/" + (DateTime.Now.Year % 100).ToString() + "/";
+            string numStr = "0" + DateTime.Now.Month.ToString();
+            numStr = numStr.Substring(numStr.Length - 2, 2);
+            serverFP += numStr + "/";
+            numStr = "0" + DateTime.Now.Day.ToString();
+            numStr = numStr.Substring(numStr.Length - 2, 2);
+            serverFP += numStr + "/";
+            return serverFP;
+        }
+
+        
+        public static byte[] ObjectArrSaveToXMLFile<T>(T[] objArr,string XMLFP)
+        {
+            if(File.Exists(XMLFP))
+                File.Delete(XMLFP);
+            OfficeOpenXml.ExcelPackage ep = new OfficeOpenXml.ExcelPackage();
+            OfficeOpenXml.ExcelWorkbook wb = ep.Workbook;  
+            OfficeOpenXml.ExcelWorksheet ws = wb.Worksheets.Add("MySheet");
+            //配置文件属性
+            wb.Properties.Category = "商品数据";
+            wb.Properties.Author = "RightGO";
+            wb.Properties.Comments = "导出的商品数据";
+            wb.Properties.Company = "RightGO";
+            wb.Properties.Keywords = "Product";
+            wb.Properties.Manager = "Fionhuo";
+            wb.Properties.Status = "内容状态";
+            wb.Properties.Subject = "主题";
+            wb.Properties.Title = "标题";
+            wb.Properties.LastModifiedBy = "最后一次保存者";
+            //写数据
+            ws.Cells[1, 1].Value = "Hello";
+            ws.Column(1).Width = 40;//修改列宽
+            ws.Cells["B1"].Value = "World";
+            ws.Cells[3, 3, 3, 5].Merge = true;
+            ws.Cells[3, 3].Value = "Cells[3, 3, 3, 5]合并";
+            ws.Cells["A4:D5"].Merge = true;
+            ws.Cells["A4"].Value = "Cells[\"A4:D5\"]合并";
+            ////写到客户端（下载）
+            //Response.Clear();
+            //Response.AddHeader("content-disposition", "attachment; filename=FileFlow.xls");
+            //Response.ContentType ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //Response.BinaryWrite(ep.GetAsByteArray());
+            ////ep.SaveAs(Response.OutputStream); 第二种方式
+            //Response.Flush();
+            //Response.End();
+            return ep.GetAsByteArray();
         }
     }
 }
