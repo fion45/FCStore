@@ -771,42 +771,34 @@ namespace FCStore.Controllers
         }
 
         [MyAuthorizeAttribute]
-        public ActionResult BuildProductsXML(int[] PIDArr)
+        public ActionResult BuildProductsXML(string PIDArrStr)
         {
-            MyUser tmpUser = HttpContext.User as MyUser;
-            if (tmpUser == null)
+            string[] PIDArr = PIDArrStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            int[] tmpPIDArr = new int[PIDArr.Length];
+            for(int i=0;i<PIDArr.Length;i++)
             {
-                string jsonStr = PubFunction.BuildResult("", null, false, -1);
-                return Content(jsonStr);
+                tmpPIDArr[i] = int.Parse(PIDArr[i]);
             }
-            string PIDArrStr = "";
-            foreach (int PID in PIDArr)
-            {
-                PIDArrStr += PID + ",";
-            }
-            PIDArrStr = PIDArrStr.TrimEnd(new char[] { ',' });
             Product[] productArr = (from product in db.Products
-                                   where PIDArr.Contains(product.PID)
+                                    where tmpPIDArr.Contains(product.PID)
                                    select product).ToArray();
             //生成所需的商品XML数据
-            string FileName = "Product_" + Guid.NewGuid().ToString() + "xml";
-            string serverFP = PubFunction.GetUploadFilePathUsingDate() + FileName;
-            string localFP = Server.MapPath(serverFP) + FileName;
-            if(!PubFunction.ObjectArrSaveToXMLFile(productArr, localFP))
-            {
-                string jsonStr = PubFunction.BuildResult("", null, false, -2, "");
-                return Content(jsonStr);
-            }
+            string FileName = "Product_" + Guid.NewGuid().ToString() + ".xlsx";
+            string serverFP = PubFunction.GetUploadFilePathUsingDate();
+            string localFP = Server.MapPath(serverFP);
+            if (!Directory.Exists(localFP))
+                Directory.CreateDirectory(localFP);
+            byte[] tmpBuffer = PubFunction.ObjectArrSaveToXMLFile<Product>(productArr, localFP);
 
-            if (Request.IsAjaxRequest())
-            {
-                string jsonStr = PubFunction.BuildResult("OK", "XMLFilePath:" + serverFP);
-                return Content(jsonStr);
-            }
-            else
-            {
-                return View();
-            }
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+            Response.ContentType = "application/octet-stream";
+
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlEncode(FileName));
+            Response.BinaryWrite(tmpBuffer);
+            Response.Flush();
+            Response.End();
+            return new EmptyResult();
         } 
 
         protected override void Dispose(bool disposing)

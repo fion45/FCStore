@@ -1232,34 +1232,12 @@ var ProductManager = {
 		
 	},
 	OnExportProductBtnClick : function(ev) {
-		var tmpData = {
-			PIDArr : []
-		};
+		var PIDArrStr = "";
 		$.each($("#plDiv .sel"),function(i,n){
-			tmpData.PIDArr.push($(n).attr("data-pid"));
+			PIDArrStr += $(n).attr("data-pid") + ",";
 		});
-		$.myAjax({
-            historyTag: false,
-            loadEle: $("#plDiv"),
-            url: "/Product/BuildProductsXML/",
-    		data: JSON.stringify(tmpData),
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            success: function (data, status, options) {
-            	if (!data.successTag) {
-                	if(data.errCode == -1) {
-                		alert("未登录");
-                	}
-                	else if(data.errCode == -2) {
-                		alert("生成XML文件失败");
-                	}
-                }
-                else {
-                	window.open(data.XMLFilePath, "_blank", "");
-                }
-            }
-        });
+		PIDArrStr = PIDArrStr.substring(0,PIDArrStr.length - 1);
+		OpenWindowWithPost("/Product/BuildProductsXML/","ProductXML",["PIDArrStr"],[PIDArrStr]);
 	}
 };
 

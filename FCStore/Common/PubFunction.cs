@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Data.OleDb;
 
 namespace FCStore.Common
 {
@@ -96,65 +97,41 @@ namespace FCStore.Common
         }
 
         
-        public static bool ObjectArrSaveToXMLFile<T>(T[] objArr,string XMLFP)
+        public static byte[] ObjectArrSaveToXMLFile<T>(T[] objArr,string XMLFP)
         {
-            try
-            {
-                StringBuilder resultStr = new StringBuilder("<table style='background-color:#0066CC;'><tr style='background-color:Black;color:white;'>");
-                Type objType = typeof(T);
-                MemberInfo[] miArray = objType.GetMembers();
-                List<MemberInfo> miLST = new List<MemberInfo>();
-                foreach (MemberInfo mi in miArray)
-                {
-                    if (mi.MemberType == MemberTypes.Property)
-                    {
-                        bool RecordTag = true;
-                        ReadOnlyCollection<CustomAttributeData> CACollection = mi.CustomAttributes as ReadOnlyCollection<CustomAttributeData>;
-                        if (CACollection != null)
-                        {
-                            foreach(CustomAttributeData attr in CACollection)
-                            {
-                                if (attr.AttributeType.FullName.IndexOf(".NotMappedAttribute") > -1 || attr.AttributeType.FullName.IndexOf(".JsonIgnoreAttribute") > -1)
-                                {
-                                    RecordTag = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (RecordTag)
-                        {
-                            resultStr.Append("<th>" + mi.Name + "</th>");
-                            miLST.Add(mi);
-                        }
-                    }
-                }
-                foreach (T obj in objArr)
-                {
-                    resultStr.Append("<tr>");
-                    foreach (MemberInfo mi in miLST)
-                    {
-                        try
-                        {
-                            resultStr.Append("<td>" + resultStr.Append(objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null).ToString()) + "</td>");
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-                    }
-                    resultStr.Append("</tr>");
-                }
-                resultStr.Append("</table>");
-                byte[] tmpBuffer = UnicodeEncoding.Unicode.GetBytes(resultStr.ToString());
-                FileStream tmpFS = new FileStream(XMLFP, FileMode.CreateNew);
-                tmpFS.Write(tmpBuffer, 0, tmpBuffer.Length);
-                tmpFS.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            if(File.Exists(XMLFP))
+                File.Delete(XMLFP);
+            OfficeOpenXml.ExcelPackage ep = new OfficeOpenXml.ExcelPackage();
+            OfficeOpenXml.ExcelWorkbook wb = ep.Workbook;  
+            OfficeOpenXml.ExcelWorksheet ws = wb.Worksheets.Add("MySheet");
+            //配置文件属性
+            wb.Properties.Category = "商品数据";
+            wb.Properties.Author = "RightGO";
+            wb.Properties.Comments = "导出的商品数据";
+            wb.Properties.Company = "RightGO";
+            wb.Properties.Keywords = "Product";
+            wb.Properties.Manager = "Fionhuo";
+            wb.Properties.Status = "内容状态";
+            wb.Properties.Subject = "主题";
+            wb.Properties.Title = "标题";
+            wb.Properties.LastModifiedBy = "最后一次保存者";
+            //写数据
+            ws.Cells[1, 1].Value = "Hello";
+            ws.Column(1).Width = 40;//修改列宽
+            ws.Cells["B1"].Value = "World";
+            ws.Cells[3, 3, 3, 5].Merge = true;
+            ws.Cells[3, 3].Value = "Cells[3, 3, 3, 5]合并";
+            ws.Cells["A4:D5"].Merge = true;
+            ws.Cells["A4"].Value = "Cells[\"A4:D5\"]合并";
+            ////写到客户端（下载）
+            //Response.Clear();
+            //Response.AddHeader("content-disposition", "attachment; filename=FileFlow.xls");
+            //Response.ContentType ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //Response.BinaryWrite(ep.GetAsByteArray());
+            ////ep.SaveAs(Response.OutputStream); 第二种方式
+            //Response.Flush();
+            //Response.End();
+            return ep.GetAsByteArray();
         }
     }
 }
