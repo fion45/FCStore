@@ -1237,7 +1237,8 @@ var ProductManager = {
 			PIDArrStr += $(n).attr("data-pid") + ",";
 		});
 		PIDArrStr = PIDArrStr.substring(0,PIDArrStr.length - 1);
-		OpenWindowWithPost("/Product/BuildProductsXML/","ProductXML",["PIDArrStr"],[PIDArrStr]);
+		var newWindow = OpenWindowWithPost("/Product/BuildProductsXML/",null,["PIDArrStr"],[PIDArrStr]);
+		delete newWindow;
 	}
 };
 

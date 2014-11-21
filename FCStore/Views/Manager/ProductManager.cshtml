@@ -51,7 +51,7 @@
         <div id="ShowItemBtn">@(item.ShowTag ? "隐藏" : "显示")</div>
         <div class="hookIcon"></div>
         <div class="img">
-            <img src="@(item.ImgPathArr[0])" />
+            <img src="@(item.ImgPathArr.Length > 0 ? item.ImgPathArr[0] : "")" />
         </div>
         <div class="title" title="@(item.Title)">
             @(item.Title)

@@ -116,21 +116,55 @@ namespace FCStore.Common
             wb.Properties.Title = "标题";
             wb.Properties.LastModifiedBy = "最后一次保存者";
             //写数据
-            ws.Cells[1, 1].Value = "Hello";
-            ws.Column(1).Width = 40;//修改列宽
-            ws.Cells["B1"].Value = "World";
-            ws.Cells[3, 3, 3, 5].Merge = true;
-            ws.Cells[3, 3].Value = "Cells[3, 3, 3, 5]合并";
-            ws.Cells["A4:D5"].Merge = true;
-            ws.Cells["A4"].Value = "Cells[\"A4:D5\"]合并";
-            ////写到客户端（下载）
-            //Response.Clear();
-            //Response.AddHeader("content-disposition", "attachment; filename=FileFlow.xls");
-            //Response.ContentType ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            //Response.BinaryWrite(ep.GetAsByteArray());
-            ////ep.SaveAs(Response.OutputStream); 第二种方式
-            //Response.Flush();
-            //Response.End();
+            Type objType = typeof(T);
+            MemberInfo[] miArray = objType.GetMembers();
+            List<MemberInfo> miLST = new List<MemberInfo>();
+            int rowIndex = 0;
+            int colIndex = 0;
+            foreach (MemberInfo mi in miArray)
+            {
+                if (mi.MemberType == MemberTypes.Property)
+                {
+                    bool RecordTag = true;
+                    ReadOnlyCollection<CustomAttributeData> CACollection = mi.CustomAttributes as ReadOnlyCollection<CustomAttributeData>;
+                    if (CACollection != null)
+                    {
+                        foreach (CustomAttributeData attr in CACollection)
+                        {
+                            if (attr.AttributeType.FullName.IndexOf(".NotMappedAttribute") > -1 || attr.AttributeType.FullName.IndexOf(".JsonIgnoreAttribute") > -1)
+                            {
+                                RecordTag = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (RecordTag)
+                    {
+                        ws.Cells[1, colIndex + 1].Value = mi.Name;
+                        miLST.Add(mi);
+                        ++colIndex;
+                    }
+                }
+            }
+            ++rowIndex;
+            foreach (T obj in objArr)
+            {
+                colIndex = 0;
+                foreach (MemberInfo mi in miLST)
+                {
+                    try
+                    {
+                        string tmpStr = objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null).ToString();
+                        ws.Cells[rowIndex + 1, colIndex + 1].Value = tmpStr;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    ++colIndex;
+                }
+                ++rowIndex;
+            }
             return ep.GetAsByteArray();
         }
     }
