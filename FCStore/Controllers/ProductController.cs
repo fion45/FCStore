@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using FCStore.Filters;
 using System.IO;
 
+
 namespace FCStore.Controllers
 {
     public class ProductController : Controller
@@ -773,6 +774,8 @@ namespace FCStore.Controllers
         [MyAuthorizeAttribute]
         public ActionResult BuildProductsXML(string PIDArrStr)
         {
+            if (string.IsNullOrEmpty(PIDArrStr))
+                return View();
             string[] PIDArr = PIDArrStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             int[] tmpPIDArr = new int[PIDArr.Length];
             for(int i=0;i<PIDArr.Length;i++)

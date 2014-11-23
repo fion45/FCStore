@@ -7,8 +7,9 @@ using System.Reflection;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection;
+using FCStore.Models;
 using System.Data.OleDb;
+
 
 namespace FCStore.Common
 {
@@ -154,7 +155,9 @@ namespace FCStore.Common
                 {
                     try
                     {
-                        string tmpStr = objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null).ToString();
+                        object tmpObj = objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null);
+                        string tmpStr = "";
+                        
                         ws.Cells[rowIndex + 1, colIndex + 1].Value = tmpStr;
                     }
                     catch (Exception ex)

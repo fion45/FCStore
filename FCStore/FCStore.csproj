@@ -183,6 +183,7 @@
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\GlobalTemp.cs" />
     <Compile Include="Models\Keep.cs" />
+    <Compile Include="Models\MyExtension.cs" />
     <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPacket.cs" />
