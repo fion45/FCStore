@@ -775,6 +775,8 @@ namespace FCStore.Controllers
         public ActionResult BuildProductsXML(string PIDArrStr)
         {
             if (string.IsNullOrEmpty(PIDArrStr))
+                Redirect("/Manager/ProductManager");
+            if (string.IsNullOrEmpty(PIDArrStr))
                 return View();
             string[] PIDArr = PIDArrStr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             int[] tmpPIDArr = new int[PIDArr.Length];
@@ -791,7 +793,9 @@ namespace FCStore.Controllers
             string localFP = Server.MapPath(serverFP);
             if (!Directory.Exists(localFP))
                 Directory.CreateDirectory(localFP);
-            byte[] tmpBuffer = PubFunction.ObjectArrSaveToXMLFile<Product>(productArr, localFP);
+            Dictionary<string, MemberToStringDG> dict = new Dictionary<string, MemberToStringDG>();
+            //dict.Add("ProductTags", new MemberToStringDG(MTSHelper.ListToString));
+            byte[] tmpBuffer = PubFunction.SaveToExcel<Product>(productArr, localFP + FileName);
 
             Response.Charset = "UTF-8";
             Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
@@ -803,6 +807,69 @@ namespace FCStore.Controllers
             Response.End();
             return new EmptyResult();
         } 
+
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult UploadProductsExcel(HttpPostedFileBase fileData)
+        {
+            if (fileData != null)
+            {
+                try
+                {
+                    // 文件上传后的保存路径
+                    string tmpStr = "";
+                    if (Request.Params.AllKeys.Contains("toPath"))
+                    {
+                        tmpStr = Request.Params["toPath"].ToString();
+                    }
+                    else
+                    {
+                        tmpStr = PubFunction.GetUploadFilePathUsingDate();
+                    }
+                    string filePath = Server.MapPath("/Uploads/");
+                    if (!string.IsNullOrEmpty(tmpStr))
+                    {
+                        filePath = Server.MapPath(tmpStr);
+                    }
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    string fileName = Path.GetFileName(fileData.FileName);// 原始文件名称
+                    string fileExtension = Path.GetExtension(fileName); // 文件扩展名
+                    string saveName = Guid.NewGuid().ToString() + fileExtension; // 保存文件名称
+
+                    fileData.SaveAs(filePath + saveName);
+                    tmpStr = tmpStr.TrimStart(new char[] { '~' });
+                    
+                    //处理上传的Excel文件
+                    Dictionary<string, StringToMemberDG> dict = new Dictionary<string, StringToMemberDG>();
+                    IEnumerable<Product> productArr = PubFunction.LoadFromExcel<Product>(filePath + saveName);
+                    if(productArr == null)
+                    {
+                        //文件不存在
+                    }
+                    else
+                    {
+                        foreach(Product item in productArr)
+                        {
+                            db.Products.Add(item);
+                        }
+                        db.SaveChanges();
+                    }
+
+                    return Json(new { Success = true, FileName = fileName, SaveName = saveName, imgSrc = tmpStr + saveName });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Success = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "请选择要上传的文件！" }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -36,5 +36,10 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return PTID.ToString();
+        }
     }
 }

@@ -1229,9 +1229,11 @@ var ProductManager = {
         });
 	},
 	OnImportProductBtnClick : function(ev) {
+		//导入商品XML文件
 		
 	},
 	OnExportProductBtnClick : function(ev) {
+		//导出商品XML文件
 		var PIDArrStr = "";
 		$.each($("#plDiv .sel"),function(i,n){
 			PIDArrStr += $(n).attr("data-pid") + ",";

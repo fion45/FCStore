@@ -205,7 +205,7 @@
                         "<input id='hideProductBtn' class='sbtn3' type='button' value='隐藏' />" +
                     "</li>" +
                     "<li>" +
-                        "<input id='importProductBtn' class='sbtn2' type='button' value='导入Excel' />" +
+                        "<input id='importProductBtn' class='sbtn2' type='button' value='' />" +
                     "</li>" +
                     "<li>" +
                         "<input id='exportProductBtn' class='sbtn3' type='button' value='导出Excel' />" +
@@ -227,6 +227,19 @@
 
                 $("#plDiv").on("click", "#DelItemBtn", ProductManager.OnDelProductItemBtnClick);
                 $("#plDiv").on("click", "#ShowItemBtn", ProductManager.OnShowProductItemBtnClick);
+                $("#importProductBtn").uploadify({
+                    height: 24,
+                    width: 70,
+                    buttonText: '导入Excel',
+                    auto: true,
+                    swf: '/Scripts/uploadify/uploadify.swf',
+                    uploader: '/Product/UploadProductsExcel',
+                    fileTypeDesc: 'Image Files',
+                    fileTypeExts: '*.xlsx',
+                    onUploadSuccess: function (file, data, response) {
+
+                    }
+                });
             }
             else if (parArr[3] == "0") {
                 $("<ul>" +

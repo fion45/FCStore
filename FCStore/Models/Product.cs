@@ -224,5 +224,9 @@ namespace FCStore.Models
             set;
         }
 
+        public override string ToString()
+        {
+            return SOID.ToString();
+        }
     }
 }

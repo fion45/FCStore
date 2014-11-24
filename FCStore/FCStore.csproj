@@ -141,6 +141,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\MTSHelper.cs" />
     <Compile Include="Common\MyUser.cs" />
     <Compile Include="Common\PubFunction.cs" />
     <Compile Include="Controllers\AddressController.cs" />
@@ -183,7 +184,6 @@
     <Compile Include="Models\FCStoreDbContext.cs" />
     <Compile Include="Models\GlobalTemp.cs" />
     <Compile Include="Models\Keep.cs" />
-    <Compile Include="Models\MyExtension.cs" />
     <Compile Include="Models\LoginPageTrail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPacket.cs" />
