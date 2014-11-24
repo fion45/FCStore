@@ -10,8 +10,6 @@ namespace FCStore.Common
 
     public delegate string MemberToStringDG(object obj);
 
-    public delegate object StringToMemberDG(string str);
-
     public static class MTSHelper
     {
         public static string ListToString(object obj)

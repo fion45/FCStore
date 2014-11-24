@@ -157,22 +157,7 @@ namespace FCStore.Common
                                 }
                                 else
                                 {
-                                    Type memberType = tmpObj.GetType();
-                                    if (memberType.FullName.Contains("List"))
-                                    {
-                                        IEnumerable enumera = tmpObj as IEnumerable;
-                                        StringBuilder tmpSB = new StringBuilder(1024);
-                                        foreach (object tmpItem in enumera)
-                                        {
-                                            tmpSB.Append(tmpItem.ToString() + ",");
-                                        }
-                                        tmpStr = tmpSB.ToString();
-                                        tmpStr = tmpStr.TrimEnd(new char[] { ',' });
-                                    }
-                                    else
-                                    {
-                                        tmpStr = tmpObj.ToString();
-                                    }
+                                    tmpStr = tmpObj.ToString();
                                 }
                                 ws.Cells[rowIndex + 1, colIndex + 1].Value = tmpStr;
                             }
@@ -184,6 +169,7 @@ namespace FCStore.Common
                         }
                         ++rowIndex;
                     }
+                    return ep.GetAsByteArray();
                 }
             }
             catch (InvalidOperationException ex)
@@ -222,7 +208,7 @@ namespace FCStore.Common
 
                 List<PropertyInfo> propertyInfoList = new List<PropertyInfo>(typeof(T).GetProperties());
 
-                for (int row = rowStart + 1; row < rowEnd; row++)
+                for (int row = rowStart + 1; row <= rowEnd; row++)
                 {
                     T result = new T();
 
@@ -241,34 +227,34 @@ namespace FCStore.Common
                                     p.SetValue(result, cell.Value);
                                     break;
                                 case "int16":
-                                    p.SetValue(result, cell.GetValue<Int16>());
+                                    p.SetValue(result, short.Parse(cell.Value.ToString()));
                                     break;
                                 case "int32":
-                                    p.SetValue(result, cell.GetValue<Int32>());
+                                    p.SetValue(result, int.Parse(cell.Value.ToString()));
                                     break;
                                 case "int64":
-                                    p.SetValue(result, cell.GetValue<Int64>());
+                                    p.SetValue(result, Int64.Parse(cell.Value.ToString()));
                                     break;
                                 case "decimal":
-                                    p.SetValue(result, cell.GetValue<Decimal>());
+                                    p.SetValue(result, decimal.Parse(cell.Value.ToString()));
                                     break;
                                 case "double":
-                                    p.SetValue(result, cell.GetValue<Double>());
+                                    p.SetValue(result, double.Parse(cell.Value.ToString()));
                                     break;
                                 case "datetime":
-                                    p.SetValue(result, cell.GetValue<DateTime>());
+                                    p.SetValue(result, DateTime.Parse(cell.Value.ToString()));
                                     break;
                                 case "boolean":
-                                    p.SetValue(result, cell.GetValue<Boolean>());
+                                    p.SetValue(result, Boolean.Parse(cell.Value.ToString()));
                                     break;
                                 case "byte":
-                                    p.SetValue(result, cell.GetValue<Byte>());
+                                    p.SetValue(result, byte.Parse(cell.Value.ToString()));
                                     break;
                                 case "char":
-                                    p.SetValue(result, cell.GetValue<Char>());
+                                    p.SetValue(result, cell.Value.ToString()[0]);
                                     break;
                                 case "single":
-                                    p.SetValue(result, cell.GetValue<Single>());
+                                    p.SetValue(result, Single.Parse(cell.Value.ToString()));
                                     break;
                                 default:
                                     break;

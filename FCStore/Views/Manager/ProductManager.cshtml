@@ -124,7 +124,19 @@
                     }
                 }
             });
-
+            var GetAllChildrens = function (treeNode) {
+                var result = [];
+                result.push(treeNode);
+                if (treeNode.isParent) {
+                    $.each(treeNode.children, function (i, n) {
+                        $.each(GetAllChildrens(n), function (j, m) {
+                            result.push(m);
+                        });
+                    });
+                }
+                return result;
+            };
+            var SelectedNodes = [];
             //加载树控件
             $.myAjax({
                 historyTag: false,
@@ -156,6 +168,10 @@
                                     ProductManager.selTag = !treeNode.checked;
                                 }
                                 ProductManager.updateArr();
+                            },
+                            onClick: function (event, treeId, treeNode) {
+                                //选择其子节点
+                                SelectedNodes = GetAllChildrens(treeNode);
                             }
                         }
                     };

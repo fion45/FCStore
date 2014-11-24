@@ -731,6 +731,26 @@ namespace FCStore.Controllers
             }
         }
 
+        public ActionResult DelProductsByCIDArr(int[] CIDArr)
+        {
+            string CIDArrStr = "";
+            foreach (int CID in CIDArr)
+            {
+                CIDArrStr += CID + ",";
+            }
+            CIDArrStr = CIDArrStr.TrimEnd(new char[] { ',' });
+            db.m_objcontext.ExecuteStoreCommand("DELETE Products WHERE CID IN (" + CIDArrStr + ")");
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         public ActionResult DelProductsByPIDArr(int[] PIDArr)
         {
             string PIDArrStr = "";
@@ -794,8 +814,9 @@ namespace FCStore.Controllers
             if (!Directory.Exists(localFP))
                 Directory.CreateDirectory(localFP);
             Dictionary<string, MemberToStringDG> dict = new Dictionary<string, MemberToStringDG>();
-            //dict.Add("ProductTags", new MemberToStringDG(MTSHelper.ListToString));
-            byte[] tmpBuffer = PubFunction.SaveToExcel<Product>(productArr, localFP + FileName);
+            dict.Add("ProductTags", new MemberToStringDG(MTSHelper.ListToString));
+            dict.Add("SaleCountLST", new MemberToStringDG(MTSHelper.ListToString));
+            byte[] tmpBuffer = PubFunction.SaveToExcel<Product>(productArr, dict);
 
             Response.Charset = "UTF-8";
             Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
@@ -844,7 +865,9 @@ namespace FCStore.Controllers
                     
                     //处理上传的Excel文件
                     Dictionary<string, StringToMemberDG> dict = new Dictionary<string, StringToMemberDG>();
-                    IEnumerable<Product> productArr = PubFunction.LoadFromExcel<Product>(filePath + saveName);
+                    dict.Add("ProductTags", new StringToMemberDG(MTSHelper.ListToString));
+                    dict.Add("SaleCountLST", new StringToMemberDG(MTSHelper.ListToString));
+                    IEnumerable<Product> productArr = PubFunction.LoadFromExcel<Product>(filePath + saveName,dict);
                     if(productArr == null)
                     {
                         //文件不存在

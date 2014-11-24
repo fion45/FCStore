@@ -456,6 +456,7 @@ var ProductManager = {
             "<div class='item {10}' data-pid='{0}'>" +
         		"<div id='DelItemBtn'>删除</div>" +
         		"<div id='ShowItemBtn'>{11}</div>" +
+        		"<div class='hookIcon'></div>" +
                 "<div class='img'>" +
                     "<img src='{1}' />" +
                 "</div>" +
@@ -1106,28 +1107,54 @@ var ProductManager = {
 		window.location = "/Product/AddItemDetail/";
 	},
 	OnShowProductBtnClick : function(ev) {
-		var tmpData = {
-			PIDArr : [],
-			ShowTag : 1
-		};
-		$.each($("#plDiv .sel"),function(i,n){
-			tmpData.PIDArr.push($(n).attr("data-pid"));
-		});
-		$.myAjax({
-            historyTag: false,
-            loadEle: $("#plDiv"),
-            url: "/Product/ShowProductsByPIDArr/",
-    		data: JSON.stringify(tmpData),
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            success: function (data, status, options) {
-                if (data.content == "OK") {
-                	$("#plDiv .sel").removeClass("hide");
-                	$("#plDiv .sel #ShowItemBtn").text("隐藏");
-                }
-            }
-        });
+		if(SelectedNodes.length > 0) {
+			var tmpData = {
+				CIDArr : []
+			};
+			$.each(SelectedNodes,function(i,n){
+				tmpData.CIDArr.push(n.CID);
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/ShowProductsByCIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	//重新加载Product
+						$("#plDiv").empty();
+						ProductManager.updateProductsLST(false);
+	                }
+	            }
+	        });
+		}
+		else {
+			var tmpData = {
+				PIDArr : [],
+				ShowTag : 1
+			};
+			$.each($("#plDiv .sel"),function(i,n){
+				tmpData.PIDArr.push($(n).attr("data-pid"));
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/ShowProductsByPIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	$("#plDiv .sel").removeClass("hide");
+	                	$("#plDiv .sel #ShowItemBtn").text("隐藏");
+	                }
+	            }
+	        });
+		}
 	},
 	OnHideProductBtnClick : function(ev) {
 		var tmpData = {
@@ -1207,30 +1234,52 @@ var ProductManager = {
         return false;
 	},
 	OnDelProductBtnClick : function(ev) {
-		var tmpData = {
-			PIDArr : []
-		};
-		$.each($("#plDiv .sel"),function(i,n){
-			tmpData.PIDArr.push($(n).attr("data-pid"));
-		});
-		$.myAjax({
-            historyTag: false,
-            loadEle: $("#plDiv"),
-            url: "/Product/DelProductsByPIDArr/",
-    		data: JSON.stringify(tmpData),
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            success: function (data, status, options) {
-                if (data.content == "OK") {
-                	$("#plDiv .sel").remove();
-                }
-            }
-        });
-	},
-	OnImportProductBtnClick : function(ev) {
-		//导入商品XML文件
-		
+		if(SelectedNodes.length > 0) {
+			var tmpData = {
+				CIDArr : []
+			};
+			$.each(SelectedNodes,function(i,n){
+				tmpData.CIDArr.push(n.CID);
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/DelProductsByCIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	//重新加载Product
+						$("#plDiv").empty();
+						ProductManager.updateProductsLST(false);
+	                }
+	            }
+	        });
+		}
+		else {
+			var tmpData = {
+				PIDArr : []
+			};
+			$.each($("#plDiv .sel"),function(i,n){
+				tmpData.PIDArr.push($(n).attr("data-pid"));
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/DelProductsByPIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	$("#plDiv .sel").remove();
+	                }
+	            }
+	        });
+		}
 	},
 	OnExportProductBtnClick : function(ev) {
 		//导出商品XML文件
