@@ -770,6 +770,25 @@ namespace FCStore.Controllers
                 return View();
             }
         }
+        public ActionResult ShowProductsByCIDArr(int[] CIDArr, int ShowTag)
+        {
+            string CIDArrStr = "";
+            foreach (int CID in CIDArr)
+            {
+                CIDArrStr += CID + ",";
+            }
+            CIDArrStr = CIDArrStr.TrimEnd(new char[] { ',' });
+            db.m_objcontext.ExecuteStoreCommand("UPDATE Products SET ShowTag = " + ShowTag + " WHERE CID IN (" + CIDArrStr + ")");
+            if (Request.IsAjaxRequest())
+            {
+                string jsonStr = PubFunction.BuildResult("OK");
+                return Content(jsonStr);
+            }
+            else
+            {
+                return View();
+            }
+        }
 
         public ActionResult ShowProductsByPIDArr(int[] PIDArr,int ShowTag)
         {

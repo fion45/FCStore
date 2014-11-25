@@ -1109,7 +1109,8 @@ var ProductManager = {
 	OnShowProductBtnClick : function(ev) {
 		if(SelectedNodes.length > 0) {
 			var tmpData = {
-				CIDArr : []
+				CIDArr : [],
+				ShowTag : 1
 			};
 			$.each(SelectedNodes,function(i,n){
 				tmpData.CIDArr.push(n.CID);
@@ -1124,9 +1125,7 @@ var ProductManager = {
 	            contentType: "application/json;charset=utf-8",
 	            success: function (data, status, options) {
 	                if (data.content == "OK") {
-	                	//重新加载Product
-						$("#plDiv").empty();
-						ProductManager.updateProductsLST(false);
+	                	
 	                }
 	            }
 	        });
@@ -1157,28 +1156,53 @@ var ProductManager = {
 		}
 	},
 	OnHideProductBtnClick : function(ev) {
-		var tmpData = {
-			PIDArr : [],
-			ShowTag : 0
-		};
-		$.each($("#plDiv .sel"),function(i,n){
-			tmpData.PIDArr.push($(n).attr("data-pid"));
-		});
-		$.myAjax({
-            historyTag: false,
-            loadEle: $("#plDiv"),
-            url: "/Product/ShowProductsByPIDArr/",
-    		data: JSON.stringify(tmpData),
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            success: function (data, status, options) {
-                if (data.content == "OK") {
-                	$("#plDiv .sel").addClass("hide");
-                	$("#plDiv .sel #ShowItemBtn").text("显示");
-                }
-            }
-        });
+		if(SelectedNodes.length > 0) {
+			var tmpData = {
+				CIDArr : [],
+				ShowTag : 0
+			};
+			$.each(SelectedNodes,function(i,n){
+				tmpData.CIDArr.push(n.CID);
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/ShowProductsByCIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	
+	                }
+	            }
+	        });
+		}
+		else {
+			var tmpData = {
+				PIDArr : [],
+				ShowTag : 0
+			};
+			$.each($("#plDiv .sel"),function(i,n){
+				tmpData.PIDArr.push($(n).attr("data-pid"));
+			});
+			$.myAjax({
+	            historyTag: false,
+	            loadEle: $("#plDiv"),
+	            url: "/Product/ShowProductsByPIDArr/",
+	    		data: JSON.stringify(tmpData),
+	            dataType: "json",
+	            type: "POST",
+	            contentType: "application/json;charset=utf-8",
+	            success: function (data, status, options) {
+	                if (data.content == "OK") {
+	                	$("#plDiv .sel").addClass("hide");
+	                	$("#plDiv .sel #ShowItemBtn").text("显示");
+	                }
+	            }
+	        });
+		}
 	},
 	OnShowProductItemBtnClick : function(ev) {
 		var target = $(ev.currentTarget);

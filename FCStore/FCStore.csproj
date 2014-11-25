@@ -540,6 +540,7 @@
     <Content Include="Views\Shared\_ContactList.cshtml" />
     <Content Include="Views\Home\OnlineContact.cshtml" />
     <Content Include="Views\Product\AddItemDetail.cshtml" />
+    <Content Include="Views\Manager\CategoryManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
