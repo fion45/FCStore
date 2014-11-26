@@ -145,6 +145,7 @@
     <Compile Include="Common\MyUser.cs" />
     <Compile Include="Common\PubFunction.cs" />
     <Compile Include="Common\STMHelper.cs" />
+    <Compile Include="Common\WXMessageHelper.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Controllers\RecentViewController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WeiXinController.cs" />
     <Compile Include="Filters\LoginActionFilterAttribute.cs" />
     <Compile Include="Filters\MyAuthorizeAttribute.cs" />
     <Compile Include="Filters\MyHandleErrorAttribute.cs" />
@@ -272,8 +274,12 @@
     <Content Include="Content\themes\image\CategoryBK.png" />
     <Content Include="Content\themes\image\chinabank.jpg" />
     <Content Include="Content\themes\image\ColumBlank.jpg" />
+    <Content Include="Content\themes\image\fcweidiancode.png" />
     <Content Include="Content\themes\image\FooterIcon.png" />
     <Content Include="Content\themes\image\head_bg.gif" />
+    <Content Include="Content\themes\image\hook.png" />
+    <Content Include="Content\themes\image\kefu.png" />
+    <Content Include="Content\themes\image\kefu1.png" />
     <Content Include="Content\themes\image\LeftRightIcon.png" />
     <Content Include="Content\themes\image\loading.gif" />
     <Content Include="Content\themes\image\LoginSource1.png" />
@@ -297,6 +303,7 @@
     <Content Include="Content\themes\image\temp\miao.png" />
     <Content Include="Content\themes\image\temp\priceBK.png" />
     <Content Include="Content\themes\image\topBK.png" />
+    <Content Include="Content\themes\my\myComboboxDown.png" />
     <Content Include="Content\zTreeStyle\img\diy\1_close.png" />
     <Content Include="Content\zTreeStyle\img\diy\1_open.png" />
     <Content Include="Content\zTreeStyle\img\diy\2.png" />
@@ -540,7 +547,6 @@
     <Content Include="Views\Shared\_ContactList.cshtml" />
     <Content Include="Views\Home\OnlineContact.cshtml" />
     <Content Include="Views\Product\AddItemDetail.cshtml" />
-    <Content Include="Views\Manager\CategoryManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

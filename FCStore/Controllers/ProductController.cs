@@ -39,6 +39,8 @@ namespace FCStore.Controllers
                 aCategory.Parent = tmpCategory;
                 aCategory = tmpCategory;
                 PCID = aCategory.ParCID;
+                if (PCID == aCategory.CID)
+                    break;
             }
             return result;
         }

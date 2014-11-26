@@ -42,6 +42,12 @@ namespace FCStore.Models
             }
         }
 
+        public bool IsShow
+        {
+            get;
+            set;
+        }
+
         [NotMapped]
         public virtual List<ReColumnProduct> REColProLST
         {

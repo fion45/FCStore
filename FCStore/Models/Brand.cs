@@ -54,6 +54,12 @@ namespace FCStore.Models
             set;
         }
 
+        public bool IsShow
+        {
+            get;
+            set;
+        }
+
         [JsonIgnore]
         [NotMapped]
         public virtual List<ReColumnBrand> REBrandColLST

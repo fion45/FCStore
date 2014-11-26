@@ -13,7 +13,7 @@
             foreach (var item in topCategoryList)
             {
                 List<FCStore.Models.Category> secondCategory = (from cate in Model
-                                                        where cate.Parent == item
+                                                        where cate.ParCID == item.CID
                                                         select cate).ToList();
                 <li class="TCategory">
                     <div class="item">
@@ -45,7 +45,7 @@
                                 <div class="p1 threeCategory">
                                     @{
                                         List<FCStore.Models.Category> threeCategory = (from cate in Model
-                                                                                        where cate.Parent == sitem
+                                                                                        where cate.ParCID == sitem.CID
                                                                                         select cate).ToList();
                                         foreach (var titem in threeCategory)
                                         {

@@ -12,6 +12,7 @@ using FCStore.Models;
 using System.Data.OleDb;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
+using System.Net;
 
 
 namespace FCStore.Common
@@ -267,220 +268,80 @@ namespace FCStore.Common
                 }
             }
             return resultList;
-        } 
+        }
+
+        public static string GetWebPageByGet(string geturl)
+        {
+            Stream instream = null;
+            StreamReader sr = null;
+            HttpWebResponse response = null;
+            HttpWebRequest request = null;
+            Encoding encoding = Encoding.UTF8;
+            // 准备请求...
+            try
+            {
+                // 设置参数
+                request = WebRequest.Create(geturl) as HttpWebRequest;
+                CookieContainer cookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                //发送请求并获取相应回应数据
+                response = request.GetResponse() as HttpWebResponse;
+                //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                instream = response.GetResponseStream();
+                sr = new StreamReader(instream, encoding);
+                //返回结果网页（html）代码
+                string content = sr.ReadToEnd();
+                string err = string.Empty;
+                return content;
+            }
+            catch (Exception ex)
+            {
+                string err = ex.Message;
+                return string.Empty;
+            }
+        }
+
+        public static string GetWebPageByPost(string posturl, string postData)
+        {
+            Stream outstream = null;
+            Stream instream = null;
+            StreamReader sr = null;
+            HttpWebResponse response = null;
+            HttpWebRequest request = null;
+            Encoding encoding = Encoding.UTF8;
+            byte[] data = encoding.GetBytes(postData);
+            // 准备请求...
+            try
+            {
+                // 设置参数
+                request = WebRequest.Create(posturl) as HttpWebRequest;
+                CookieContainer cookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                outstream = request.GetRequestStream();
+                outstream.Write(data, 0, data.Length);
+                outstream.Close();
+                //发送请求并获取相应回应数据
+                response = request.GetResponse() as HttpWebResponse;
+                //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                instream = response.GetResponseStream();
+                sr = new StreamReader(instream, encoding);
+                //返回结果网页（html）代码
+                string content = sr.ReadToEnd();
+                string err = string.Empty;
+                return content;
+            }
+            catch (Exception ex)
+            {
+                string err = ex.Message;
+                return string.Empty;
+            }
+        }
     }
 }
-
-
-
-
-
-        //public static T[] LoadExcelFileToObjectArr<T>(string ExcelFP, Dictionary<string, StringToMemberDG> dict) where T : new()
-        //{
-        //    if (!File.Exists(ExcelFP))
-        //    {
-        //        return null;
-        //    }
-        //    FileInfo tmpFI = new FileInfo(ExcelFP);
-        //    OfficeOpenXml.ExcelPackage ep = new OfficeOpenXml.ExcelPackage(tmpFI);
-        //    OfficeOpenXml.ExcelWorkbook wb = ep.Workbook;
-        //    OfficeOpenXml.ExcelWorksheet ws = wb.Worksheets["MySheet"];
-        //    int colStart = ws.Dimension.Start.Column;   //工作区开始列
-        //    int colEnd = ws.Dimension.End.Column;       //工作区结束列
-        //    int rowStart = ws.Dimension.Start.Row;      //工作区开始行号
-        //    int rowEnd = ws.Dimension.End.Row;          //工作区结束行号
-        //    T[] result = new T[rowEnd - rowStart - 1];
-        //    //将每列标题添加到字典中
-        //    Dictionary<string, int> dictHeader = new Dictionary<string, int>();
-        //    for (int i = colStart; i <= colEnd; i++)
-        //    {
-        //        dictHeader[ws.Cells[rowStart, i].Value.ToString()] = i;
-        //    }
-        //    Type objType = typeof(T);
-        //    MemberInfo[] miArray = objType.GetMembers();
-        //    List<MemberInfo> miLST = new List<MemberInfo>();
-        //    foreach (MemberInfo mi in miArray)
-        //    {
-        //        if (mi.MemberType == MemberTypes.Property)
-        //        {
-        //            bool RecordTag = true;
-        //            ReadOnlyCollection<CustomAttributeData> CACollection = mi.CustomAttributes as ReadOnlyCollection<CustomAttributeData>;
-        //            if (CACollection != null)
-        //            {
-        //                foreach (CustomAttributeData attr in CACollection)
-        //                {
-        //                    if (attr.AttributeType.FullName.IndexOf(".NotMappedAttribute") > -1 || attr.AttributeType.FullName.IndexOf(".JsonIgnoreAttribute") > -1)
-        //                    {
-        //                        RecordTag = false;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //            if (RecordTag)
-        //            {
-        //                miLST.Add(mi);
-        //            }
-        //        }
-        //    }
-
-        //    int index = 0;
-        //    for (int row = rowStart + 1; row < rowEnd; row++)
-        //    {
-        //        T item = new T();
-        //        //为对象T的各属性赋值
-        //        foreach (MemberInfo mi in miLST)
-        //        {
-        //            try
-        //            {
-        //                OfficeOpenXml.ExcelRange cell = ws.Cells[row, dictHeader[mi.Name]]; //与属性名对应的单元格
-        //                object tmpVal = null;
-        //                if (cell.Value == null)
-        //                    continue;
-        //                PropertyInfo pi = mi as PropertyInfo;
-        //                if (pi == null)
-        //                    continue;
-        //                switch (pi.PropertyType.Name.ToLower())
-        //                {
-        //                    case "string":
-        //                        tmpVal = cell.GetValue<String>();
-        //                        break;
-        //                    case "int16":
-        //                        tmpVal = cell.GetValue<Int16>();
-        //                        break;
-        //                    case "int32":
-        //                        tmpVal = cell.GetValue<Int32>();
-        //                        break;
-        //                    case "int64":
-        //                        tmpVal = cell.GetValue<Int64>();
-        //                        break;
-        //                    case "decimal":
-        //                        tmpVal = cell.GetValue<Decimal>();
-        //                        break;
-        //                    case "double":
-        //                        tmpVal = cell.GetValue<Double>();
-        //                        break;
-        //                    case "datetime":
-        //                        tmpVal = cell.GetValue<DateTime>();
-        //                        break;
-        //                    case "boolean":
-        //                        tmpVal = cell.GetValue<Boolean>();
-        //                        break;
-        //                    case "byte":
-        //                        tmpVal = cell.GetValue<Byte>();
-        //                        break;
-        //                    case "char":
-        //                        tmpVal = cell.GetValue<Char>();
-        //                        break;
-        //                    case "single":
-        //                        tmpVal = cell.GetValue<Single>();
-        //                        break;
-        //                    case "list":
-        //                        break;
-        //                    default:
-        //                        break;
-        //                }
-        //                objType.InvokeMember(mi.Name, BindingFlags.SetProperty, null, item, new object[] { tmpVal });
-        //            }
-        //            catch (KeyNotFoundException ex)
-        //            {
-        //            }
-        //        }
-        //        result[index++] = item;
-        //    }
-        //    return result;
-        //}
-
-        //public static byte[] ObjectArrSaveToExcelFile<T>(T[] objArr, string ExcelFP, Dictionary<string, MemberToStringDG> dict)
-        //{
-        //    if (File.Exists(ExcelFP))
-        //        File.Delete(ExcelFP);
-        //    OfficeOpenXml.ExcelPackage ep = new OfficeOpenXml.ExcelPackage();
-        //    OfficeOpenXml.ExcelWorkbook wb = ep.Workbook;
-        //    OfficeOpenXml.ExcelWorksheet ws = wb.Worksheets.Add("MySheet");
-        //    //配置文件属性
-        //    wb.Properties.Category = "商品数据";
-        //    wb.Properties.Author = "RightGO";
-        //    wb.Properties.Comments = "导出的商品数据";
-        //    wb.Properties.Company = "RightGO";
-        //    wb.Properties.Keywords = "Product";
-        //    wb.Properties.Manager = "Fionhuo";
-        //    wb.Properties.Status = "内容状态";
-        //    wb.Properties.Subject = "主题";
-        //    wb.Properties.Title = "标题";
-        //    wb.Properties.LastModifiedBy = "最后一次保存者";
-        //    //写数据
-        //    Type objType = typeof(T);
-        //    MemberInfo[] miArray = objType.GetMembers();
-        //    List<MemberInfo> miLST = new List<MemberInfo>();
-        //    int rowIndex = 0;
-        //    int colIndex = 0;
-        //    foreach (MemberInfo mi in miArray)
-        //    {
-        //        if (mi.MemberType == MemberTypes.Property)
-        //        {
-        //            bool RecordTag = true;
-        //            ReadOnlyCollection<CustomAttributeData> CACollection = mi.CustomAttributes as ReadOnlyCollection<CustomAttributeData>;
-        //            if (CACollection != null)
-        //            {
-        //                foreach (CustomAttributeData attr in CACollection)
-        //                {
-        //                    if (attr.AttributeType.FullName.IndexOf(".NotMappedAttribute") > -1 || attr.AttributeType.FullName.IndexOf(".JsonIgnoreAttribute") > -1)
-        //                    {
-        //                        RecordTag = false;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //            if (RecordTag)
-        //            {
-        //                ws.Cells[1, colIndex + 1].Value = mi.Name;
-        //                miLST.Add(mi);
-        //                ++colIndex;
-        //            }
-        //        }
-        //    }
-        //    ++rowIndex;
-        //    foreach (T obj in objArr)
-        //    {
-        //        colIndex = 0;
-        //        foreach (MemberInfo mi in miLST)
-        //        {
-        //            try
-        //            {
-        //                object tmpObj = objType.InvokeMember(mi.Name, BindingFlags.GetProperty, null, obj, null);
-        //                string tmpStr = "";
-        //                if (dict.ContainsKey(mi.Name))
-        //                {
-        //                    tmpStr = dict[mi.Name](tmpObj);
-        //                }
-        //                else
-        //                {
-        //                    Type memberType = tmpObj.GetType();
-        //                    if (memberType.FullName.Contains("List"))
-        //                    {
-        //                        IEnumerable enumera = tmpObj as IEnumerable;
-        //                        StringBuilder tmpSB = new StringBuilder(1024);
-        //                        foreach (object item in enumera)
-        //                        {
-        //                            tmpSB.Append(item.ToString() + ",");
-        //                        }
-        //                        tmpStr = tmpSB.ToString();
-        //                        tmpStr = tmpStr.TrimEnd(new char[] { ',' });
-        //                    }
-        //                    else
-        //                    {
-        //                        tmpStr = tmpObj.ToString();
-        //                    }
-        //                }
-        //                ws.Cells[rowIndex + 1, colIndex + 1].Value = tmpStr;
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //            }
-        //            ++colIndex;
-        //        }
-        //        ++rowIndex;
-        //    }
-        //    return ep.GetAsByteArray();
-        //}

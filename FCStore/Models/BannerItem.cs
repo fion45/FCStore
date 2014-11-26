@@ -43,5 +43,11 @@ namespace FCStore.Models
             get;
             set;
         }
+
+        public bool IsShow
+        {
+            get;
+            set;
+        }
     }
 }
