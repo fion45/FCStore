@@ -52,12 +52,13 @@
             margin: 10px 5%;
             height: 300px;
             background-color: #EAEAEA;
+            overflow:auto;
         }
 
-        #dialogTA {
-            width:98%;
-            height:100%;
-            padding:0px 1%;
+        #dialogUL {
+            width: 98%;
+            height: 100%;
+            padding: 0px 1%;
         }
 
         #faceDiv {
@@ -156,7 +157,7 @@
         </div>
         <div class="right">
             <div id="dialogDiv">
-                <textarea id="dialogTA" readonly="readonly" ></textarea>
+                <ul id="dialogUL"></ul>
             </div>
             <div id="faceDiv">
 
@@ -196,11 +197,10 @@
         };
 
         var Send = function () {
-
         };
 
         var ShowMessage = function (msg) {
-
+            $("#dialogUL").append($("<li class='p1'>" + msg + "</li>"));
         };
 
         $(function () {
