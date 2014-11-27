@@ -1,0 +1,17 @@
+{
+  "name": "RightGO插件",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "RightGO获取网页内容插件",
+  "browser_action": {
+    "default_icon": "rightgo.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "css": ["mycss.css"],
+      "js": ["jquery-1.8.2.js","myscript.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

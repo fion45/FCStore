@@ -1,0 +1,61 @@
+#RG_FIX {
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:250px;
+	height:100%;
+	z-index:9999;
+	background-color:#666666;
+  -moz-opacity:0.4;
+  filter:alpha(opacity=40);
+  opacity:0.4;
+  color:white;
+}
+
+	#RG_FIX * {
+		margin:0px;
+		padding:0px;
+	}
+	
+	#RG_FIX ul li {
+    list-style-type:none;
+    float:left;
+	}
+	
+	#RG_FIX .RG_p1 {
+		width:100%;
+		margin:0px 0px;
+		padding:0px 0px;
+	}
+	
+		#RG_FIX .RG_p1 textarea {
+			width:96%;
+			margin:3px 2%;
+		}
+	
+		#RG_FIX .RG_p1 input {
+			width:96%;
+			margin:3px 2%;
+		}
+		
+#tileTA {
+	height:100px;
+}
+
+#contentTA {
+	height:400px;
+}
+
+#priceTB {
+	height:30px;
+}
+
+#RG_FIX .RG_dragBtn {
+	width:20px;
+	height:20px;
+	border:solid 1px blue;
+	color:blue;
+	float:right;
+	cursor:pointer;
+}
+	
