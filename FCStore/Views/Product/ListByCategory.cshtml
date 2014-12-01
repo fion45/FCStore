@@ -9,7 +9,7 @@
         FCStore.Models.Category tmpCate = Model.Category;
         int CID = -1;
         string htmlStr = "";
-        while (CID != tmpCate.CID)
+        while (tmpCate != null && CID != tmpCate.CID)
         {
             htmlStr = "<div><a href=\"/Product/ListByCategory/" + tmpCate.CID + "\">" + tmpCate.NameStr + "</a></div><div>></div>" + htmlStr;
             CID = tmpCate.CID;

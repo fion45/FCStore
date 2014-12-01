@@ -141,25 +141,36 @@ namespace FCStore.Controllers
             List<int> CIDList = new List<int>();
             List<Category> CatArr = db.Categorys.ToList();
             Category tmpCat = CatArr.Find(r => r.CID == ID);
-            if(tmpCat == null || tmpCat.ParCID == tmpCat.CID)
+            if(tmpCat == null || tmpCat.CID == tmpCat.ParCID)
             {
                 //页面不存在
                 return Redirect("/Home/Index");
             }
             else
             {
+                Category parCat = tmpCat;
+                //获得其父类
+                while (true)
+                {
+                    if (parCat == null || parCat.ParCID == parCat.CID)
+                        break;
+                    parCat.Parent = (from cat in CatArr
+                             where cat.CID == parCat.ParCID
+                             select cat).FirstOrDefault();
+                    parCat = parCat.Parent;
+                }
                 //获得其子类的CID
                 CIDList.Add(tmpCat.CID);
-                List<int> CIDArr = (from cat in CatArr
-                                    where cat.ParCID == tmpCat.CID
-                                    select cat.CID).ToList();
-                int tmpCount = CIDArr.Count;
-                CIDList.AddRange(CIDArr);
-                for (int i = 0; i < tmpCount; i++)
+                List<int> tmpContainLST = CIDList;
+                while(true)
                 {
-                    CIDList.AddRange((from cat in CatArr
-                                     where cat.ParCID == CIDArr[i]
-                                     select cat.CID).ToList());
+                    int OldVal = tmpContainLST.FirstOrDefault();
+                    tmpContainLST = (from cat in CatArr
+                                    where tmpContainLST.Contains(cat.ParCID)
+                                    select cat.CID).ToList();
+                    if(tmpContainLST.Count == 1 && tmpContainLST[0] == OldVal || tmpContainLST.Count == 0)
+                        break;
+                    CIDList.AddRange(tmpContainLST);
                 }
                 //获得产品列表
                 var productEnum = from product in db.Products

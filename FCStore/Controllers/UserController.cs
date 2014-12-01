@@ -29,126 +29,133 @@ namespace FCStore.Controllers
 
         public void LoginSuccess(User user)
         {
-            StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
-            StringBuilder tmpRIDStr = new StringBuilder(",");
-            StringBuilder tmpRNStr = new StringBuilder(",");
-            user.ReUserRoleLST = db.ReUserRoles.Where(r => r.UID == user.UID).ToList();
-            foreach (ReUserRole reur in user.ReUserRoleLST)
+            try
             {
-                tmpRIDStr.Append(reur.Role.RID + ",");
-                tmpRNStr.Append(reur.Role.RoleName + ",");
-                tmpRPStr.Append(reur.Role.Permission + ",");
-            }
-            string tmpStr = string.Format("<USERID>{0}</USERID><USERNAME>{1}</USERNAME><RIDARR>{2}</RIDARR><RNARR>{3}</RNARR><PERMISSION>{4}</PERMISSION>", user.UID, user.UserName, tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
-
-            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-               1,
-               user.UserName,
-               DateTime.Now,
-               DateTime.Now.AddMinutes(30),
-               true,
-               tmpStr);
-            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-
-            //设置cookie(不能合在一起，奇怪)
-            HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-            Response.Cookies.Add(authCookie);
-
-            authCookie = new HttpCookie("UserInfo");
-            authCookie.Values.Add("UID", user.UID.ToString());
-            authCookie.Values.Add("UserName", user.UserName);
-            authCookie.Values.Add("RID", tmpRIDStr.ToString());
-            authCookie.Values.Add("Permission", tmpRPStr.ToString());
-            authCookie.Expires = DateTime.Now.AddMinutes(30);
-            Response.Cookies.Add(authCookie);
-            ViewBag.LoginFail = 0;
-
-            //把购物车的东西给予该用户
-            bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
-            HttpCookie cookie = null;
-            if (hasCookie)
-            {
-                hasCookie = false;
-                cookie = Request.Cookies["Order"];
-                tmpStr = Server.UrlDecode(cookie.Value);
-                Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
-                Match tmpMatch = cookieRgx.Match(tmpStr);
-                if (!string.IsNullOrEmpty(tmpMatch.Value))
+                StringBuilder tmpRPStr = new StringBuilder("," + user.Permission + ",");
+                StringBuilder tmpRIDStr = new StringBuilder(",");
+                StringBuilder tmpRNStr = new StringBuilder(",");
+                user.ReUserRoleLST = db.ReUserRoles.Where(r => r.UID == user.UID).ToList();
+                foreach (ReUserRole reur in user.ReUserRoleLST)
                 {
-                    Group gi = tmpMatch.Groups["ORDERID"];
-                    int OrderID = int.Parse(gi.Value);
-                    Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
-                    hasCookie = order != null && order.Packets.Count > 0;
+                    tmpRIDStr.Append(reur.Role.RID + ",");
+                    tmpRNStr.Append(reur.Role.RoleName + ",");
+                    tmpRPStr.Append(reur.Role.Permission + ",");
                 }
-            }
-            if (!hasCookie)
-            {
-                //从数据库里取出最后的未完成的购物任务
-                Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
-                if (order != null)
+                string tmpStr = string.Format("<USERID>{0}</USERID><USERNAME>{1}</USERNAME><RIDARR>{2}</RIDARR><RNARR>{3}</RNARR><PERMISSION>{4}</PERMISSION>", user.UID, user.UserName, tmpRIDStr.ToString(), tmpRNStr.ToString(), tmpRPStr.ToString());
+
+                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                   1,
+                   user.UserName,
+                   DateTime.Now,
+                   DateTime.Now.AddMinutes(30),
+                   true,
+                   tmpStr);
+                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+                //设置cookie(不能合在一起，奇怪)
+                HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                Response.Cookies.Add(authCookie);
+
+                authCookie = new HttpCookie("UserInfo");
+                authCookie.Values.Add("UID", user.UID.ToString());
+                authCookie.Values.Add("UserName", user.UserName);
+                authCookie.Values.Add("RID", tmpRIDStr.ToString());
+                authCookie.Values.Add("Permission", tmpRPStr.ToString());
+                authCookie.Expires = DateTime.Now.AddMinutes(30);
+                Response.Cookies.Add(authCookie);
+                ViewBag.LoginFail = 0;
+
+                //把购物车的东西给予该用户
+                bool hasCookie = Request.Cookies.AllKeys.Contains("Order");
+                HttpCookie cookie = null;
+                if (hasCookie)
                 {
-                    cookie = new HttpCookie("Order");
-                    cookie.Expires = DateTime.Now.AddMonths(1);
-                    cookie.Value = Server.UrlEncode(order.GetCoookieStr());
-                    Response.Cookies.Add(cookie);
-                }
-            }
-            //处理收藏夹的东西
-            hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
-            string KStr = "";
-            cookie = null;
-            List<int> PIDArr = new List<int>();
-            if (hasCookie)
-            {
-                cookie = Request.Cookies["Keeps"];
-                tmpStr = Server.UrlDecode(cookie.Value);
-                Regex cookieRgx = new Regex(KeepController.KEEPCOOKIERGX);
-                MatchCollection tmpMC = cookieRgx.Matches(tmpStr);
-                if(tmpMC.Count > 0)
-                {
-                    foreach (Match tmpMatch in tmpMC)
+                    hasCookie = false;
+                    cookie = Request.Cookies["Order"];
+                    tmpStr = Server.UrlDecode(cookie.Value);
+                    Regex cookieRgx = new Regex(ProductController.ORDERCOOKIERGX);
+                    Match tmpMatch = cookieRgx.Match(tmpStr);
+                    if (!string.IsNullOrEmpty(tmpMatch.Value))
                     {
-                        if (!string.IsNullOrEmpty(tmpMatch.Value))
+                        Group gi = tmpMatch.Groups["ORDERID"];
+                        int OrderID = int.Parse(gi.Value);
+                        Order order = db.Orders.FirstOrDefault(r => r.OID == OrderID);
+                        hasCookie = order != null && order.Packets.Count > 0;
+                    }
+                }
+                if (!hasCookie)
+                {
+                    //从数据库里取出最后的未完成的购物任务
+                    Order order = db.Orders.OrderByDescending(r => r.OID).FirstOrDefault(r => r.UID == user.UID && r.Status == (int)Order.EOrderStatus.OS_Init);
+                    if (order != null)
+                    {
+                        cookie = new HttpCookie("Order");
+                        cookie.Expires = DateTime.Now.AddMonths(1);
+                        cookie.Value = Server.UrlEncode(order.GetCoookieStr());
+                        Response.Cookies.Add(cookie);
+                    }
+                }
+                //处理收藏夹的东西
+                hasCookie = Request.Cookies.AllKeys.Contains("Keeps");
+                string KStr = "";
+                cookie = null;
+                List<int> PIDArr = new List<int>();
+                if (hasCookie)
+                {
+                    cookie = Request.Cookies["Keeps"];
+                    tmpStr = Server.UrlDecode(cookie.Value);
+                    Regex cookieRgx = new Regex(KeepController.KEEPCOOKIERGX);
+                    MatchCollection tmpMC = cookieRgx.Matches(tmpStr);
+                    if (tmpMC.Count > 0)
+                    {
+                        foreach (Match tmpMatch in tmpMC)
                         {
-                            Group gi = tmpMatch.Groups["PRODUCTID"];
-                            int PID = -1;
-                            Keep inDBKeep = null;
-                            if (int.TryParse(gi.Value, out PID))
+                            if (!string.IsNullOrEmpty(tmpMatch.Value))
                             {
-                                inDBKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == user.UID);
-                                KStr += tmpMatch.Groups["PRODUCTID"] + "," + tmpMatch.Groups["TITLE"] + "," + tmpMatch.Groups["IMG"] + ",";
-                                if (inDBKeep != null)
+                                Group gi = tmpMatch.Groups["PRODUCTID"];
+                                int PID = -1;
+                                Keep inDBKeep = null;
+                                if (int.TryParse(gi.Value, out PID))
                                 {
-                                    PIDArr.Add(inDBKeep.PID);
-                                }
-                                else
-                                {
-                                    Keep keep = new Keep();
-                                    keep.PID = PID;
-                                    keep.UID = user.UID;
-                                    keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                                    db.Keeps.Add(keep);
+                                    inDBKeep = db.Keeps.FirstOrDefault(r => r.PID == PID && r.UID == user.UID);
+                                    KStr += tmpMatch.Groups["PRODUCTID"] + "," + tmpMatch.Groups["TITLE"] + "," + tmpMatch.Groups["IMG"] + ",";
+                                    if (inDBKeep != null)
+                                    {
+                                        PIDArr.Add(inDBKeep.PID);
+                                    }
+                                    else
+                                    {
+                                        Keep keep = new Keep();
+                                        keep.PID = PID;
+                                        keep.UID = user.UID;
+                                        keep.LastDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                        db.Keeps.Add(keep);
+                                    }
                                 }
                             }
                         }
+                        db.SaveChanges();
                     }
-                    db.SaveChanges();
                 }
+                else
+                {
+                    cookie = new HttpCookie("Keeps");
+                    cookie.Expires = DateTime.Now.AddMonths(1);
+                }
+                List<Keep> keepArr = db.Keeps.Where(r => r.UID == user.UID && !PIDArr.Contains(r.PID)).ToList();
+                //从数据库里取出该用户的收藏夹
+                foreach (Keep item in keepArr)
+                {
+                    if (item.Product != null)
+                        KStr += item.Product.PID + "," + item.Product.Title.Substring(0, Math.Min(20, item.Product.Title.Length)) + "," + item.Product.ImgPathArr[0] + ",";
+                }
+                cookie.Value = Server.UrlEncode(KStr);
+                Response.Cookies.Add(cookie);
             }
-            else
+            catch(Exception ex)
             {
-                cookie = new HttpCookie("Keeps");
-                cookie.Expires = DateTime.Now.AddMonths(1);
+
             }
-            List<Keep> keepArr = db.Keeps.Where(r => r.UID == user.UID && !PIDArr.Contains(r.PID)).ToList();
-            //从数据库里取出该用户的收藏夹
-            foreach (Keep item in keepArr)
-            {
-                if (item.Product != null)
-                    KStr += item.Product.PID + "," + item.Product.Title.Substring(0, Math.Min(20, item.Product.Title.Length)) + "," + item.Product.ImgPathArr[0] + ",";
-            }
-            cookie.Value = Server.UrlEncode(KStr);
-            Response.Cookies.Add(cookie);
         }
 
         [LoginActionFilterAttribute(beforeTag = 0)]
@@ -228,7 +235,7 @@ namespace FCStore.Controllers
             }
             else
             {
-                user = db.Users.FirstOrDefault(r => (r.UserName == userName || r.Email == email));
+                user = db.Users.FirstOrDefault(r => (r.LoginID == userName || r.Email == email));
                 if (user != null)
                 {
                     //用户已存在
@@ -362,9 +369,13 @@ namespace FCStore.Controllers
                         LoginID = LoginID,
                         LoginPSW = PSW,
                         UserName = UserName,
-                        Sex = sex
+                        Email = "",
+                        Sex = false,
+                        DefaultAddrID = null,
+                        Permission = "",
+                        Gift = 100      //100积分
                     };
-                    if(string.IsNullOrEmpty(wbId))
+                    if(!string.IsNullOrEmpty(wbId))
                     {
                         user.WBID = wbId;
                     }
@@ -382,8 +393,8 @@ namespace FCStore.Controllers
                     //tmpRUR.UID = user.UID;
                     tmpRUR.Reserve = "";
                     db.ReUserRoles.Add(tmpRUR);
-
                     db.SaveChanges();
+
                     gfTag = true;
                 }
             }
