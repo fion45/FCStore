@@ -6,9 +6,9 @@
 	height:100%;
 	z-index:9999;
 	background-color:#666666;
-  -moz-opacity:0.4;
-  filter:alpha(opacity=40);
-  opacity:0.4;
+  -moz-opacity:0.1;
+  filter:alpha(opacity=10);
+  opacity:0.1;
   color:white;
 }
 
@@ -33,20 +33,20 @@
 			margin:3px 2%;
 		}
 	
-		#RG_FIX .RG_p1 input {
+		#RG_FIX .RG_p1 input[type=text] {
 			width:96%;
 			margin:3px 2%;
 		}
 		
-#tileTA {
+#RG_tileTA {
 	height:100px;
 }
 
-#contentTA {
+#RG_contentTA {
 	height:400px;
 }
 
-#priceTB {
+#RG_priceTB {
 	height:30px;
 }
 
