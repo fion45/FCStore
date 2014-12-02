@@ -141,6 +141,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\LogHelper.cs" />
     <Compile Include="Common\MTSHelper.cs" />
     <Compile Include="Common\MyUser.cs" />
     <Compile Include="Common\PubFunction.cs" />
