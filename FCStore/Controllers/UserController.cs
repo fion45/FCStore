@@ -404,7 +404,7 @@ namespace FCStore.Controllers
                 user = db.Users.FirstOrDefault(r => r.LoginID == LoginID && r.LoginPSW == PSW);
                 if (user != null)
                 {
-                    if (string.IsNullOrEmpty(wbId))
+                    if (!string.IsNullOrEmpty(wbId))
                     {
                         user.WBID = wbId;
                     }

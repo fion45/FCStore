@@ -34,6 +34,8 @@ namespace FCStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            LogHelper.CurrentPath = Server.MapPath("~/");
+            LogHelper.Log("Start RightGO Web Server");
             //从文件加载省份，城市，区域到数据库
             FCStoreDbContext db = new FCStoreDbContext();
             if(db.Province.Count() == 0) 

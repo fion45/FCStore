@@ -576,7 +576,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1152</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1152/</IISUrl>
+          <IISUrl>http://localhost:1152</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
