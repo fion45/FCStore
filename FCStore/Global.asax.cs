@@ -16,6 +16,7 @@ using System.Text;
 using FCStore.Common;
 using FCStore.Models;
 using FCStore.Controllers;
+using FCStore.Filters;
 
 namespace FCStore
 {
@@ -29,13 +30,14 @@ namespace FCStore
         {
             AreaRegistration.RegisterAllAreas();
 
+            //增加全局的Filter用于记录用户的Tracker
+            GlobalFilters.Filters.Add(new UserTrackerLogAttribute());
+
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            LogHelper.CurrentPath = Server.MapPath("~/");
-            LogHelper.Log("Start RightGO Web Server");
             //从文件加载省份，城市，区域到数据库
             FCStoreDbContext db = new FCStoreDbContext();
             if(db.Province.Count() == 0) 

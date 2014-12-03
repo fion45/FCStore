@@ -31,13 +31,10 @@ namespace FCStore.Controllers
             tmpCT.ClientIP = request.UserHostAddress;
             tmpCT.LogDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            if(request.RequestContext.HttpContext.User.Identity.IsAuthenticated)
+            MyUser tmpUser = request.RequestContext.HttpContext.User as MyUser;
+            if (tmpUser != null && tmpUser.Identity.IsAuthenticated)
             {
-                MyUser tmpUser = request.RequestContext.HttpContext.User as MyUser;
-                if(tmpUser != null)
-                {
-                    tmpCT.UID = tmpUser.UID;
-                }
+                tmpCT.UID = tmpUser.UID;
             }
             db.ClientTrails.Add(tmpCT);
             db.SaveChanges();

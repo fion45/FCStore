@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace FCStore.Models
 {
+    //记录用户浏览过的产品，用于用户管理页面的提示
     public class RecentView
     {
         [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
