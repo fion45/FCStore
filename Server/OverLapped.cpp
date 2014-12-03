@@ -86,6 +86,8 @@ void OV::ReinitContext()
 	socket = ::socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
 	if ( socket != INVALID_SOCKET )
 	{
+		fcii = NULL;
+
 		state  = stAccepting;
 		end    = &buf[0];
 
@@ -111,6 +113,8 @@ void OV::ReinitContext()
 	}
 	else
 	{
+		//完成端口不可用
+		tag = '!!!!';
 		#ifdef _DEBUG
 		clog << "Socket creation in ReinitContext() failed, gle == " <<	GetLastError() << endl;
 		#endif

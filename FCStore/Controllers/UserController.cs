@@ -541,6 +541,12 @@ namespace FCStore.Controllers
             }
             UserDetailsVM viewModel = new UserDetailsVM();
             viewModel.User = user;
+            IEnumerable<int> RIDArr = from re in db.ReUserRoles
+                                      where re.UID == user.UID
+                                      select re.RID;
+            viewModel.RoleArr = (from role in db.Roles
+                                 where RIDArr.Contains(role.RID)
+                                 select role).ToList();
             int RecentViewCount = 5;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["RecentViewCount"].ToString(), out RecentViewCount);
             viewModel.RecentViewArr = (from RV in db.RecentViews

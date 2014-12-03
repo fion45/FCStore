@@ -101,8 +101,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataHandler.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
+    <ClCompile Include="FCII.cpp" />
+    <ClCompile Include="FCIIForWS.cpp" />
     <ClCompile Include="OverLapped.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -112,8 +113,9 @@
     <ClCompile Include="worker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataHandler.h" />
     <ClInclude Include="DebugMsg.h" />
+    <ClInclude Include="FCII.h" />
+    <ClInclude Include="FCIIForWS.h" />
     <ClInclude Include="OverLapped.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="stdafx.h" />

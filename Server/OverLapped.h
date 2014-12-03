@@ -4,6 +4,8 @@
 #include <Winsock2.h>
 #include <string>
 #include "Type.h"
+#include "FCII.h"
+#include "FCIIForWS.h"
 
 //================================================================================================================
 //====  if defined, code will use WsaSend(), else WriteFile()
@@ -66,8 +68,15 @@ struct OV: public OVERLAPPED
 	DWORD recvFlags;											// needed by WSARecv()
 	#endif
 
+	FCII* fcii;
+
 	OV(): tag( '@@@@' ), state( stClosed ), socket( SOCKET_ERROR ), end( &buf[0] ), closestep(0)
-	{ Internal = InternalHigh = Offset = OffsetHigh = 0; hEvent = 0; listener=NULL;}
+	{
+		Internal = InternalHigh = Offset = OffsetHigh = 0;
+		hEvent = 0; 
+		listener = NULL; 
+		fcii = NULL;
+	}
 	OV( const OV &o )
 	{
 		tag = o.tag;
@@ -79,6 +88,7 @@ struct OV: public OVERLAPPED
 		end = &buf[0] + ( o.end - &o.buf[0] );
 		local = o.local;
 		peer = o.peer;
+		fcii = o.fcii;
 		memcpy( buf, o.buf, bs );
 	}
 	~OV() { tag = '----'; }										// real cleanup handled by main function

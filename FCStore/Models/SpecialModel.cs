@@ -192,6 +192,12 @@ namespace FCStore.Models
             set;
         }
 
+        public List<Role> RoleArr
+        {
+            get;
+            set;
+        }
+
         public List<RecentView> RecentViewArr
         {
             get;

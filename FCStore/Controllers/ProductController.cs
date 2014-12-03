@@ -133,7 +133,6 @@ namespace FCStore.Controllers
 
         public ActionResult ListByCategory(int ID, int PIndex = 1, string hashOrder = "0x00", string hashWhere = "")
         {
-            throw new ArgumentNullException();
             List<int> brandWhere = GetBrandWhere(hashWhere);
             List<OrderObj> orderObjList = GetOrderObj(hashOrder);
             int PCount = 40;

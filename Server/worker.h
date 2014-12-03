@@ -39,11 +39,11 @@ extern INT32U  GSVSocketTimeOut;
 
 INT32U CALLBACK ScavengePulingSockets( void *arg );
 void DoIo( OV &ov );
-void DoClose( OV &ov, bool force = false, bool listenAgain = true );
-void ReinitContext( OV &ov );
-void PostRead( OV &ov );
-void SendReply( OV &ov );
+//void DoClose( OV &ov, bool force = false, bool listenAgain = true );
+//void ReinitContext( OV &ov );
+//void PostRead( OV &ov );
+//void SendReply( OV &ov );
 bool DoCommands( OV &ov );
-void DoOneCommand( char *p, OV &ov );
+//void DoOneCommand( char *p, OV &ov );
 
 #endif
