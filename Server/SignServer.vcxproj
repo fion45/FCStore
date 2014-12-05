@@ -69,10 +69,10 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories />
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;json_vc71_libmtd.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharConvert.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FCII.cpp" />
     <ClCompile Include="FCIIForWS.cpp" />
@@ -113,8 +114,10 @@
     <ClCompile Include="worker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharConvert.h" />
     <ClInclude Include="DebugMsg.h" />
     <ClInclude Include="FCII.h" />
+    <ClInclude Include="FCIIDefined.h" />
     <ClInclude Include="FCIIForWS.h" />
     <ClInclude Include="OverLapped.h" />
     <ClInclude Include="Server.h" />

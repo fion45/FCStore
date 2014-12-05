@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "FCII.h"
+#include "FCIIDefined.h"
+#include "json/json.h"
+#include <string>
+#include "CharConvert.h"
 
+using namespace std;
 
 FCII::FCII(UINT8* stream, FCIIExecuter* executer)
 {
@@ -38,13 +43,18 @@ bool FCII::ReceiveStream(UINT8* stream, bool* continueTag)
 {
 	if (m_isweb)
 	{
-
+		string tmpStr = T2AA((LPCTSTR)stream);
+		Json::Reader reader;
+		Json::Value root;
+		if (!reader.parse(tmpStr, root, false))
+		{
+			return -1;
+		}
 	}
 }
 
 int FCII::SendStream(UINT8* stream, bool* continueTag)
 {
-
 	if (m_isweb)
 	{
 
@@ -54,5 +64,28 @@ int FCII::SendStream(UINT8* stream, bool* continueTag)
 
 FCIIContent* FCIIExecuter::Dispatch(FCIIContent* content)
 {
+	bool DontDis = false;
+	switch (content->MainCMD)
+	{
+	case MC_Global:
+		switch (content->SubCMD)
+		{
+		case SC_Login:
+		{
 
+			break;
+		}
+		default:
+			DontDis = true;
+			break;
+		}
+		break;
+	default:
+		DontDis = true;
+		break;
+	}
+	if (DontDis)
+	{
+		//√ª”–≈…ÀÕ
+	}
 }
