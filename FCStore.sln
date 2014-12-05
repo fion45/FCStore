@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCStore", "FCStore\FCStore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FionPushFilm", "FionPushFilm\FionPushFilm.csproj", "{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SignServer", "Server\SignServer.vcxproj", "{45D5B089-B055-49D8-9A07-5818973AB908}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RightGOServer", "Server\SignServer.vcxproj", "{45D5B089-B055-49D8-9A07-5818973AB908}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

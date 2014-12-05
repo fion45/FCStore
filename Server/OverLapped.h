@@ -5,7 +5,6 @@
 #include <string>
 #include "Type.h"
 #include "FCII.h"
-#include "FCIIForWS.h"
 
 //================================================================================================================
 //====  if defined, code will use WsaSend(), else WriteFile()

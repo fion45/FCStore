@@ -27,7 +27,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Static</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>Ws2_32.lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,14 +70,20 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;json_vc71_libmtd.lib</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;json_vc71_libmtd.lib;uafxcwd.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>uafxcwd.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories />
+      <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ImageHasSafeExceptionHandlers>
+      </ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,9 +108,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CharConvert.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FCII.cpp" />
-    <ClCompile Include="FCIIForWS.cpp" />
     <ClCompile Include="OverLapped.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -115,10 +121,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharConvert.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="DebugMsg.h" />
     <ClInclude Include="FCII.h" />
     <ClInclude Include="FCIIDefined.h" />
-    <ClInclude Include="FCIIForWS.h" />
     <ClInclude Include="OverLapped.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="stdafx.h" />
