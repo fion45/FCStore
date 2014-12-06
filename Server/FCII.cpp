@@ -71,6 +71,8 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 
 	if (m_isweb)
 	{
+
+
 		string tmpStr = MyT2AA((LPCTSTR)stream);
 		Json::Reader reader;
 		Json::Value root;
