@@ -8,7 +8,7 @@ public:
 	bool m_isweb;
 
 	FCIIContent* m_receivedcontent = NULL;
-	FCIIContent* m_sendcontent = NULL;
+	FCIIContent* m_sendedcontent = NULL;
 public:
 	FCII(UINT8* stream, int streamLen, FCIIExecuter* executer);
 	~FCII();
@@ -22,6 +22,7 @@ private:
 	UINT8* m_receivedstream = NULL;
 	UINT8* m_sendedstream = NULL;
 	FCIIExecuter* m_executer;
+	bool m_hasbuilded = false;
 };
 
 const int UI16SIZE = sizeof(UINT16);
@@ -33,13 +34,9 @@ struct FCIIContent
 	UINT16	CheckSum;
 	UINT16	MainCMD;
 	UINT16	SubCMD;
-	UINT8	IsRequest;
-	UINT8	Reserve[3];
+	UINT16	IsRequest;
 	UINT16	ErrCode;
-	UINT16	ArgLen;
 	UINT32	DataLen;
-
-	UINT8*	Arg;
 	UINT8*	Data;
 };
 

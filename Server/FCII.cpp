@@ -4,6 +4,7 @@
 #include "json/json.h"
 #include <string>
 #include "CharConvert.h"
+#include "sha1.h"
 
 using namespace std;
 
@@ -11,14 +12,31 @@ FCII::FCII(UINT8* stream, int streamLen, FCIIExecuter* executer)
 {
 	//判断是不是websocket数据流
 	string tmpStr((char*)stream);
+	
 	m_isweb = tmpStr.substr(0, 3) == "GET";
 	m_executer = executer;
 	if (m_isweb)
 	{
 		//先进行握手
+		//获得Sec-WebSocket-Key值
+		basic_string <char>::size_type bindex = tmpStr.find_first_of("Sec-WebSocket-Key:") + strlen("Sec-WebSocket-Key:");
+		basic_string <char>::size_type eindex = tmpStr.find_first_of("Sec-WebSocket-Vers:");
+		tmpStr = tmpStr.substr(bindex, eindex - bindex);
+		tmpStr.append("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
+		//SHA1加密
+		SHA1 sha1;
+		char buffer[41];
+		sha1.SHA_GO(tmpStr.data(), buffer);
+		//构造数据包发送
+		string BuildBuf = "HTTP/1.1 101 Switching Protocols\r\nConnection:Upgrade\r\nServer:beetle websocket server\r\nUpgrade:WebSocket\r\nDate:Mon, 26 Nov 2012 23:42:44 GMT\r\nAccess-Control-Allow-Credentials:true\r\nAccess-Control-Allow-Headers:content-type\r\nSec-WebSocket-Accept:";
+		BuildBuf.append(buffer);
+		m_hasbuilded = true;
+		m_sendedstream = new UINT8[BuildBuf.length()];
+		CopyMemory(m_sendedstream, BuildBuf.data(), BuildBuf.length());
 	}
 	else
 	{
+		m_hasbuilded = false;
 		ReceiveStream(stream, streamLen);
 	}
 }
@@ -32,9 +50,8 @@ FCII::~FCII()
 bool FCII::Analyse(UINT8* stream,int streamLen, FCIIContent* content)
 {
 	content = (FCIIContent*)stream;
-	content->Data = content->Arg + content->ArgLen;
 	//检查长度
-	if (streamLen != content->ArgLen + content->DataLen + sizeof(UINT16)* 6 + sizeof(UINT32))
+	if (streamLen != content->DataLen + sizeof(UINT16)* 6 + sizeof(UINT32))
 		return false;
 	//检查checkSum
 	UINT16 tmpCS = 0;
@@ -51,7 +68,6 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 {
 	SAFE_DELETEARRPTR(m_receivedstream);
 	SAFE_DELETEARRPTR(m_sendedstream);
-	SAFE_DELETEARRPTR(m_receivedstream);
 
 	if (m_isweb)
 	{
@@ -63,9 +79,8 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 			//解析失败
 			return false;
 		}
-		Json::Value argLen = root["ArgLen"];
 		Json::Value dataLen = root["DataLen"];
-		streamLen = FCIICONTENTHEADLEN + argLen.asUInt() + dataLen.asUInt();
+		streamLen = FCIICONTENTHEADLEN + dataLen.asUInt();
 		m_receivedstream = new UINT8[streamLen];
 		UINT8* streamPtr = m_receivedstream;
 		*((UINT16*)streamPtr) = (UINT16)(root["Identify"].asUInt());
@@ -76,18 +91,14 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 		streamPtr += UI16SIZE;
 		*((UINT16*)streamPtr) = (UINT16)(root["SubCMD"].asUInt());
 		streamPtr += UI16SIZE;
-		*((UINT16*)streamPtr) = (UINT16)(root["ErrCode"].asUInt());
+		*((UINT16*)streamPtr) = (UINT16)(root["IsRequest"].asUInt());
 		streamPtr += UI16SIZE;
-		*((UINT16*)streamPtr) = (UINT16)(root["ArgLen"].asUInt());
+		*((UINT16*)streamPtr) = (UINT16)(root["ErrCode"].asUInt());
 		streamPtr += UI16SIZE;
 		*((UINT16*)streamPtr) = (UINT16)(root["DataLen"].asUInt());
 		streamPtr += UI32SIZE;
-		tmpStr = root["Arg"].asString();
-		UINT32 tmpLen = (UINT16)(root["ArgLen"].asUInt());
-		CopyMemory(streamPtr, tmpStr.data(), tmpLen);
-		streamPtr += tmpLen;
 		tmpStr = root["Data"].asString();
-		tmpLen = (UINT16)(root["DataLen"].asUInt());
+		UINT32 tmpLen = (UINT32)(root["DataLen"].asUInt());
 		CopyMemory(streamPtr, tmpStr.data(), tmpLen);
 	}
 	else
@@ -100,55 +111,47 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 
 void FCII::SendStream(UINT8* stream, int* streamLen)
 {
-	m_sendcontent = m_executer->Dispatch(m_receivedcontent, m_sendedstream);
+	m_sendedcontent = m_executer->Dispatch(m_receivedcontent, m_sendedstream);
 	if (m_isweb)
 	{
 		string tmpStr = "";
 		char buf[100];
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "{'Identify':%d,", m_sendcontent->Identify);
+		sprintf_s(buf, 100, "{'Identify':%d,", m_sendedcontent->Identify);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'CheckSum':%d,", m_sendcontent->CheckSum);
+		sprintf_s(buf, 100, "'CheckSum':%d,", m_sendedcontent->CheckSum);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'MainCMD':%d,", m_sendcontent->MainCMD);
+		sprintf_s(buf, 100, "'MainCMD':%d,", m_sendedcontent->MainCMD);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'SubCMD':%d,", m_sendcontent->SubCMD);
+		sprintf_s(buf, 100, "'SubCMD':%d,", m_sendedcontent->SubCMD);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'ErrCode':%d,", m_sendcontent->ErrCode);
+		sprintf_s(buf, 100, "'IsRequest':%d,", m_sendedcontent->IsRequest);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'ArgLen':%d,", m_sendcontent->ArgLen);
+		sprintf_s(buf, 100, "'ErrCode':%d,", m_sendedcontent->ErrCode);
 		tmpStr.append(buf);
 		ZeroMemory(buf, 100);
-		sprintf_s(buf, 100, "'DataLen':%d,", m_sendcontent->DataLen);
+		sprintf_s(buf, 100, "'DataLen':%d,", m_sendedcontent->DataLen);
 		tmpStr.append(buf);
-		tmpStr.append("'Arg':'");
-		int tmpLen = m_sendcontent->ArgLen + 1;
+		tmpStr.append("'Data':'");
+		int tmpLen = m_sendedcontent->DataLen + 1;
 		char* bufPtr = new char[tmpLen];
 		ZeroMemory(bufPtr, tmpLen);
-		CopyMemory(bufPtr, m_sendcontent->Arg, m_sendcontent->ArgLen);
-		tmpStr.append(bufPtr);
-		delete[] bufPtr;
-		tmpStr.append("','Data':'");
-
-		tmpLen = m_sendcontent->DataLen + 1;
-		bufPtr = new char[tmpLen];
-		ZeroMemory(bufPtr, tmpLen);
-		CopyMemory(bufPtr, m_sendcontent->Data, m_sendcontent->DataLen);
+		CopyMemory(bufPtr, m_sendedcontent->Data, m_sendedcontent->DataLen);
 		tmpStr.append(bufPtr);
 		delete[] bufPtr;
 		tmpStr.append("'}");
-		stream = new UINT8[tmpStr.length];
-		CopyMemory(stream, tmpStr.data(), tmpStr.length);
-		*streamLen = tmpStr.length;
+		stream = new UINT8[tmpStr.length()];
+		CopyMemory(stream, tmpStr.data(), tmpStr.length());
+		*streamLen = tmpStr.length();
 	}
 	else
 	{
-		*streamLen = m_sendcontent->ArgLen + m_sendcontent->DataLen + FCIICONTENTHEADLEN;
+		*streamLen = FCIICONTENTHEADLEN + m_sendedcontent->DataLen;
 		stream = new UINT8[*streamLen];
 		CopyMemory(stream, m_sendedstream, *streamLen);
 	}
