@@ -107,14 +107,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="base64\base64.cpp" />
     <ClCompile Include="CharConvert.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FCII.cpp" />
-    <ClCompile Include="md5.cpp" />
     <ClCompile Include="OverLapped.cpp" />
     <ClCompile Include="Server.cpp" />
-    <ClCompile Include="sha1.cpp" />
+    <ClCompile Include="sha1\sha1.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -122,15 +122,15 @@
     <ClCompile Include="worker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="base64\base64.h" />
     <ClInclude Include="CharConvert.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DebugMsg.h" />
     <ClInclude Include="FCII.h" />
     <ClInclude Include="FCIIDefined.h" />
-    <ClInclude Include="md5.h" />
     <ClInclude Include="OverLapped.h" />
     <ClInclude Include="Server.h" />
-    <ClInclude Include="sha1.h" />
+    <ClInclude Include="sha1\sha1.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadSync.h" />
     <ClInclude Include="Type.h" />
