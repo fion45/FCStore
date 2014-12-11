@@ -68,7 +68,7 @@ bool FCII::ReceiveStream(UINT8* stream, int streamLen)
 {
 	SAFE_DELETEARRPTR(m_receivedstream);
 	SAFE_DELETEARRPTR(m_sendedstream);
-
+	m_hasbuilded = false;
 	if (m_isweb)
 	{
 
