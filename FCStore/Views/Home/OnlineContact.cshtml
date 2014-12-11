@@ -173,30 +173,36 @@
     </div>    
     @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript">
+        var Socket = null;
         var InitializeSocket = function () {
             if (!"WebSocket" in window) {
                 alert("你的服务器不支持WebSocket技术！请下载一个支持的浏览器，如chrome")
             }
             else {
-                var host = 'ws://127.0.0.1:8080/';
-                var socket = new WebSocket(host);
-                socket.onopen = function (event) {
-                    ShowMessage("打开Socket成功");
+                var host = 'ws://127.0.0.1:81/';
+                Socket = new WebSocket(host);
+                Socket.onopen = function (event) {
+                    ShowMessage("连接服务器成功");
                 };
                 // 监听消息
-                socket.onmessage = function (event) {
+                Socket.onmessage = function (event) {
                     ShowMessage(event.data);
                 };
+                Socket.onerror = function (event) {
+                    ShowMessage("通讯错误，");
+                };
                 // 监听Socket的关闭
-                socket.onclose = function (event) {
-                    ShowMessage("关闭Socket");
+                Socket.onclose = function (event) {
+                    ShowMessage("服务器已关闭");
 
                 };
             }
 
         };
 
-        var Send = function () {
+        var Send = function (message) {
+            Socket.send(message);
+            ShowMessage("发送:\"" + message + "\"成功");
         };
 
         var ShowMessage = function (msg) {
@@ -207,7 +213,9 @@
             InitializeSocket();
             $("#sendBtn").on("click", function () {
                 //发送按钮
-            })
+                Send($("#inputTA").val());
+                $("#inputTA").val("");
+            });
         });
     </script>
 </body>
