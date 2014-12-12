@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCStore", "FCStore\FCStore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FionPushFilm", "FionPushFilm\FionPushFilm.csproj", "{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RightGOServer", "Server\SignServer.vcxproj", "{45D5B089-B055-49D8-9A07-5818973AB908}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebsocketProtocol", "WebsocketProtocol\WebsocketProtocol.vcxproj", "{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,26 +37,6 @@ Global
 		{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}.Release|Win32.ActiveCfg = Release|Any CPU
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Debug|Win32.ActiveCfg = Debug|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Debug|Win32.Build.0 = Debug|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Release|Any CPU.ActiveCfg = Release|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Release|Win32.ActiveCfg = Release|Win32
-		{45D5B089-B055-49D8-9A07-5818973AB908}.Release|Win32.Build.0 = Release|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Win32.Build.0 = Debug|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Any CPU.ActiveCfg = Release|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Win32.ActiveCfg = Release|Win32
-		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
