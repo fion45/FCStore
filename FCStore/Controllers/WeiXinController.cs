@@ -17,6 +17,9 @@ namespace FCStore.Controllers
         private static string ACCESSTOKEN = "";
         public ActionResult API()
         {
+            KeepAccessTokenHelper.APPID = APPID;
+            KeepAccessTokenHelper.APPSECRET = APPID;
+            ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
             WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
             string responseContent = helper.DealWith(Request);
             Response.ContentEncoding = Encoding.UTF8;

@@ -285,7 +285,7 @@ namespace FCStore.Common
                 CookieContainer cookieContainer = new CookieContainer();
                 request.CookieContainer = cookieContainer;
                 request.AllowAutoRedirect = true;
-                request.Method = "POST";
+                request.Method = "GET";
                 request.ContentType = "application/x-www-form-urlencoded";
                 //发送请求并获取相应回应数据
                 response = request.GetResponse() as HttpWebResponse;
