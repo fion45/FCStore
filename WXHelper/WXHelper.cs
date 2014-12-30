@@ -7,6 +7,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Collections;
 using NLog;
 
 
@@ -20,6 +21,7 @@ namespace WX
         private static string APPID = "";
         private static string APPSECRET = "";
         private static string ACCESSTOKEN = "";
+
         public WXHelper(string token,string appID, string appSecret, string accessToken)
         {
             TOKEN = token;

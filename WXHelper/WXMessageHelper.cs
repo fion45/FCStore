@@ -122,7 +122,7 @@ namespace WX
                     FromUserName.InnerText,
                     ToUserName.InnerText,
                     DateTime.Now.Ticks,
-                    "欢迎使用微信公共账号，您输入的内容为：" + Content.InnerText + "\r\n<a href=\"http://www.rightgo.cn\">点击进入</a>");
+                    "欢迎使用微信公共账号，" + FromUserName.InnerText + "输入的内容为：" + Content.InnerText + "\r\n<a href=\"http://www.rightgo.cn\">点击进入</a>");
             }
             return responseContent;
         }
