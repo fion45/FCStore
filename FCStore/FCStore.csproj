@@ -152,7 +152,6 @@
     <Compile Include="Common\MyUser.cs" />
     <Compile Include="Common\PubFunction.cs" />
     <Compile Include="Common\STMHelper.cs" />
-    <Compile Include="Common\WXMessageHelper.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -564,6 +563,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WXHelper\WXHelper.csproj">
+      <Project>{1940fd4a-0a7c-42ef-9fac-994541cf08a9}</Project>
+      <Name>WXHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
