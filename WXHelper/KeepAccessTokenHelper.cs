@@ -12,6 +12,16 @@ namespace WX
 {
     public class KeepAccessTokenHelper
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        private Thread mKeepThread = null;
+        private Mutex mSync = new Mutex();
+        private bool mRunTag = false;
+        private ManualResetEvent mStopTrigger = new ManualResetEvent(false);
+        private ManualResetEvent mGetTrigger = new ManualResetEvent(false);
+        private string mAccessToken = null;
+
         private volatile static KeepAccessTokenHelper mInstance = null;
         private static readonly object lockHelper = new object();
 
@@ -53,14 +63,6 @@ namespace WX
             Stop();
         }
 
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
-        private Thread mKeepThread = null;
-        private Mutex mSync = new Mutex();
-        private bool mRunTag = false;
-        private ManualResetEvent mStopTrigger = new ManualResetEvent(false);
-        private ManualResetEvent mGetTrigger = new ManualResetEvent(false);
-        private string mAccessToken = null;
         public string AccessToken
         {
             get
@@ -83,9 +85,15 @@ namespace WX
                 mRunTag = true;
                 mStopTrigger.Reset();
 
-                if (mKeepThread == null)
-                    mKeepThread = new Thread(Running);
-                mKeepThread.Start();
+                mKeepThread = new Thread(Running);
+                try
+                { 
+                    mKeepThread.Start();
+                }
+                catch(Exception ex)
+                {
+                    logger.Log(LogLevel.Trace, ex.Message);
+                }
             }
             mSync.ReleaseMutex();
         }
@@ -150,8 +158,8 @@ namespace WX
                     break;
             }
             mGetTrigger.Set();
-            mRunTag = false;
             mStopTrigger.Set();
+            mRunTag = false;
         }
 
     }

@@ -33,7 +33,6 @@ namespace WX
         public string DealWith(HttpRequestBase Request)
         {
             string token = TOKEN;
-            logger.Log(LogLevel.Trace, "IN WEIXIN API[" + Request.Url.ToString() + "]");
             string signature = (Request.QueryString.AllKeys.Count(r => r == "signature") > 0) ? Request.QueryString["signature"].ToString() : "";
             string timestamp = (Request.QueryString.AllKeys.Count(r => r == "timestamp") > 0) ? Request.QueryString["timestamp"].ToString() : "";
             string nonce = (Request.QueryString.AllKeys.Count(r => r == "nonce") > 0) ? Request.QueryString["nonce"].ToString() : "";

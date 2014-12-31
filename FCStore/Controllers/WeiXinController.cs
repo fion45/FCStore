@@ -11,6 +11,8 @@ namespace FCStore.Controllers
 {
     public class WeiXinController : Controller
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private static string TOKEN = ConfigurationManager.AppSettings["WeixinToken"];
         private static string APPID = ConfigurationManager.AppSettings["WeixinAPPID"];
         private static string APPSECRET = ConfigurationManager.AppSettings["WeixinAPPSECRET"];
@@ -18,7 +20,7 @@ namespace FCStore.Controllers
         public ActionResult API()
         {
             KeepAccessTokenHelper.APPID = APPID;
-            KeepAccessTokenHelper.APPSECRET = APPID;
+            KeepAccessTokenHelper.APPSECRET = APPSECRET;
             ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
             WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
             string responseContent = helper.DealWith(Request);
