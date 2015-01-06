@@ -9,10 +9,29 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Collections;
 using NLog;
+using System.Xml;
 
 
 namespace WX
 {
+    public enum EMenuType
+    {
+        MT_ROOT,
+        MT_WELCOME,
+        MT_MENU,
+        MT_AUTOREPLY,
+        MT_UNKNOW
+    }
+
+    public class MenuItem
+    {
+        public int CIndex;
+        public string Name;
+        public EMenuType Type;
+        public MenuItem Parent = null;
+        public List<MenuItem> ChildrenLST = new List<MenuItem>();
+    }
+
     public class WXHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -22,16 +41,23 @@ namespace WX
         private static string APPSECRET = "";
         private static string ACCESSTOKEN = "";
 
+        private MenuItem mRoot;
+
         public WXHelper(string token,string appID, string appSecret, string accessToken)
         {
             TOKEN = token;
             APPID = appID;
             APPSECRET = appSecret;
             ACCESSTOKEN = accessToken;
+            WXMessageHelper.WelComeDG WCDG = new WXMessageHelper.WelComeDG(WelComeFun);
+            WXMessageHelper.MenuDG MDG = new WXMessageHelper.MenuDG(MenuFun);
+            WXMessageHelper.AutoReplyDG ARDG = new WXMessageHelper.AutoReplyDG(AutoReplyFun);
+            WXMessageHelper.SetDelegate(WCDG, MDG, ARDG);
         }
 
-        public string DealWith(HttpRequestBase Request)
+        public string DealWith(HttpRequestBase Request,MenuItem Root)
         {
+            mRoot = Root;
             string token = TOKEN;
             string signature = (Request.QueryString.AllKeys.Count(r => r == "signature") > 0) ? Request.QueryString["signature"].ToString() : "";
             string timestamp = (Request.QueryString.AllKeys.Count(r => r == "timestamp") > 0) ? Request.QueryString["timestamp"].ToString() : "";
@@ -61,6 +87,36 @@ namespace WX
             }
             return "";
         }
+
+        private string WelComeFun(XmlDocument xmldoc)
+        {
+            logger.Log(LogLevel.Trace, "WelCome");
+            string result = "";
+            XmlNode ToUserName = xmldoc.SelectSingleNode("/xml/ToUserName");
+            XmlNode FromUserName = xmldoc.SelectSingleNode("/xml/FromUserName");
+            string content = GetAutoReplyStr(EMenuType.MT_WELCOME, null, "欢迎新用户");
+            result = string.Format(ReplyFormat.Message_Text,
+                    FromUserName.InnerText,
+                    ToUserName.InnerText,
+                    DateTime.Now.Ticks,
+                    content);
+            return result;
+        }
+
+        private string MenuFun(XmlDocument xmldoc)
+        {
+            XmlNode Content = xmldoc.SelectSingleNode("/xml/Content");
+            string[] strArr = Content.InnerText.Split(new char[] { '-' });
+            return GetAutoReplyStr(EMenuType.MT_MENU, Content.InnerText);
+        }
+
+        private string AutoReplyFun(XmlDocument xmldoc)
+        {
+            XmlNode Content = xmldoc.SelectSingleNode("/xml/Content");
+            string[] strArr = Content.InnerText.Split(new char[] { '-' });
+            return GetAutoReplyStr(EMenuType.MT_AUTOREPLY, Content.InnerText);
+        }
+
         private bool CheckSignature(string signature, string timestamp, string nonce, string token)
         {
             string[] ArrTmp = { token, timestamp, nonce };
@@ -76,6 +132,45 @@ namespace WX
             {
                 return false;
             }
+        }
+
+        private string GetAutoReplyStr(EMenuType type, string IndexStr = null, string defaultStr = "不好意思，不明白你说什么")
+        {
+            string result = defaultStr;
+            MenuItem MItem;
+            if (string.IsNullOrEmpty(IndexStr))
+                MItem = mRoot.ChildrenLST.FirstOrDefault(r => r.Type == type);
+            else
+            {
+                int tmpI;
+                string[] strArr = IndexStr.Split(new char[] { '-' });
+                MenuItem tmpMenu = mRoot;
+                foreach(string tmpStr in strArr)
+                {
+                    if(int.TryParse(tmpStr,out tmpI))
+                    {
+                        tmpMenu = tmpMenu.ChildrenLST.FirstOrDefault(r => r.CIndex == tmpI);
+                        if (tmpMenu.ChildrenLST == null || tmpMenu.ChildrenLST.Count == 0)
+                            result = tmpMenu.Name;
+                        else
+                        {
+                            result = "";
+                            foreach(MenuItem MI in tmpMenu.ChildrenLST)
+                            {
+                                result += MI.CIndex + ":" + MI.Name + "\r\n";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        tmpMenu = mRoot.ChildrenLST.FirstOrDefault(r => r.Type == EMenuType.MT_UNKNOW);
+                        if (tmpMenu != null)
+                            result = tmpMenu.Name;
+                        break;
+                    }
+                }
+            }
+            return result;
         }
 
         //public ActionResult CreateMenu()

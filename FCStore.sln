@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCStore", "FCStore\FCStore.csproj", "{1F48C838-D229-4395-ACCE-7DA02BB3847B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1940FD4A-0A7C-42EF-9FAC-994541CF08A9} = {1940FD4A-0A7C-42EF-9FAC-994541CF08A9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FionPushFilm", "FionPushFilm\FionPushFilm.csproj", "{DAD7F333-24E0-49B1-9CA2-5ADDB699D7CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WXHelper", "WXHelper\WXHelper.csproj", "{1940FD4A-0A7C-42EF-9FAC-994541CF08A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WXHelper", "..\..\WXPlatform\WXHelper\WXHelper.csproj", "{1940FD4A-0A7C-42EF-9FAC-994541CF08A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
