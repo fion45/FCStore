@@ -5,7 +5,7 @@ using System.Text;
 using System.Configuration;
 using Newtonsoft.Json;
 using NLog;
-using WX;
+//using WX;
 
 namespace FCStore.Controllers
 {
@@ -19,15 +19,15 @@ namespace FCStore.Controllers
         private static string ACCESSTOKEN = "";
         public ActionResult API()
         {
-            KeepAccessTokenHelper.APPID = APPID;
-            KeepAccessTokenHelper.APPSECRET = APPSECRET;
-            ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
-            WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
-            string responseContent = helper.DealWith(Request);
-            Response.ContentEncoding = Encoding.UTF8;
-            Response.Write(responseContent);
-            Response.Flush();
-            Response.End();
+            //KeepAccessTokenHelper.APPID = APPID;
+            //KeepAccessTokenHelper.APPSECRET = APPSECRET;
+            //ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
+            //WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
+            //string responseContent = helper.DealWith(Request);
+            //Response.ContentEncoding = Encoding.UTF8;
+            //Response.Write(responseContent);
+            //Response.Flush();
+            //Response.End();
             return new EmptyResult();
         }
     }
