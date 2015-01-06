@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>G:\C#net\FCStore\网站发布\FCStore\2015-01-01</_PublishTargetUrl>
+    <_PublishTargetUrl>G:\C#net\FCStore\网站发布\FCStore\2015-01-06</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="agreement.txt">
@@ -25,7 +25,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/22/2014 08:34:46</publishTime>
     </File>
     <File Include="bin/FCStore.dll">
-      <publishTime>01/04/2015 17:32:33</publishTime>
+      <publishTime>01/06/2015 18:01:03</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>04/28/2014 08:34:46</publishTime>
@@ -76,7 +76,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/28/2014 08:34:46</publishTime>
     </File>
     <File Include="bin/WXHelper.dll">
-      <publishTime>12/31/2014 10:00:17</publishTime>
+      <publishTime>01/06/2015 17:56:41</publishTime>
     </File>
     <File Include="bin/zh-Hans/EntityFramework.resources.dll">
       <publishTime>04/28/2014 08:34:46</publishTime>
@@ -742,7 +742,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/28/2014 08:34:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/04/2015 17:25:20</publishTime>
+      <publishTime>01/06/2015 17:49:12</publishTime>
     </File>
     <File Include="xheditor/script/xheditor-1.1.14-zh-cn.js">
       <publishTime>07/01/2012 15:52:22</publishTime>

@@ -20,14 +20,26 @@ namespace FCStore.Controllers
         private static string ACCESSTOKEN = "";
         public ActionResult API()
         {
-            logger.Log(LogLevel.Trace, "0");
+            logger.Log(LogLevel.Trace, "F0");
+            logger.Log(LogLevel.Trace, APPID);
+            try
+            {
+                logger.Log(LogLevel.Trace, KeepAccessTokenHelper.APPID);
+            }
+            catch(Exception ex)
+            {
+                logger.Log(LogLevel.Trace, ex.Message);
+            }
+            
             KeepAccessTokenHelper.APPID = APPID;
+            logger.Log(LogLevel.Trace, "1");
             KeepAccessTokenHelper.APPSECRET = APPSECRET;
             logger.Log(LogLevel.Trace, Request.Url);
-            ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
-            logger.Log(LogLevel.Trace, "1");
-            WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
             logger.Log(LogLevel.Trace, "2");
+            ACCESSTOKEN = KeepAccessTokenHelper.Instance.AccessToken;
+            logger.Log(LogLevel.Trace, "3");
+            WXHelper helper = new WXHelper(TOKEN, APPID, APPSECRET, ACCESSTOKEN);
+            logger.Log(LogLevel.Trace, "4");
             string responseContent = helper.DealWith(Request, BuildMenu());
             Response.ContentEncoding = Encoding.UTF8;
             Response.Write(responseContent);
