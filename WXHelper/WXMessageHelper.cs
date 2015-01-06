@@ -6,11 +6,13 @@ using System.IO;
 using System.Text;
 using System.Web.Security;
 using System.Xml;
+using NLog;
 
 namespace WX
 {
     public static class WXMessageHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         //返回消息
         public static string ReturnMessage(string postStr)
         {
@@ -20,6 +22,7 @@ namespace WX
             XmlNode MsgType = xmldoc.SelectSingleNode("/xml/MsgType");
             if (MsgType != null)
             {
+                logger.Log(LogLevel.Trace, MsgType.InnerText);
                 switch (MsgType.InnerText)
                 {
                     case "event":
@@ -58,6 +61,22 @@ namespace WX
             }
             return responseContent;
         }
+
+        public delegate string WelComeDG(XmlDocument xmldoc);
+        public delegate string MenuDG(XmlDocument xmldoc);
+        public delegate string AutoReplyDG(XmlDocument xmldoc);
+
+        private static WelComeDG WelComeFun = null;
+        private static MenuDG MenuFun = null;
+        private static AutoReplyDG AutoReplyFun = null;
+
+        public static void SetDelegate(WelComeDG WelComF,MenuDG MenuF,AutoReplyDG AutoReplyF)
+        {
+            WelComeFun = WelComF;
+            MenuFun = MenuF;
+            AutoReplyFun = AutoReplyF;
+        }
+
         //事件
         public static string EventHandle(XmlDocument xmldoc)
         {
@@ -73,7 +92,9 @@ namespace WX
                     case "subscribe":
                         {
                             //订阅
-
+                            logger.Log(LogLevel.Trace, "新用户订阅！");
+                            if(WelComeFun != null)
+                                responseContent = WelComeFun(xmldoc);
                             break;
                         }
                     case "unsubscribe":
